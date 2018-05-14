@@ -1,0 +1,1440 @@
+@import url(../runo/styles.css);
+
+@font-face {
+	font-family: "droidsans";
+	src: url(fonts/DroidSans.ttf) format('truetype');
+}
+
+@font-face {
+	font-family: "lcd";
+	src: url(fonts/lcdnormal.ttf) format('truetype');
+}
+
+.v-app {
+	font-family: "droidsans";
+}
+
+.v-label {
+	font-family: "droidsans";
+}
+/** P�gina de login **/
+.v-horizontallayout-banner {
+	display: block;
+	background: green;
+	background: url(banner.png) 50% 50% repeat-x;
+	border-bottom: 1px solid white;
+	width: 100%;
+	height: 33px;
+	padding-top: 1px;
+}
+
+.v-horizontallayout-topbanner {
+	display: block;
+	padding: 3px;
+}
+
+.v-horizontallayout-footer {
+	display: block;
+	border: 1px solid #e3e3e8;
+}
+
+.v-verticallayout-mainlogin {
+	background-color: #f7f7f7;
+	background: -moz-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -o-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -webkit-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background-image: url('backgroundimg.png');
+	background-repeat: no-repeat;
+	background-position: bottom left;
+}
+
+.v-verticallayout-mainapp {
+	background-color: #f7f7f7;
+	background: -moz-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -o-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -webkit-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+}
+
+.loginform {
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #e3e3e8;
+}
+
+input.v-textfield-login[type="text"],input.v-textfield-login[type="password"]
+	{
+	font-family: "droidsans";
+	font-size: 14px !important;
+	height: 33px;
+	line-height: 14px;
+	color: gray;
+	padding-left: 10px;
+	border: none;
+	display: block;
+	background-color: #f6f6;
+}
+
+.v-tooltip {
+	font-family: "droidsans";
+	font-size: 11px;
+	color: #222;
+	background-color: #f6f6f6;
+	border: 1px solid #8cc948;
+	border-radius: 2px 2px 2px 2px;
+}
+
+.v-tooltip-text {
+	padding: 2px 4px;
+}
+
+.v-label-header {
+	font-size: 18px;
+	color: #1db259;
+	background-color: #f6f6f6;
+	font-family: "droidsans";
+	padding-left: 10px;
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.v-window-header {
+	color: #8cc948;
+	font-size: 18px;
+	font-family: "droidsans";
+	font-weight: normal;
+	letter-spacing: -0.03em;
+	line-height: 1.2;
+	text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.v-label-header2 {
+	color: #009900;
+	font-family: "droidsans";
+	font-size: 14px;
+	vertical-align: bottom;
+	font-weight: bold;
+}
+
+.v-horizontallayout-header {
+	background-color: #f6f6f6;
+}
+
+.v-button-login .v-button-wrap {
+	display: block;
+	height: 23px;
+	padding-left: 12px;
+	padding-top: 10px;
+	background: #1db259;
+    border-color: #000000;
+	text-shadow: none;
+	box-shadow: none;
+	color: white;
+}
+
+.v-button-login:hover .v-button-wrap {
+    background: #6bc890;
+}
+
+.v-button-login:focus .v-button-wrap {
+	border-color: #1db259;
+	box-shadow: 0 0 2px #8CC948;
+}
+
+.v-horizontallayout-buttons {
+	padding-right: 5px;
+}
+
+/** Backend **/
+
+.v-horizontallayout-derechosreservados {
+	margin-top: 15px;
+}
+
+.v-button-toolbar {
+	background: transparent;
+	border: none;
+	height: 35px;
+}
+
+.v-button-toolbar:focus{
+	border: none;
+}
+
+.v-button-toolbar .v-button-wrap {
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), color-stop(0.05, rgba(0, 0, 0, 0.1) ),
+		color-stop(0.5, transparent), to(transparent) );
+	border: none;
+	border-radius: 1px 1px 1px 1px;
+	box-shadow: none;
+	color: #333333;
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+	height: 19px;
+	list-style: none;
+	padding-top: 10px;
+	text-align:center;
+	text-shadow: 1px 1px 1px whiteSmoke;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.v-button-toolbar:active .v-button-wrap, .v-button-toolbar.v-pressed .v-button-wrap{
+	border: none;
+	border-radius: 1px 1px 1px 1px;
+	box-shadow: none;
+	color: #333333;
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+	height: 19px;
+	list-style: none;
+	padding-top: 10px;
+	text-align:center;
+	text-shadow: 1px 1px 1px whiteSmoke;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+.v-button-toolbar:hover .v-button-wrap {
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), to(transparent) );
+	border-bottom: 1px solid green;
+	color: green;
+	text-shadow: 1px 1px 1px whiteSmoke;
+}
+
+.v-button-toolbar:focus .v-button-wrap {
+	border-bottom: 1px solid #666666;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow:  none;
+}
+
+.v-button.v-disabled.v-button-toolbar .v-button-wrap{
+	-moz-border-bottom-colors: none;
+	-moz-border-image: none;
+	-moz-border-left-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-top-colors: none;
+	border-radius: 1px 1px 1px 1px;
+	border: none;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+	color: #464F52;
+	display: block;
+	height: 19px;
+	font-family: "droidsans";
+	font-size: 11px;
+	line-height: 14px;
+	min-height: 14px;
+	overflow: hidden;
+	padding-top: 10px;
+	text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.v-button-toolbarselected {
+	border: none;
+	background: transparent;
+	height: 35px;
+}
+
+.v-button-toolbarselected:focus{
+	border: none;
+}
+.v-button-toolbarselected .v-button-wrap {
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), to(transparent) );
+	border-radius: 1px 1px 1px 1px;
+	border: none;
+	box-shadow: none;
+	border-bottom: 1px solid #666666;
+	color: #FFFFFF;
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+	height: 19px;
+	text-align:center;
+	padding-top: 10px;
+	text-shadow: none;
+	text-transform: uppercase;
+}
+
+.v-button-toolbarselected:active .v-button-wrap, .v-button-toolbarselected.v-pressed .v-button-wrap{
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), to(transparent) );
+	border: none;
+	border-radius: 1px 1px 1px 1px;
+	box-shadow: none;
+	color: #FFFFFF;
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+	height: 19px;
+	list-style: none;
+	padding-top: 10px;
+	text-align:center;
+	text-shadow: none;
+	text-transform: uppercase;
+	vertical-align: middle;
+}
+
+
+.v-button-toolbarselected:focus .v-button-wrap {
+	-webkit-box-shadow: none;
+	-moz-box-shadow:  none;
+	border-top: none;
+	border-bottom: 1px solid #666666;
+	border-left: none;
+	border-right: none;
+	box-shadow: none;
+}
+
+.v-button-optionmodule {
+	border: none;
+	background: transparent;
+	height: 30px;
+	padding: 1px;
+}
+
+.v-button-optionmodule .v-button-wrap {
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), color-stop(0.05, rgba(0, 0, 0, 0.1) ),
+		color-stop(0.5, transparent), to(transparent) );
+	border: none;
+	border-radius: 1px 1px 1px 1px;
+	box-shadow: none;
+	color: #333333;
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+	list-style: none;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	text-shadow: 1px 1px 1px whiteSmoke;
+}
+
+.v-button-optionmodule:hover .v-button-wrap {
+	color: green;
+	text-shadow: none;
+	border-bottom: 2px solid green;
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), to(transparent) );
+}
+
+.v-button-optionmodule:focus .v-button-wrap {
+	border-color: transparent;
+	box-shadow: 0 0 2px transparent;
+	border-bottom: 2px solid green;
+}
+
+.v-button-optionmoduleselected {
+	padding: 1px;
+	border: none;
+	background: transparent;
+	height: 30px;
+}
+
+.v-button-optionmoduleselected .v-button-wrap {
+	display: inline-block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	font-family: "droidsans";
+	font-size: 12px;
+	color: green;
+	list-style: none;
+	background: -moz-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -o-linear-gradient(bottom, rgba(0, 0, 0, 0.1), transparent
+		50%, transparent );
+	background: -webkit-gradient(linear, right bottom, right top, from(rgba(0, 0, 0, 0.1
+		) ), color-stop(0.05, rgba(0, 0, 0, 0.1) ),
+		color-stop(0.5, transparent), to(transparent) );
+	box-shadow: none;
+	text-shadow: none;
+	border: none;
+	border-radius: 1px 1px 1px 1px;
+	border-bottom: 2px solid green;
+}
+
+.v-button-optionmoduleselected:focus .v-button-wrap {
+	border-color: transparent;
+	box-shadow: 0 0 2px transparent;
+	border-bottom: 2px solid green;
+}
+
+.v-label-suscriptor {
+	display: block;
+	font-family: "droidsans";
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 3px;
+	color: #636363;
+}
+
+.v-horizontallayout-selected {
+	cursor: pointer;
+}
+
+/** Submodulos **/
+.v-button-action .v-button-wrap {
+	font-family: "droidsans";
+	font-size: 10px;
+	text-shadow: 1px 1px 1px whiteSmoke;
+	border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	padding: 2px 2px 0px 2px;
+	color: #333333;
+	background-color: #dbdada;
+	background: #dbdada;
+	border: 1px solid silver;
+}
+
+.v-button-action:focus .v-button-wrap {
+	text-shadow: none;
+	background-color: #dbdada;
+	background: #dbdada;
+	border: 1px solid silver;
+	box-shadow: none;
+	color: #333333;
+}
+
+.v-button-action .v-button-caption {
+	text-align: center;
+	width: 100%;
+}
+
+.v-button-action:active .v-button-wrap,.v-button-action.v-pressed .v-button-wrap{
+	background: #868784;
+	color: white;
+}
+
+/** Center card **/
+.v-horizontallayout-centerbc {
+	margin-left: 2px;
+	margin-right: 2px;
+	border: none;
+}
+
+.v-horizontallayout-centerbc:hover {
+	margin-left: 2px;
+	margin-right: 2px;
+	color: green;
+	cursor: pointer;
+}
+
+.v-horizontallayout-separatorbc {
+	margin-left: 2px;
+	margin-right: 2px;
+	border: none;
+}
+
+.v-label-separatorbc {
+	cursor: pointer;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.v-label-centerbc {
+	cursor: pointer;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+.v-label-centerbc:hover {
+	color: green;
+	cursor: pointer;
+	text-shadow: 1px 1px whiteSmoke;
+	text-decoration: underline;
+}
+
+.v-label-centercard {
+	color: gray;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.v-verticallayout-centercard {
+	/*float: left;
+	margin: 10px;*/
+	cursor: pointer;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border: 1px solid transparent;
+}
+
+.v-verticallayout-centercard:hover {
+	border: 1px solid #8CC948;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.v-horizontallayout-centercard {
+	float: left;
+	margin: 10px;
+	border: 1px solid transparent;
+}
+
+.v-horizontallayout-centercardchlids {
+	float: left;
+	margin: 10px;
+	border-radius: 3px;
+	border: 1px solid grey;
+}
+
+.v-horizontallayout-centercardchlids:hover {
+	float: left;
+	margin: 10px;
+	border-radius: 3px;
+	border: 1px solid grey;
+	box-shadow: 0 0 2px whiteSmoke;
+	-webkit-box-shadow: 0 0 2px whiteSmoke;
+	-moz-box-shadow: 0 0 2px whiteSmoke;
+}
+
+.v-verticallayout-centerreportcard {
+	background: white;
+	border: 1px solid silver;
+	border-radius: 3px;
+}
+
+.v-horizontallayout-cathegory {
+	border: 1px solid silver;
+	border-radius: 1px;
+	padding-right: 2px;
+}
+
+.v-label-cathegory {
+	display: block;
+	font-family: "droidsans";
+	font-size: 10px;
+	text-align: left;
+	margin-left: 3px;
+	height: auto;
+	line-height: 13px;
+}
+
+.v-verticallayout-devicecard {
+	display: inline-block;
+	background-color: #f6f6f6;
+	border: 1px solid silver;
+	border-radius: 3px;
+}
+
+.v-verticallayout-devicechart {
+	display: inline-block;
+	background-color: #ffffff;
+	border: 1px solid silver;
+	border-radius: 3px;
+}
+
+.v-horizontallayout-devicechart {
+	display: inline-block;
+	background-color: #ffffff;
+	border: 1px solid silver;
+	border-radius: 3px;
+}
+
+.v-label-devicename {
+	display: block;
+	font-family: "droidsans";
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 3px;
+}
+
+.v-label-devicedescription {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	text-align: right;
+	padding-bottom: 2px;
+	margin-right: 10px;
+	height: auto;
+	line-height: 13px;
+}
+
+.v-label-reportdescription {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	text-align: center;
+	height: auto;
+}
+
+.v-checkbox-report {
+	display: block;
+	font-family: "droidsans";
+	font-size: 10px;
+	vertical-align: middle;
+}
+
+.v-label-deviceperiod {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	text-align: center;
+	height: auto;
+	cursor: pointer;
+}
+
+.v-label-configcaption {
+	display: block;
+	font-family: "droidsans";
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: lowercase;
+	padding-top: 3px;
+	height: auto;
+	text-align: center;
+}
+
+.v-filterselect {
+	font-family: "droidsans";
+	font-size: 11px;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.v-label-configresolution {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	text-transform: lowercase;
+	text-align: center;
+	height: auto;
+}
+
+.v-label-lcdnumber {
+	display: block;
+	font-family: "lcd";
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	color: white;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
+.v-caption-lcdnumber {
+	display: block;
+	font-family: "lcd";
+	font-size: 9px;
+	text-align: center;
+	/*color: #74AC37;*/
+	color: white;
+	padding-left: 3px;
+}
+
+.v-label-lcdum {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	color: white;
+}
+
+.v-label-lcddate {
+	display: block;
+	font-family: "lcd";
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	color: white;
+}
+
+.v-label-lcddategreen {
+	display: block;
+	font-family: "lcd";
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	color: #74AC37;
+}
+
+.v-label-lcddateyellow {
+	display: block;
+	font-family: "lcd";
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	color: #C9C85E;
+}
+
+.v-label-lcddatered {
+	display: block;
+	font-family: "lcd";
+	font-size: 15px;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 2px;
+	color: #D9615E;
+}
+
+.v-label-lcdvariable {
+	display: block;
+	font-family: "droidsans";
+	color: white;
+	font-size: 11px;
+	text-align: center;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	padding-right: 3px;
+	padding-left: 3px;
+	height: auto;
+}
+
+.v-horizontallayout-lcd {
+	background-color: black;
+}
+
+.v-verticallayout-lcd {
+	background-color: black;
+	color: white;
+	/*padding-top: 1px;
+	padding-bottom: 1px;
+	padding-right: 1px;
+	padding-left: 1px;*/
+}
+
+.v-button-minitransparente .v-button-wrap {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	padding: 1px 1px 1px 1px;
+	height: 16px;
+	margin: 0px;
+	text-shadow: none;
+	border-radius: 1px 1px 1px 1px;
+}
+
+.v-button-minitransparente:focus .v-button-wrap {
+	border-color: none;
+	box-shadow: none;
+}
+
+.v-button-transparente .v-button-wrap {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	padding: 1px 1px 1px 1px;
+	height: 22px;
+	margin: 0px;
+	text-shadow: none;
+	border-radius: 1px 1px 1px 1px;
+}
+
+.v-button-transparente:focus .v-button-wrap {
+	border-color: none;
+	box-shadow: none;
+}
+
+.v-button-transparente .v-button-wrap .v-icon{
+	vertical-align: middle;
+	border: none;
+	height: 21px;
+	margin: 0px;
+}
+
+.v-button.v-disabled.v-button-transparente .v-button-wrap{
+	vertical-align: middle;
+	border: none;
+	height: 21px;
+	margin: 0px;
+	background: transparent;
+	box-shadow: none;
+	padding: 1px 1px 1px 1px;
+}
+
+.v-button-transparente:active .v-button-wrap,.v-button-transparente.v-pressed .v-button-wrap
+{
+	background: #E7E9E9;
+}
+
+.v-button-devicepanel .v-button-wrap {
+	font-family: "droidsans";
+	font-size: 8px;
+	text-shadow: 1px 1px 1px whiteSmoke;
+	border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	padding: 2px 2px 0px 2px;
+	color: #333333;
+	background-color: #dbdada;
+	background: #dbdada;
+	border: 1px solid silver;
+}
+
+.v-button-devicepanel:focus .v-button-wrap {
+	text-shadow: none;
+	border: 1px solid #868784;
+	box-shadow: none;
+	background: #868784;
+	color: white;
+}
+
+.v-button-devicepanel .v-button-caption {
+	text-align: center;
+	width: 100%;
+	line-height: inherit;
+}
+
+.v-button-devicepanel:active .v-button-wrap,.v-button-devicepanel.v-pressed .v-button-wrap
+{
+	background: #868784;
+	color: white;
+}
+
+.v-button-devicepanelselected .v-button-wrap {
+	font-family: "droidsans";
+	font-size: 8px;
+	text-shadow: none;
+	border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	padding: 2px 2px 0px 2px;
+	color: white;
+	box-shadow: none;
+	background-color: #868784;
+	background: #868784;
+	border: 1px solid #868784;
+}
+
+.v-button-devicepanelselected:focus .v-button-wrap {
+	border: 1px solid #868784;
+	box-shadow: none;
+	background: #868784;
+	color: white;
+}
+
+.v-button-devicepanelselected:active .v-button-wrap,.v-button-devicepanelselected.v-pressed .v-button-wrap{
+	background: #868784;
+	color: white;
+}
+
+.v-button-devicepanelselected .v-button-caption {
+	text-align: center;
+	width: 100%;
+	line-height: inherit;
+}
+
+.v-horizontallayout-period {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.v-horizontallayout-period:hover {
+	border: 1px solid #8CC948;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.v-verticallayout-period {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.v-verticallayout-period:hover {
+	border: 1px solid #8CC948;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.v-verticallayout-selectedate {
+	float: left;
+	margin: 5px;
+}
+
+/*Estadistica*/
+.v-label-statisticlabel {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	font-weight: bold;
+	padding-left: 3px;
+	padding-right: 3px;
+	
+}
+
+.v-label-statisticvalue {
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+
+.v-button-statisticspanel .v-button-wrap {
+	font-family: "droidsans";
+	font-size: 10px;
+	text-shadow: 1px 1px 1px whiteSmoke;
+	border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	padding: 2px 2px 0px 2px;
+	color: #333333;
+	background-color: #dbdada;
+	background: #dbdada;
+	border: 1px solid silver;
+}
+
+.v-button-statisticspanel:focus .v-button-wrap {
+	text-shadow: none;
+	border: 1px solid #868784;
+	box-shadow: none;
+	background: #868784;
+	color: white;
+}
+
+.v-button-statisticspanel .v-button-caption {
+	text-align: center;
+	width: 100%;
+}
+
+.v-button-statisticspanel:active .v-button-wrap,.v-button-statisticspanel.v-pressed .v-button-wrap{
+	background: #868784;
+	color: white;
+}
+
+.v-button-statisticspanelselected .v-button-wrap {
+	font-family: "droidsans";
+	font-size: 10px;
+	text-shadow: none;
+	border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	padding: 2px 2px 0px 2px;
+	color: white;
+	box-shadow: none;
+	background-color: #868784;
+	background: #868784;
+	border: 1px solid #868784;
+}
+
+.v-button-statisticspanelselected:focus .v-button-wrap {
+	border: 1px solid #868784;
+	box-shadow: none;
+	background: #868784;
+	color: white;
+}
+
+.v-button-statisticspanelselected:active .v-button-wrap,.v-button-statisticspanelselected.v-pressed .v-button-wrap{
+	background: #868784;
+	color: white;
+}
+
+.v-horizontallayout-topchart {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	/*margin-top: 3px;*/
+	display: inline-block;
+	background-color: #f6f6f6;
+}
+
+/*Informe*/
+.v-verticallayout-reportcard {
+	float: left;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin: 10px;
+	border: 1px solid green;
+}
+
+.v-label-reportcentername {
+	color: gray;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	margin-left: 10px;
+}
+
+.v-button-report .v-button-wrap {
+	border: none;
+	box-shadow: none;
+	background: transparent;
+	padding: 1px 1px 1px 1px;
+	height: 40px;
+	margin: 0px;
+	text-shadow: none;
+	border-radius: 1px 1px 1px 1px;
+}
+
+.v-button-report:focus .v-button-wrap {
+	border-color: none;
+	box-shadow: none;
+}
+
+.v-button-report .v-button-wrap .v-icon{
+	vertical-align: middle;
+	border: none;
+	height: 38px;
+	margin: 0px;
+}
+
+.v-button-report:active .v-button-wrap,.v-button-report.v-pressed .v-button-wrap
+{
+	background: #E7E9E9;
+}
+
+/**/
+.v-form fieldset {
+	border: thin dotted;
+}
+
+.v-table-cell-content-subseccion-resultados {
+	font-weight: bold !important;
+	background: #BDDDF4 !important;
+	color: #666 !important;
+}
+
+.v-tabsheet-content-scrollhorizontal>div>div {
+	overflow-y: hidden !important;
+}
+
+.v-textfield.v-readonly {
+	font-style: italic;
+	border-style: solid;
+	border-bottom-color: #D6D6D6;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #B6B6B6;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #D6D6D6;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #9D9D9D;
+	border-top-style: solid;
+	border-top-width: 1px;
+	background: #EEE;
+}
+
+.tableTextfieldInvalid {
+	font-style: normal !important;
+	font-weight: bold !important;
+	color: red !important;
+	border: none !important;
+	text-align: center !important;
+}
+
+.tableTextfield {
+	border: none !important;
+	font-style: normal !important;
+	text-align: center !important;
+}
+
+.reserved {
+	text-align: center !important;
+	color: red !important;
+}
+
+.win-property {
+	color: #999;
+	font-size: 1.3em;
+	margin-left: 1em;
+}
+
+/* p�gina login */
+.campo-destacado {
+	background: #FFE599 !important;
+}
+
+/* login style */
+.v-textfield-focus-login {
+	border-color: transparent;
+}
+
+.v-horizontallayout-loginuser {
+	background: white;
+}
+
+.v-horizontallayout-loginpass {
+	display: block;
+	background: white;
+}
+
+.v-window-login {
+	background: none;
+}
+
+.v-window-login .v-window-outerheader {
+	display: none;
+}
+
+.v-window-login .v-window-header {
+	display: none;
+}
+
+.v-window-login .v-window-contents {
+	background: #3a9742;
+	background: -webkit-gradient(linear, center top, center bottom, from(#3a9742),
+		to(#a2cc9c) );
+	background: -moz-linear-gradient(top, #3a9742, #a2cc9c);
+	border-width: 2px;
+	border-style: solid;
+	border-color: #888;
+	border-radius: 20px;
+}
+
+.v-window-login .v-window-wrap {
+	background-image: none;
+}
+
+.v-window-login div.v-window-footer {
+	display: none;
+}
+
+.v-textfield-uppercase {
+	text-transform: uppercase;
+}
+
+/* cabecera */
+.v-horizontallayout-cabecera { /*background-image: url('head.jpg');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;*/
+	background: #f6f8f9 padding:   3px;
+}
+
+/* botones */
+.v-button-gravatar .v-button-wrap {
+	border: 1px solid #922d00;
+	border-radius: 5px;
+	box-shadow: 3px 3px 5px #333;
+	background: #eee;
+	padding: 0;
+	margin: 2px 8px 8px 2px;
+}
+
+.v-button-gravatar .v-button-wrap .v-icon {
+	margin: 0;
+}
+
+.v-button-verde .v-button-wrap {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	padding: 5px;
+	margin: 0px;
+	text-shadow: none;
+}
+
+.v-button-verde:focus {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+}
+
+.v-button-verde .v-button-wrap {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+	padding: 5px;
+	margin: 0px;
+	text-shadow: none;
+}
+
+.v-button-verde:active {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
+}
+
+/*.v-button-verde:hover {
+	background: transparent;
+}*/
+.v-button-verde .v-icon {
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	width: 50px;
+	heigth: 50px;
+	background: url('btn-verde.png') no-repeat;
+}
+
+.v-button-verde:hover .v-icon {
+	background-position: 0px -50px;
+}
+
+.v-button-verde:active .v-icon {
+	background-position: 0px -100px;
+}
+
+.v-button-verde .v-button-caption {
+	font-size: 18px;
+}
+
+/* cuerpo */
+.v-verticallayout-cuerpo {
+	background: -webkit-gradient(linear, center top, center bottom, from(#badeba),
+		to(#f7fbf7) );
+	background: -moz-linear-gradient(top, #badeba, #f7fbf7);
+	background-size: 100% 100%;
+}
+/* página principal */
+.v-panel-principal {
+	background: none;
+	border: none;
+}
+
+.v-panel-principal .v-panel-captionwrap {
+	height: 46px;
+	width: 518px;
+}
+
+.v-panel-caption-principal {
+	background: none;
+	color: black;
+	font-size: 24px;
+	padding: 5px;
+	height: auto;
+}
+
+.v-panel-content-principal {
+	background: transparent;
+	border: none;
+	float: left;
+}
+
+.v-panel-content-principal>.v-horizontallayout {
+	height: auto !important;
+}
+
+.v-panel-content-principal>.v-horizontallayout>div {
+	margin: 0 !important;
+}
+
+.v-panel-deco-principal {
+	display: none;
+}
+
+/* Labels para nemonico de estado de  secciones  */
+.v-label-pendiente {
+	padding: 0px 3px;
+	color: white;
+	background: orange
+}
+
+.v-label-completo {
+	padding: 0px 3px;
+	color: white;
+	background: green;
+}
+
+.v-label-finalizada {
+	padding: 0px 3px;
+	color: white;
+	background: blue;
+}
+
+.v-label-retrasada {
+	padding: 0px 3px;
+	color: white;
+	background: red;
+}
+
+/* Menu bar */
+.v-menubar {
+	height: 23px;
+	background: #323336 repeat-x;
+	/*background-image: url(img/bg.png); /** sprite-ref: verticals; sprite-alignment: repeat */
+	color: #d1d3d6;
+	text-shadow: rgba(0, 0, 0, .9) 0 1px 0;
+	padding: 0 8px;
+}
+
+.v-menubar .v-menubar-menuitem {
+	padding: 3px 8px;
+	height: 17px;
+	line-height: 16px;
+}
+
+.v-menubar .v-menubar-menuitem:hover {
+	color: #fff;
+}
+
+.v-menubar .v-menubar-menuitem-caption .v-icon {
+	vertical-align: middle;
+	white-space: nowrap;
+}
+
+.v-menubar-submenu {
+	background: #fff;
+}
+
+.v-menubar-menuitem-selected {
+	background: #333;
+	color: #fff;
+}
+
+.v-menubar-submenu .v-menubar-menuitem {
+	cursor: default;
+	display: block;
+	position: relative;
+	padding-right: 1.5em;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-caption {
+	display: block;
+}
+
+.v-menubar-submenu .v-menubar-menuitem *,.v-menubar-submenu .v-menubar-menuitem-caption *
+	{
+	white-space: nowrap;
+}
+
+.v-menubar-submenu-indicator {
+	display: none;
+	/* Arial has the most coverage for geometric entity characters */
+	font-family: arial, helvetica, sans-serif;
+}
+
+.v-menubar-submenu .v-menubar-submenu-indicator {
+	display: block;
+	position: absolute;
+	right: 0;
+	width: 1em;
+	height: 1em;
+	font-size: 0.9em;
+}
+
+.v-menubar-menuitem-disabled,.v-menubar span.v-menubar-menuitem-disabled:hover,.v-menubar span.v-menubar-menuitem-disabled:focus,.v-menubar span.v-menubar-menuitem-disabled:active
+	{
+	color: #999;
+}
+
+.v-menubar-more-menuitem {
+	/* Arial has the most coverage for geometric entity characters */
+	font-family: arial, helvetica, sans-serif;
+}
+
+.v-menubar-separator {
+	overflow: hidden;
+}
+
+.v-menubar-separator span {
+	display: block;
+	text-indent: -9999px;
+	font-size: 1px;
+	line-height: 1px;
+	border-top: 1px solid #ddd;
+	margin: 3px 0 2px;
+	overflow: hidden;
+}
+
+.v-menubar .v-icon,.v-menubar-submenu .v-icon {
+	margin-right: 3px;
+}
+
+.v-menubar:focus,.v-menubar-popup:focus,.v-menubar-popup .popupContent:focus,.v-menubar-popup .popupContent .v-menubar-submenu:focus
+	{
+	outline: none;
+}
+/* Checkboxes for checkable/checked menu items */
+/* Checked/unchecked requires combined style selected-(un)checked for IE6 */
+.v-menubar-submenu-check-column .v-menubar-menuitem {
+	padding-left: 6px;
+}
+
+.v-menubar-submenu-check-column .v-menubar-menuitem-caption {
+	padding-left: 18px;
+}
+
+.v-menubar-submenu .v-menubar-menuitem-checked .v-menubar-menuitem-caption
+	{
+	background: transparent url(img/check.gif) no-repeat left;
+}
+
+/*Tarjeta del dashboard*/
+.dashboardcard {
+	font-weight: bold;
+	margin: 10px;
+	padding: 10px;
+	background: #005f2a;
+	color: #fff;
+	float: left;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+}
+
+.v-loading-indicator,.v-loading-indicator-delay,.v-loading-indicator-wait
+	{
+	background: url(loading-indicator-delay2.gif) no-repeat center;
+	position: fixed !important;
+	/*width: 65px;
+    height: 65px;*/
+	top: 50%;
+	left: 50%;
+	z-index: 40000;
+}
+
+/* Lay the options horizontally */
+.v-select-optiongroup-horizontal .v-select-option {
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+/* Avoid wrapping if the layout is too tight */
+.v-select-optiongroup-horizontal {
+	white-space: nowrap;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+/* Some extra spacing is needed */
+.v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+	padding-right: 10px;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+.v-datefield-calendarpanel {
+	width: 190px;
+}
+

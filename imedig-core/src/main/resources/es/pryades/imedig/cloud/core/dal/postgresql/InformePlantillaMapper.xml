@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.InformePlantillaMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		
+		select count(1) from susc_informes_plantillas 
+		
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_informes_plantillas.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND (susc_informes_plantillas.centro is null OR susc_informes_plantillas.centro = #{centro})  
+	        </if>
+		</where>
+		
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.InformePlantilla">
+		select
+			*
+			
+		from
+			susc_informes_plantillas
+		
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_informes_plantillas.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND (susc_informes_plantillas.centro is null OR susc_informes_plantillas.centro = #{centro})  
+	        </if>
+		</where>
+		
+		order by susc_informes_plantillas.id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.InformePlantilla">
+		select
+			*		
+		from
+			susc_informes_plantillas
+		
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_informes_plantillas.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND (susc_informes_plantillas.centro is null OR susc_informes_plantillas.centro = #{centro})  
+	        </if>
+		</where>
+		
+		order by susc_informes_plantillas.id
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.InformePlantilla" resultType="es.pryades.imedig.cloud.dto.InformePlantilla">
+		select * from susc_informes_plantillas where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.InformePlantilla">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_informes_plantillas
+		(
+			id,
+			nombre,
+			datos,
+			centro
+		)
+		values
+		(
+			#{id},
+			#{nombre},
+			#{datos},
+			#{centro}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.InformePlantilla">
+		update susc_informes_plantillas
+		set
+			<if test="datos != null">
+				datos=#{datos},
+		    </if>
+			nombre=#{nombre},
+			centro=#{centro}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.InformePlantilla">
+		delete from susc_informes_plantillas where id = #{id}
+	</update>
+
+</mapper>

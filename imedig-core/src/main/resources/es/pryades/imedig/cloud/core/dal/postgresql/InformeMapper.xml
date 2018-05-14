@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.InformeMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		
+		select count(1) from susc_informes
+		
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="desde != null">
+				AND fecha &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND fecha &lt;= #{hasta}
+	        </if>
+			<if test="paciente_id != null">
+				AND (paciente_id = #{paciente_id} OR paciente_nombre like '${paciente_id}%')   
+	        </if>
+			<if test="estudio_id != null">
+				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+			<if test="modalidad != null">
+				AND modalidad = #{modalidad}  
+	        </if>
+			<if test="informa != null">
+				AND informa = #{informa}  
+	        </if>
+			<if test="refiere != null">
+				AND refiere = #{refiere}  
+	        </if>
+			<if test="icd10cm != null">
+				AND icd10cm = #{icd10cm}  
+	        </if>
+			<if test="estado != null">
+				AND estado = #{estado}  
+	        </if>
+			<if test="centros != null">
+				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+	        </if>
+			<if test="list_claves != null">
+				<foreach collection="list_claves" item="item" separator=" "> AND claves like '%${item}%'</foreach>
+	        </if>
+		</where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Informe">
+		
+		select 
+
+			id,
+			fecha,
+			paciente_id,
+			paciente_nombre,
+			estudio_id,
+			estudio_uid,
+			estudio_acceso,
+			modalidad,
+			claves,
+			texto,
+			centro,
+			informa,
+			icd10cm,
+			refiere,
+			estado,
+			protegido
+			
+		from
+			susc_informes
+		
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="desde != null">
+				AND fecha &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND fecha &lt;= #{hasta}
+	        </if>
+			<if test="paciente_id != null">
+				AND (paciente_id = #{paciente_id} OR paciente_nombre like '${paciente_id}%')   
+	        </if>
+			<if test="estudio_id != null">
+				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+			<if test="modalidad != null">
+				AND modalidad = #{modalidad}  
+	        </if>
+			<if test="informa != null">
+				AND informa = #{informa}  
+	        </if>
+			<if test="refiere != null">
+				AND refiere = #{refiere}  
+	        </if>
+			<if test="icd10cm != null">
+				AND icd10cm = #{icd10cm}  
+	        </if>
+			<if test="estado != null">
+				AND estado = #{estado}  
+	        </if>
+			<if test="centros != null">
+				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+	        </if>
+			<if test="list_claves != null">
+				<foreach collection="list_claves" item="item" separator=" "> AND claves like '%${item}%'</foreach>
+	        </if>
+		</where>
+		
+		order by fecha desc
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Informe">
+		select 
+
+			id,
+			fecha,
+			paciente_id,
+			paciente_nombre,
+			estudio_id,
+			estudio_uid,
+			estudio_acceso,
+			modalidad,
+			claves,
+			texto,
+			centro,
+			informa,
+			icd10cm,
+			refiere,
+			estado,
+			protegido
+
+		from
+			susc_informes
+
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="desde != null">
+				AND fecha &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND fecha &lt;= #{hasta}
+	        </if>
+			<if test="paciente_id != null">
+				AND (paciente_id = #{paciente_id} OR paciente_nombre like '${paciente_id}%')   
+	        </if>
+			<if test="estudio_id != null">
+				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+			<if test="modalidad != null">
+				AND modalidad = #{modalidad}  
+	        </if>
+			<if test="informa != null">
+				AND informa = #{informa}  
+	        </if>
+			<if test="refiere != null">
+				AND refiere = #{refiere}  
+	        </if>
+			<if test="icd10cm != null">
+				AND icd10cm = #{icd10cm}  
+	        </if>
+			<if test="estado != null">
+				AND estado = #{estado}  
+	        </if>
+			<if test="centros != null">
+				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+	        </if>
+		</where>
+		order by fecha desc
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Informe" resultType="es.pryades.imedig.cloud.dto.Informe">
+		select * from susc_informes where id = #{id}
+	</select>
+
+	<select id="getNextRow" parameterType="es.pryades.imedig.cloud.dto.Informe" resultType="es.pryades.imedig.cloud.dto.Informe">
+		select * from susc_informes 
+		
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="fecha != null">
+				AND fecha &gt;= #{fecha}
+	        </if>
+			<if test="estado != null">
+				AND estado = #{estado}  
+	        </if>
+			<if test="centros != null">
+				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+	        </if>
+			<if test="estados != null">
+				AND estado in <foreach collection="estados" item="item" open="(" close=")" separator=",">#{item}</foreach>
+	        </if>		
+	     </where>
+		
+		LIMIT 1 OFFSET 0
+	</select>
+
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Informe">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_informes
+		(
+			id,
+    		fecha,
+			paciente_id,
+			paciente_nombre,
+			estudio_id,
+			estudio_uid,
+			estudio_acceso,
+			modalidad,
+			claves,
+			texto,
+			centro,
+			informa,
+			icd10cm,
+			refiere,
+			estado,
+			protegido
+		)
+		values
+		(
+			#{id},
+    		#{fecha},
+			#{paciente_id},
+			#{paciente_nombre},
+			#{estudio_id},
+			#{estudio_uid},
+			#{estudio_acceso},
+			#{modalidad},
+			#{claves},
+			#{texto},
+			#{centro},
+			#{informa},
+			#{icd10cm},
+			#{refiere},
+			#{estado},
+			#{protegido}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Informe">
+		update susc_informes
+		set
+    		fecha=#{fecha},
+			paciente_id=#{paciente_id},
+			paciente_nombre=#{paciente_nombre},
+			estudio_id=#{estudio_id},
+			estudio_uid=#{estudio_uid},
+			estudio_acceso=#{estudio_acceso},
+			modalidad=#{modalidad},
+			claves=#{claves},
+			texto=#{texto},
+			centro=#{centro},
+			informa=#{informa},
+			icd10cm=#{icd10cm},
+			refiere=#{refiere},
+			<if test="pdf != null">
+				pdf=#{pdf},
+	        </if>
+			estado=#{estado},
+			protegido=#{protegido}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Informe">
+		delete from susc_informes where id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.UsuarioMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="int">
+
+		select count( distinct susc_usuarios.id ) from susc_usuarios 
+
+		<if test="centro != null || centros != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.usuario = susc_usuarios.id
+        </if>
+
+		<where>
+			<if test="centro != null">
+				AND susc_usuarios_centros.centro = #{centro}
+				AND susc_usuarios.perfil != 1
+	        </if>
+			<if test="centros != null">
+				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+				AND susc_usuarios.perfil != 1
+	        </if>
+		</where>
+
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">
+		
+		select distinct 
+			
+			susc_usuarios.id,
+			susc_usuarios.login,
+			susc_usuarios.email,
+			susc_usuarios.pwd,
+			susc_usuarios.cambio,
+			susc_usuarios.intentos,
+			susc_usuarios.estado,
+			susc_usuarios.perfil,
+			susc_usuarios.titulo,
+			susc_usuarios.nombre,
+			susc_usuarios.ape1,
+			susc_usuarios.ape2,
+			susc_usuarios.contactos, 
+			susc_usuarios.filtro, 
+			susc_usuarios.query, 
+			susc_usuarios.compresion
+			 
+		from
+			susc_usuarios
+
+		<if test="centro != null || centros != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.usuario = susc_usuarios.id
+        </if>
+
+		<where>
+			<if test="centro != null">
+				AND susc_usuarios_centros.centro = #{centro}
+				AND susc_usuarios.perfil != 1
+	        </if>
+			<if test="centros != null">
+				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+				AND susc_usuarios.perfil != 1
+	        </if>
+		</where>
+
+		order by id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">
+
+		select distinct 
+			
+			susc_usuarios.id,
+			susc_usuarios.login,
+			susc_usuarios.email,
+			susc_usuarios.pwd,
+			susc_usuarios.cambio,
+			susc_usuarios.intentos,
+			susc_usuarios.estado,
+			susc_usuarios.perfil,
+			susc_usuarios.titulo,
+			susc_usuarios.nombre,
+			susc_usuarios.ape1,
+			susc_usuarios.ape2,
+			susc_usuarios.contactos, 
+			susc_usuarios.filtro, 
+			susc_usuarios.query, 
+			susc_usuarios.compresion
+
+		from
+			susc_usuarios
+
+		<if test="centro != null || centros != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.usuario = susc_usuarios.id
+        </if>
+
+		<where>
+			<if test="login != null">
+				AND susc_usuarios.login = #{login} or susc_usuarios.email = #{login}
+	        </if>
+			<if test="centro != null">
+				AND susc_usuarios_centros.centro = #{centro}
+				AND susc_usuarios.perfil != 1
+	        </if>
+			<if test="centros != null">
+				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+				AND susc_usuarios.perfil != 1
+	        </if>
+		</where>
+
+		order by id
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">
+		select * from susc_usuarios where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_usuarios
+		(
+			id,
+			login,
+			email,
+			pwd,
+			titulo,
+			nombre,
+			ape1,
+			ape2,
+			contactos,
+			perfil,
+			cambio,
+			intentos,
+			estado,
+			filtro,
+			query,
+			compresion
+		)
+		values
+		(
+			#{id},
+			#{login},
+			#{email},
+			#{pwd},
+			#{titulo},
+			#{nombre},
+			#{ape1},
+			#{ape2},
+			#{contactos},
+			#{perfil},
+			#{cambio},
+			#{intentos},
+			#{estado},
+			#{filtro},
+			#{query},
+			#{compresion}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+		update susc_usuarios
+		set
+			login=#{login},
+			email=#{email},
+			pwd=#{pwd},
+			titulo=#{titulo},
+			nombre=#{nombre},
+			ape1=#{ape1},
+			ape2=#{ape2},
+			contactos=#{contactos},
+			perfil=#{perfil},
+			filtro=#{filtro},
+			query=#{query},
+			compresion=#{compresion}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+		delete from susc_usuarios where id = #{id}
+	</update>
+	
+	<update id="setPassword" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+		update susc_usuarios
+		set
+			pwd = #{pwd},
+			cambio = #{cambio},
+			intentos = #{intentos},
+			estado = #{estado}
+		where id = #{id}
+	</update>
+
+	<update id="setIntentos" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+		update susc_usuarios
+		set
+			intentos = #{intentos},
+			estado = #{estado}
+		where id = #{id}
+	</update>
+
+	<update id="setEstado" parameterType="es.pryades.imedig.cloud.dto.Usuario">
+		update susc_usuarios
+		set
+			estado = #{estado}
+		where id = #{id}
+	</update>
+
+</mapper>

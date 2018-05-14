@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages" rbi="resourceBundle">
+<c i="Component_windowPane1" t="nextapp.echo.app.WindowPane">
+
+
+<p n="resizable">false</p>
+<p n="movable">true</p>
+<p n="modal">true</p>
+
+<c i="Component_column1" t="nextapp.echo.app.Column">
+
+
+<c i="Component_row2" t="nextapp.echo.app.Row">
+
+<p n="cellSpacing">5px</p>
+
+<c i="Component_label2" t="nextapp.echo.app.Label">
+
+<p n="text">%QueryForm.PatientName</p>
+</c>
+<c i="Component_textPatientName" t="nextapp.echo.app.TextField" vis="private">
+<p n="styleName">Default</p>
+
+<p n="width">100px</p>
+</c>
+<c i="Component_label3" t="nextapp.echo.app.Label">
+
+<p n="text">%QueryForm.PatientId</p>
+</c>
+<c i="Component_textNHC" t="nextapp.echo.app.TextField" vis="private">
+<p n="styleName">Default</p>
+
+<p n="width">100px</p>
+</c>
+<c i="Component_label5" t="nextapp.echo.app.Label">
+
+<p n="text">%QueryForm.Modality</p>
+</c>
+<c i="Component_selectModality" t="nextapp.echo.app.SelectField" vis="private"/>
+<c i="Component_label6" t="nextapp.echo.app.Label">
+
+
+<p n="text">%QueryForm.StudyDate</p>
+</c>
+<c i="Component_selectDate" t="nextapp.echo.app.SelectField" vis="private"/>
+<p n="insets">10px</p>
+<c i="Component_btnQuery" t="nextapp.echo.app.Button" vis="private">
+<p n="styleName">Default</p>
+
+
+<p n="border">2px groove #000000</p>
+<e t="action">
+<h n="actionPerformed" v="onQuery"/>
+</e>
+<p n="toolTipText">%QueryForm.QueryTip</p>
+
+<p n="insets">2px 6px</p>
+
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon22/actions/system-search.png</p>
+</c>
+</c>
+<c i="Component_row5" t="nextapp.echo.app.Row">
+<c i="Component_column7" t="nextapp.echo.app.Column" vis="private">
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="width">100%</p>
+</p>
+<p n="cellSpacing">5px</p>
+</c>
+<p n="cellSpacing">5px</p>
+</c>
+<c i="Component_rowPageButtons" t="nextapp.echo.app.Row" vis="private">
+<p n="cellSpacing">5px</p>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="center"/>
+</p>
+</p>
+
+</c>
+
+<p n="cellSpacing">5px</p>
+
+<c i="Component_rowOpen" t="nextapp.echo.app.Row" vis="private">
+
+
+<p n="cellSpacing">5px</p>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="right" v="top"/>
+</p>
+</p>
+<p n="insets">10px</p>
+</c>
+<p n="insets">10px</p>
+</c>
+<p n="closable">true</p>
+<p n="title">%QueryForm.Title</p>
+
+
+<p n="height">90%</p>
+<p n="width">95%</p>
+</c>
+</form>

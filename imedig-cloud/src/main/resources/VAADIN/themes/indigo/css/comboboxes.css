@@ -1,0 +1,30 @@
+input.v-filterselect-input,
+.v-filterselect,
+.v-filterselect-status,
+div.v-filterselect-suggestpopup .gwt-MenuItem,
+div.v-contextmenu .gwt-MenuItem {
+	color: #343434;
+	font-size: 18px;
+}
+
+.v-filterselect-prevpage, 
+.v-filterselect-nextpage {
+	background: none;
+	height: 14px;
+}
+
+.v-filterselect-status {
+	font-size: 18px;
+}
+
+.v-filterselect-suggestpopup {
+	background: white;
+	font-size: 18px;
+}
+
+div.v-filterselect-suggestpopup .gwt-MenuItem-selected,
+div.v-contextmenu .gwt-MenuItem-selected {
+	background: #28632b;
+	color: white;
+	font-size: 18px;
+}

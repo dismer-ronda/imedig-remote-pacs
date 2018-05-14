@@ -1,0 +1,107 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  
+  	<modelVersion>4.0.0</modelVersion>
+  
+  	<groupId>es.pryades.imedig</groupId>
+  	<artifactId>imedig-database</artifactId>
+  	<version>1.0-SNAPSHOT</version>
+  	
+  	<name>imedig-database</name>
+  	<description>imedig-database</description>
+  	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+		    <plugin> 
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.5</version>
+				
+				<executions>
+					
+					<execution>
+						<id>suscriptor-environments</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/${engine}/environments</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/${engine}/environments</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>suscriptor</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/${engine}/scripts</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/${engine}/scripts</directory>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin> 
+				<groupId>org.mybatis.maven</groupId>
+				<artifactId>maven-migration-plugin</artifactId>
+				<version>1.0.0</version>
+				
+				<executions>
+					
+					<execution>
+						<id>suscriptor-up</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>up</goal>
+						</goals>
+						<configuration>
+							<repository>target/${engine}</repository>
+							<environment>imedig-cloud</environment>
+						</configuration>
+					</execution>
+					
+				</executions>
+
+				<dependencies>
+
+					<dependency>
+						<groupId>postgresql</groupId>
+						<artifactId>postgresql</artifactId>
+						<version>9.1-901.jdbc4</version>
+					</dependency>
+
+				</dependencies>
+
+			</plugin>
+			
+		</plugins>
+
+	</build>
+
+</project>

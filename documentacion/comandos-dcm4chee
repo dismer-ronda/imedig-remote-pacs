@@ -1,0 +1,46 @@
+-- Definir el mínimo espacio disponible en el almacenamiento principal ( <min_free> )
+
+	twiddle.sh -u admin -p admin setattrs "dcm4chee.archive:service=FileSystemMgt,group=ONLINE_STORAGE" MinimumFreeDiskSpace <min_free>
+		el texto de salida debe contener:
+			MinimumFreeDiskSpace=<min_free>
+
+-- Crear un NEARLINE_STORAGE ( <address> <directory> <name> <user> <password> <move_not_accessed> <keep_studies_during_days> )
+
+	mkdir /home/imedig/<name>
+	echo '//<address>/<directory> /home/imedig/<name> cifs user=<user>,pass=<password>,rw,uid=root,gid=root' >> /etc/fstab
+	mount /home/imedig/<name>
+	
+	twiddle.sh -u admin -p admin invoke "dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE" addRWFileSystem /home/imedig/<name>
+	twiddle.sh -u admin -p admin invoke "dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE" listFileSystems
+		el texto de salida debe contener:
+			/home/imedig<name>
+
+	twiddle.sh -u admin -p admin setattrs "dcm4chee.archive:service=FileMove" \
+		SourceFileSystemGroupID ONLINE_STORAGE \
+		DestinationFileSystemGroupID NEARLINE_STORAGE \
+		MoveStudyIfNotAccessedFor <move_not_accessed> \
+		MoveStudyOnlyIfNotAccessedFor 30d \
+		ScheduleStudiesForMoveInterval 1h
+		el texto de salida debe contener:
+			SourceFileSystemGroupID=ONLINE_STORAGE
+			SourceFileSystemGroupID=NEARLINE_STORAGE
+			MoveStudyIfNotAccessedFor=<move_not_accessed>
+			
+	crear una tarea que busque los estudios anteriores a fecha actual - <keep_studies_during_days> y ejecute para cada estudio
+
+		twiddle.sh -u admin -p admin invoke "dcm4chee.archive:service=ContentEditService" purgeStudy <study uid>
+			el texto de salida debe contener:
+				'null'
+				
+--- Mostrar el espacio disponible en el NEARLINE_STORAGE
+
+	twiddle.sh -u admin -p admin get "dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE" UsableDiskSpaceOnCurrentStorageFileSystem
+		el texto de salida debe contener:
+			UsableDiskSpaceOnCurrentStorageFileSystem=<value in bytes>
+
+-- Recrear la base de datos del pacs
+
+	su - postgres -c "dropdb pacsdb"
+	su - postgres -c "createdb pacsdb"
+	su - postgres -c "psql pacsdb -f /opt/dcm4chee/sql/create.psql"
+

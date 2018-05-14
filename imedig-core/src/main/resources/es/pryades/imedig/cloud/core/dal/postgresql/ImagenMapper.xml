@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.ImagenMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+
+		select count(1) from susc_imagenes
+		
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_imagenes.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND susc_imagenes.centro = #{centro}  
+	        </if>
+		</where>
+		 
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Imagen">
+		select
+			susc_imagenes.id,
+			susc_imagenes.centro,
+			susc_imagenes.nombre
+		from
+			susc_imagenes
+
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_imagenes.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND susc_imagenes.centro = #{centro}  
+	        </if>
+		</where>
+		 
+		order by susc_imagenes.id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Imagen">
+		select
+			susc_imagenes.id,
+			susc_imagenes.centro,
+			susc_imagenes.nombre
+		from 		
+			susc_imagenes
+
+		<if test="usuario != null || centro != null">
+			left join susc_centros
+			on susc_imagenes.centro = susc_centros.id
+	
+			left join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+        </if>
+			
+		<where>
+			<if test="usuario != null">
+		 		AND susc_usuarios_centros.usuario = #{usuario} 
+	        </if>
+
+			<if test="centro != null">
+				AND susc_imagenes.centro = #{centro}  
+	        </if>
+		</where>
+		 
+		order by susc_imagenes.id
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Imagen" resultType="es.pryades.imedig.cloud.dto.Imagen">
+		select * from susc_imagenes where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Imagen">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_imagenes
+		(
+			id,
+			centro,
+			nombre,
+			datos
+		)
+		values
+		(
+			#{id},
+			#{centro},
+			#{nombre},
+			#{datos}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Imagen">
+		update susc_imagenes set
+			centro=#{centro},
+
+			<if test="datos != null">
+				datos=#{datos},
+	        </if>
+
+			nombre=#{nombre}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Imagen">
+		delete from susc_imagenes where id = #{id}
+	</update>
+
+</mapper>

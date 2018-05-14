@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.DocumentoMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="int">
+		select count(*) from susc_documentos
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="tipo != null">
+				AND tipo = #{tipo}  
+	        </if>
+		</where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="es.pryades.imedig.cloud.dto.Documento">
+		select
+		id,
+		nombre,
+		descripcion,
+		centro,
+		imagen,
+		tipo
+		from
+		susc_documentos
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="tipo != null">
+				AND tipo = #{tipo}  
+	        </if>
+		</where>
+		order by id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="es.pryades.imedig.cloud.dto.Documento">
+		select
+		id,
+		nombre,
+		descripcion,
+		centro,
+		imagen,
+		tipo
+		from
+		susc_documentos
+		<where>
+			<if test="centro != null">
+				AND centro = #{centro}  
+	        </if>
+			<if test="tipo != null">
+				AND tipo = #{tipo}  
+	        </if>
+		</where>
+		order by id
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Documento"
+		resultType="es.pryades.imedig.cloud.dto.Documento">
+		select * from susc_documentos where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Documento">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT
+			nextval('gencfg');
+		</selectKey>
+
+		insert into susc_documentos
+		(
+		id,
+		nombre,
+		descripcion,
+		centro,
+		imagen,
+		tipo,
+		datos
+		)
+		values
+		(
+		#{id},
+		#{nombre},
+		#{descripcion},
+		#{centro},
+		#{imagen},
+		#{tipo},
+		#{datos}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Documento">
+		update susc_documentos
+		set
+		<if test="datos != null">
+			datos=#{datos},
+	        </if>
+		nombre=#{nombre},
+		descripcion=#{descripcion},
+		centro=#{centro},
+		imagen=#{imagen},
+		tipo=#{tipo}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Documento">
+		delete from susc_documentos
+		where id = #{id}
+	</update>
+
+</mapper>

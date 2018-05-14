@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.CentroMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+
+		select count(1) from susc_centros
+		
+		<if test = "usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+		
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Centro">
+		select
+			*
+		from
+			susc_centros
+
+		<if test = "usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+
+		order by orden
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Centro">
+		select
+			*
+		from
+			susc_centros
+
+		<if test = "usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+
+		order by orden
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Centro" resultType="es.pryades.imedig.cloud.dto.Centro">
+		select * from susc_centros 
+		
+		<where> 
+	        <choose>
+	        	<when test="serie != null">
+					serie = #{serie}
+	         	</when>
+				<otherwise>
+					id = #{id}
+				</otherwise>
+			</choose>
+		</where>
+	
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Centro">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_centros
+		(
+			id,
+			descripcion,
+			direccion,
+			contactos,
+			imagen,
+			coordenadas,
+			nombre,
+			orden,
+			horario,
+			moneda,
+			ip,
+			puerto,
+			serie
+		)
+		values
+		(
+			#{id},
+			#{descripcion},
+			#{direccion},
+			#{contactos},
+			#{imagen},
+			#{coordenadas},
+			#{nombre},
+			#{orden},
+			#{horario},
+			#{moneda},
+			#{ip},
+			#{puerto},
+			#{serie}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Centro">
+		update susc_centros
+		set
+			descripcion=#{descripcion},
+			direccion=#{direccion},
+			contactos=#{contactos},
+			imagen=#{imagen},
+			coordenadas=#{coordenadas},
+			nombre=#{nombre},
+			orden=#{orden},
+			horario=#{horario},
+			moneda=#{moneda},
+			ip=#{ip},
+			puerto=#{puerto},
+			serie=#{serie}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Centro">
+		delete from susc_centros where id = #{id}
+	</update>
+
+	<select id="getNumberOfUsuarios" parameterType="es.pryades.imedig.cloud.dto.Centro" resultType="int">
+		select count(*) from susc_usuarios_centros where centro = #{id} 
+	</select>
+
+	<select id="getUsuarios" parameterType="es.pryades.imedig.cloud.dto.Centro" resultType="es.pryades.imedig.cloud.dto.Usuario">
+		select
+			*
+		from
+			susc_usuarios
+		inner join
+			susc_usuarios_centros on susc_usuarios_centros.usuario = susc_usuarios.id
+		where
+			centro = #{id}
+	</select>
+
+</mapper>

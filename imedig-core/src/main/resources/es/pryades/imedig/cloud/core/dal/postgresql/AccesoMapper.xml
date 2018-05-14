@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.AccesoMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		select count(*) from susc_accesos
+		<where>
+			<choose>
+				<when test="usuario != null">
+					usuario = #{usuario}
+	         	</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			<if test="desde != null">
+				AND cuando &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND cuando &lt;= #{hasta}
+	        </if>
+		</where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Acceso">
+		select
+		*
+		from
+		susc_accesos
+		<where>
+			<choose>
+				<when test="usuario != null">
+					usuario = #{usuario}
+	         	</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			<if test="desde != null">
+				AND cuando &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND cuando &lt;= #{hasta}
+	        </if>
+		</where>
+		order by id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Acceso">
+		select
+			*
+		from
+			susc_accesos
+		<where>
+			<choose>
+				<when test="usuario != null">
+					usuario = #{usuario}
+	         	</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			<if test="desde != null">
+				AND cuando &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND cuando &lt;= #{hasta}
+	        </if>
+		</where>
+		order by id
+	</select>
+
+	<select id="getLastRow" parameterType="es.pryades.imedig.cloud.dto.Acceso" resultType="es.pryades.imedig.cloud.dto.Acceso">
+		select
+			*
+		from
+			susc_accesos
+		<where>
+			<choose>
+				<when test="usuario != null">
+					usuario = #{usuario}
+	         	</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			AND	cuando &lt; #{cuando}
+		</where>
+		order by cuando desc
+		LIMIT 1 OFFSET 0
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Acceso" resultType="es.pryades.imedig.cloud.dto.Acceso">
+		select * from susc_accesos where id = #{id}
+	</select>
+
+	<select id="getNextRow" parameterType="es.pryades.imedig.cloud.dto.Acceso" resultType="es.pryades.imedig.cloud.dto.Acceso">
+		select
+			*
+		from
+			susc_accesos
+		<where>
+			<choose>
+				<when test="usuario != null">
+					usuario = #{usuario}
+	         	</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+			AND cuando &gt; #{cuando}
+		</where>
+		order by cuando asc
+		LIMIT 1 OFFSET 0
+	</select>
+
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Acceso">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT
+			nextval('gendat');
+		</selectKey>
+
+		insert into susc_accesos
+		(
+		id,
+		cuando,
+		usuario
+		)
+		values
+		(
+		#{id},
+		#{cuando},
+		#{usuario}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Acceso">
+		update susc_accesos
+		set
+		cuando=#{cuando},
+		usuario=#{usuario}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Acceso">
+		delete from susc_accesos
+		where id = #{id}
+	</update>
+
+</mapper>

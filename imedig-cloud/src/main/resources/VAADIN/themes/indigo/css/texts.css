@@ -1,0 +1,13 @@
+input.v-textfield,
+textarea.v-textarea {
+	color: black;
+	font-size: 18px;
+}
+
+input.indigo_login[type="text"],
+input.indigo_password[type="password"] {
+	font-size: 18px;
+	height: 32px;
+	padding: 6px;
+	color: black;
+}

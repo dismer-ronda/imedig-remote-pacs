@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages" rbi="resourceBundle">
+<c i="Component_contentPane1" t="nextapp.echo.app.ContentPane">
+
+
+<c i="Component_splitPaneMain" t="nextapp.echo.app.SplitPane" vis="private">
+<p n="styleName">Default</p>
+
+<p n="resizable">false</p>
+<p n="separatorWidth">1px</p>
+<p n="orientation">nextapp.echo.app.SplitPane.ORIENTATION_HORIZONTAL_LEFT_RIGHT</p>
+
+
+
+<p n="layoutData" t="nextapp.echo.app.layout.SplitPaneLayoutData">
+<p n="insets">5px</p>
+<p n="overflow">nextapp.echo.app.layout.SplitPaneLayoutData.OVERFLOW_HIDDEN</p>
+</p>
+
+<p n="renderId">splitPaneViewer</p>
+
+
+<c i="Component_imagesThumbnail" t="nextapp.echo.app.Column" vis="private">
+
+<p n="cellSpacing">5px</p>
+<p n="insets">5px</p>
+</c>
+<c i="Component_splitPaneTools" t="nextapp.echo.app.SplitPane" vis="private">
+<p n="styleName">Default</p>
+<c i="Component_column2" t="nextapp.echo.app.Column">
+
+
+<p n="background">#000000</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<p n="layoutData" t="nextapp.echo.app.layout.SplitPaneLayoutData">
+<p n="overflow">nextapp.echo.app.layout.SplitPaneLayoutData.OVERFLOW_HIDDEN</p>
+</p>
+<c i="Component_columnStudy" t="nextapp.echo.app.Column" vis="private">
+
+
+
+
+
+
+
+
+<p n="cellSpacing">2px</p>
+</c>
+<c i="Component_columnOperations" t="nextapp.echo.app.Column" vis="private">
+
+
+
+
+
+
+
+
+<p n="cellSpacing">2px</p>
+</c>
+<c i="Component_columnLayout" t="nextapp.echo.app.Column" vis="private">
+
+
+
+
+
+<p n="cellSpacing">2px</p>
+</c>
+<c i="Component_columnMeasure" t="nextapp.echo.app.Column" vis="private">
+
+
+
+<p n="cellSpacing">2px</p>
+</c>
+<c i="Component_columnExit" t="nextapp.echo.app.Column" vis="private">
+
+<p n="cellSpacing">2px</p>
+</c>
+<p n="insets">2px</p>
+</c>
+<p n="orientation">nextapp.echo.app.SplitPane.ORIENTATION_HORIZONTAL_RIGHT_LEFT</p>
+<p n="autoPositioned">false</p>
+
+
+<p n="resizable">false</p>
+<c i="Component_contentPaneGrid" t="nextapp.echo.app.ContentPane" vis="private">
+
+<p n="layoutData" t="nextapp.echo.app.layout.SplitPaneLayoutData">
+<p n="insets">5px</p>
+</p>
+</c>
+<p n="background">#000000</p>
+
+<p n="separatorVisible">true</p>
+<p n="separatorWidth">1px</p>
+<p n="layoutData" t="nextapp.echo.app.layout.SplitPaneLayoutData">
+<p n="insets">5px</p>
+<p n="overflow">nextapp.echo.app.layout.SplitPaneLayoutData.OVERFLOW_HIDDEN</p>
+</p>
+
+
+<p n="separatorPosition">40px</p>
+</c>
+
+<p n="autoPositioned">false</p>
+<p n="background">#000000</p>
+<p n="separatorVisible">true</p>
+
+<p n="separatorPosition">128px</p>
+</c>
+<p n="overflow">nextapp.echo.app.ContentPane.OVERFLOW_HIDDEN</p>
+</c>
+</form>

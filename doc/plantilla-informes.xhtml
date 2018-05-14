@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+   
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+		<title>$title</title>
+		
+		<meta name="author" content="$reporter" />
+		
+		<style type="text/css">
+		
+			* {
+				font-family: "Arial", Helvetica; 
+				font-size: 12px;
+			}
+
+			*.titulo1 {
+				font-size: 18px;
+				text-align: center;
+				font-weight: bold;
+			}
+			
+			*.titulo2 {
+				font-size: 14px;
+				text-align: center;
+				font-weight: bold;
+			}
+
+			*.vtop {
+				vertical-align: top;
+			}
+
+			*.vbottom {
+				vertical-align: bottom;
+			}
+
+			*.sangria {
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+
+			*.vsangria {
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+				
+			*.borde {
+				border: 1px solid black;
+			}
+
+			*.centrado {
+				text-align: center;
+			}
+
+			*.izquierda {
+				text-align: left;
+			}
+
+			*.derecha {
+				text-align: right;
+			}
+
+			@page {
+				size: $pagesize $orientation;
+				 
+				@top-left {
+				}
+
+				@top-right {
+				}
+				
+				@bottom-left {
+				content: "IMEDIG - $center";
+				font-size: small;
+				font-style: italic;
+				border-top: 1px solid black;
+				vertical-align: top;
+				}
+				
+				@bottom-right {
+					content: "Página " counter(page) " de " counter(pages);
+					font-size: small;
+					border-top: 1px solid black;
+					vertical-align: top;
+					padding-bottom: 3px;
+				}
+				 
+				margin-top: 1cm;
+				margin-bottom: 1cm;
+			}
+		</style>
+</head>
+
+<body>
+	
+	<div> 
+		<table width="100%">
+			<tr>
+				<td class="centrado">
+					<img src="http://localhost:8080/$center_logo" width="256px"> </img> 
+				</td>
+			</tr>
+		</table>
+	</div>	
+
+	<br/>
+
+	<div class="centrado vsangria">
+		<div class="titulo1">$center</div>
+		<div>$address</div>
+		<div>$contacts</div>
+	</div>
+
+	<br/>
+
+	<table width="100%">
+		<tr>
+			<td class="borde sangria vtop">
+				Nombre y apellidos del paciente<br/>
+				<b>$patient_name</b>
+			</td>
+			<td class="borde centrado vtop">
+				Identificador<br/>
+				<b>$patient_id</b>
+			</td>
+			<td class="borde centrado vtop">
+				Estudio<br/>
+				<b>$study_id</b>
+			</td>
+			<td class="borde centrado vtop">
+				Número de acceso<br/>
+				<b>$study_accession</b>
+			</td>
+		</tr>
+	</table>
+
+	#if( !$code.isEmpty() )
+		<table width="100%">
+			<tr>
+				<td class="borde sangria vtop">
+					Codificación<br/>
+					<b>$code</b>
+				</td>
+			</tr>
+		</table>
+
+	#end
+	
+	<table width="100%">
+
+		<tr  height="30px">
+			<td class="borde sangria vtop">
+				Médico que refiere<br/>
+				<b>$referrer</b>
+			</td>
+			<td class="borde sangria vtop">
+				Médico que informa<br/>
+				<b>$reporter</b>
+			</td>
+			<td class="borde centrado vtop">
+				Fecha y hora<br/>
+				<b>$date_time</b>
+			</td>
+			<td class="borde centrado vtop" width="30%">
+				Firma<br/>
+			</td>
+		</tr>
+
+	</table>
+		
+	<br/>
+
+	<table width="100%">
+		<tr>
+			<td class="sangria vtop">
+			$report
+			</td>
+		</tr>
+	</table>
+	
+	<br/>
+	
+	#if( !$images.isEmpty() )
+		<table width="100%">
+
+			#foreach( $imagen in $images )
+				<tr>
+					<td class="vtop vsangria">
+						<div style="text-align: center;"> <img src="$imagen.getEscapedUrl()" width="512px"> </img> </div>
+						<div style="font-size: 9px; font-style: italic;" class="centrado">* Imagen sin calidad diagnóstica solo para referencia.</div>
+					</td>
+				</tr>
+			#end
+		</table>
+		
+		
+	#end
+
+</body>
+
+</html>

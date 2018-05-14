@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.PerfilDerechoMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Perfil" resultType="int">
+		select count(*) from susc_perfiles_derechos where perfil = #{id}
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Perfil" resultType="es.pryades.imedig.cloud.dto.Derecho">
+		select
+			*
+		from
+			susc_derechos
+		inner join
+			susc_perfiles_derechos on susc_perfiles_derechos.derecho = susc_derechos.id
+		where
+			perfil = #{id}
+		order by id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Perfil" resultType="es.pryades.imedig.cloud.dto.Derecho">
+		select
+			*
+		from
+			susc_derechos
+		inner join
+			susc_perfiles_derechos on susc_perfiles_derechos.derecho = susc_derechos.id
+		where
+			perfil = #{id}
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.PerfilDerecho" resultType="es.pryades.imedig.cloud.dto.PerfilDerecho">
+		select
+			*
+		from
+			susc_perfiles_derechos
+		where
+			perfil = #{perfil} and derecho = #{derecho}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.PerfilDerecho">
+
+		insert into susc_perfiles_derechos
+		(
+			perfil,
+			derecho
+		)
+		values
+		(
+			#{perfil},
+			#{derecho}
+		)
+	</insert>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.PerfilDerecho">
+		delete from susc_perfiles_derechos where perfil = #{perfil} and derecho = #{derecho}
+	</update>
+
+</mapper>

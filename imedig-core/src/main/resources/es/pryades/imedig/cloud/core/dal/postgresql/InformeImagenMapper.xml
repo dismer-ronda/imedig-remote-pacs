@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.InformeImagenMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		select count(*) from susc_informes_imagenes 
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.InformeImagen">
+		select
+			*
+		from
+			susc_informes_imagenes
+			
+		where informe = #{informe}
+		
+		order by id
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.InformeImagen">
+		select
+			*		
+		from
+			susc_informes_imagenes
+			
+		where informe = #{informe}
+		
+		order by id
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.InformeImagen" resultType="es.pryades.imedig.cloud.dto.InformeImagen">
+		select * from susc_informes_imagenes where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.InformeImagen">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_informes_imagenes
+		(
+			id,
+			url,
+			icon,
+			informe
+		)
+		values
+		(
+			#{id},
+			#{url},
+			#{icon},
+			#{informe}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.InformeImagen">
+		update susc_informes_imagenes
+		set
+			url=#{url},
+			icon=#{icon},
+			informe=#{informe}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.InformeImagen">
+
+		delete from susc_informes_imagenes 
+
+		<where>
+			<choose>
+				<when test="informe != null">
+					informe = #{informe}
+	         	</when>
+				<otherwise>
+					id = #{id}
+				</otherwise>
+			</choose>
+		</where>
+
+	</update>
+
+</mapper>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.DetalleCentroMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		
+		select count(1) from susc_centros
+
+		<if test = "usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+		 
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.DetalleCentro">
+		select
+			susc_centros.id,
+			
+			susc_centros.orden,
+			susc_centros.descripcion,
+			susc_centros.direccion,
+			susc_centros.contactos,
+			susc_centros.coordenadas,
+			susc_centros.imagen,
+			susc_centros.nombre,
+			susc_centros.horario,
+			susc_centros.moneda,
+			susc_centros.ip,
+			susc_centros.puerto,
+			susc_centros.serie,
+
+			susc_horarios.nombre as horario_nombre,
+			susc_monedas.nombre as moneda_nombre,
+			susc_monedas.codigo as moneda_codigo,
+			susc_monedas.simbolo as moneda_simbolo
+
+		from
+			susc_centros
+
+		inner join susc_horarios
+		on susc_centros.horario = susc_horarios.id
+
+		inner join susc_monedas
+		on susc_centros.moneda = susc_monedas.id
+
+		<if test = "usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+		
+		order by susc_centros.orden
+			
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} -1))
+	</select>
+	
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.DetalleCentro">
+		select
+			susc_centros.id,
+			
+			susc_centros.orden,
+			susc_centros.descripcion,
+			susc_centros.direccion,
+			susc_centros.contactos,
+			susc_centros.coordenadas,
+			susc_centros.imagen,
+			susc_centros.nombre,
+			susc_centros.horario,
+			susc_centros.moneda,
+			susc_centros.ip,
+			susc_centros.puerto,
+			susc_centros.serie,
+
+			susc_horarios.nombre as horario_nombre,
+			susc_monedas.nombre as moneda_nombre,
+			susc_monedas.codigo as moneda_codigo,
+			susc_monedas.simbolo as moneda_simbolo
+
+		from
+			susc_centros
+		
+		inner join susc_horarios
+		on susc_centros.horario = susc_horarios.id
+		
+		inner join susc_monedas
+		on susc_centros.moneda = susc_monedas.id
+
+		<if test="usuario != null">
+			inner join susc_usuarios_centros 
+			on susc_usuarios_centros.centro = susc_centros.id
+		</if>			
+		
+		<where>
+			<if test="usuario != null">
+				AND susc_usuarios_centros.usuario = #{usuario}
+    	    </if>
+		</where>
+
+		order by susc_centros.orden
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.DetalleCentro">
+		select
+			susc_centros.id,
+			
+			susc_centros.orden,
+			susc_centros.descripcion,
+			susc_centros.direccion,
+			susc_centros.contactos,
+			susc_centros.coordenadas,
+			susc_centros.imagen,
+			susc_centros.nombre,
+			susc_centros.horario,
+			susc_centros.moneda,
+			susc_centros.ip,
+			susc_centros.puerto,
+			susc_centros.serie,
+
+			susc_horarios.nombre as horario_nombre,
+			susc_monedas.nombre as moneda_nombre,
+			susc_monedas.codigo as moneda_codigo,
+			susc_monedas.simbolo as moneda_simbolo
+
+		from
+			susc_centros
+		
+		inner join susc_horarios
+		on susc_centros.horario = susc_horarios.id
+
+		inner join susc_monedas
+		on susc_centros.moneda = susc_monedas.id
+
+		<where> 
+	        <choose>
+	        	<when test="serie != null">
+					susc_centros.serie = #{serie}
+	         	</when>
+				<otherwise>
+					susc_centros.id = #{id}
+				</otherwise>
+			</choose>
+		</where>
+	
+	</select>
+
+</mapper>

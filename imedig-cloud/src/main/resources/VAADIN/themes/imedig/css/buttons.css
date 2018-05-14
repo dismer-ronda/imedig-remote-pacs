@@ -1,0 +1,167 @@
+.v-button.v-disabled {
+	height: 0px;
+	width: 0px;
+	padding: 0px;
+	border: none;
+}
+
+.v-button, 
+.v-disabled.v-button:focus, 
+.v-disabled.v-button:active {
+	border: 1px solid #28632b;
+	background: #28632b;
+	border-radius: 0px;
+	text-shadow: 0 0px;
+	padding: 4px;
+}
+
+.v-button:active,
+.v-ie8 .v-pressed.v-button, 
+.v-button-down {
+	border: 1px solid #BA5700;
+	background: #BA5700;
+}
+
+.v-button:active .v-button-wrap,
+.v-ie8 .v-pressed.v-button .v-button-wrap, 
+.v-button-down .v-button-wrap {
+	border: 1px solid #BA5700;
+	background: #BA5700;
+}
+
+.v-button-caption {
+	font-weight: normal;
+	color: white;
+}
+
+.v-button:active .v-button-wrap .v-button-caption,
+.v-ie8 .v-pressed.v-button .v-button-wrap, 
+.v-button-down .v-button-wrap {
+	font-weight: normal;
+	color: black; 
+}
+
+.v-button-wrap, .v-disabled:active .v-button-wrap {
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	background: none;
+}
+
+
+div.v-button-borderless .v-icon,
+div.v-button-borderless.v-pressed .v-icon,
+div.v-button-borderless:active .v-icon,
+div.v-button-borderless:focus .v-icon,
+
+div.v-button-borderless,
+div.v-button-borderless.v-pressed,
+div.v-button-borderless:active,
+div.v-button-borderless:focus,
+
+div.v-button-borderless .v-button-wrap,
+div.v-button-borderless.v-pressed .v-button-wrap,
+div.v-button-borderless:active .v-button-wrap,
+div.v-button-borderless:focus .v-button-wrap,
+
+div.v-button-borderless .v-button-caption,
+div.v-button-borderless:active .v-button-caption,
+div.v-button-borderless.v-pressed .v-button-caption,
+div.v-button-borderless:focus .v-button-caption,
+div.v-button-icon-on-top.v-button-borderless:focus .v-button-caption {
+	padding: 0px;
+	border: 0px none;
+	margin: 0px;
+	color: black;
+	font-weight: normal;
+}
+
+.v-button-selected .v-button-caption {
+	color: orange;
+}
+
+.v-button-devicepanel {
+	margin-right: 6px;
+	margin-bottom: 6px;
+	padding: 0px;
+}
+
+.v-button-devicepanel .v-button-caption {
+	font-size: 12px;
+}
+
+.v-checkbox-report {
+	vertical-align: middle;
+}
+
+.v-button-transparent {
+	border: none;
+	background: none;
+	border-radius: 0px;
+	text-shadow: 0 0px;
+	text-alignment: left;
+	padding: 0px;
+	vertical-align: middle;
+}
+
+.v-button-transparent .v-button-caption {
+	color: black;
+}
+
+.v-button-transparent .v-button-wrap {
+	padding: 0px;
+	text-align: left;
+}
+
+.v-button-transparent:active,
+.v-ie8 .v-pressed.v-button, 
+.v-button-down {
+	border: none;
+	background: #28632b;
+}
+
+.v-button-transparent:active .v-button-wrap,
+.v-ie8 .v-pressed.v-button .v-button-wrap, 
+.v-button-down .v-button-wrap {
+	border: none;
+	background: #28632b;
+	padding: 0px;
+	text-align: left;
+}
+
+.v-button-heading {
+	border: none;
+	background: none;
+	border-radius: 0px;
+	text-shadow: 0 0px;
+	text-alignment: left;
+	padding: 0px;
+	vertical-align: middle;
+	font-size: 18px;
+}
+
+.v-button-heading .v-button-caption {
+	color: black;
+}
+
+.v-button-heading .v-button-wrap {
+	padding: 6px;
+	text-align: left;
+}
+
+.v-button-heading:active,
+.v-ie8 .v-pressed.v-button, 
+.v-button-down {
+	border: none;
+	background: none;
+}
+
+.v-button-heading:active .v-button-wrap,
+.v-ie8 .v-pressed.v-button .v-button-wrap, 
+.v-button-down .v-button-wrap {
+	border: none;
+	background: none;
+	padding: 6px;
+	text-align: left;
+}
+

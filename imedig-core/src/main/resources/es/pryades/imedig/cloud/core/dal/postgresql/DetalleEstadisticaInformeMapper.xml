@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.DetalleEstadisticaInformeMapper">
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.DetalleEstadisticaInforme">
+		
+		select
+		    susc_informes.centro, 
+			susc_informes.fecha/100000000 as fecha,
+		    count(susc_informes.centro) as cantidad, 
+		    susc_centros.nombre as centro_nombre
+
+		from
+			susc_informes
+
+		inner join susc_centros
+		on susc_informes.centro = susc_centros.id
+		
+		<where>
+			<if test="desde != null">
+				AND fecha &gt;= #{desde}  
+	        </if>
+			<if test="hasta != null">
+				AND fecha &lt;= #{hasta}
+	        </if>
+			<if test="centros != null">
+				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+	        </if>
+		</where> 
+
+		group by susc_informes.centro, susc_informes.fecha/100000000, susc_centros.nombre
+		order by susc_informes.fecha/100000000 desc
+	</select>
+
+</mapper>

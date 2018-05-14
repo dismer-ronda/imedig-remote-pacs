@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.ParametroMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="int">
+		select count(*) from susc_parametros
+		<where>
+			<if test="codigo != null">
+				AND codigo = #{codigo}
+    	    </if>
+		</where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="es.pryades.imedig.cloud.dto.Parametro">
+		select
+		*
+		from
+		susc_parametros
+
+		<where>
+			<if test="codigo != null">
+				AND codigo = #{codigo}
+	        </if>
+		</where>
+		order by codigo
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query"
+		resultType="es.pryades.imedig.cloud.dto.Parametro">
+		select
+		*
+		from
+		susc_parametros
+
+		<where>
+			<if test="codigo != null">
+				AND codigo = #{codigo}
+	        </if>
+		</where>
+		order by codigo
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Parametro"
+		resultType="es.pryades.imedig.cloud.dto.Parametro">
+		select * from susc_parametros where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Parametro">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT
+			nextval('gencfg');
+		</selectKey>
+
+		insert into susc_parametros
+		(
+		id,
+		codigo,
+		valor,
+		descripcion
+		)
+		values
+		(
+		#{id},
+		#{codigo},
+		#{valor},
+		#{descripcion}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Parametro">
+		update susc_parametros
+		set
+		codigo=#{codigo},
+		valor=#{valor},
+		descripcion=#{descripcion}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Parametro">
+		delete from susc_parametros
+		where id = #{id}
+	</update>
+
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages" rbi="resourceBundle">
+    <c i="Component_contentPane1" t="nextapp.echo.app.ContentPane">
+        
+        
+        <c i="Component_windowPane2" t="nextapp.echo.app.WindowPane">
+            
+            <p n="title">%LoginScreen.LoginWindowTitle</p>
+            <c i="Component_splitPane1" t="nextapp.echo.app.SplitPane">
+                
+                <p n="orientation">nextapp.echo.app.SplitPane.ORIENTATION_VERTICAL_BOTTOM_TOP</p>
+                <c i="Component_row1" t="nextapp.echo.app.Row">
+                    
+                    <c i="Component_column1" t="nextapp.echo.app.Column">
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="width">80%</p>
+</p>
+</c>
+                <c i="Component_column2" t="nextapp.echo.app.Column">
+<c i="Component_button1" t="nextapp.echo.app.Button">
+                        <p n="text">%LoginScreen.Continue</p>
+                        
+                        
+                        <e t="action">
+                            <h n="actionPerformed" v="doLogin"/>
+                        </e>
+                    
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/es/horus/vlimd/resource/image/icon/general/Icon24PersonKey.gif</p>
+<p n="pressedBackground">#cccccc</p>
+<p n="rolloverBackground">#cccccc</p>
+<p n="border">0px solid #000000</p>
+<p n="styleName">ControlPane.Button</p>
+</c>
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="insets">5px</p>
+</p>
+</c>
+<p n="insets">0px</p>
+<p n="styleName">ControlPane</p>
+<p n="cellSpacing">3px</p>
+</c>
+                <c i="Component_grid1" t="nextapp.echo.app.Grid">
+                    
+                    <c i="Component_label4" t="nextapp.echo.app.Label">
+                        <p n="text">%LoginScreen.PromptUserName</p>
+                    </c>
+                    <c i="Component_userNameField" t="nextapp.echo.app.TextField" vis="private">
+                        <p n="styleName">Default.100</p>
+                    </c>
+                    <c i="Component_label5" t="nextapp.echo.app.Label">
+                        <p n="text">%LoginScreen.PromptPassword</p>
+                    </c>
+                    <c i="Component_passwordField" t="nextapp.echo.app.PasswordField" vis="private">
+                        <p n="styleName">Default.100</p>
+                    </c>
+                <p n="size">2</p>
+<p n="insets">6px</p>
+<p n="styleName">LoginScreen.LayoutGrid</p>
+</c>
+            <p n="autoPositioned">true</p>
+<p n="separatorVisible">false</p>
+</c>
+        
+<p n="positionX">50%</p>
+<p n="positionY">50%</p>
+<p n="closable">false</p>
+<p n="styleName">Default</p>
+</c>
+    <p n="styleName">LoginScreen.ContentPane</p>
+</c>
+</form>

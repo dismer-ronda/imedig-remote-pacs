@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages" rbi="resourceBundle">
+<c i="Component_windowPane1" t="nextapp.echo.app.WindowPane">
+
+
+
+<p n="movable">true</p>
+<p n="modal">true</p>
+
+<c i="Component_column1" t="nextapp.echo.app.Column">
+
+
+
+<c i="Component_rowHead" t="nextapp.echo.app.Row" vis="private">
+
+<p n="cellSpacing">5px</p>
+
+<c i="Component_column2" t="nextapp.echo.app.Column">
+<c i="Component_grid1" t="nextapp.echo.app.Grid">
+<c i="Component_label6" t="nextapp.echo.app.Label">
+
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.StudyDate</p>
+</c>
+<c i="Component_labelStudyDate" t="nextapp.echo.app.Label" vis="private">
+
+
+
+</c>
+<c i="Component_label2" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.PatientName</p>
+</c>
+<c i="Component_labelPatientName" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<c i="Component_label3" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.PatientId</p>
+</c>
+<c i="Component_labelPatientId" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<c i="Component_label9" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.PatientAge</p>
+</c>
+<c i="Component_labelPatientAge" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<c i="Component_label7" t="nextapp.echo.app.Label">
+
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.Referring</p>
+</c>
+<c i="Component_labelReferring" t="nextapp.echo.app.Label" vis="private">
+
+
+
+</c>
+<c i="Component_label4" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.Organization</p>
+</c>
+<c i="Component_labelOrganization" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<c i="Component_label10" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+
+<p n="text">%ReportForm.Accession</p>
+</c>
+<c i="Component_labelAccession" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<c i="Component_label8" t="nextapp.echo.app.Label">
+
+
+
+<p n="font">
+<f bo="true" sz="10pt"/>
+</p>
+<p n="text">%ReportForm.Status</p>
+</c>
+<c i="Component_labelStatus" t="nextapp.echo.app.Label" vis="private">
+
+
+</c>
+<p n="insets">5px</p>
+<p n="size">6</p>
+<p n="width">100%</p>
+</c>
+
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="width">100%</p>
+</p>
+</c>
+
+
+
+
+
+
+
+<p n="insets">10px</p>
+
+<p n="border">1px solid #000000</p>
+
+<p n="background">#dae6c8</p>
+</c>
+<c i="Component_rowContent" t="nextapp.echo.app.Row" vis="private">
+<c i="Component_columnContent" t="nextapp.echo.app.Column" vis="private">
+
+<p n="cellSpacing">5px</p>
+
+</c>
+<p n="cellSpacing">5px</p>
+<p n="insets">10px</p>
+</c>
+
+
+<p n="cellSpacing">5px</p>
+
+
+<p n="insets">10px</p>
+<c i="Component_rowFoot" t="nextapp.echo.app.Row" vis="private">
+
+<c i="Component_label5" t="nextapp.echo.app.Label">
+
+
+<p n="text">%ReportForm.Template</p>
+</c>
+<c i="Component_selectTemplate" t="nextapp.echo.app.SelectField" vis="private"/>
+<c i="Component_button1" t="nextapp.echo.app.Button">
+<p n="styleName">Default</p>
+
+
+<e t="action">
+<h n="actionPerformed" v="onDownload"/>
+</e>
+<p n="text">%ReportForm.Download</p>
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon32/actions/document-open.png</p>
+</c>
+<p n="cellSpacing">10px</p>
+<p n="border">1px solid #000000</p>
+<p n="insets">5px</p>
+
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="right"/>
+</p>
+</p>
+<p n="background">#b9d9da</p>
+</c>
+</c>
+<p n="closable">true</p>
+
+
+
+<p n="title">%ReportForm.Title</p>
+<p n="resizable">true</p>
+
+
+<p n="height">90%</p>
+<p n="width">95%</p>
+</c>
+</form>

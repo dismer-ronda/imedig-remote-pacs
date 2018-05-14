@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages_en" rbi="resourceBundle">
+<c i="Component_contentPane1" t="nextapp.echo.app.ContentPane">
+<c i="Component_windowPane1" t="nextapp.echo.app.WindowPane">
+<p n="styleName">Default</p>
+<p n="modal">true</p>
+
+<p n="movable">false</p>
+<p n="resizable">false</p>
+<p n="closable">false</p>
+<p n="height">200px</p>
+<p n="width">600px</p>
+<c i="Component_column1" t="nextapp.echo.app.Column">
+<c i="Component_label1" t="nextapp.echo.app.Label">
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="insets">10px</p>
+<p n="width">100%</p>
+<p n="alignment">
+<a h="center"/>
+</p>
+</p>
+
+<p n="text">%BrowserWnd.ErrorLine1</p>
+</c>
+<c i="Component_label2" t="nextapp.echo.app.Label">
+
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="center"/>
+</p>
+</p>
+<p n="text">%BrowserWnd.ErrorLine2</p>
+</c>
+<p n="cellSpacing">20px</p>
+<p n="insets">20px</p>
+</c>
+<p n="title">%BrowserWnd.Title</p>
+</c>
+</c>
+</form>

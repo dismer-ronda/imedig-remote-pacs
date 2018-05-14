@@ -1,0 +1,52 @@
+.v-datefield-popup {
+	background: white;
+	border: none;
+	border-radius: 0px;
+}
+
+.v-datefield-calendarpanel {
+	background: white;
+	color: black;
+	font-size: 18px;
+}
+
+.v-datefield-calendarpanel-day-selected {
+	background: #003a79;
+	color: white;
+}
+
+.v-datefield-calendarpanel-prevyear button,
+.v-datefield-calendarpanel-nextyear button {
+	border-radius: 0px;
+}
+
+.v-datefield-calendarpanel-header button {
+	background: #003a79;
+	color: white;
+	font-size: 18px;
+}
+
+td.v-datefield-calendarpanel-month {
+	font-size: 18px;
+	text-shadow: none;
+	background: #28632b;
+	color: white;
+}
+
+.v-datefield-calendarpanel-weekdays strong {
+	font-size: 18px;
+	text-shadow: none;
+	background: #28632b;
+}
+
+input.v-datefield-textfield[type="text"] {
+	font-size: 13px;
+}
+
+.v-datefield-calendarpanel-time select {
+	font-size: 18px;
+}
+
+.v-datefield-button {
+	padding: 0px;
+}

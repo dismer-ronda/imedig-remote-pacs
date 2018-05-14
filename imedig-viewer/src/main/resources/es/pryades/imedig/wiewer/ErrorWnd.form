@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rb="es.pryades.imedig.wiewer.resource.localization.Messages" rbi="resourceBundle">
+<c i="Component_contentPane1" t="nextapp.echo.app.ContentPane">
+
+<c i="Component_column1" t="nextapp.echo.app.Column">
+<c i="Component_row6" t="nextapp.echo.app.Row">
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="center" v="center"/>
+</p>
+</p>
+<c i="Component_column5" t="nextapp.echo.app.Column">
+<p n="layoutData" t="nextapp.echo.app.layout.RowLayoutData">
+<p n="width">80%</p>
+</p>
+<c i="Component_row8" t="nextapp.echo.app.Row">
+<c i="Component_label4" t="nextapp.echo.app.Label">
+<p n="text">%App.Title</p>
+</c>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="center" v="top"/>
+</p>
+</p>
+</c>
+</c>
+<c i="Component_column3" t="nextapp.echo.app.Column">
+<c i="Component_row7" t="nextapp.echo.app.Row">
+<c i="Component_buttonBack" t="nextapp.echo.app.Button" vis="private">
+<p n="styleName">Default</p>
+<e t="action">
+<h n="actionPerformed" v="onBackWnd"/>
+</e>
+<p n="toolTipText">%App.Back</p>
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon32/actions/go-previous.png</p>
+</c>
+<c i="Component_buttonClose" t="nextapp.echo.app.Button" vis="private">
+<p n="styleName">Default</p>
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon32/actions/system-log-out.png</p>
+<p n="toolTipText">%App.Logout</p>
+<e t="action">
+<h n="actionPerformed" v="onLogout"/>
+</e>
+</c>
+<p n="cellSpacing">5px</p>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="right"/>
+</p>
+</p>
+</c>
+</c>
+<p n="background">#afd1a4</p>
+</c>
+<c i="Component_row1" t="nextapp.echo.app.Row">
+<c i="Component_label1" t="nextapp.echo.app.Label">
+
+
+<p n="text">%App.ErrorTitle</p>
+</c>
+
+
+
+<p n="alignment">
+<a h="center" v="center"/>
+</p>
+<p n="background">#99ccff</p>
+<p n="foreground">#000000</p>
+</c>
+
+
+
+<p n="cellSpacing">5px</p>
+<p n="insets">5px</p>
+<c i="Component_row2" t="nextapp.echo.app.Row">
+<c i="Component_labelError" t="nextapp.echo.app.Label" vis="private"/>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="alignment">
+<a h="center"/>
+</p>
+</p>
+</c>
+</c>
+</c>
+</form>

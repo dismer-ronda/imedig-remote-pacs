@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<form rbi="resourceBundle">
+<c i="Component_contentPane1" t="nextapp.echo.app.ContentPane">
+<c i="Component_splitPane1" t="nextapp.echo.app.SplitPane">
+<p n="orientation">nextapp.echo.app.SplitPane.ORIENTATION_VERTICAL_TOP_BOTTOM</p>
+<c i="Component_contentPane2" t="nextapp.echo.app.ContentPane">
+<c i="Component_column1" t="nextapp.echo.app.Column">
+<c i="Component_row2" t="nextapp.echo.app.Row">
+<c i="Component_lblTotulo" t="nextapp.echo.app.Label">
+<p n="text">Visor de Informes</p>
+</c>
+<p n="alignment">
+<a h="center" v="center"/>
+</p>
+<p n="background">#0066cc</p>
+<p n="foreground">#ffffff</p>
+</c>
+<c i="Component_row1" t="nextapp.echo.app.Row">
+<c i="Component_btnLast" t="nextapp.echo.app.Button" vis="private">
+<p n="height">100%</p>
+<e t="action">
+<h n="actionPerformed" v="onPageLast"/>
+</e>
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon32/actions/go-previous.png</p>
+<p n="toolTipText">Página anterior</p>
+</c>
+<p n="layoutData" t="nextapp.echo.app.layout.ColumnLayoutData">
+<p n="height">100%</p>
+</p>
+<c i="Component_btnNext" t="nextapp.echo.app.Button" vis="private">
+<e t="action">
+<h n="actionPerformed" v="onPageNext"/>
+</e>
+<p n="icon" t="nextapp.echo.app.ResourceImageReference">/org/freedesktop/tango/icon32/actions/go-next.png</p>
+<p n="toolTipText">Página siguiente</p>
+</c>
+<p n="cellSpacing">3px</p>
+<c i="Component_selZoom" t="nextapp.echo.app.SelectField" vis="private">
+<e t="action">
+<h n="actionPerformed" v="onZoomChanged"/>
+</e>
+</c>
+</c>
+</c>
+</c>
+<c i="Component_splitPane2" t="nextapp.echo.app.SplitPane">
+<p n="separatorColor">#000000</p>
+<p n="separatorVisible">true</p>
+<p n="separatorWidth">1px</p>
+<c i="Component_colIcons" t="nextapp.echo.app.Column" vis="private">
+<p n="cellSpacing">2px</p>
+</c>
+<c i="Component_paneImagen" t="nextapp.echo.app.ContentPane" vis="private">
+<c i="Component_btnReportPage" t="nextapp.echo.app.Label" vis="private"/>
+</c>
+<p n="separatorPosition">130px</p>
+</c>
+<p n="separatorColor">#000000</p>
+<p n="separatorHeight">1px</p>
+<p n="separatorPosition">50px</p>
+</c>
+</c>
+</form>

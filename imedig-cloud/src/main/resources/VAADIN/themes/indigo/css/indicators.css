@@ -1,0 +1,8 @@
+.v-loading-indicator,.v-loading-indicator-delay,.v-loading-indicator-wait
+	{
+	background: url(../images/loading-indicator-delay2.gif) no-repeat center;
+	position: fixed !important;
+	top: 50%;
+	left: 50%;
+	z-index: 40000;
+}

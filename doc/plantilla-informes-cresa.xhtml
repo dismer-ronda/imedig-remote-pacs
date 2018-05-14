@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+   
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+		<title>$title</title>
+		
+		<meta name="author" content="$reporter" />
+		
+		<style type="text/css">
+		
+			* {
+				font-family: "Arial", Helvetica; 
+				font-size: 12px;
+			}
+
+			*.titulo1 {
+				font-size: 18px;
+				text-align: center;
+				font-weight: bold;
+			}
+			
+			*.titulo2 {
+				font-size: 14px;
+				text-align: center;
+				font-weight: bold;
+			}
+
+			*.footer {
+				font-size: 11px;
+				text-align: center;
+				font-weight: bold;
+				background-color: #00ADEF;
+				color: white;
+			}
+			
+			*.vtop {
+				vertical-align: top;
+			}
+
+			*.vbottom {
+				vertical-align: bottom;
+			}
+
+			*.sangria {
+				padding-left: 5px;
+				padding-right: 5px;
+			}
+
+			*.vsangria {
+				padding-top: 5px;
+				padding-bottom: 5px;
+			}
+				
+			*.borde {
+				border: 1px solid black;
+			}
+
+			*.centrado {
+				text-align: center;
+			}
+
+			*.izquierda {
+				text-align: left;
+			}
+
+			*.derecha {
+				text-align: right;
+			}
+			
+			*.break-after { page-break-after: always; }
+
+			@page {
+				size: $pagesize $orientation;
+				 
+				@top-left {
+				}
+
+				@top-right {
+				}
+				
+				@bottom-left {
+				content: "IMEDIG - $center";
+				font-size: small;
+				font-style: italic;
+				border-top: 1px solid black;
+				vertical-align: top;
+				}
+				
+				@bottom-right {
+					content: "Página " counter(page) " de " counter(pages);
+					font-size: small;
+					border-top: 1px solid black;
+					vertical-align: top;
+					padding-bottom: 3px;
+				}
+				 
+				margin-top: 1cm;
+				margin-bottom: 1cm;
+			}
+		</style>
+</head>
+
+<body>
+	
+	<div> 
+		<table width="100%">
+			<tr>
+				<td class="centrado">
+					<img src="http://www.imedig.com/$center_logo" width="256px"> </img> 
+				</td>
+			</tr>
+		</table>
+	</div>	
+
+	<br/>
+
+	<table width="100%">
+		<tr>
+			<td class="borde sangria vtop">
+				Nombre y apellidos del paciente<br/>
+				<b>$patient_name</b>
+			</td>
+			<td class="borde centrado vtop">
+				Identificador<br/>
+				<b>$patient_id</b>
+			</td>
+			<td class="borde centrado vtop">
+				Estudio<br/>
+				<b>$study_id</b>
+			</td>
+			<td class="borde centrado vtop">
+				Número de acceso<br/>
+				<b>$study_accession</b>
+			</td>
+		</tr>
+	</table>
+
+	#if( !$code.isEmpty() )
+		<table width="100%">
+			<tr>
+				<td class="borde sangria vtop">
+					Codificación<br/>
+					<b>$code</b>
+				</td>
+			</tr>
+		</table>
+
+	#end
+	
+	<table width="100%">
+
+		<tr  height="30px">
+			<td class="borde sangria vtop">
+				Médico que refiere<br/>
+				<b>$referrer</b>
+			</td>
+			<td class="borde sangria vtop">
+				Médico que informa<br/>
+				<b>$reporter</b>
+			</td>
+			<td class="borde centrado vtop">
+				Fecha y hora<br/>
+				<b>$date_time</b>
+			</td>
+			<td class="borde centrado vtop" width="30%">
+				Firma<br/>
+			</td>
+		</tr>
+
+	</table>
+		
+	<br/>
+
+	<table width="100%">
+		<tr>
+			<td class="centrado vtop"> IMAGEN POR RESONANCIA MAGNETICA DE COLUMNA LUMBAR </td>
+		</tr>
+
+		<br/>
+		
+		<tr>
+			<td class="sangria vtop"> El estudio fue realizado en equipo GE EXCITE HD de 1.5 Tesla a nivel de columna lumbar sin inyección de contraste paramagnético Imágenes multiplanares utilizando la densidad de protones, T1 y T2 protocolos con y sin técnicas de saturación de grasa se proporcionan. </td>
+		</tr>
+
+		<br/>
+		
+		<tr>
+			<td class="sangria vtop"> Hallazgos:</td>
+		</tr>
+		<tr>
+			<td class="sangria vtop"> 
+				<ul>
+					<li>Los cuerpos vertebrales lumbares demuestran normalidad en altura, alineación, y señal de la médula ósea.</li>
+					<li>No hay degeneración del disco significativa.</li>
+					<li>La terminación del cono se encuentra dentro de los límites normales.</li>
+				</ul>
+			</td>
+		</tr>
+
+		<tr>
+			<td class="sangria vtop">Las imágenes axiales de la siguiente manera:</td>
+		</tr>
+		<tr>
+			<td class="sangria vtop"> 
+				<ul>
+					<li>L1-L2: No hernia de disco, estenosis del canal central o estenosis del foramen neural.</li>
+					<li>L3-L4: No hernia de disco, estenosis del canal central o estenosis del foramen neural.</li>
+					<li>L2-L3: No hernia de disco, estenosis del canal central o estenosis del foramen neural.</li>
+					<li>L4-L5: Abultamiento posterior del disco que incide sobre el saco tecal sin canal central o estenosis del foramen neural.</li>
+					<li>L5-S1: Abultamiento posterior del disco que incide sobre el saco tecal sin canal central o estenosis del foramen neural.</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<table width="100%">
+		<tr>
+			<td class="sangria vtop">I.D: IMAGEN POR RESONANCIA MAGNETICA DE COLUMNA LUMBAR QUE REVELA DEGENERACION Y PROTRUSION DISCAL EN L4-L5 Y L5-S1, CON MODERADA COMPRESION AL SACO TECAL ADYACENTE. </td>
+		</tr>
+	</table>
+
+	<table width="100%">
+		<tr>
+			<td class="sangria vtop">
+			$report
+			</td>
+		</tr>
+	</table>
+	
+	<br/>
+
+	<div class="break-after"> 
+		<div class="footer">Plaza Comercial Texas Módulos 301, 302 y 303, Av. Bartolomé Colón, Esq. Av. Texas, Los Jardines Metropolitanos</div>
+		<div class="footer">Santiago, Rep. Dom. Tel: 829/809-581-8328/809-241-5066 - Fax: 809-471-7375</div>
+		<div class="footer">Email: info@cresa.com.do Visitenos en www.cresa.com.do</div>
+	</div>	
+
+
+	#if( !$images.isEmpty() )
+		<table width="100%">
+
+			#foreach( $imagen in $images )
+				<tr>
+					<td class="vtop vsangria">
+						<div style="text-align: center;"> <img src="$imagen.getEscapedUrl()" width="512px"> </img> </div>
+					</td>
+				</tr>
+			#end
+		</table>
+		
+		<div style="font-size: 9px; font-style: italic;" class="centrado">NOTA: Imágenes sin calidad diagnóstica solo para referencia.</div>
+		
+	#end
+
+	<br/>
+	<br/>
+	
+</body>
+
+</html>

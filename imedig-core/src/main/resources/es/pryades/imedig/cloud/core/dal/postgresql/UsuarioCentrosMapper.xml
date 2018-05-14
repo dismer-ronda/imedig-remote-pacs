@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.UsuarioCentrosMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="int">
+		select count(*) from susc_usuarios_centros where usuario = #{id}
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Centro">
+		select
+			*
+		from
+			susc_centros
+		inner join
+		susc_usuarios_centros on susc_usuarios_centros.centro = susc_centros.id
+		
+		where
+			usuario = #{id}
+		
+		order by susc_centros.orden
+
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Centro">
+		select
+			*
+		from
+			susc_centros
+		
+		inner join
+		susc_usuarios_centros on susc_usuarios_centros.centro = susc_centros.id
+		
+		where
+			usuario = #{id}
+		
+		order by susc_centros.orden
+	</select>
+
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.UsuarioCentro" resultType="es.pryades.imedig.cloud.dto.UsuarioCentro">
+		select
+			*
+		from
+			susc_usuarios_centros
+		where
+			usuario = #{usuario} and centro = #{centro}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.UsuarioCentro">
+
+		insert into susc_usuarios_centros
+		(
+			centro,
+			usuario
+		)
+		values
+		(
+			#{centro},
+			#{usuario}
+		)
+	</insert>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.UsuarioCentro">
+		delete from susc_usuarios_centros where usuario = #{usuario} and centro = #{centro}
+	</update>
+
+</mapper>

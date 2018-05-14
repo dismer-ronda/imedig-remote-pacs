@@ -1,0 +1,16 @@
+.v-select-optiongroup-horizontal .v-select-option {
+	display: inline-block;
+	font-size: 18px;
+}
+
+.v-select-optiongroup-horizontal {
+	white-space: nowrap;
+	font-size: 18px;
+}
+
+.v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+	padding-right: 10px;
+	font-size: 18px;
+}
+
+

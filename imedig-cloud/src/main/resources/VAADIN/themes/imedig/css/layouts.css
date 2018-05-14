@@ -1,0 +1,218 @@
+
+.v-horizontallayout-banner {
+	display: block;
+	background: url(../images/banner.png) 50% 50% repeat-x;
+	width: 100%;
+	/*height: 33px;*/
+	padding-top: 1px;
+}
+
+.v-horizontallayout-topbanner {
+	display: block;
+}
+
+.v-horizontallayout-footer {
+	display: block;
+	border: 1px solid #e3e3e8;
+}
+
+.v-verticallayout-mainapp {
+	background-color: #f7f7f7;
+	background: -moz-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -o-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -webkit-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+}
+
+.v-verticallayout-centercard {
+	border: 2px solid silver;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	cursor: pointer;
+}
+
+.v-horizontallayout-centercardchecking {
+	float: left;
+	margin: 10px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 2px solid black;
+	background-color: #f6ad60;
+	cursor: pointer;
+}
+
+.v-verticallayout-centercardchecking {
+	cursor: pointer;
+	background-color: #f6ad60;
+}
+
+.v-horizontallayout-centercardavailable {
+	float: left;
+	margin: 10px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 2px solid black;
+	background-color: #6bc890;
+	cursor: pointer;
+}
+
+.v-verticallayout-centercardavailable {
+	cursor: pointer;
+	background-color: #6bc890;
+}
+
+.v-horizontallayout-centercardreports {
+	float: left;
+	margin: 10px;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 2px solid black;
+	background-color: #82C8FF;
+	cursor: pointer;
+}
+
+.v-verticallayout-centercardreports {
+	cursor: pointer;
+	background-color: #82C8FF;
+}
+
+.v-horizontallayout-centercardunavailable {
+	float: left;
+	margin: 10px;
+	border-radius: 5px;
+	border: 2px solid black;
+	background-color: #E9AAAA;
+	cursor: pointer;
+}
+
+.v-verticallayout-centercardunavailable {
+	cursor: pointer;
+	background-color: #E9AAAA;
+}
+
+.v-horizontallayout-cathegory {
+	border: 1px solid silver;
+	border-radius: 1px;
+	padding-right: 2px;
+}
+
+.v-verticallayout-devicecard {
+	display: inline-block;
+	background-color: #f6f6f6;
+	border: 1px solid silver;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.v-verticallayout-devicecardstatus {
+	display: inline-block;
+	background-color: transparent;
+	border: none;
+}
+
+.v-verticallayout-devicechart {
+	display: inline-block;
+	background-color: #ffffff;
+	border: 1px solid silver;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.v-horizontallayout-devicechart {
+	display: inline-block;
+	background-color: #ffffff;
+	border: 1px solid silver;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
+.v-horizontallayout-lcd {
+	background-color: black;
+}
+
+.v-verticallayout-lcd {
+	background-color: black;
+	color: white;
+}
+
+.v-horizontallayout-period {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.v-horizontallayout-period:hover {
+	border: 1px solid #8CC948;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.v-verticallayout-period {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.v-verticallayout-period:hover {
+	border: 1px solid #8CC948;
+	border-radius: 2px;
+	cursor: pointer;
+}
+
+.v-verticallayout-selectedate {
+	float: left;
+	margin: 5px;
+}
+
+.v-horizontallayout-topchart {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	/*margin-top: 3px;*/
+	display: inline-block;
+	background-color: #f6f6f6;
+}
+
+.v-verticallayout-normal {
+	float: left;
+	margin: 10px;
+	border: 2px solid #89A54E;
+	background-color: rgba(137,165,78,0.2);
+	border-radius: 4px 4px 4px 4px;
+}
+
+.v-verticallayout-warning {
+	float: left;
+	margin: 10px;
+	background-color: rgba(255,199,0,0.2);
+	border: 2px solid #FFC700;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.v-verticallayout-grave {
+	float: left;
+	margin: 10px;
+	background-color: rgba(219,132,61,0.2);
+	border: 2px solid #DB843D;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.v-verticallayout-critico {
+	float: left;
+	margin: 10px;
+	background-color: rgba(255,91,70,0.2);
+	border: 2px solid #FF5B46;
+	border-radius: 4px 4px 4px 4px;
+}
+
+.v-verticallayout-reportcard {
+	float: left;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	margin: 10px;
+	border: 1px solid green;
+}
+

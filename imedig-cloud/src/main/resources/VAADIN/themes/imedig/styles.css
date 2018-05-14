@@ -1,0 +1,305 @@
+@import url(../runo/legacy-styles.css);
+
+/*@import url(../chameleon/legacy-styles.css);*/
+
+@import url(css/fonts.css);
+@import url(css/globals.css);
+@import url(css/buttons.css);
+@import url(css/labels.css);
+@import url(css/layouts.css);
+
+@import url(css/indicators.css)
+
+.v-tooltip {
+	font-family: "droidsans";
+	font-size: 12px;
+	color: #222;
+	background-color: #f6f6f6;
+	border: 1px solid #8cc948;
+	border-radius: 2px 2px 2px 2px;
+}
+
+.v-tooltip-text {
+	padding: 2px 4px;
+}
+
+/*
+* Frontend
+*/
+/** P�gina de login **/
+.v-horizontallayout-banner {
+	display:block;
+	background: green;
+	/*background: url(images/banner.png) 50% 50% repeat-x;*/
+	border-bottom: 1px solid white;
+	width: 100%;
+	height: 59px;
+}
+
+.v-horizontallayout-footer {
+	display:block;
+	border: 1px solid #e3e3e8; 
+}
+
+.v-verticallayout-mainlogin {
+	background-color: #f7f7f7;
+	background: -moz-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -o-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -webkit-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+
+	/*background-image: url('images/backgroundimg.png');
+	background-repeat: no-repeat;
+	background-position: bottom left;*/
+}
+
+.v-verticallayout-mainapp {
+	background-color: #f7f7f7;
+	background: -moz-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -o-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+	background: -webkit-linear-gradient(#d7d8d9, #FFF, #FFF, #FFF);
+}
+
+.v-verticallayout-loginform {
+	border-radius: 6px; 
+	border: 1px solid #28632b;
+ }
+
+input.v-textfield-login[type="text"],
+input.v-textfield-login[type="password"]{
+	font-family: "droidsans";
+	font-size: 14px; /*!important;*/
+	height: 33px;
+	line-height: 14px;
+	color: #28632b;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: none;
+	display: block;
+	background-color: #f6f6;
+}
+
+.v-tooltip {
+	font-family: "droidsans";
+	font-size: 11px;
+	color: #222;
+	background-color: #f6f6f6; 
+	border: 1px solid #8cc948;
+	border-radius: 2px;
+}
+
+.v-tooltip-text {
+	padding: 2px 4px;
+}
+
+.v-label-header {
+	font-size: 18px;
+	color: #1db259;
+	background-color: #28632b; 
+    font-family: "droidsans";
+	padding-left: 10px;
+	display: block;
+}
+
+.v-window-header {
+    color: #8cc948;
+    font-size: 18px;
+    font-family: "droidsans";
+	font-weight: normal;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.v-label-header2 {
+    color: #009900;
+    font-family: "droidsans";
+    font-size: 14px;
+    vertical-align: bottom;
+}
+
+.v-horizontallayout-header {
+	background-color: #28632b; 
+}
+
+.v-button-login {
+	padding:1px;
+	border: none;
+	background: transparent;
+	height: 40px;
+    border-radius: 6px; 
+}
+
+.v-button-login .v-button-wrap{
+	padding: 10px;
+	background: #1db259;
+    border-color: #000000;
+    text-shadow: none;
+    box-shadow: none;
+    color: white;
+    border-radius: 6px; 
+}
+
+.v-button-login:hover .v-button-wrap{
+    background: #6bc890;
+}
+
+.v-button-login:focus .v-button-wrap {
+	border-color: #1db259;
+    box-shadow: 0 0 2px #1db259;
+	
+}
+
+/** Backend **/
+
+/** Center card **/
+.v-horizontallayout-centerbc {
+	margin-left: 2px;
+	margin-right: 2px;
+	border: none;
+}
+
+.v-horizontallayout-centerbc:hover {
+	margin-left: 2px;
+	margin-right: 2px;
+	color: green;
+	cursor: pointer;
+}
+
+.v-horizontallayout-separatorbc {
+	margin-left: 2px;
+	margin-right: 2px;
+	border: none;
+}
+
+.v-label-separatorbc {
+	cursor: pointer;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.v-label-centerbc {
+	cursor: pointer;
+	display: block;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+.v-label-centerbc:hover {
+	color: green;
+	cursor: pointer;
+	text-shadow: 1px 1px whiteSmoke;
+	text-decoration: underline;
+}
+
+.v-checkbox-report {
+	display: block;
+	font-family: "droidsans";
+	font-size: 10px;
+	vertical-align: middle;
+}
+
+.v-filterselect {
+	font-family: "droidsans";
+	font-size: 11px;
+	text-align: left;
+	white-space: nowrap;
+}
+
+.v-form fieldset {
+	border: thin dotted;
+}
+
+.v-tabsheet-content-scrollhorizontal>div>div {
+	overflow-y: hidden !important;
+}
+
+.v-textfield.v-readonly {
+	font-style: italic;
+	border-style: solid;
+	border-bottom-color: #D6D6D6;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-left-color: #B6B6B6;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-right-color: #D6D6D6;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-top-color: #9D9D9D;
+	border-top-style: solid;
+	border-top-width: 1px;
+	background: #EEE;
+}
+
+.tableTextfieldInvalid {
+	font-style: normal !important;
+	font-weight: bold !important;
+	color: red !important;
+	border: none !important;
+	text-align: center !important;
+}
+
+.tableTextfield {
+	border: none !important;
+	font-style: normal !important;
+	text-align: center !important;
+}
+
+.reserved {
+	text-align: center !important;
+	color: red !important;
+}
+
+.win-property {
+	color: #999;
+	font-size: 1.3em;
+	margin-left: 1em;
+}
+
+.v-textfield-uppercase {
+	text-transform: uppercase;
+}
+
+.v-select-optiongroup-horizontal .v-select-option {
+	display: inline-block;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+/* Avoid wrapping if the layout is too tight */
+.v-select-optiongroup-horizontal {
+	white-space: nowrap;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+/* Some extra spacing is needed */
+.v-select-optiongroup-horizontal .v-select-option.v-radiobutton {
+	padding-right: 10px;
+	font-family: "droidsans";
+	font-size: 11px;
+}
+
+.v-datefield-calendarpanel {
+	width: 190px;
+}
+
+.imedigModalfieldSet fieldset
+{
+ 	border: 1px solid #BABFC0;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+}
+
+.imedigModalfieldSet fieldset legend
+{
+ 	margin-left: 5px;
+}
+ 
+ 
+ 
