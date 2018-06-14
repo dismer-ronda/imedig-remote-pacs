@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.core.dal.ibatis.PerfilMapper">
+
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.core.dto.Query" resultType="int">
+		select count(*) from perfiles 
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.core.dto.Query" resultType="es.pryades.imedig.core.dto.Perfil">
+		select 
+			* 
+		from 
+			perfiles
+		order by id
+		
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+	
+	<select id="getRows" parameterType="es.pryades.imedig.core.dto.Query" resultType="es.pryades.imedig.core.dto.Perfil">
+		select
+			* 
+		from 
+			perfiles
+		order by id
+	</select>
+	
+	<select id="getRow" parameterType="es.pryades.imedig.core.dto.Perfil" resultType="es.pryades.imedig.core.dto.Perfil">
+		select * from perfiles where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.core.dto.Perfil">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('generador');
+		</selectKey>
+
+		insert into perfiles 
+		( 
+			id,
+			descripcion
+		)
+		values 
+		( 
+			#{id},
+			#{descripcion} 
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.core.dto.Perfil">
+		update perfiles 
+		set 
+			descripcion=#{descripcion}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.core.dto.Perfil">
+		delete from perfiles where id = #{id}
+	</update>
+	
+</mapper>

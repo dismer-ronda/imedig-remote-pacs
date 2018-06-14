@@ -1,0 +1,69 @@
+@import "addons.scss";
+@import "imedigviewer.scss";
+
+.imedigviewer {
+  @include addons;
+  @include imedigviewer;
+}
+
+.v-verticallayout-studypanel{
+	padding: 5px;
+	
+	& .v-label{
+		font-size: 10px;
+		font-weight: bold;
+		color: black;
+	}
+}
+
+.bg_blue{
+  background-color: #1BA1E2;
+}
+
+.bg_green{
+  background-color: #339933;
+}
+
+.bg_brown{
+  background-color: #A05000;
+}
+
+.bg_purple{
+  background-color: #A200FF;
+}
+
+.bg_red{
+  background-color: #E51400;
+}
+
+.bg_orange{
+  background-color: #F09609;
+}
+
+.bg_teal{
+  background-color: #00ABA9;
+}
+
+.bg_lime{
+  background-color: #8CBF26;
+}
+
+.bg_pink{
+  background-color: #E671B8;
+}
+
+.bg_magenta{
+  background-color: #0F0097;
+}
+
+.bg_yellow{
+  background-color: #FFFF00;
+}
+
+.bg_light_blue{
+  background-color: #97D0FC;
+}
+
+.cursor_pointer{
+  cursor: pointer;
+}
