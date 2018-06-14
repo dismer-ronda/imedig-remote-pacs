@@ -1,0 +1,11 @@
+div.FabricJs {
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;       
+}
+
+.canvas-wrapper{
+    position: relative;  
+}
