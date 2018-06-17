@@ -8,11 +8,9 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gwt.canvas.dom.client.ImageData;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
@@ -24,10 +22,12 @@ import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
+import es.pryades.imedig.viewer.components.image.ImageCanvas;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
+import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
-public class ViewerWnd extends VerticalLayout implements ListenerAction {
+public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();
@@ -98,20 +98,17 @@ public class ViewerWnd extends VerticalLayout implements ListenerAction {
 
 	private User user;
 
-	private Panel imagesThumbnail;
-	// private ContentPane contentPaneGrid;
-	// private Grid opGrid;
-
 	private boolean firstTime = true;
 
 	private LeftToolBar leftToolBar;
+	private ImageCanvas imageCanvas;
 
 	public ViewerWnd(User user) {
 		super();
 		this.user = user;
 		setSizeFull();
 		setSpacing(true);
-		setMargin(true);
+		//setMargin(true);
 		buidComponent();
 		
 		init();
@@ -125,6 +122,9 @@ public class ViewerWnd extends VerticalLayout implements ListenerAction {
 		leftToolBar = new LeftToolBar(this);
 		addComponent(leftToolBar);
 		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
+		imageCanvas = new ImageCanvas( user );
+		addComponent(imageCanvas);
+		setExpandRatio(imageCanvas, 1.0f);
 	}
 
 	@Override
@@ -144,8 +144,7 @@ public class ViewerWnd extends VerticalLayout implements ListenerAction {
 	}
 
 	private void openImage(ImageData data) {
-		// TODO Auto-generated method stub
-		
+		imageCanvas.openImage(data);
 	}
 
 	private void queryStudies() {

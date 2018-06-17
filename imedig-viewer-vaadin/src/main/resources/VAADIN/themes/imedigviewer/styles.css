@@ -480,45 +480,45 @@
 @-webkit-keyframes v-progress-wait {
 		0% {
 		width: 90%;
-		height: 4px;
+		height: 3px;
 	}
 		3% {
 		width: 91%;
-		height: 7px;
+		height: 5px;
 	}
 		100% {
 		width: 96%;
-		height: 7px;
+		height: 5px;
 	}
 	}
 
 @-moz-keyframes v-progress-wait {
 		0% {
 		width: 90%;
-		height: 4px;
+		height: 3px;
 	}
 		3% {
 		width: 91%;
-		height: 7px;
+		height: 5px;
 	}
 		100% {
 		width: 96%;
-		height: 7px;
+		height: 5px;
 	}
 	}
 
 @keyframes v-progress-wait {
 		0% {
 		width: 90%;
-		height: 4px;
+		height: 3px;
 	}
 		3% {
 		width: 91%;
-		height: 7px;
+		height: 5px;
 	}
 		100% {
 		width: 96%;
-		height: 7px;
+		height: 5px;
 	}
 	}
 
@@ -727,25 +727,25 @@
 
 @-webkit-keyframes valo-grid-editor-footer-animate-in {
 		0% {
-		margin-top: -37px;
+		margin-top: -30px;
 	}
 	}
 
 @-moz-keyframes valo-grid-editor-footer-animate-in {
 		0% {
-		margin-top: -37px;
+		margin-top: -30px;
 	}
 	}
 
 @keyframes valo-grid-editor-footer-animate-in {
 		0% {
-		margin-top: -37px;
+		margin-top: -30px;
 	}
 	}
 
 @-webkit-keyframes valo-grid-editor-footer-animate-in-alt {
 		0% {
-		margin-bottom: -37px;
+		margin-bottom: -30px;
 	}
 		100% {
 		margin-bottom: 0;
@@ -754,7 +754,7 @@
 
 @-moz-keyframes valo-grid-editor-footer-animate-in-alt {
 		0% {
-		margin-bottom: -37px;
+		margin-bottom: -30px;
 	}
 		100% {
 		margin-bottom: 0;
@@ -763,7 +763,7 @@
 
 @keyframes valo-grid-editor-footer-animate-in-alt {
 		0% {
-		margin-bottom: -37px;
+		margin-bottom: -30px;
 	}
 		100% {
 		margin-bottom: 0;
@@ -1492,19 +1492,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-tabsheet-content  > div > .v-scrollable  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .v-tabsheet-content  > div > .v-scrollable  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .v-tabsheet-content  > div > .v-scrollable  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .v-tabsheet-content  > div > .v-scrollable  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .v-splitpanel-vertical, .v-splitpanel-horizontal {
@@ -1592,9 +1592,9 @@ div.v-layout.v-horizontal.v-widget {
 	left: 50%;
 	width: 28px;
 	height: 28px;
-	padding: 9px;
-	margin-top: -24px;
-	margin-left: -24px;
+	padding: 8px;
+	margin-top: -22px;
+	margin-left: -22px;
 	background: #fff url(../valo/shared/img/spinner.gif) no-repeat 50%;
 	border-radius: 0px;
 }
@@ -1607,7 +1607,7 @@ div.v-layout.v-horizontal.v-widget {
 	top: 0;
 	width: 50%;
 	opacity: 1;
-	height: 4px;
+	height: 3px;
 	background-color: #0072C6;
 	pointer-events: none;
 	-webkit-transition: none;
@@ -1655,11 +1655,11 @@ div.v-layout.v-horizontal.v-widget {
 .v-ie8 .imedigviewer .v-loading-indicator, .v-ie8 .imedigviewer .v-loading-indicator-delay, .v-ie8 .imedigviewer .v-loading-indicator-wait, .v-ie9 .imedigviewer .v-loading-indicator, .v-ie9 .imedigviewer .v-loading-indicator-delay, .v-ie9 .imedigviewer .v-loading-indicator-wait {
 	width: 28px !important;
 	height: 28px;
-	padding: 9px;
+	padding: 8px;
 	background: #fff url(../valo/shared/img/spinner.gif) no-repeat 50%;
 	border-radius: 0px;
-	top: 9px;
-	right: 9px;
+	top: 8px;
+	right: 8px;
 	left: auto;
 	filter: alpha(opacity=50);
 }
@@ -1692,7 +1692,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-icon + .v-captiontext, .imedigviewer .v-icon + span {
-	margin-left: 7px;
+	margin-left: 6px;
 }
 
 .imedigviewer .v-icon + .v-captiontext:empty, .imedigviewer .v-icon + span:empty {
@@ -1702,7 +1702,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-errorindicator {
 	color: #ed473b;
 	font-weight: 600;
-	width: 19px;
+	width: 15px;
 	text-align: center;
 }
 
@@ -1719,7 +1719,7 @@ div.v-layout.v-horizontal.v-widget {
 	font: inherit;
 	font-weight: 400;
 	line-height: inherit;
-	padding: 5px;
+	padding: 4px;
 	margin: 0;
 	border-radius: 0px;
 	border: 0 solid #a6a6a6;
@@ -1779,7 +1779,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 	color: white;
-	padding: 5px 9px;
+	padding: 4px 8px;
 	border-radius: -1px;
 	max-width: 35em;
 	overflow: hidden !important;
@@ -1794,8 +1794,8 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: white;
 	background-color: #fff;
 	color: #ed473b;
-	margin: -5px -9px;
-	padding: 5px 9px;
+	margin: -4px -8px;
+	padding: 4px 8px;
 	max-height: 10em;
 	overflow: auto;
 	font-weight: 400;
@@ -1809,7 +1809,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-tooltip .v-tooltip-text {
 	max-height: 10em;
 	overflow: auto;
-	margin-top: 10px;
+	margin-top: 8px;
 }
 
 .imedigviewer .v-tooltip .v-errormessage[aria-hidden="true"] + .v-tooltip-text {
@@ -1821,7 +1821,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-contextmenu {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: #fff;
 	color: #474747;
@@ -1852,8 +1852,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-contextmenu .gwt-MenuItem {
 	cursor: pointer;
-	line-height: 27px;
-	padding: 0 20px 0 10px;
+	line-height: 22px;
+	padding: 0 16px 0 8px;
 	font-weight: 400;
 	white-space: nowrap;
 	position: relative;
@@ -1875,8 +1875,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-contextmenu .gwt-MenuItem .v-icon {
-	max-height: 27px;
-	margin-right: 5px;
+	max-height: 22px;
+	margin-right: 4px;
 	min-width: 1em;
 }
 
@@ -1888,13 +1888,13 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-reconnect-dialog {
 	color: white;
-	top: 12px;
-	right: 12px;
+	top: 10px;
+	right: 10px;
 	max-width: 100%;
 	border-radius: 0;
 	-webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
-	padding: 12px 15px;
+	padding: 10px 12px;
 	background-color: #444;
 	background-color: rgba(68, 68, 68, 0.9);
 	line-height: 22px;
@@ -1959,24 +1959,24 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-margin-top {
-	padding-top: 37px;
+	padding-top: 30px;
 }
 
 .imedigviewer .v-margin-right {
-	padding-right: 37px;
+	padding-right: 30px;
 }
 
 .imedigviewer .v-margin-bottom {
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 }
 
 .imedigviewer .v-margin-left {
-	padding-left: 37px;
+	padding-left: 30px;
 }
 
 .imedigviewer .v-spacing {
-	width: 12px;
-	height: 12px;
+	width: 10px;
+	height: 10px;
 }
 
 .imedigviewer .v-verticallayout-well, .imedigviewer .v-horizontallayout-well {
@@ -1995,19 +1995,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-verticallayout-well  > .v-margin-top, .imedigviewer .v-horizontallayout-well  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-verticallayout-well  > .v-margin-right, .imedigviewer .v-horizontallayout-well  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-verticallayout-well  > .v-margin-bottom, .imedigviewer .v-horizontallayout-well  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-verticallayout-well  > .v-margin-left, .imedigviewer .v-horizontallayout-well  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-verticallayout-card, .imedigviewer .v-horizontallayout-card {
@@ -2020,19 +2020,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-verticallayout-card  > .v-margin-top, .imedigviewer .v-horizontallayout-card  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-verticallayout-card  > .v-margin-right, .imedigviewer .v-horizontallayout-card  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-verticallayout-card  > .v-margin-bottom, .imedigviewer .v-horizontallayout-card  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-verticallayout-card  > .v-margin-left, .imedigviewer .v-horizontallayout-card  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-horizontallayout-wrapping {
@@ -2040,7 +2040,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-horizontallayout-wrapping > .v-spacing + .v-slot, .imedigviewer .v-horizontallayout-wrapping > .v-slot:first-child {
-	margin-bottom: 12px;
+	margin-bottom: 10px;
 }
 
 .imedigviewer .v-horizontallayout-wrapping > .v-slot:first-child:last-child {
@@ -2055,8 +2055,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 	cursor: pointer;
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -2143,8 +2143,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-primary {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #e7f1f8;
 	font-weight: 400;
 	
@@ -2154,9 +2154,9 @@ div.v-layout.v-horizontal.v-widget {
 	background: #0072C6;
 	
 	
-	padding: 0 19px;
+	padding: 0 15px;
 	font-weight: bold;
-	min-width: 81px;
+	min-width: 66px;
 }
 
 .imedigviewer .v-button-primary:after {
@@ -2182,12 +2182,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-button-primary {
-	min-width: 43px;
+	min-width: 36px;
 }
 
 .imedigviewer .v-button-friendly {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #eaf4e9;
 	font-weight: 400;
 	
@@ -2222,8 +2222,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-danger {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #f9f0ef;
 	font-weight: 400;
 	
@@ -2357,8 +2357,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-tiny {
-	height: 28px;
-	padding: 0 12px;
+	height: 23px;
+	padding: 0 10px;
 	
 	
 	font-size: 12px;
@@ -2375,8 +2375,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-small {
-	height: 31px;
-	padding: 0 13px;
+	height: 26px;
+	padding: 0 11px;
 	
 	
 	font-size: 14px;
@@ -2393,8 +2393,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-large {
-	height: 44px;
-	padding: 0 18px;
+	height: 36px;
+	padding: 0 15px;
 	
 	
 	font-size: 20px;
@@ -2411,8 +2411,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-huge {
-	height: 59px;
-	padding: 0 25px;
+	height: 48px;
+	padding: 0 20px;
 	
 	
 	font-size: 26px;
@@ -2434,7 +2434,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-button-icon-align-right .v-icon {
 	float: right;
-	margin-left: 13px;
+	margin-left: 11px;
 }
 
 .imedigviewer .v-button-icon-align-right .v-icon  + span:not(:empty) {
@@ -2443,8 +2443,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-button-icon-align-top {
 	height: auto;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
 
 .imedigviewer .v-button-icon-align-top [class*="wrap"] {
@@ -2458,29 +2458,29 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-button-icon-align-top .v-icon  + span:not(:empty) {
-	margin-top: 7px;
+	margin-top: 5px;
 	margin-left: 0;
 }
 
 .imedigviewer .v-button-icon-only {
-	width: 37px;
+	width: 30px;
 	padding: 0;
 }
 
 .imedigviewer .v-button-icon-only.v-button-tiny {
-	width: 28px;
+	width: 23px;
 }
 
 .imedigviewer .v-button-icon-only.v-button-small {
-	width: 31px;
+	width: 26px;
 }
 
 .imedigviewer .v-button-icon-only.v-button-large {
-	width: 44px;
+	width: 36px;
 }
 
 .imedigviewer .v-button-icon-only.v-button-huge {
-	width: 59px;
+	width: 48px;
 }
 
 .imedigviewer .v-button-icon-only .v-button-caption {
@@ -2489,7 +2489,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-checkbox {
 	position: relative;
-	line-height: 19px;
+	line-height: 15px;
 	white-space: nowrap;
 }
 
@@ -2498,7 +2498,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox {
-	padding-left: 25px;
+	padding-left: 20px;
 }
 
 :root .imedigviewer .v-checkbox label {
@@ -2531,8 +2531,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 19px;
-	height: 19px;
+	width: 15px;
+	height: 15px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -2542,8 +2542,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox > input ~ label:before {
-	height: 18.5px;
-	padding: 0 8px;
+	height: 15px;
+	padding: 0 6px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -2554,7 +2554,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 19px;
+	height: 15px;
 }
 
 :root .imedigviewer .v-checkbox > input ~ label:after {
@@ -2575,7 +2575,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-checkbox > .v-icon, .imedigviewer .v-checkbox > label .v-icon {
-	margin: 0 6px 0 3px;
+	margin: 0 5px 0 3px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -2613,7 +2613,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-checkbox-small {
 	position: relative;
-	line-height: 16px;
+	line-height: 13px;
 	white-space: nowrap;
 	font-size: 14px;
 }
@@ -2623,7 +2623,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox-small {
-	padding-left: 21px;
+	padding-left: 17px;
 }
 
 :root .imedigviewer .v-checkbox-small label {
@@ -2656,8 +2656,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 16px;
-	height: 16px;
+	width: 13px;
+	height: 13px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -2667,8 +2667,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox-small > input ~ label:before {
-	height: 15.5px;
-	padding: 0 6px;
+	height: 13px;
+	padding: 0 5px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -2679,7 +2679,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 16px;
+	height: 13px;
 }
 
 :root .imedigviewer .v-checkbox-small > input ~ label:after {
@@ -2700,7 +2700,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-checkbox-small > .v-icon, .imedigviewer .v-checkbox-small > label .v-icon {
-	margin: 0 5px 0 3px;
+	margin: 0 4px 0 2px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -2738,7 +2738,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-checkbox-large {
 	position: relative;
-	line-height: 22px;
+	line-height: 18px;
 	white-space: nowrap;
 	font-size: 20px;
 }
@@ -2748,7 +2748,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox-large {
-	padding-left: 29px;
+	padding-left: 24px;
 }
 
 :root .imedigviewer .v-checkbox-large label {
@@ -2781,8 +2781,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 22px;
-	height: 22px;
+	width: 18px;
+	height: 18px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -2792,8 +2792,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-checkbox-large > input ~ label:before {
-	height: 22px;
-	padding: 0 9px;
+	height: 18px;
+	padding: 0 7px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -2804,7 +2804,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 22px;
+	height: 18px;
 }
 
 :root .imedigviewer .v-checkbox-large > input ~ label:after {
@@ -2825,7 +2825,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-checkbox-large > .v-icon, .imedigviewer .v-checkbox-large > label .v-icon {
-	margin: 0 7px 0 4px;
+	margin: 0 6px 0 3px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -2863,8 +2863,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-filterselect {
 	position: relative;
-	width: 185px;
-	height: 37px;
+	width: 150px;
+	height: 30px;
 	border-radius: 0px;
 	white-space: nowrap;
 }
@@ -2887,9 +2887,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0px;
-	padding: 4px 7px;
+	padding: 3px 5px;
 	border: 1px solid #b2b2b2;
 	background: white;
 	color: #474747;
@@ -2900,12 +2900,12 @@ div.v-layout.v-horizontal.v-widget {
 	transition: box-shadow 180ms, border 180ms;
 	width: 100% !important;
 	height: 100%;
-	padding-right: 38px;
+	padding-right: 31px;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-filterselect [class*="input"], .v-ie9 .imedigviewer .v-filterselect [class*="input"] {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -2932,17 +2932,17 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect .v-icon + [class*="input"] {
-	padding-left: 37px;
+	padding-left: 30px;
 }
 
 .imedigviewer .v-filterselect img.v-icon {
-	max-height: 37px;
-	margin-left: 7px;
+	max-height: 30px;
+	margin-left: 5px;
 }
 
 .imedigviewer .v-filterselect span.v-icon {
 	color: #474747;
-	width: 37px;
+	width: 30px;
 	line-height: 1;
 	padding-top: 0.12em;
 }
@@ -2956,7 +2956,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-touch-callout: none;
 	cursor: pointer;
 	position: absolute;
-	width: 37px;
+	width: 30px;
 	top: 1px;
 	right: 1px;
 	bottom: 1px;
@@ -2975,7 +2975,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	position: absolute;
-	width: 37px;
+	width: 30px;
 	text-align: center;
 	top: 50%;
 	line-height: 1;
@@ -3049,7 +3049,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-suggestpopup {
-	margin-top: 5px !important;
+	margin-top: 4px !important;
 }
 
 .imedigviewer .v-filterselect-suggestpopup[class*="animate-in"] {
@@ -3059,7 +3059,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-suggestpopup [class$="suggestmenu"] {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: #fff;
 	color: #474747;
@@ -3088,12 +3088,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-filterselect-suggestpopup .gwt-MenuItem {
 	cursor: pointer;
-	line-height: 27px;
-	padding: 0 20px 0 10px;
+	line-height: 22px;
+	padding: 0 16px 0 8px;
 	font-weight: 400;
 	white-space: nowrap;
 	position: relative;
-	height: 27px;
+	height: 22px;
 	box-sizing: border-box;
 	text-overflow: ellipsis;
 	overflow-x: hidden;
@@ -3114,8 +3114,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-suggestpopup .gwt-MenuItem .v-icon {
-	max-height: 27px;
-	margin-right: 5px;
+	max-height: 22px;
+	margin-right: 4px;
 	min-width: 1em;
 }
 
@@ -3131,11 +3131,11 @@ div.v-layout.v-horizontal.v-widget {
 	background: rgba(202, 202, 202, 0.9);
 	color: #393939;
 	border-radius: 0 0 0px 0px;
-	height: 23px;
-	bottom: -23px;
+	height: 18px;
+	bottom: -18px;
 	font-size: 12px;
-	line-height: 23px;
-	padding: 0 6px;
+	line-height: 18px;
+	padding: 0 5px;
 	cursor: default;
 	pointer-events: none;
 	-webkit-animation: valo-animate-in-slide-down 200ms 80ms backwards;
@@ -3158,9 +3158,9 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: all 200ms;
 	-moz-transition: all 200ms;
 	transition: all 200ms;
-	width: 25px;
-	height: 25px;
-	line-height: 25px;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
 	text-align: center;
 	font-family: ThemeIcons;
 	-webkit-transform: scale(0.8);
@@ -3317,7 +3317,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-tiny {
-	height: 28px;
+	height: 23px;
 	
 	font-size: 12px;
 }
@@ -3340,9 +3340,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 28px;
+	height: 23px;
 	
-	padding: 3px 5px;
+	padding: 3px 4px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -3350,28 +3350,28 @@ div.v-layout.v-horizontal.v-widget {
 	transition: box-shadow 180ms, border 180ms;
 	width: 100% !important;
 	height: 100%;
-	padding-right: 29px;
+	padding-right: 24px;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-filterselect-tiny [class*="input"], .v-ie9 .imedigviewer .v-filterselect-tiny [class*="input"] {
-	line-height: 28px;
+	line-height: 23px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .imedigviewer .v-filterselect-tiny .v-icon + [class*="input"] {
-	padding-left: 28px;
+	padding-left: 23px;
 }
 
 .imedigviewer .v-filterselect-tiny img.v-icon {
-	max-height: 28px;
-	margin-left: 5px;
+	max-height: 23px;
+	margin-left: 4px;
 }
 
 .imedigviewer .v-filterselect-tiny span.v-icon {
 	
-	width: 28px;
+	width: 23px;
 	line-height: 1;
 	padding-top: 0.12em;
 }
@@ -3381,7 +3381,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-touch-callout: none;
 	cursor: pointer;
 	position: absolute;
-	width: 28px;
+	width: 23px;
 }
 
 .imedigviewer .v-filterselect-tiny [class$="button"]:before {
@@ -3391,7 +3391,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	position: absolute;
-	width: 28px;
+	width: 23px;
 	text-align: center;
 	top: 50%;
 	line-height: 1;
@@ -3444,7 +3444,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-compact, .imedigviewer .v-filterselect-small {
-	height: 31px;
+	height: 26px;
 	
 }
 
@@ -3466,9 +3466,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 31px;
+	height: 26px;
 	
-	padding: 3px 6px;
+	padding: 3px 5px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -3476,28 +3476,28 @@ div.v-layout.v-horizontal.v-widget {
 	transition: box-shadow 180ms, border 180ms;
 	width: 100% !important;
 	height: 100%;
-	padding-right: 32px;
+	padding-right: 27px;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-filterselect-compact [class*="input"], .v-ie9 .imedigviewer .v-filterselect-compact [class*="input"], .v-ie8 .imedigviewer .v-filterselect-small [class*="input"], .v-ie9 .imedigviewer .v-filterselect-small [class*="input"] {
-	line-height: 31px;
+	line-height: 26px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .imedigviewer .v-filterselect-compact .v-icon + [class*="input"], .imedigviewer .v-filterselect-small .v-icon + [class*="input"] {
-	padding-left: 31px;
+	padding-left: 26px;
 }
 
 .imedigviewer .v-filterselect-compact img.v-icon, .imedigviewer .v-filterselect-small img.v-icon {
-	max-height: 31px;
-	margin-left: 6px;
+	max-height: 26px;
+	margin-left: 5px;
 }
 
 .imedigviewer .v-filterselect-compact span.v-icon, .imedigviewer .v-filterselect-small span.v-icon {
 	
-	width: 31px;
+	width: 26px;
 	line-height: 1;
 	padding-top: 0.12em;
 }
@@ -3507,7 +3507,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-touch-callout: none;
 	cursor: pointer;
 	position: absolute;
-	width: 31px;
+	width: 26px;
 }
 
 .imedigviewer .v-filterselect-compact [class$="button"]:before, .imedigviewer .v-filterselect-small [class$="button"]:before {
@@ -3517,7 +3517,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	position: absolute;
-	width: 31px;
+	width: 26px;
 	text-align: center;
 	top: 50%;
 	line-height: 1;
@@ -3574,7 +3574,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-large {
-	height: 44px;
+	height: 36px;
 	
 	font-size: 20px;
 }
@@ -3597,9 +3597,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 44px;
+	height: 36px;
 	
-	padding: 5px 8px;
+	padding: 4px 6px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -3607,28 +3607,28 @@ div.v-layout.v-horizontal.v-widget {
 	transition: box-shadow 180ms, border 180ms;
 	width: 100% !important;
 	height: 100%;
-	padding-right: 45px;
+	padding-right: 37px;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-filterselect-large [class*="input"], .v-ie9 .imedigviewer .v-filterselect-large [class*="input"] {
-	line-height: 44px;
+	line-height: 36px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .imedigviewer .v-filterselect-large .v-icon + [class*="input"] {
-	padding-left: 44px;
+	padding-left: 36px;
 }
 
 .imedigviewer .v-filterselect-large img.v-icon {
-	max-height: 44px;
-	margin-left: 8px;
+	max-height: 36px;
+	margin-left: 6px;
 }
 
 .imedigviewer .v-filterselect-large span.v-icon {
 	
-	width: 44px;
+	width: 36px;
 	line-height: 1;
 	padding-top: 0.12em;
 }
@@ -3638,7 +3638,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-touch-callout: none;
 	cursor: pointer;
 	position: absolute;
-	width: 44px;
+	width: 36px;
 }
 
 .imedigviewer .v-filterselect-large [class$="button"]:before {
@@ -3648,7 +3648,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	position: absolute;
-	width: 44px;
+	width: 36px;
 	text-align: center;
 	top: 50%;
 	line-height: 1;
@@ -3701,7 +3701,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-filterselect-huge {
-	height: 59px;
+	height: 48px;
 	
 	font-size: 26px;
 }
@@ -3724,9 +3724,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 59px;
+	height: 48px;
 	
-	padding: 7px 10px;
+	padding: 5px 8px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -3734,28 +3734,28 @@ div.v-layout.v-horizontal.v-widget {
 	transition: box-shadow 180ms, border 180ms;
 	width: 100% !important;
 	height: 100%;
-	padding-right: 60px;
+	padding-right: 49px;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-filterselect-huge [class*="input"], .v-ie9 .imedigviewer .v-filterselect-huge [class*="input"] {
-	line-height: 59px;
+	line-height: 48px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .imedigviewer .v-filterselect-huge .v-icon + [class*="input"] {
-	padding-left: 59px;
+	padding-left: 48px;
 }
 
 .imedigviewer .v-filterselect-huge img.v-icon {
-	max-height: 59px;
-	margin-left: 10px;
+	max-height: 48px;
+	margin-left: 8px;
 }
 
 .imedigviewer .v-filterselect-huge span.v-icon {
 	
-	width: 59px;
+	width: 48px;
 	line-height: 1;
 	padding-top: 0.12em;
 }
@@ -3765,7 +3765,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-touch-callout: none;
 	cursor: pointer;
 	position: absolute;
-	width: 59px;
+	width: 48px;
 }
 
 .imedigviewer .v-filterselect-huge [class$="button"]:before {
@@ -3775,7 +3775,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	position: absolute;
-	width: 59px;
+	width: 48px;
 	text-align: center;
 	top: 50%;
 	line-height: 1;
@@ -3843,19 +3843,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-csslayout-well  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-csslayout-well  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-csslayout-well  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-csslayout-well  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-csslayout-card {
@@ -3868,19 +3868,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-csslayout-card  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-csslayout-card  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-csslayout-card  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-csslayout-card  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-csslayout-v-component-group {
@@ -3917,7 +3917,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer [class*="spacing"] > tbody > [class*="row"] > td {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer [class*="spacing"] > tbody > [class*="firstrow"] > td {
@@ -3925,27 +3925,27 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer [class*="margin-top"] > tbody > [class*="firstrow"] > td {
-	padding-top: 37px;
+	padding-top: 30px;
 }
 
 .imedigviewer [class*="margin-bottom"] > tbody > [class*="lastrow"] > td {
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 }
 
 .imedigviewer [class*="margin-left"] > tbody > [class*="row"] > [class*="captioncell"] {
-	padding-left: 37px;
+	padding-left: 30px;
 }
 
 .imedigviewer [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedigviewer [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedigviewer [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	left: 37px;
+	left: 30px;
 }
 
 .imedigviewer [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"] {
-	padding-right: 37px;
+	padding-right: 30px;
 }
 
 .imedigviewer [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedigviewer [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedigviewer [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	right: 37px;
+	right: 30px;
 }
 
 .imedigviewer .v-formlayout > table {
@@ -3958,12 +3958,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-formlayout-error-indicator {
-	width: 19px;
+	width: 15px;
 }
 
 .imedigviewer .v-formlayout-captioncell {
 	vertical-align: top;
-	line-height: 36px;
+	line-height: 29px;
 }
 
 .imedigviewer .v-formlayout-captioncell .v-caption {
@@ -3994,7 +3994,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-formlayout.light  > table > tbody > tr > td {
 	padding-top: 0;
-	height: 37px;
+	height: 30px;
 	border-bottom: 0 solid #e8e8e8;
 }
 
@@ -4005,8 +4005,8 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-formlayout.light  > table > tbody > tr > [class*="captioncell"] {
 	color: #777777;
 	text-align: right;
-	padding-left: 13px;
-	line-height: 37px;
+	padding-left: 10px;
+	line-height: 30px;
 }
 
 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"] {
@@ -4032,9 +4032,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0;
-	padding: 4px 7px;
+	padding: 3px 5px;
 	
 	-webkit-box-shadow: none;
 	box-shadow: none;
@@ -4047,7 +4047,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textfield, .v-ie9 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textfield, .v-ie8 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textarea, .v-ie9 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textarea, .v-ie8 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-filterselect input, .v-ie9 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-filterselect input, .v-ie8 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-datefield input, .v-ie9 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-datefield input, .v-ie8 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-richtextarea, .v-ie9 .imedigviewer .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-richtextarea {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -4092,7 +4092,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-formlayout.light .v-richtextarea {
-	margin: 5px 0;
+	margin: 4px 0;
 }
 
 .imedigviewer .v-formlayout.light .v-filterselect-button, .imedigviewer .v-formlayout.light .v-datefield-button {
@@ -4109,7 +4109,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-formlayout.light .v-checkbox {
-	margin-left: 7px;
+	margin-left: 5px;
 }
 
 .imedigviewer .v-grid {
@@ -4379,8 +4379,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-grid-cell {
 	background-color: #f3f3f3;
-	padding: 0 18px;
-	line-height: 37px;
+	padding: 0 15px;
+	line-height: 30px;
 	text-overflow: ellipsis;
 }
 
@@ -4447,14 +4447,14 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-header .sort-asc, .imedigviewer .v-grid-header .sort-desc {
-	padding-right: 35px;
+	padding-right: 32px;
 }
 
 .imedigviewer .v-grid-header .sort-asc:after, .imedigviewer .v-grid-header .sort-desc:after {
 	font-family: ThemeIcons, sans-serif;
 	content: "\f0de" " " attr(sort-order);
 	position: absolute;
-	right: 18px;
+	right: 15px;
 	font-size: 12px;
 }
 
@@ -4464,8 +4464,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-grid-column-resize-handle {
 	position: absolute;
-	width: 36px;
-	right: -18px;
+	width: 30px;
+	right: -15px;
 	top: 0px;
 	bottom: 0px;
 	cursor: col-resize;
@@ -4481,7 +4481,7 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	width: 3px;
 	top: 0px;
-	left: 18px;
+	left: 15px;
 	z-index: 9001;
 	background: #fff;
 	box-shadow: 0px 0px 5px #000;
@@ -4514,7 +4514,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	line-height: 37px;
+	line-height: 30px;
 	vertical-align: baseline;
 }
 
@@ -4614,15 +4614,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-editor-cells  > div input[type="text"], .imedigviewer .v-grid-editor-cells  > div input[type="text"].v-filterselect-input, .imedigviewer .v-grid-editor-cells  > div input[type="password"] {
-	padding-left: 18px;
+	padding-left: 15px;
 }
 
 .imedigviewer .v-grid-editor-cells  > div input[type="text"]:not(.v-filterselect-input), .imedigviewer .v-grid-editor-cells  > div input[type="password"] {
-	padding-right: 9px;
+	padding-right: 7.5px;
 }
 
 .imedigviewer .v-grid-editor-cells  > div input[type="checkbox"] {
-	margin-left: 18px;
+	margin-left: 15px;
 }
 
 .imedigviewer .v-grid-editor-cells  > div .v-textfield, .imedigviewer .v-grid-editor-cells  > div .v-datefield, .imedigviewer .v-grid-editor-cells  > div .v-filterselect {
@@ -4665,7 +4665,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-grid-editor-footer {
 	display: table;
-	height: 37px;
+	height: 30px;
 	border-top: 0 solid #b8b8b8;
 	margin-top: 0;
 	background: #f3f3f3;
@@ -4700,7 +4700,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100%;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	line-height: 37px;
+	line-height: 30px;
 	top: 0;
 }
 
@@ -4778,7 +4778,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-header .v-grid-cell.dragged-column-header {
-	margin-top: -19px;
+	margin-top: -15px;
 }
 
 .imedigviewer .v-grid-footer .v-grid-cell {
@@ -4813,7 +4813,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-grid-editor-footer {
 	font-size: 14px;
-	padding: 0 6px;
+	padding: 0 5px;
 	background: #fff;
 	-webkit-animation: valo-grid-editor-footer-animate-in 200ms 120ms backwards;
 	-moz-animation: valo-grid-editor-footer-animate-in 200ms 120ms backwards;
@@ -4842,8 +4842,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-editor-cells > div .error::before {
-	border-top: 9px solid #ed473b;
-	border-right: 9px solid transparent;
+	border-top: 8px solid #ed473b;
+	border-right: 8px solid transparent;
 }
 
 .imedigviewer .v-grid-editor-cells > div .error, .imedigviewer .v-grid-editor-cells > div .error > input {
@@ -4859,7 +4859,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-editor-cells > div input[type="text"].v-datefield-textfield {
-	padding-left: 44.4px;
+	padding-left: 36px;
 }
 
 .v-ie8 .imedigviewer .v-grid-editor-cells > div .v-datefield-button {
@@ -4875,12 +4875,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-grid-editor-cells > div .v-select {
-	padding-left: 9px;
-	padding-right: 9px;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .imedigviewer .v-grid-editor-cells > div .v-checkbox {
-	margin: 0 9px 0 18px;
+	margin: 0 8px 0 15px;
 }
 
 .imedigviewer .v-grid-editor-cells > div .v-checkbox  > input[type="checkbox"] {
@@ -4895,7 +4895,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: inline-block;
 	color: #ed473b;
 	font-weight: 600;
-	width: 19px;
+	width: 15px;
 	text-align: center;
 	content: "!";
 }
@@ -4912,7 +4912,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-decoration: none;
 	border: none;
 	background: transparent;
-	padding: 6px 6px;
+	padding: 5px 5px;
 	margin: 0;
 	outline: none;
 }
@@ -4976,9 +4976,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0px;
-	padding: 4px 7px;
+	padding: 3px 5px;
 	border: 1px solid #b2b2b2;
 	background: white;
 	color: #474747;
@@ -4987,11 +4987,11 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	width: 185px;
+	width: 150px;
 }
 
 .v-ie8 .imedigviewer .v-textfield, .v-ie9 .imedigviewer .v-textfield {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5070,9 +5070,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 28px;
+	height: 23px;
 	border-radius: 0px;
-	padding: 3px 5px;
+	padding: 3px 4px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -5082,7 +5082,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textfield-tiny, .v-ie9 .imedigviewer .v-textfield-tiny {
-	line-height: 28px;
+	line-height: 23px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5102,9 +5102,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 31px;
+	height: 26px;
 	border-radius: 0px;
-	padding: 3px 6px;
+	padding: 3px 5px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -5113,7 +5113,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textfield-compact, .v-ie9 .imedigviewer .v-textfield-compact, .v-ie8 .imedigviewer .v-textfield-small, .v-ie9 .imedigviewer .v-textfield-small {
-	line-height: 31px;
+	line-height: 26px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5137,9 +5137,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 44px;
+	height: 36px;
 	border-radius: 0px;
-	padding: 5px 8px;
+	padding: 4px 6px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -5149,7 +5149,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textfield-large, .v-ie9 .imedigviewer .v-textfield-large {
-	line-height: 44px;
+	line-height: 36px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5169,9 +5169,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 59px;
+	height: 48px;
 	border-radius: 0px;
-	padding: 7px 10px;
+	padding: 5px 8px;
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -5181,7 +5181,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textfield-huge, .v-ie9 .imedigviewer .v-textfield-huge {
-	line-height: 59px;
+	line-height: 48px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5209,19 +5209,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 37px;
-	line-height: 35px;
+	width: 30px;
+	line-height: 28px;
 	text-align: center;
 	font-size: 16px;
 }
 
 .imedigviewer .v-caption-inline-icon img.v-icon {
-	left: 11px;
-	bottom: 11px;
+	left: 7px;
+	bottom: 7px;
 }
 
 .imedigviewer .v-textfield-inline-icon  {
-	padding-left: 37px;
+	padding-left: 30px;
 }
 
 .imedigviewer .v-slot-inline-icon.v-slot-tiny {
@@ -5247,19 +5247,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon.v-caption-tiny span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 28px;
-	line-height: 26px;
+	width: 23px;
+	line-height: 21px;
 	text-align: center;
 	font-size: 12px;
 }
 
 .imedigviewer .v-caption-inline-icon.v-caption-tiny img.v-icon {
-	left: 6px;
-	bottom: 6px;
+	left: 4px;
+	bottom: 4px;
 }
 
 .imedigviewer .v-textfield-inline-icon.v-textfield-tiny  {
-	padding-left: 28px;
+	padding-left: 23px;
 }
 
 .imedigviewer .v-slot-inline-icon.v-slot-compact {
@@ -5285,19 +5285,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon.v-caption-compact span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 31px;
-	line-height: 29px;
+	width: 26px;
+	line-height: 24px;
 	text-align: center;
 	font-size: 16px;
 }
 
 .imedigviewer .v-caption-inline-icon.v-caption-compact img.v-icon {
-	left: 8px;
-	bottom: 8px;
+	left: 5px;
+	bottom: 5px;
 }
 
 .imedigviewer .v-textfield-inline-icon.v-textfield-compact  {
-	padding-left: 31px;
+	padding-left: 26px;
 }
 
 .imedigviewer .v-slot-inline-icon.v-slot-small {
@@ -5323,19 +5323,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon.v-caption-small span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 31px;
-	line-height: 29px;
+	width: 26px;
+	line-height: 24px;
 	text-align: center;
 	font-size: 14px;
 }
 
 .imedigviewer .v-caption-inline-icon.v-caption-small img.v-icon {
-	left: 8px;
-	bottom: 8px;
+	left: 5px;
+	bottom: 5px;
 }
 
 .imedigviewer .v-textfield-inline-icon.v-textfield-small  {
-	padding-left: 31px;
+	padding-left: 26px;
 }
 
 .imedigviewer .v-slot-inline-icon.v-slot-large {
@@ -5361,19 +5361,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon.v-caption-large span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 44px;
-	line-height: 42px;
+	width: 36px;
+	line-height: 34px;
 	text-align: center;
 	font-size: 20px;
 }
 
 .imedigviewer .v-caption-inline-icon.v-caption-large img.v-icon {
-	left: 14px;
-	bottom: 14px;
+	left: 10px;
+	bottom: 10px;
 }
 
 .imedigviewer .v-textfield-inline-icon.v-textfield-large  {
-	padding-left: 44px;
+	padding-left: 36px;
 }
 
 .imedigviewer .v-slot-inline-icon.v-slot-huge {
@@ -5399,19 +5399,19 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-caption-inline-icon.v-caption-huge span.v-icon {
 	left: 1px;
 	bottom: 1px;
-	width: 59px;
-	line-height: 57px;
+	width: 48px;
+	line-height: 46px;
 	text-align: center;
 	font-size: 26px;
 }
 
 .imedigviewer .v-caption-inline-icon.v-caption-huge img.v-icon {
-	left: 22px;
-	bottom: 22px;
+	left: 16px;
+	bottom: 16px;
 }
 
 .imedigviewer .v-textfield-inline-icon.v-textfield-huge  {
-	padding-left: 59px;
+	padding-left: 48px;
 }
 
 .imedigviewer .v-textfield-align-right {
@@ -5437,9 +5437,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0px;
-	padding: 6px;
+	padding: 5px;
 	border: 1px solid #b2b2b2;
 	background: white;
 	color: #474747;
@@ -5451,11 +5451,11 @@ div.v-layout.v-horizontal.v-widget {
 	height: auto;
 	resize: none;
 	white-space: pre-wrap;
-	width: 185px;
+	width: 150px;
 }
 
 .v-ie8 .imedigviewer .v-textarea, .v-ie9 .imedigviewer .v-textarea {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5483,8 +5483,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .v-ie8 .imedigviewer .v-textarea, .v-ie9 .imedigviewer .v-textarea {
 	line-height: inherit;
-	padding-top: 4px;
-	padding-bottom: 4px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .imedigviewer .v-textarea-readonly {
@@ -5540,9 +5540,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 28px;
+	height: 23px;
 	border-radius: 0px;
-	padding: 6px;
+	padding: 5px;
 	
 	
 	
@@ -5556,7 +5556,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textarea-tiny, .v-ie9 .imedigviewer .v-textarea-tiny {
-	line-height: 28px;
+	line-height: 23px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5582,9 +5582,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 31px;
+	height: 26px;
 	border-radius: 0px;
-	padding: 6px;
+	padding: 5px;
 	
 	
 	
@@ -5598,7 +5598,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textarea-small, .v-ie9 .imedigviewer .v-textarea-small {
-	line-height: 31px;
+	line-height: 26px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5624,9 +5624,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 44px;
+	height: 36px;
 	border-radius: 0px;
-	padding: 6px;
+	padding: 5px;
 	
 	
 	
@@ -5640,15 +5640,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textarea-large, .v-ie9 .imedigviewer .v-textarea-large {
-	line-height: 44px;
+	line-height: 36px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .v-ie8 .imedigviewer .v-textarea-large, .v-ie9 .imedigviewer .v-textarea-large {
 	line-height: inherit;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
 
 .imedigviewer .v-textarea-huge {
@@ -5666,9 +5666,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 59px;
+	height: 48px;
 	border-radius: 0px;
-	padding: 6px;
+	padding: 5px;
 	
 	
 	
@@ -5682,15 +5682,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-textarea-huge, .v-ie9 .imedigviewer .v-textarea-huge {
-	line-height: 59px;
+	line-height: 48px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
 .v-ie8 .imedigviewer .v-textarea-huge, .v-ie9 .imedigviewer .v-textarea-huge {
 	line-height: inherit;
-	padding-top: 7px;
-	padding-bottom: 7px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 .imedigviewer .v-textarea-align-right {
@@ -5703,8 +5703,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-datefield {
 	position: relative;
-	width: 185px;
-	height: 37px;
+	width: 150px;
+	height: 30px;
 	border-radius: 0px;
 }
 
@@ -5726,9 +5726,9 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0px;
-	padding: 4px 7px;
+	padding: 3px 5px;
 	border: 1px solid #b2b2b2;
 	background: white;
 	color: #474747;
@@ -5737,14 +5737,14 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	padding-left: 44.4px;
+	padding-left: 36px;
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-datefield [class*="textfield"], .v-ie9 .imedigviewer .v-datefield [class*="textfield"] {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -5783,8 +5783,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0;
 	position: absolute;
 	z-index: 10;
-	width: 37px;
-	line-height: 35px;
+	width: 30px;
+	line-height: 28px;
 	text-align: center;
 	font: inherit;
 	outline: none;
@@ -5871,7 +5871,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-day {
-	width: 185px;
+	width: 150px;
 }
 
 .imedigviewer .v-datefield-month {
@@ -5883,7 +5883,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-popup {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: #f3f3f3;
 	color: #444444;
@@ -5893,9 +5893,9 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-backface-visibility: hidden;
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
-	margin-top: 5px !important;
-	margin-bottom: 5px !important;
-	margin-right: 5px !important;
+	margin-top: 4px !important;
+	margin-bottom: 4px !important;
+	margin-right: 4px !important;
 	cursor: default;
 	width: auto;
 }
@@ -5935,10 +5935,10 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 30px;
-	height: 26px;
+	width: 24px;
+	height: 21px;
 	border: 0 solid transparent;
-	line-height: 26px;
+	line-height: 21px;
 	text-align: center;
 	font-size: 14px;
 	background: #eee;
@@ -5990,7 +5990,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-popup .v-datefield-calendarpanel-weekdays {
-	height: 26px;
+	height: 21px;
 	color: rgba(126, 126, 126, 0.85);
 }
 
@@ -6016,8 +6016,8 @@ div.v-layout.v-horizontal.v-widget {
 	cursor: pointer;
 	color: transparent;
 	font-size: 0;
-	width: 19px;
-	height: 25px;
+	width: 15px;
+	height: 20px;
 	outline: none;
 	position: relative;
 	vertical-align: middle;
@@ -6067,16 +6067,16 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-popup td.v-datefield-calendarpanel-month {
-	width: 148px;
+	width: 120px;
 	color: #0072C6;
 }
 
 .imedigviewer .v-datefield-popup .v-datefield-calendarpanel-year td.v-datefield-calendarpanel-month {
-	width: 74px;
+	width: 60px;
 }
 
 .imedigviewer .v-datefield-popup .v-datefield-calendarpanel-weeknumber, .imedigviewer .v-datefield-popup .v-datefield-calendarpanel-weekdays.v-datefield-calendarpanel-weeknumbers td:first-child {
-	width: 30px;
+	width: 24px;
 	color: rgba(126, 126, 126, 0.85);
 	font-size: 14px;
 	display: inline-block;
@@ -6090,10 +6090,10 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-datefield-popup .v-datefield-calendarpanel-weeknumbers .v-first:before {
 	content: "";
 	position: absolute;
-	top: 38px;
+	top: 30px;
 	bottom: 0;
 	left: 0;
-	width: 34px;
+	width: 27px;
 	border-top: 0 solid #e8e8e8;
 	border-right: 0 solid #e8e8e8;
 	border-top-right-radius: 0px;
@@ -6125,10 +6125,10 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 30px;
-	height: 26px;
+	width: 24px;
+	height: 21px;
 	border: 0 solid transparent;
-	line-height: 26px;
+	line-height: 21px;
 	text-align: center;
 	font-size: 14px;
 	background: #eee;
@@ -6180,7 +6180,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-calendarpanel-weekdays {
-	height: 26px;
+	height: 21px;
 	color: rgba(126, 126, 126, 0.85);
 }
 
@@ -6206,8 +6206,8 @@ div.v-layout.v-horizontal.v-widget {
 	cursor: pointer;
 	color: transparent;
 	font-size: 0;
-	width: 19px;
-	height: 25px;
+	width: 15px;
+	height: 20px;
 	outline: none;
 	position: relative;
 	vertical-align: middle;
@@ -6257,16 +6257,16 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer td.v-datefield-calendarpanel-month {
-	width: 148px;
+	width: 120px;
 	color: #0072C6;
 }
 
 .imedigviewer .v-datefield-calendarpanel-year td.v-datefield-calendarpanel-month {
-	width: 74px;
+	width: 60px;
 }
 
 .imedigviewer .v-datefield-calendarpanel-weeknumber, .imedigviewer .v-datefield-calendarpanel-weekdays.v-datefield-calendarpanel-weeknumbers td:first-child {
-	width: 30px;
+	width: 24px;
 	color: rgba(126, 126, 126, 0.85);
 	font-size: 14px;
 	display: inline-block;
@@ -6280,10 +6280,10 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-datefield-calendarpanel-weeknumbers .v-first:before {
 	content: "";
 	position: absolute;
-	top: 38px;
+	top: 30px;
 	bottom: 0;
 	left: 0;
-	width: 34px;
+	width: 27px;
 	border-top: 0 solid #e8e8e8;
 	border-right: 0 solid #e8e8e8;
 	border-top-right-radius: 0px;
@@ -6338,7 +6338,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-tiny {
-	height: 28px;
+	height: 23px;
 	border-radius: 0px;
 	font-size: 12px;
 }
@@ -6361,23 +6361,23 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 28px;
+	height: 23px;
 	border-radius: 0px;
-	padding: 3px 5px;
+	padding: 3px 4px;
 	
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	padding-left: 33.6px;
+	padding-left: 27.6px;
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-datefield-tiny [class*="textfield"], .v-ie9 .imedigviewer .v-datefield-tiny [class*="textfield"] {
-	line-height: 28px;
+	line-height: 23px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -6391,8 +6391,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0;
 	position: absolute;
 	z-index: 10;
-	width: 28px;
-	line-height: 28px;
+	width: 23px;
+	line-height: 23px;
 	text-align: center;
 	font: inherit;
 	outline: none;
@@ -6453,7 +6453,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-compact, .imedigviewer .v-datefield-small {
-	height: 31px;
+	height: 26px;
 	border-radius: 0px;
 }
 
@@ -6475,23 +6475,23 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 31px;
+	height: 26px;
 	border-radius: 0px;
-	padding: 3px 6px;
+	padding: 3px 5px;
 	
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	padding-left: 37.2px;
+	padding-left: 31.2px;
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-datefield-compact [class*="textfield"], .v-ie9 .imedigviewer .v-datefield-compact [class*="textfield"], .v-ie8 .imedigviewer .v-datefield-small [class*="textfield"], .v-ie9 .imedigviewer .v-datefield-small [class*="textfield"] {
-	line-height: 31px;
+	line-height: 26px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -6505,8 +6505,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0;
 	position: absolute;
 	z-index: 10;
-	width: 31px;
-	line-height: 31px;
+	width: 26px;
+	line-height: 26px;
 	text-align: center;
 	font: inherit;
 	outline: none;
@@ -6571,7 +6571,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-large {
-	height: 44px;
+	height: 36px;
 	border-radius: 0px;
 	font-size: 20px;
 }
@@ -6594,23 +6594,23 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 44px;
+	height: 36px;
 	border-radius: 0px;
-	padding: 5px 8px;
+	padding: 4px 6px;
 	
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	padding-left: 52.8px;
+	padding-left: 43.2px;
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-datefield-large [class*="textfield"], .v-ie9 .imedigviewer .v-datefield-large [class*="textfield"] {
-	line-height: 44px;
+	line-height: 36px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -6624,8 +6624,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0;
 	position: absolute;
 	z-index: 10;
-	width: 44px;
-	line-height: 44px;
+	width: 36px;
+	line-height: 36px;
 	text-align: center;
 	font: inherit;
 	outline: none;
@@ -6686,7 +6686,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-datefield-huge {
-	height: 59px;
+	height: 48px;
 	border-radius: 0px;
 	font-size: 26px;
 }
@@ -6709,23 +6709,23 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 59px;
+	height: 48px;
 	border-radius: 0px;
-	padding: 7px 10px;
+	padding: 5px 8px;
 	
 	
 	
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
-	padding-left: 70.8px;
+	padding-left: 57.6px;
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
 }
 
 .v-ie8 .imedigviewer .v-datefield-huge [class*="textfield"], .v-ie9 .imedigviewer .v-datefield-huge [class*="textfield"] {
-	line-height: 59px;
+	line-height: 48px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -6739,8 +6739,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0;
 	position: absolute;
 	z-index: 10;
-	width: 59px;
-	line-height: 59px;
+	width: 48px;
+	line-height: 48px;
 	text-align: center;
 	font: inherit;
 	outline: none;
@@ -6813,10 +6813,10 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 30px;
-	height: 26px;
+	width: 24px;
+	height: 21px;
 	border: 0 solid transparent;
-	line-height: 26px;
+	line-height: 21px;
 	text-align: center;
 	font-size: 14px;
 	background: #eee;
@@ -6868,7 +6868,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-inline-datefield-calendarpanel-weekdays {
-	height: 26px;
+	height: 21px;
 	color: rgba(126, 126, 126, 0.85);
 }
 
@@ -6894,8 +6894,8 @@ div.v-layout.v-horizontal.v-widget {
 	cursor: pointer;
 	color: transparent;
 	font-size: 0;
-	width: 19px;
-	height: 25px;
+	width: 15px;
+	height: 20px;
 	outline: none;
 	position: relative;
 	vertical-align: middle;
@@ -6945,16 +6945,16 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer td.v-inline-datefield-calendarpanel-month {
-	width: 148px;
+	width: 120px;
 	color: #0072C6;
 }
 
 .imedigviewer .v-inline-datefield-calendarpanel-year td.v-inline-datefield-calendarpanel-month {
-	width: 74px;
+	width: 60px;
 }
 
 .imedigviewer .v-inline-datefield-calendarpanel-weeknumber, .imedigviewer .v-inline-datefield-calendarpanel-weekdays.v-inline-datefield-calendarpanel-weeknumbers td:first-child {
-	width: 30px;
+	width: 24px;
 	color: rgba(126, 126, 126, 0.85);
 	font-size: 14px;
 	display: inline-block;
@@ -6968,10 +6968,10 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-inline-datefield-calendarpanel-weeknumbers .v-first:before {
 	content: "";
 	position: absolute;
-	top: 38px;
+	top: 30px;
 	bottom: 0;
 	left: 0;
-	width: 34px;
+	width: 27px;
 	border-top: 0 solid #e8e8e8;
 	border-right: 0 solid #e8e8e8;
 	border-top-right-radius: 0px;
@@ -6993,28 +6993,28 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-inline-datefield-calendarpanel {
 	position: relative;
 	background: #f3f3f3;
-	padding: 6px;
+	padding: 5px;
 }
 
 .imedigviewer .v-gridlayout-margin-top {
-	padding-top: 37px;
+	padding-top: 30px;
 }
 
 .imedigviewer .v-gridlayout-margin-bottom {
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 }
 
 .imedigviewer .v-gridlayout-margin-left {
-	padding-left: 37px;
+	padding-left: 30px;
 }
 
 .imedigviewer .v-gridlayout-margin-right {
-	padding-right: 37px;
+	padding-right: 30px;
 }
 
 .imedigviewer .v-gridlayout-spacing-on {
-	padding-left: 12px;
-	padding-top: 12px;
+	padding-left: 10px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-menubar {
@@ -7025,8 +7025,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-tap-highlight-color: transparent;
 	-webkit-touch-callout: none;
 	cursor: pointer;
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -7038,7 +7038,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	padding: 0;
 	text-align: left;
-	line-height: 37px;
+	line-height: 30px;
 }
 
 .imedigviewer .v-menubar:after {
@@ -7084,11 +7084,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar  > .v-menubar-menuitem {
-	padding: 0 14px;
+	padding: 0 12px;
 }
 
 .imedigviewer .v-menubar  > .v-menubar-menuitem[class*="-icon-only"] {
-	width: 37px;
+	width: 30px;
 }
 
 .imedigviewer .v-menubar:active:after {
@@ -7102,8 +7102,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: inherit;
 	font-weight: 400;
 	
@@ -7157,12 +7157,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar > .v-menubar-menuitem .v-icon {
-	margin: 0 4px 0 -4px;
+	margin: 0 3px 0 -3px;
 	cursor: inherit;
 }
 
 .imedigviewer .v-menubar > .v-menubar-menuitem[class*="-icon-only"] {
-	width: 37px;
+	width: 30px;
 	padding: 0;
 }
 
@@ -7230,7 +7230,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar-popup {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: #fff;
 	color: #474747;
@@ -7241,7 +7241,7 @@ div.v-layout.v-horizontal.v-widget {
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 	padding: 6px 0;
-	margin: 5px 0 0 1px !important;
+	margin: 4px 0 0 1px !important;
 }
 
 .imedigviewer .v-menubar-popup[class*="animate-in"] {
@@ -7263,13 +7263,13 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-menubar-popup .v-menubar-menuitem {
 	display: block;
 	cursor: pointer;
-	line-height: 27px;
-	padding: 0 20px 0 10px;
+	line-height: 22px;
+	padding: 0 16px 0 8px;
 	font-weight: 400;
 	white-space: nowrap;
 	position: relative;
-	padding-left: 32px;
-	padding-right: 37px;
+	padding-left: 26px;
+	padding-right: 30px;
 	position: relative;
 }
 
@@ -7288,8 +7288,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar-popup .v-menubar-menuitem .v-icon {
-	max-height: 27px;
-	margin-right: 5px;
+	max-height: 22px;
+	margin-right: 4px;
 	min-width: 1em;
 }
 
@@ -7299,10 +7299,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-menubar-popup .v-menubar-submenu-indicator  + .v-menubar-menuitem-caption:after {
 	position: absolute;
-	right: 10px;
+	right: 8px;
 	font-family: ThemeIcons;
 	content: "\f054";
-	line-height: 29px;
+	line-height: 24px;
 }
 
 .imedigviewer .v-menubar-popup .v-menubar-menuitem-selected {
@@ -7324,7 +7324,7 @@ div.v-layout.v-horizontal.v-widget {
 	content: "\f00c";
 	font-family: ThemeIcons;
 	position: absolute;
-	left: 10px;
+	left: 8px;
 }
 
 .imedigviewer .v-menubar-popup [class*="unchecked"] .v-menubar-menuitem-caption:before {
@@ -7336,8 +7336,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar-small {
-	height: 31px;
-	padding: 0 13px;
+	height: 26px;
+	padding: 0 11px;
 	
 	font-weight: 400;
 	
@@ -7345,7 +7345,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	padding: 0;
 	text-align: left;
-	line-height: 31px;
+	line-height: 26px;
 	font-size: 14px;
 }
 
@@ -7358,11 +7358,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar-small  > .v-menubar-menuitem {
-	padding: 0 12px;
+	padding: 0 10px;
 }
 
 .imedigviewer .v-menubar-small  > .v-menubar-menuitem[class*="-icon-only"] {
-	width: 31px;
+	width: 26px;
 }
 
 .imedigviewer .v-menubar-borderless {
@@ -7387,7 +7387,7 @@ div.v-layout.v-horizontal.v-widget {
 	margin-right: 1px;
 	border-radius: 0px;
 	color: #0072C6;
-	padding: 0 12px;
+	padding: 0 10px;
 	-webkit-transition: color 140ms;
 	-moz-transition: color 140ms;
 	transition: color 140ms;
@@ -7434,7 +7434,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-radiobutton {
 	position: relative;
-	line-height: 19px;
+	line-height: 15px;
 	white-space: nowrap;
 }
 
@@ -7443,7 +7443,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-radiobutton {
-	padding-left: 25px;
+	padding-left: 20px;
 }
 
 :root .imedigviewer .v-radiobutton label {
@@ -7476,8 +7476,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 19px;
-	height: 19px;
+	width: 15px;
+	height: 15px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -7487,8 +7487,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-radiobutton > input ~ label:before {
-	height: 18.5px;
-	padding: 0 8px;
+	height: 15px;
+	padding: 0 6px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -7499,7 +7499,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 19px;
+	height: 15px;
 }
 
 :root .imedigviewer .v-radiobutton > input ~ label:after {
@@ -7520,7 +7520,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-radiobutton > .v-icon, .imedigviewer .v-radiobutton > label .v-icon {
-	margin: 0 6px 0 3px;
+	margin: 0 5px 0 3px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -7557,10 +7557,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-radiobutton > input:checked ~ label:after {
-	width: 7px;
-	height: 7px;
-	top: 6px;
-	left: 6px;
+	width: 5px;
+	height: 5px;
+	top: 5px;
+	left: 5px;
 	background: #0072C6;
 }
 
@@ -7571,15 +7571,15 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup .v-radiobutton, .imedigviewer .v-select-optiongroup .v-checkbox {
 	display: block;
-	margin: 9px 16px 0 0;
+	margin: 8px 16px 0 0;
 }
 
 .imedigviewer .v-select-optiongroup .v-radiobutton:first-child, .imedigviewer .v-select-optiongroup .v-checkbox:first-child {
-	margin-top: 6px;
+	margin-top: 5px;
 }
 
 .imedigviewer .v-select-optiongroup .v-radiobutton:last-child, .imedigviewer .v-select-optiongroup .v-checkbox:last-child {
-	margin-bottom: 6px;
+	margin-bottom: 5px;
 }
 
 .imedigviewer .v-select-optiongroup.v-has-width label {
@@ -7592,7 +7592,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-small .v-checkbox {
 	position: relative;
-	line-height: 16px;
+	line-height: 13px;
 	white-space: nowrap;
 }
 
@@ -7601,7 +7601,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-checkbox {
-	padding-left: 21px;
+	padding-left: 17px;
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-checkbox label {
@@ -7634,8 +7634,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 16px;
-	height: 16px;
+	width: 13px;
+	height: 13px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -7645,8 +7645,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-checkbox > input ~ label:before {
-	height: 15.5px;
-	padding: 0 6px;
+	height: 13px;
+	padding: 0 5px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -7657,7 +7657,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 16px;
+	height: 13px;
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-checkbox > input ~ label:after {
@@ -7678,7 +7678,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-select-optiongroup-small .v-checkbox > .v-icon, .imedigviewer .v-select-optiongroup-small .v-checkbox > label .v-icon {
-	margin: 0 5px 0 3px;
+	margin: 0 4px 0 2px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -7716,7 +7716,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-small .v-radiobutton {
 	position: relative;
-	line-height: 16px;
+	line-height: 13px;
 	white-space: nowrap;
 }
 
@@ -7725,7 +7725,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-radiobutton {
-	padding-left: 21px;
+	padding-left: 17px;
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-radiobutton label {
@@ -7758,8 +7758,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 16px;
-	height: 16px;
+	width: 13px;
+	height: 13px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -7769,8 +7769,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-radiobutton > input ~ label:before {
-	height: 15.5px;
-	padding: 0 6px;
+	height: 13px;
+	padding: 0 5px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -7781,7 +7781,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 16px;
+	height: 13px;
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-radiobutton > input ~ label:after {
@@ -7802,7 +7802,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-select-optiongroup-small .v-radiobutton > .v-icon, .imedigviewer .v-select-optiongroup-small .v-radiobutton > label .v-icon {
-	margin: 0 5px 0 3px;
+	margin: 0 4px 0 2px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -7839,10 +7839,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-small .v-radiobutton > input:checked ~ label:after {
-	width: 6px;
-	height: 6px;
-	top: 5px;
-	left: 5px;
+	width: 5px;
+	height: 5px;
+	top: 4px;
+	left: 4px;
 	background: #0072C6;
 }
 
@@ -7853,15 +7853,15 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-small .v-radiobutton, .imedigviewer .v-select-optiongroup-small .v-checkbox {
 	display: block;
-	margin: 8px 16px 0 0;
+	margin: 7px 16px 0 0;
 }
 
 .imedigviewer .v-select-optiongroup-small .v-radiobutton:first-child, .imedigviewer .v-select-optiongroup-small .v-checkbox:first-child {
-	margin-top: 5px;
+	margin-top: 4px;
 }
 
 .imedigviewer .v-select-optiongroup-small .v-radiobutton:last-child, .imedigviewer .v-select-optiongroup-small .v-checkbox:last-child {
-	margin-bottom: 5px;
+	margin-bottom: 4px;
 }
 
 .imedigviewer .v-select-optiongroup-small.v-has-width label {
@@ -7874,7 +7874,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-large .v-checkbox {
 	position: relative;
-	line-height: 22px;
+	line-height: 18px;
 	white-space: nowrap;
 }
 
@@ -7883,7 +7883,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-checkbox {
-	padding-left: 29px;
+	padding-left: 24px;
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-checkbox label {
@@ -7916,8 +7916,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 22px;
-	height: 22px;
+	width: 18px;
+	height: 18px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -7927,8 +7927,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-checkbox > input ~ label:before {
-	height: 22px;
-	padding: 0 9px;
+	height: 18px;
+	padding: 0 7px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -7939,7 +7939,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 22px;
+	height: 18px;
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-checkbox > input ~ label:after {
@@ -7960,7 +7960,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-select-optiongroup-large .v-checkbox > .v-icon, .imedigviewer .v-select-optiongroup-large .v-checkbox > label .v-icon {
-	margin: 0 7px 0 4px;
+	margin: 0 6px 0 3px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -7998,7 +7998,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-large .v-radiobutton {
 	position: relative;
-	line-height: 22px;
+	line-height: 18px;
 	white-space: nowrap;
 }
 
@@ -8007,7 +8007,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-radiobutton {
-	padding-left: 29px;
+	padding-left: 24px;
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-radiobutton label {
@@ -8040,8 +8040,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 22px;
-	height: 22px;
+	width: 18px;
+	height: 18px;
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -8051,8 +8051,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-radiobutton > input ~ label:before {
-	height: 22px;
-	padding: 0 9px;
+	height: 18px;
+	padding: 0 7px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -8063,7 +8063,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	
 	padding: 0;
-	height: 22px;
+	height: 18px;
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-radiobutton > input ~ label:after {
@@ -8084,7 +8084,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-select-optiongroup-large .v-radiobutton > .v-icon, .imedigviewer .v-select-optiongroup-large .v-radiobutton > label .v-icon {
-	margin: 0 7px 0 4px;
+	margin: 0 6px 0 3px;
 	min-width: 1em;
 	cursor: pointer;
 }
@@ -8121,10 +8121,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedigviewer .v-select-optiongroup-large .v-radiobutton > input:checked ~ label:after {
-	width: 8px;
-	height: 8px;
-	top: 7px;
-	left: 7px;
+	width: 6px;
+	height: 6px;
+	top: 6px;
+	left: 6px;
 	background: #0072C6;
 }
 
@@ -8135,15 +8135,15 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-optiongroup-large .v-radiobutton, .imedigviewer .v-select-optiongroup-large .v-checkbox {
 	display: block;
-	margin: 11px 16px 0 0;
+	margin: 9px 16px 0 0;
 }
 
 .imedigviewer .v-select-optiongroup-large .v-radiobutton:first-child, .imedigviewer .v-select-optiongroup-large .v-checkbox:first-child {
-	margin-top: 7px;
+	margin-top: 6px;
 }
 
 .imedigviewer .v-select-optiongroup-large .v-radiobutton:last-child, .imedigviewer .v-select-optiongroup-large .v-checkbox:last-child {
-	margin-bottom: 7px;
+	margin-bottom: 6px;
 }
 
 .imedigviewer .v-select-optiongroup-large.v-has-width label {
@@ -8207,7 +8207,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: white;
 	color: #474747;
@@ -8218,8 +8218,8 @@ div.v-layout.v-horizontal.v-widget {
 	-ms-backface-visibility: hidden;
 	backface-visibility: hidden;
 	padding: 0;
-	min-width: 148px !important;
-	min-height: 37px !important;
+	min-width: 120px !important;
+	min-height: 30px !important;
 	white-space: nowrap;
 	overflow: hidden !important;
 	-webkit-transition: width 200ms, height 200ms, top 200ms, left 200ms;
@@ -8303,9 +8303,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-header {
-	line-height: 36px;
-	padding-left: 12px;
-	margin-right: 74px;
+	line-height: 29px;
+	padding-left: 10px;
+	margin-right: 60px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -8313,11 +8313,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-restorebox-disabled  ~ .v-window-closebox ~ .v-window-header, .imedigviewer .v-window-maximizebox-disabled  ~ .v-window-closebox ~ .v-window-header {
-	margin-right: 37px;
+	margin-right: 30px;
 }
 
 .imedigviewer .v-window-restorebox-disabled  ~ .v-window-closebox-disabled ~ .v-window-header, .imedigviewer .v-window-maximizebox-disabled  ~ .v-window-closebox-disabled ~ .v-window-header {
-	margin-right: 12px;
+	margin-right: 10px;
 }
 
 .imedigviewer .v-window-closebox, .imedigviewer .v-window-maximizebox, .imedigviewer .v-window-restorebox {
@@ -8328,10 +8328,10 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	width: 33px;
-	height: 36px;
+	width: 27px;
+	height: 29px;
 	background-color: white;
-	line-height: 34px;
+	line-height: 27px;
 	text-align: center;
 	cursor: pointer;
 	font-size: 21px;
@@ -8356,7 +8356,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-closebox {
-	padding-right: 4px;
+	padding-right: 3px;
 }
 
 .imedigviewer .v-window-closebox:before {
@@ -8364,8 +8364,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-maximizebox, .imedigviewer .v-window-restorebox {
-	right: 33px;
-	padding-left: 4px;
+	right: 27px;
+	padding-left: 3px;
 }
 
 .imedigviewer .v-window-closebox-disabled, .imedigviewer .v-window-resizebox-disabled, .imedigviewer .v-window-restorebox-disabled, .imedigviewer .v-window-maximizebox-disabled {
@@ -8373,7 +8373,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-closebox-disabled  + .v-window-closebox, .imedigviewer .v-window-resizebox-disabled  + .v-window-closebox, .imedigviewer .v-window-restorebox-disabled  + .v-window-closebox, .imedigviewer .v-window-maximizebox-disabled  + .v-window-closebox {
-	width: 37px;
+	width: 30px;
 	padding-right: 0;
 	border-bottom-left-radius: 0px;
 }
@@ -8403,43 +8403,43 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-top"] > tbody > [class*="firstrow"] > td {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-bottom"] > tbody > [class*="lastrow"] > td {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-left"] > tbody > [class*="row"] > [class*="captioncell"] {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	left: 12px;
+	left: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"] {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedigviewer .v-window-contents  > .v-scrollable  > .v-formlayout [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	right: 12px;
+	right: 10px;
 }
 
 .imedigviewer .v-window-contents  > .v-scrollable:focus {
@@ -8474,8 +8474,8 @@ div.v-layout.v-horizontal.v-widget {
 	z-index: 1000;
 	right: 0;
 	bottom: 0;
-	width: 19px;
-	height: 19px;
+	width: 15px;
+	height: 15px;
 	cursor: nwse-resize;
 }
 
@@ -8499,15 +8499,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-top-toolbar .v-label, .imedigviewer .v-window-bottom-toolbar .v-label {
-	line-height: 36px;
+	line-height: 29px;
 }
 
 .imedigviewer .v-window-top-toolbar .v-spacing, .imedigviewer .v-window-bottom-toolbar .v-spacing {
-	width: 6px;
+	width: 5px;
 }
 
 .imedigviewer .v-window-top-toolbar.v-layout {
-	padding: 7px 12px;
+	padding: 6px 10px;
 	position: relative;
 	z-index: 2;
 	border-top: 0 solid #cacaca;
@@ -8516,20 +8516,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-window-top-toolbar.v-menubar {
-	margin: 12px 12px 6px;
+	margin: 10px 10px 5px;
 }
 
 .imedigviewer .v-window-top-toolbar.v-menubar-borderless {
-	padding-left: 6px;
-	padding-right: 6px;
-	margin: 6px 0;
+	padding-left: 5px;
+	padding-right: 5px;
+	margin: 5px 0;
 }
 
 .imedigviewer .v-window-bottom-toolbar.v-layout {
-	padding: 7px 12px;
+	padding: 6px 10px;
 	background-color: #eee;
-	background-image: -webkit-linear-gradient(top, #eeeeee 0, #eee 4px);
-	background-image: linear-gradient(to bottom,#eeeeee 0, #eee 4px);
+	background-image: -webkit-linear-gradient(top, #eeeeee 0, #eee 3px);
+	background-image: linear-gradient(to bottom,#eeeeee 0, #eee 3px);
 	border-top: 0 solid #cacaca;
 	border-radius: 0 0 0px 0px;
 }
@@ -8538,7 +8538,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
-	margin: -12px -12px 0;
+	margin: -10px -10px 0;
 }
 
 .imedigviewer .v-margin-left.v-margin-right.v-margin-top .v-window-top-toolbar.v-menubar {
@@ -8546,7 +8546,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-margin-left.v-margin-right.v-margin-top .v-window-top-toolbar.v-menubar-borderless {
-	margin: -6px -6px 0;
+	margin: -5px -5px 0;
 	padding: 0;
 }
 
@@ -8554,7 +8554,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
-	margin: 0 -12px -12px;
+	margin: 0 -10px -10px;
 }
 
 .imedigviewer .v-tree {
@@ -8572,7 +8572,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: inline-block;
 	z-index: 3;
 	width: 1.9em;
-	height: 28px;
+	height: 23px;
 	cursor: pointer;
 	background: red;
 	opacity: 0;
@@ -8593,8 +8593,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tree-node-caption {
-	height: 28px;
-	line-height: 27px;
+	height: 23px;
+	line-height: 22px;
 	overflow: hidden;
 	white-space: nowrap;
 	vertical-align: top;
@@ -8624,7 +8624,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tree-node-caption span {
-	padding-right: 28px;
+	padding-right: 23px;
 	cursor: pointer;
 	display: inline-block;
 	width: 100%;
@@ -8647,9 +8647,9 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	z-index: 1;
 	left: 0;
-	margin-top: -28px;
+	margin-top: -23px;
 	width: 100%;
-	height: 28px;
+	height: 23px;
 	border-radius: 0px;
 	opacity: 0;
 	-webkit-transition: opacity 120ms;
@@ -8709,7 +8709,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tree-node-children {
-	padding-left: 19px;
+	padding-left: 15px;
 }
 
 .v-ie8 .imedigviewer .v-tree-node-children {
@@ -8801,18 +8801,18 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-table-footer-container, .imedigviewer .v-table-caption-container {
 	overflow: hidden;
 	line-height: 1;
-	min-height: 37px;
+	min-height: 30px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
 .v-ie8 .imedigviewer .v-table-footer-container, .v-ie8 .imedigviewer .v-table-caption-container {
-	min-height: 13px;
+	min-height: 14px;
 }
 
 .imedigviewer .v-table-footer-container {
-	padding: 12px 12px 12px;
+	padding: 8px 10px 8px;
 	float: right;
 }
 
@@ -8821,29 +8821,29 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-caption-container, .imedigviewer .v-table-header-drag {
-	padding: 12px 12px 12px;
+	padding: 8px 10px 8px;
 	border-left: 0 solid #b8b8b8;
 }
 
 .imedigviewer .v-table-caption-container-align-right {
-	padding-right: 4px;
+	padding-right: 3px;
 }
 
 .imedigviewer .v-table-resizer {
-	height: 37px;
-	width: 8px;
+	height: 30px;
+	width: 7px;
 	cursor: e-resize;
 	cursor: col-resize;
 	position: relative;
 	right: -4px;
 	z-index: 1;
-	margin-left: -8px;
+	margin-left: -7px;
 }
 
 .imedigviewer .v-table-cell-content {
 	border-left: 0 solid #b8b8b8;
 	overflow: hidden;
-	height: 37px;
+	height: 30px;
 	vertical-align: middle;
 }
 
@@ -8858,7 +8858,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-table-cell-wrapper {
 	line-height: 1;
-	padding: 0 12px;
+	padding: 0 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -8866,7 +8866,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-cell-wrapper  > .v-widget {
-	margin: 3px -6px;
+	margin: 3px -5px;
 }
 
 .imedigviewer .v-table-cell-wrapper  > .v-widget.v-label, .imedigviewer .v-table-cell-wrapper  > .v-widget.v-checkbox, .imedigviewer .v-table-cell-wrapper  > .v-widget.v-select-optiongroup {
@@ -8939,10 +8939,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-table-header-cell-asc .v-table-sort-indicator, .imedigviewer .v-table-header-cell-desc .v-table-sort-indicator {
 	background: transparent;
-	width: 19px;
-	height: 37px;
-	line-height: 37px;
-	margin-left: -19px;
+	width: 15px;
+	height: 30px;
+	line-height: 30px;
+	margin-left: -15px;
 }
 
 .imedigviewer .v-table-header-cell-asc .v-table-sort-indicator:before, .imedigviewer .v-table-header-cell-desc .v-table-sort-indicator:before {
@@ -8978,7 +8978,7 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	opacity: 0.9;
 	filter: alpha(opacity=90) ;
-	margin-top: -19px;
+	margin-top: -15px;
 	z-index: 30000;
 	line-height: 1;
 }
@@ -8986,7 +8986,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-table-focus-slot-right {
 	border-right: 2px solid #0072C6;
 	right: -1px;
-	margin-left: -10px !important;
+	margin-left: -9px !important;
 }
 
 .imedigviewer .v-table-focus-slot-left {
@@ -8995,12 +8995,12 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 	right: auto;
 	margin-left: 0 !important;
-	margin-right: -10px;
+	margin-right: -9px;
 }
 
 .imedigviewer .v-table-column-selector {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9014,9 +9014,9 @@ div.v-layout.v-horizontal.v-widget {
 	z-index: 2;
 	top: 0;
 	right: 0;
-	width: 19px;
-	height: 19px;
-	line-height: 19px;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
 	padding: 0;
 	border-top-width: 0;
 	border-right-width: 0;
@@ -9083,7 +9083,7 @@ div.v-layout.v-horizontal.v-widget {
 	content: "\f00c";
 	font-family: ThemeIcons;
 	font-size: 0.9em;
-	margin-right: 6px;
+	margin-right: 5px;
 }
 
 .imedigviewer .v-on div, .imedigviewer .v-off div {
@@ -9131,9 +9131,9 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	top: 50%;
 	width: 100%;
-	height: 37px;
-	line-height: 37px;
-	margin: -19px 0 0 !important;
+	height: 30px;
+	line-height: 30px;
+	margin: -15px 0 0 !important;
 	text-align: center;
 }
 
@@ -9162,7 +9162,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-table-row-drag-bottom td.v-table-cell-content {
 	border-bottom: 2px solid #0072C6;
-	height: 35px;
+	height: 28px;
 }
 
 .imedigviewer .v-table-row-drag-bottom .v-table-cell-wrapper {
@@ -9171,7 +9171,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-table-row-drag-top td.v-table-cell-content {
 	border-top: 2px solid #0072C6;
-	height: 35px;
+	height: 28px;
 }
 
 .imedigviewer .v-table-row-drag-top .v-table-cell-wrapper {
@@ -9188,7 +9188,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-no-vertical-lines.v-treetable .v-table-cell-content {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-table-no-horizontal-lines .v-table-cell-content {
@@ -9197,7 +9197,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-no-horizontal-lines .v-table-row-drag-top .v-table-cell-content, .imedigviewer .v-table-no-horizontal-lines .v-table-row-drag-bottom .v-table-cell-content {
-	height: 36px;
+	height: 29px;
 }
 
 .imedigviewer .v-table-no-header .v-table-header-wrap {
@@ -9221,14 +9221,14 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-compact .v-table-footer-container, .imedigviewer .v-table-small .v-table-footer-container {
-	padding: 9px 6px 9px;
+	padding: 6px 5px 6px;
 }
 
 .imedigviewer .v-table-compact .v-table-caption-container, .imedigviewer .v-table-compact .v-table-header-drag, .imedigviewer .v-table-small .v-table-caption-container, .imedigviewer .v-table-small .v-table-header-drag {
-	padding-top: 9px;
-	padding-bottom: 9px;
-	padding-left: 6px;
-	padding-right: 6px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .imedigviewer .v-table-compact .v-table-caption-container-align-right, .imedigviewer .v-table-small .v-table-caption-container-align-right {
@@ -9236,20 +9236,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-compact .v-table-resizer, .imedigviewer .v-table-small .v-table-resizer {
-	height: 31px;
+	height: 26px;
 }
 
 .imedigviewer .v-table-compact .v-table-cell-content, .imedigviewer .v-table-small .v-table-cell-content {
-	height: 31px;
+	height: 26px;
 }
 
 .imedigviewer .v-table-compact .v-table-cell-wrapper, .imedigviewer .v-table-small .v-table-cell-wrapper {
-	padding-left: 6px;
-	padding-right: 6px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .imedigviewer .v-table-compact .v-table-cell-wrapper  > .v-widget, .imedigviewer .v-table-small .v-table-cell-wrapper  > .v-widget {
-	margin: 2px -3px;
+	margin: 1px -3px;
 }
 
 .imedigviewer .v-table-compact .v-table-cell-wrapper  > .v-widget.v-label, .imedigviewer .v-table-compact .v-table-cell-wrapper  > .v-widget.v-checkbox, .imedigviewer .v-table-compact .v-table-cell-wrapper  > .v-widget.v-select-optiongroup, .imedigviewer .v-table-small .v-table-cell-wrapper  > .v-widget.v-label, .imedigviewer .v-table-small .v-table-cell-wrapper  > .v-widget.v-checkbox, .imedigviewer .v-table-small .v-table-cell-wrapper  > .v-widget.v-select-optiongroup {
@@ -9262,12 +9262,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-compact .v-table-header-cell-asc .v-table-sort-indicator, .imedigviewer .v-table-compact .v-table-header-cell-desc .v-table-sort-indicator, .imedigviewer .v-table-small .v-table-header-cell-asc .v-table-sort-indicator, .imedigviewer .v-table-small .v-table-header-cell-desc .v-table-sort-indicator {
-	height: 31px;
-	line-height: 31px;
+	height: 26px;
+	line-height: 26px;
 }
 
 .imedigviewer .v-table-compact .v-table-header-drag, .imedigviewer .v-table-small .v-table-header-drag {
-	margin-top: -16px;
+	margin-top: -13px;
 }
 
 .imedigviewer .v-table-compact.v-treetable .v-table-cell-wrapper, .imedigviewer .v-table-small.v-treetable .v-table-cell-wrapper {
@@ -9277,21 +9277,21 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-table-compact.v-treetable .v-table-cell-content, .imedigviewer .v-table-small.v-treetable .v-table-cell-content {
-	padding-left: 6px;
-	padding-right: 6px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .imedigviewer .v-table-compact.v-treetable .v-table-cell-content:first-child, .imedigviewer .v-table-small.v-treetable .v-table-cell-content:first-child {
-	padding-left: 6px;
+	padding-left: 5px;
 }
 
 .imedigviewer .v-table-compact.v-treetable .v-table-footer-container, .imedigviewer .v-table-small.v-treetable .v-table-footer-container {
-	padding-left: 6px;
-	padding-right: 6px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .imedigviewer .v-table-compact .v-table-row-drag-top .v-table-cell-content, .imedigviewer .v-table-compact .v-table-row-drag-bottom .v-table-cell-content, .imedigviewer .v-table-small .v-table-row-drag-top .v-table-cell-content, .imedigviewer .v-table-small .v-table-row-drag-bottom .v-table-cell-content {
-	height: 30px;
+	height: 25px;
 }
 
 .imedigviewer .v-table-small {
@@ -9311,7 +9311,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-treetable [class*="caption-container"], .imedigviewer .v-treetable [class*="footer-container"] {
-	min-height: 13px;
+	min-height: 14px;
 }
 
 .imedigviewer .v-treetable [class*="cell-wrapper"] {
@@ -9319,31 +9319,31 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-treetable [class*="caption-container"] {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-treetable [class*="caption-container-align-right"] {
-	padding-left: 20px;
+	padding-left: 17px;
 }
 
 .imedigviewer .v-treetable [class*="footer-container"] {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-treetable [class*="cell-content"] {
-	padding-left: 12px;
-	padding-right: 12px;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-treetable [class*="cell-content"]:first-child {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-treetable-treespacer {
 	display: inline-block;
 	position: absolute;
-	width: 19px !important;
-	margin-left: -25px;
+	width: 15px !important;
+	margin-left: -20px;
 	text-align: center;
 	cursor: pointer;
 }
@@ -9363,13 +9363,13 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-splitpanel-horizontal  > div > .v-splitpanel-hsplitter:after {
-	left: -6px;
-	right: -6px;
+	left: -5px;
+	right: -5px;
 }
 
 .imedigviewer .v-splitpanel-horizontal  > div > .v-splitpanel-hsplitter div:before {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9416,13 +9416,13 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-splitpanel-vertical  > div > .v-splitpanel-vsplitter:after {
-	top: -6px;
-	bottom: -6px;
+	top: -5px;
+	bottom: -5px;
 }
 
 .imedigviewer .v-splitpanel-vertical  > div > .v-splitpanel-vsplitter div:before {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9460,7 +9460,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-splitpanel-horizontal.large  > div > .v-splitpanel-hsplitter {
-	width: 12px;
+	width: 10px;
 }
 
 .imedigviewer .v-splitpanel-horizontal.large  > div > .v-splitpanel-hsplitter:after {
@@ -9469,8 +9469,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-splitpanel-horizontal.large  > div > .v-splitpanel-hsplitter div:before {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9517,17 +9517,17 @@ div.v-layout.v-horizontal.v-widget {
 	top: 50%;
 	left: 50%;
 	width: 0;
-	height: 37px;
+	height: 30px;
 	margin-left: 0;
-	margin-top: -19px;
+	margin-top: -15px;
 }
 
 .imedigviewer .v-splitpanel-horizontal.large  > div > .v-splitpanel-second-container {
-	margin-left: 12px;
+	margin-left: 10px;
 }
 
 .imedigviewer .v-splitpanel-vertical.large  > div > .v-splitpanel-vsplitter {
-	height: 12px;
+	height: 10px;
 }
 
 .imedigviewer .v-splitpanel-vertical.large  > div > .v-splitpanel-vsplitter:after {
@@ -9536,8 +9536,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-splitpanel-vertical.large  > div > .v-splitpanel-vsplitter div:before {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9582,20 +9582,20 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 37px;
+	width: 30px;
 	height: 0;
-	margin-left: -19px;
+	margin-left: -15px;
 	margin-top: 0;
 }
 
 .imedigviewer .v-progressbar-wrapper {
 	border-radius: 0px;
-	height: 9px;
+	height: 8px;
 	background: #cacaca;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	min-width: 74px;
+	min-width: 60px;
 }
 
 .imedigviewer .v-progressbar-indicator {
@@ -9637,7 +9637,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	max-width: 100%;
-	width: 9px;
+	width: 8px;
 	vertical-align: top;
 }
 
@@ -9696,14 +9696,14 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-slider-base {
 	border-radius: 0px;
-	height: 9px;
+	height: 8px;
 	background: #cacaca;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	min-width: 74px;
-	height: 6px;
-	margin: 16px 11px;
+	min-width: 60px;
+	height: 4px;
+	margin: 13px 9px;
 	white-space: nowrap;
 	overflow: hidden;
 	
@@ -9712,9 +9712,9 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-slider-base:before {
 	content: "";
 	position: absolute;
-	top: 16px;
-	bottom: 16px;
-	left: 11px;
+	top: 13px;
+	bottom: 13px;
+	left: 9px;
 	width: 0px;
 	border-radius: 0px;
 	border-left: 0 solid #004f8a;
@@ -9740,7 +9740,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .v-ie8 .imedigviewer .v-slider-base:after {
 	position: relative;
-	left: -11px;
+	left: -9px;
 }
 
 .imedigviewer .v-has-width > .v-slider-base {
@@ -9748,15 +9748,15 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-slider-handle {
-	margin-top: -16px;
+	margin-top: -13px;
 	width: 0.1px;
 	display: inline-block;
 	vertical-align: top;
 }
 
 .imedigviewer .v-slider-handle:before {
-	height: 37px;
-	padding: 0 15px;
+	height: 30px;
+	padding: 0 12px;
 	color: #181818;
 	font-weight: 400;
 	
@@ -9811,13 +9811,13 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	padding: 0;
-	width: 22px;
-	height: 22px;
-	border-radius: 11px;
+	width: 18px;
+	height: 18px;
+	border-radius: 9px;
 	position: absolute;
 	z-index: 1;
-	margin-top: 8px;
-	margin-left: -11px;
+	margin-top: 6px;
+	margin-left: -9px;
 }
 
 .imedigviewer .v-slider-feedback {
@@ -9826,7 +9826,7 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 	color: white;
-	padding: 5px 9px;
+	padding: 4px 8px;
 	border-radius: -1px;
 	max-width: 35em;
 	overflow: hidden !important;
@@ -9834,23 +9834,23 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-slider-vertical {
-	padding: 11px 0;
-	height: 96px;
+	padding: 9px 0;
+	height: 78px;
 }
 
 .imedigviewer .v-slider-vertical .v-slider-base {
 	background: #cacaca;
-	width: 6px;
+	width: 4px;
 	height: 100% !important;
 	min-width: 0;
-	margin: 0 16px;
+	margin: 0 13px;
 }
 
 .imedigviewer .v-slider-vertical .v-slider-base:before {
 	top: auto;
-	bottom: 11px;
-	left: 16px;
-	right: 16px;
+	bottom: 9px;
+	left: 13px;
+	right: 13px;
 	width: auto;
 	height: 0px;
 	border-left: none;
@@ -9864,7 +9864,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-slider-vertical .v-slider-base:after {
-	top: 11px;
+	top: 9px;
 	left: 0;
 	height: 130%;
 }
@@ -9872,15 +9872,15 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-slider-vertical .v-slider-handle {
 	width: 0;
 	height: 0.1px;
-	width: 37px;
+	width: 30px;
 	display: block;
 }
 
 .imedigviewer .v-slider-vertical .v-slider-handle:before, .imedigviewer .v-slider-vertical .v-slider-handle:after {
-	width: 22px;
-	height: 22px;
-	margin-top: -11px;
-	margin-left: -8px;
+	width: 18px;
+	height: 18px;
+	margin-top: -9px;
+	margin-left: -7px;
 }
 
 .imedigviewer .v-slider-no-indicator .v-slider-base:before, .imedigviewer .v-slider-no-indicator .v-slider-base:after {
@@ -9926,14 +9926,14 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-tabitemcell .v-caption {
-	margin-left: 19px;
-	padding: 0 4px;
+	margin-left: 15px;
+	padding: 0 3px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	cursor: pointer;
 	text-align: center;
-	line-height: 37px;
+	line-height: 30px;
 	font-size: 15px;
 	font-weight: 300;
 	color: #6b6b6b;
@@ -9952,7 +9952,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-tabitemcell .v-caption .v-icon + .v-captiontext {
-	margin-left: 9px;
+	margin-left: 8px;
 }
 
 .imedigviewer .v-tabsheet-tabitemcell .v-caption:hover {
@@ -9984,11 +9984,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-tabitemcell .v-caption-closable {
-	padding-right: 22px;
+	padding-right: 21px;
 }
 
 .imedigviewer .v-tabsheet-tabitemcell.icons-on-top .v-caption-closable {
-	padding-right: 4px;
+	padding-right: 3px;
 }
 
 .imedigviewer .v-tabsheet-tabitemcell .v-tabsheet-caption-close {
@@ -10019,7 +10019,7 @@ div.v-layout.v-horizontal.v-widget {
 	top: 0;
 	right: 0;
 	bottom: 0;
-	padding-left: 19px;
+	padding-left: 15px;
 	background-color: transparent;
 	background-image: -webkit-linear-gradient(right, #eee 70%, rgba(238, 238, 238, 0) 100%);
 	background-image: linear-gradient(to left,#eee 70%, rgba(238, 238, 238, 0) 100%);
@@ -10059,7 +10059,7 @@ div.v-layout.v-horizontal.v-widget {
 	color: inherit;
 	height: 100%;
 	margin: 0;
-	padding: 0 9px;
+	padding: 0 8px;
 	outline: none;
 	cursor: pointer;
 	pointer-events: auto;
@@ -10085,7 +10085,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-scroller [class*="Next"] {
-	padding-left: 5px;
+	padding-left: 4px;
 }
 
 .imedigviewer .v-tabsheet-scroller [class*="Next"]:before {
@@ -10094,7 +10094,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-scroller [class*="Prev"] {
-	padding-right: 5px;
+	padding-right: 4px;
 }
 
 .imedigviewer .v-tabsheet-scroller [class*="Prev"]:before {
@@ -10116,8 +10116,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-deco {
-	height: 20px !important;
-	width: 20px !important;
+	height: 16px !important;
+	width: 16px !important;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -10133,9 +10133,9 @@ div.v-layout.v-horizontal.v-widget {
 	position: absolute;
 	z-index: 1;
 	bottom: 50%;
-	margin-bottom: -29px;
+	margin-bottom: -23px;
 	left: 50%;
-	margin-left: -10px;
+	margin-left: -8px;
 }
 
 .v-ie8 .imedigviewer .v-tabsheet-deco, .v-ie9 .imedigviewer .v-tabsheet-deco {
@@ -10173,11 +10173,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-framed  > .v-tabsheet-tabcontainer .v-caption {
-	margin-left: 4px;
-	padding: 0 12px;
+	margin-left: 3px;
+	padding: 0 10px;
 	background-color: #fff;
 	border: 0 solid transparent;
-	line-height: 37px;
+	line-height: 30px;
 	border-radius: 0px 0px 0 0;
 	font-weight: 400;
 	-webkit-transition: background-color 160ms;
@@ -10195,7 +10195,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-framed  > .v-tabsheet-tabcontainer .v-caption-closable {
-	padding-right: 30px;
+	padding-right: 28px;
 }
 
 .imedigviewer .v-tabsheet-framed  > .v-tabsheet-tabcontainer .v-tabsheet-caption-close {
@@ -10232,11 +10232,11 @@ div.v-layout.v-horizontal.v-widget {
 	border: 0 solid #d8d8d8;
 	border-bottom: none;
 	background: #eee;
-	padding-top: 6px;
+	padding-top: 5px;
 }
 
 .imedigviewer .v-tabsheet-framed.icons-on-top  > .v-tabsheet-tabcontainer .v-tabsheet-tabitem-selected .v-caption {
-	padding-bottom: 6px;
+	padding-bottom: 5px;
 }
 
 .imedigviewer .v-tabsheet-centered-tabs  > .v-tabsheet-tabcontainer {
@@ -10248,12 +10248,12 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-padded-tabbar  > .v-tabsheet-tabcontainer .v-tabsheet-tabs {
-	padding: 0 9px;
+	padding: 0 8px;
 }
 
 .imedigviewer .v-tabsheet-icons-on-top  > .v-tabsheet-tabcontainer .v-caption {
-	padding-top: 6px;
-	padding-bottom: 6px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 	line-height: 1.2;
 }
 
@@ -10266,7 +10266,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-tabsheet-icons-on-top  > .v-tabsheet-tabcontainer .v-caption-closable {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-tabsheet-icons-on-top  > .v-tabsheet-tabcontainer .v-tabsheet-caption-close {
@@ -10291,11 +10291,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-colorpicker-popup .v-tabsheet-tabs {
-	padding: 0 9px;
+	padding: 0 8px;
 }
 
 .imedigviewer .v-colorpicker-popup [class$="sliders"] {
-	padding: 12px;
+	padding: 10px;
 }
 
 .imedigviewer .v-colorpicker-popup [class$="sliders"] .v-widget {
@@ -10366,7 +10366,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-colorpicker-popup .v-horizontallayout {
 	height: auto !important;
-	padding: 9px 0;
+	padding: 8px 0;
 	background-color: #eee;
 	border-top: 0 solid #e2e2e2;
 }
@@ -10382,7 +10382,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-colorpicker-preview {
 	width: 100% !important;
 	height: auto !important;
-	padding: 9px;
+	padding: 8px;
 }
 
 .imedigviewer .v-colorpicker-preview-textfield {
@@ -10397,17 +10397,17 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-colorpicker-button-color {
 	position: absolute;
-	top: 6px;
-	right: 6px;
-	bottom: 6px;
-	left: 6px;
+	top: 5px;
+	right: 5px;
+	bottom: 5px;
+	left: 5px;
 	border-radius: -1px;
 	border: 1px solid rgba(0, 0, 0, 0.5);
-	max-width: 23px;
+	max-width: 18px;
 }
 
 .imedigviewer .v-colorpicker-button-color  + .v-button-caption:not(:empty) {
-	margin-left: 19px;
+	margin-left: 15px;
 }
 
 .v-ie8 .imedigviewer .v-colorpicker-button-color {
@@ -10424,7 +10424,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-colorpicker-button-color  + .v-button-caption {
-	margin-left: 19px;
+	margin-left: 15px;
 }
 
 .imedigviewer .v-panel {
@@ -10441,8 +10441,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	padding: 0 12px;
-	line-height: 37px;
+	padding: 0 10px;
+	line-height: 30px;
 	border-bottom: 2px solid #bcbcbc;
 	background-color: #eee;
 	background-image: -webkit-linear-gradient(top, #eee 0%, #eee 100%);
@@ -10465,19 +10465,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-panel-content  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-panel-content  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-panel-content  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-panel-content  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-panel-borderless {
@@ -10495,7 +10495,7 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: none;
 	color: inherit;
 	padding: 0;
-	margin: 0 12px;
+	margin: 0 10px;
 	border-bottom: none;
 }
 
@@ -10551,7 +10551,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-panel-caption.v-horizontallayout .v-label {
-	line-height: 37px;
+	line-height: 30px;
 }
 
 .imedigviewer .v-accordion {
@@ -10592,8 +10592,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	padding: 0 12px;
-	line-height: 37px;
+	padding: 0 10px;
+	line-height: 30px;
 	border-bottom: 2px solid #bcbcbc;
 	background-color: #eee;
 	background-image: -webkit-linear-gradient(top, #eee 0%, #eee 100%);
@@ -10641,19 +10641,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-accordion-item-content  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-accordion-item-content  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-accordion-item-content  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-accordion-item-content  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-accordion-borderless {
@@ -10685,11 +10685,11 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-twincol .v-textfield, .imedigviewer .v-select-twincol .v-nativebutton {
 	width: auto !important;
-	margin-top: 9px;
+	margin-top: 8px;
 }
 
 .imedigviewer .v-select-twincol .v-nativebutton {
-	margin-left: 9px;
+	margin-left: 8px;
 }
 
 .imedigviewer .v-select-twincol-caption-left, .imedigviewer .v-select-twincol-caption-right {
@@ -10715,9 +10715,9 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: left;
 	white-space: normal;
 	position: absolute;
-	left: 9px;
-	right: 9px;
-	top: 37px;
+	left: 8px;
+	right: 8px;
+	top: 30px;
 	padding: 0;
 	text-align: center;
 }
@@ -10768,12 +10768,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-select  + .v-textfield {
 	width: auto !important;
-	margin-top: 9px;
+	margin-top: 8px;
 }
 
 .imedigviewer .v-select-select  + .v-textfield  + .v-nativebutton {
-	margin-top: 9px;
-	margin-left: 9px;
+	margin-top: 8px;
+	margin-left: 8px;
 }
 
 .imedigviewer .v-select-error .v-select-select {
@@ -10785,7 +10785,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-calendar-header-day {
 	font-weight: 400;
 	text-align: center;
-	padding: 7px 0;
+	padding: 6px 0;
 }
 
 .imedigviewer .v-calendar-header-week .v-calendar-back, .imedigviewer .v-calendar-header-week .v-calendar-next {
@@ -10867,7 +10867,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-calendar-bottom-spacer {
 	font-size: 0.8em;
-	padding: 0 5px;
+	padding: 0 4px;
 	cursor: pointer;
 }
 
@@ -10876,10 +10876,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-calendar-day-number {
-	line-height: 25px;
+	line-height: 20px;
 	font-size: 16px;
 	text-align: right;
-	margin: 0 5px;
+	margin: 0 4px;
 	white-space: nowrap;
 	border-top: 1px solid #e6e6e6;
 	cursor: pointer;
@@ -10897,9 +10897,9 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: 400;
 	color: #0072C6;
 	border-top: 2px solid #0072C6;
-	line-height: 24px;
+	line-height: 19px;
 	margin: 0;
-	padding: 0 5px;
+	padding: 0 4px;
 }
 
 .imedigviewer .v-calendar-month-day-selected {
@@ -10942,7 +10942,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-calendar-time {
 	text-align: right;
-	padding-right: 9px;
+	padding-right: 8px;
 	margin-top: -6px;
 	padding-bottom: 6px;
 }
@@ -10969,7 +10969,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-calendar .v-datecellslot, .imedigviewer .v-calendar .v-datecellslot-even {
-	margin-right: 5px;
+	margin-right: 4px;
 }
 
 .imedigviewer .v-calendar-current-time {
@@ -11020,7 +11020,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-calendar-event-month {
-	padding: 0 5px;
+	padding: 0 4px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -11045,7 +11045,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-calendar-event-all-day {
-	padding: 0 5px;
+	padding: 0 4px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
@@ -11073,11 +11073,11 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .v-calendar-event-caption {
 	font-weight: 500;
 	line-height: 1.2;
-	padding: 5px 0;
+	padding: 4px 0;
 	position: absolute;
 	overflow: hidden;
-	right: 9px;
-	left: 5px;
+	right: 8px;
+	left: 4px;
 	bottom: 0;
 	top: 0;
 }
@@ -11096,7 +11096,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 1px;
 	border: 1px solid #fff;
 	padding-top: 3px;
-	margin-right: 5px;
+	margin-right: 4px;
 }
 
 .imedigviewer .v-calendar-event-month:before {
@@ -11341,7 +11341,7 @@ div.v-layout.v-horizontal.v-widget {
 	color: #474747;
 	border: 2px solid #2c9720;
 	border-radius: 0px;
-	padding: 7px 19px 7px 37px;
+	padding: 6px 15px 6px 30px;
 	font-weight: 400;
 	font-size: 15px;
 }
@@ -11350,7 +11350,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-family: ThemeIcons;
 	content: "\f00c";
 	margin-right: 0.5em;
-	margin-left: -19px;
+	margin-left: -15px;
 	color: #2c9720;
 }
 
@@ -11482,12 +11482,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-select-select  + .v-textfield {
 	width: auto !important;
-	margin-top: 9px;
+	margin-top: 8px;
 }
 
 .imedigviewer .v-select-select  + .v-textfield  + .v-nativebutton {
-	margin-top: 9px;
-	margin-left: 9px;
+	margin-top: 8px;
+	margin-left: 8px;
 }
 
 .imedigviewer .v-select-error .v-select-select {
@@ -11516,7 +11516,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-popupview-popup {
-	padding: 4px 4px;
+	padding: 3px 3px;
 	border-radius: 0px;
 	background-color: #f3f3f3;
 	color: #444444;
@@ -11541,23 +11541,23 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-popupview-popup .popupContent  > .v-margin-top {
-	padding-top: 12px;
+	padding-top: 10px;
 }
 
 .imedigviewer .v-popupview-popup .popupContent  > .v-margin-right {
-	padding-right: 12px;
+	padding-right: 10px;
 }
 
 .imedigviewer .v-popupview-popup .popupContent  > .v-margin-bottom {
-	padding-bottom: 12px;
+	padding-bottom: 10px;
 }
 
 .imedigviewer .v-popupview-popup .popupContent  > .v-margin-left {
-	padding-left: 12px;
+	padding-left: 10px;
 }
 
 .imedigviewer .v-popupview-loading {
-	margin: 12px 12px;
+	margin: 10px 10px;
 	height: 24px !important;
 	width: 24px !important;
 	-webkit-box-sizing: border-box;
@@ -11600,7 +11600,7 @@ div.v-layout.v-horizontal.v-widget {
 	
 	font-weight: 400;
 	line-height: normal;
-	height: 37px;
+	height: 30px;
 	border-radius: 0px;
 	padding: 0;
 	border: 1px solid #b2b2b2;
@@ -11616,7 +11616,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-ie8 .imedigviewer .v-richtextarea, .v-ie9 .imedigviewer .v-richtextarea {
-	line-height: 37px;
+	line-height: 30px;
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -11635,8 +11635,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-richtextarea .gwt-ToggleButton, .imedigviewer .v-richtextarea .gwt-PushButton {
 	display: inline-block;
-	line-height: 37px;
-	width: 37px;
+	line-height: 30px;
+	width: 30px;
 	text-align: center;
 	outline: none;
 }
@@ -11733,11 +11733,11 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .v-richtextarea .gwt-RichTextToolbar-bottom {
 	font-size: 13px;
-	padding: 0 9px 9px 0;
+	padding: 0 8px 8px 0;
 }
 
 .imedigviewer .v-richtextarea .gwt-RichTextToolbar-bottom select {
-	margin: 9px 0 0 9px;
+	margin: 8px 0 0 8px;
 }
 
 .imedigviewer .v-richtextarea .gwt-RichTextArea {
@@ -11747,7 +11747,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-richtextarea-readonly {
-	padding: 5px 7px;
+	padding: 4px 5px;
 	background: transparent;
 }
 
@@ -11771,26 +11771,26 @@ div.v-layout.v-horizontal.v-widget {
 	z-index: -1;
 	position: absolute;
 	right: 0;
-	height: 37px;
+	height: 30px;
 	text-align: right;
 	border: none;
 	background: transparent;
 }
 
 .imedigviewer .v-Notification.v-position-top {
-	top: 12px;
+	top: 10px;
 }
 
 .imedigviewer .v-Notification.v-position-right {
-	right: 12px;
+	right: 10px;
 }
 
 .imedigviewer .v-Notification.v-position-bottom {
-	bottom: 12px;
+	bottom: 10px;
 }
 
 .imedigviewer .v-Notification.v-position-left {
-	left: 12px;
+	left: 10px;
 }
 
 .imedigviewer .v-Notification.v-position-assistive {
@@ -11839,7 +11839,7 @@ div.v-layout.v-horizontal.v-widget {
 	background: #f3f3f3;
 	-webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.15);
 	box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.15);
-	padding: 19px 22px;
+	padding: 15px 18px;
 }
 
 .imedigviewer .v-Notification .v-Notification-caption {
@@ -11888,7 +11888,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0;
 	-webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
-	padding: 12px 15px;
+	padding: 10px 12px;
 	background-color: #444;
 	background-color: rgba(68, 68, 68, 0.9);
 	font-weight: 400;
@@ -12004,7 +12004,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0;
 	-webkit-box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
-	padding: 12px 15px;
+	padding: 10px 12px;
 }
 
 .imedigviewer .v-Notification.bar .v-Notification-description, .imedigviewer .v-Notification.bar .v-Notification-details {
@@ -12044,7 +12044,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-Notification.small {
-	padding: 11px 13px;
+	padding: 9px 11px;
 }
 
 .imedigviewer .v-Notification.small .v-Notification-caption {
@@ -12056,7 +12056,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-Notification.closable {
-	padding-right: 59px;
+	padding-right: 48px;
 	overflow: hidden !important;
 	cursor: pointer;
 }
@@ -12066,11 +12066,11 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 1.5em;
 	position: absolute;
 	top: 50%;
-	margin-top: -12px;
-	right: 12px;
-	width: 25px;
-	height: 25px;
-	line-height: 24px;
+	margin-top: -10px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+	line-height: 19px;
 	cursor: pointer;
 	color: #000;
 	opacity: 0.5;
@@ -12111,7 +12111,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-Notification.closable.tray:after {
-	top: 16px;
+	top: 13px;
 	margin-top: 0;
 }
 
@@ -12151,11 +12151,11 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .valo-menu {
 	height: 100%;
 	background-color: #005593;
-	background-image: -webkit-linear-gradient(right, #005593 0%, #005593 9px);
-	background-image: linear-gradient(to left,#005593 0%, #005593 9px);
+	background-image: -webkit-linear-gradient(right, #005593 0%, #005593 8px);
+	background-image: linear-gradient(to left,#005593 0%, #005593 8px);
 	color: #60afe8;
 	font-size: 14px;
-	line-height: 30px;
+	line-height: 24px;
 	border-right: 0 solid #003b66;
 	white-space: nowrap;
 }
@@ -12172,7 +12172,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .valo-menu-part {
 	border-left: 0 solid #004578;
 	height: 100%;
-	padding-bottom: 37px;
+	padding-bottom: 30px;
 	overflow: auto;
 }
 
@@ -12189,7 +12189,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .valo-menu-title .valo-menu-badge, .imedigviewer .valo-menu-subtitle .valo-menu-badge, .imedigviewer .valo-menu-item .valo-menu-badge {
 	position: absolute;
-	right: 19px;
+	right: 15px;
 }
 
 .imedigviewer .valo-menu-title {
@@ -12197,7 +12197,7 @@ div.v-layout.v-horizontal.v-widget {
 	background: #0072C6;
 	color: white;
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
-	padding: 12px 19px;
+	padding: 10px 15px;
 	font-size: 14px;
 	border-bottom: 0 solid #004f8a;
 	
@@ -12238,7 +12238,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-shadow: none;
 	background: transparent;
 	color: inherit;
-	margin: 19px 7px;
+	margin: 15px 6px;
 	display: block;
 	overflow: hidden;
 	text-align: center;
@@ -12257,7 +12257,7 @@ div.v-layout.v-horizontal.v-widget {
 	margin-right: 1px;
 	border-radius: 0px;
 	color: #0072C6;
-	padding: 0 12px;
+	padding: 0 10px;
 	-webkit-transition: color 140ms;
 	-moz-transition: color 140ms;
 	transition: color 140ms;
@@ -12310,9 +12310,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .v-menubar-user-menu  > .v-menubar-menuitem img.v-icon {
-	width: 56px;
-	height: 56px;
-	border-radius: 28px;
+	width: 45px;
+	height: 45px;
+	border-radius: 23px;
 	
 	display: block;
 	margin: 0 auto 0.3em;
@@ -12332,7 +12332,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .valo-menu-subtitle {
 	color: #2095eb;
-	margin: 7px 0 7px 19px;
+	margin: 6px 0 6px 15px;
 	border-bottom: 0 solid #266ea3;
 }
 
@@ -12347,7 +12347,7 @@ div.v-layout.v-horizontal.v-widget {
 .imedigviewer .valo-menu-item {
 	outline: none;
 	font-weight: 400;
-	padding: 0 37px 0 19px;
+	padding: 0 30px 0 15px;
 	cursor: pointer;
 	position: relative;
 	overflow: hidden;
@@ -12362,7 +12362,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: inline-block;
 	width: 90%;
 	max-width: 15em;
-	padding-right: 19px;
+	padding-right: 15px;
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
@@ -12390,7 +12390,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .valo-menu-item span.v-icon {
 	min-width: 1em;
-	margin-right: 19px;
+	margin-right: 15px;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -12405,17 +12405,17 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: background-color 300ms;
 	transition: background-color 300ms;
 	line-height: 1;
-	padding: 4px 6px;
+	padding: 3px 5px;
 	min-width: 11px;
 	text-align: center;
-	top: 4px;
+	top: 2px;
 	border-radius: 0px;
 }
 
 .imedigviewer .valo-menu-part.large-icons {
 	background-color: #005593;
-	min-width: 74px;
-	max-width: 111px;
+	min-width: 60px;
+	max-width: 90px;
 }
 
 .imedigviewer .valo-menu-part.large-icons .valo-menu-title {
@@ -12433,13 +12433,13 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-part.large-icons .v-menubar-user-menu img.v-icon {
-	width: 28px;
-	height: 28px;
+	width: 23px;
+	height: 23px;
 }
 
 .imedigviewer .valo-menu-part.large-icons [class*="subtitle"] {
-	margin: 9px 0 0;
-	padding: 7px 25px 7px 9px;
+	margin: 8px 0 0;
+	padding: 6px 20px 6px 8px;
 	line-height: 1;
 	border: none;
 	text-overflow: ellipsis;
@@ -12450,7 +12450,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-part.large-icons [class*="subtitle"] [class*="badge"] {
-	right: 9px;
+	right: 8px;
 }
 
 .imedigviewer .valo-menu-part.large-icons [class*="subtitle"]  + .valo-menu-item {
@@ -12461,7 +12461,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: block;
 	font-size: 26px;
 	line-height: 1;
-	padding: 12px;
+	padding: 10px;
 	text-align: center;
 	border-top: 0 solid #0f5f99;
 }
@@ -12500,25 +12500,25 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-part.large-icons .valo-menu-item [class*="badge"] {
-	padding-left: 4px;
-	padding-right: 4px;
-	top: 7px;
-	right: 7px;
+	padding-left: 3px;
+	padding-right: 3px;
+	top: 6px;
+	right: 6px;
 	border: 2px solid #005593;
 }
 
 .imedigviewer .valo-menu-logo {
 	display: block;
 	overflow: hidden;
-	width: 44px !important;
-	height: 44px;
+	width: 36px !important;
+	height: 36px;
 	border-radius: 0px;
 	text-align: center;
 	background: #0072C6;
 	color: white;
-	font-size: 25px;
-	line-height: 44px;
-	margin: 19px auto;
+	font-size: 20px;
+	line-height: 36px;
+	margin: 15px auto;
 	
 	
 }
@@ -12529,8 +12529,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
 	background-color: #005593;
-	min-width: 74px;
-	max-width: 111px;
+	min-width: 60px;
+	max-width: 90px;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title {
@@ -12548,13 +12548,13 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-user-menu img.v-icon {
-	width: 28px;
-	height: 28px;
+	width: 23px;
+	height: 23px;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"] {
-	margin: 9px 0 0;
-	padding: 7px 25px 7px 9px;
+	margin: 8px 0 0;
+	padding: 6px 20px 6px 8px;
 	line-height: 1;
 	border: none;
 	text-overflow: ellipsis;
@@ -12565,7 +12565,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"] [class*="badge"] {
-	right: 9px;
+	right: 8px;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"]  + .valo-menu-item {
@@ -12576,7 +12576,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: block;
 	font-size: 26px;
 	line-height: 1;
-	padding: 12px;
+	padding: 10px;
 	text-align: center;
 	border-top: 0 solid #0f5f99;
 }
@@ -12615,21 +12615,21 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item [class*="badge"] {
-	padding-left: 4px;
-	padding-right: 4px;
-	top: 7px;
-	right: 7px;
+	padding-left: 3px;
+	padding-right: 3px;
+	top: 6px;
+	right: 6px;
 	border: 2px solid #005593;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"] {
-	padding-top: 37px;
+	padding-top: 30px;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"] .v-loading-indicator {
-	top: 37px;
+	top: 30px;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"]  > .v-widget {
@@ -12654,7 +12654,7 @@ div.v-layout.v-horizontal.v-widget {
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 37px !important;
+	height: 30px !important;
 	padding-top: 0;
 	padding-bottom: 0;
 	-webkit-backface-visibility: hidden;
@@ -12667,44 +12667,44 @@ div.v-layout.v-horizontal.v-widget {
 	right: 0;
 	margin: 0;
 	padding: 0;
-	height: 37px;
+	height: 30px;
 	color: #77baeb;
 	max-width: 30%;
 	-webkit-backface-visibility: hidden;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu .v-menubar-menuitem {
-	line-height: 36px;
+	line-height: 29px;
 	white-space: nowrap;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu img.v-icon {
 	display: inline-block;
-	margin: 0 6px 0 0;
-	width: 19px;
-	height: 19px;
-	border-radius: 10px;
+	margin: 0 5px 0 0;
+	width: 15px;
+	height: 15px;
+	border-radius: 8px;
 	border: none;
 }
 
 .imedigviewer .valo-menu-responsive[width-range~="0-800px"] .valo-menuitems {
 	height: 100%;
 	background-color: #005593;
-	background-image: -webkit-linear-gradient(right, #005593 0%, #005593 9px);
-	background-image: linear-gradient(to left,#005593 0%, #005593 9px);
+	background-image: -webkit-linear-gradient(right, #005593 0%, #005593 8px);
+	background-image: linear-gradient(to left,#005593 0%, #005593 8px);
 	color: #60afe8;
 	font-size: 14px;
-	line-height: 30px;
+	line-height: 24px;
 	border-right: 0 solid #003b66;
 	white-space: nowrap;
 	position: fixed;
 	z-index: 9000;
-	top: 37px;
+	top: 30px;
 	bottom: 0;
 	height: auto;
 	max-width: 100%;
 	overflow: auto;
-	padding: 19px 0;
+	padding: 15px 0;
 	-webkit-transform: translatex(-100%);
 	-moz-transform: translatex(-100%);
 	-ms-transform: translatex(-100%);
@@ -12729,7 +12729,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedigviewer .valo-menu-responsive[width-range~="0-500px"] .valo-menu .v-menubar-user-menu .v-menubar-menuitem-caption {
 	display: inline-block;
-	width: 19px;
+	width: 15px;
 	overflow: hidden;
 }
 

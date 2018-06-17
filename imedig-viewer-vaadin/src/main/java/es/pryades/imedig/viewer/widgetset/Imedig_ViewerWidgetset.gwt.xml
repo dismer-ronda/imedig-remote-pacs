@@ -20,4 +20,6 @@
     
 
     <inherits name="org.vaadin.hezamu.canvas.CanvasWidgetset" />
+
+    <inherits name="es.pryades.fabricjs.WidgetSet" />
 </module>
