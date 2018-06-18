@@ -18,7 +18,10 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.Action;
 import es.pryades.imedig.viewer.ListenerAction;
+import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
+import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
@@ -140,7 +143,23 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			closeStudies();
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
+		}else if (action instanceof AngleAction) {
+			imageCanvas.angleAction();
+		}else if (action instanceof DistanceAction) {
+			imageCanvas.distanceAction();
+		}else if (action instanceof NoneAction) {
+			imageCanvas.noneAction();
 		}
+	}
+
+	private void settingDistanceAction() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void settingAngleAction() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private void openImage(ImageData data) {

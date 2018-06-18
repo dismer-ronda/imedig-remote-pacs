@@ -10,8 +10,6 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import lombok.Getter;
-
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
@@ -53,6 +51,7 @@ import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import lombok.Getter;
 
 public class BackendMainWnd extends VerticalLayout implements ModalParent
 {
@@ -568,7 +567,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
 		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
 
-		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
+		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
+		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer-vaadin" + "?" + token + "&" + code + "&debug";
 
 		ExternalResource resource = new ExternalResource( url );
 		BrowserFrame e = new BrowserFrame( null, resource );
