@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -108,6 +108,20 @@ var Utils = exports.Utils = function () {
             });
 
             return line;
+        }
+    }, {
+        key: 'createRect',
+        value: function createRect(points, configuration) {
+            var rect = new fabric.Rect({
+                left: points[0],
+                top: points[1],
+                width: points[2],
+                height: points[3],
+                fill: 'transparent',
+                stroke: configuration.strokeColor,
+                strokeWidth: configuration.strokeWidth
+            });
+            return rect;
         }
     }, {
         key: 'createTextLabel',
@@ -160,12 +174,13 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Figure = exports.Figure = function Figure(figureType, points, text) {
+var Figure = exports.Figure = function Figure(figureType, points, text, isDraw) {
     _classCallCheck(this, Figure);
 
     this.figureType = figureType;
     this.points = points;
     this.text = "";
+    this.isDraw = isDraw;
 };
 
 /***/ }),
@@ -197,9 +212,21 @@ var AngleDrawer = exports.AngleDrawer = function () {
         this.isFirtLine = true;
         this.points = [];
         this.movePointer = null;
+        this.drawMode = options.drawMode;
+        this.preventUp = false;
     }
 
     _createClass(AngleDrawer, [{
+        key: 'setDrawMode',
+        value: function setDrawMode(drawMode) {
+            this.drawMode = drawMode;
+        }
+    }, {
+        key: 'setConfiguration',
+        value: function setConfiguration(configuration) {
+            this.configuration = configuration;
+        }
+    }, {
         key: 'onMouseMove',
         value: function onMouseMove(event, canvas) {
             if (this.currentDraw) {
@@ -221,6 +248,10 @@ var AngleDrawer = exports.AngleDrawer = function () {
     }, {
         key: 'onMouseUp',
         value: function onMouseUp(event, canvas) {
+            if (this.preventUp) {
+                return;
+            }
+
             var pointer = canvas.getPointer(event.e);
 
             if (this.isFirtLine) {
@@ -238,7 +269,17 @@ var AngleDrawer = exports.AngleDrawer = function () {
             }
 
             if (!this.isFirtLine) {
-                this.figure = new _figure.Figure("ANGLE", this.points, "");
+
+                if (this.drawMode === "SHOW") {
+                    if (this.firstLine) {
+                        canvas.remove(this.firstLine);
+                    }
+                    if (this.secondLine) {
+                        canvas.remove(this.secondLine);
+                    }
+                }
+
+                this.figure = new _figure.Figure("ANGLE", this.points, "", this.drawMode === "DRAW");
                 this.component.onDrawFigure(JSON.stringify(this.figure));
             }
             this.isFirtLine = !this.isFirtLine;
@@ -246,6 +287,7 @@ var AngleDrawer = exports.AngleDrawer = function () {
     }, {
         key: 'onMouseDown',
         value: function onMouseDown(event, canvas) {
+            this.preventUp = false;
             var pointer = canvas.getPointer(event.e);
             this.rect = canvas.calcViewportBoundaries();
 
@@ -274,6 +316,10 @@ var AngleDrawer = exports.AngleDrawer = function () {
     }, {
         key: 'setText',
         value: function setText(text, canvas) {
+
+            if (this.drawMode === "SHOW") {
+                return;
+            }
 
             if (this.figure) {
                 this.figure.text = text;
@@ -312,6 +358,20 @@ var AngleDrawer = exports.AngleDrawer = function () {
             });
             canvas.add(group);
         }
+    }, {
+        key: 'cancelDraw',
+        value: function cancelDraw(canvas) {
+            this.preventUp = true;
+            this.isFirtLine = true;
+            this.points = [];
+            this.movePointer = null;
+            if (this.firstLine) {
+                canvas.remove(this.firstLine);
+            }
+            if (this.secondLine) {
+                canvas.remove(this.secondLine);
+            }
+        }
     }]);
 
     return AngleDrawer;
@@ -336,15 +396,13 @@ var _utils = __webpack_require__(0);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Drawer = exports.Drawer = function () {
-    function Drawer(options) {
+    function Drawer() {
         _classCallCheck(this, Drawer);
-
-        this.configuration = options.configuration;
     }
 
-    _createClass(Drawer, [{
+    _createClass(Drawer, null, [{
         key: 'drawLine',
-        value: function drawLine(line, canvas) {
+        value: function drawLine(line, canvas, configuration) {
 
             var x1 = line.points[0].x;
             var x2 = line.points[1].x;
@@ -352,14 +410,14 @@ var Drawer = exports.Drawer = function () {
             var y2 = line.points[1].y;
 
             var points = [x1, y1, x2, y2];
-            var lineDrawer = _utils.Utils.createLine(points, this.configuration);
+            var lineDrawer = _utils.Utils.createLine(points, configuration);
             var left = (x1 + x2) / 2;
             var top = (y1 + y2) / 2 + 5;
 
             var lineText = _utils.Utils.createTextLabel(line.text, {
                 left: left,
                 top: top
-            }, this.configuration);
+            }, configuration);
 
             var group = new fabric.Group([lineDrawer, lineText], {
                 selectable: false
@@ -368,7 +426,7 @@ var Drawer = exports.Drawer = function () {
         }
     }, {
         key: 'drawAngle',
-        value: function drawAngle(angle, canvas) {
+        value: function drawAngle(angle, canvas, configuration) {
 
             var x1 = angle.points[1].x;
             var x2 = angle.points[2].x;
@@ -378,17 +436,42 @@ var Drawer = exports.Drawer = function () {
             var firstLinePoints = [angle.points[0].x, angle.points[0].y, angle.points[1].x, angle.points[1].y];
             var secondLinePoints = [angle.points[1].x, angle.points[1].y, angle.points[2].x, angle.points[2].y];
 
-            var firstLineDrawer = _utils.Utils.createLine(firstLinePoints, this.configuration);
+            var firstLineDrawer = _utils.Utils.createLine(firstLinePoints, configuration);
 
-            var secondLineDrawer = _utils.Utils.createLine(secondLinePoints, this.configuration);
+            var secondLineDrawer = _utils.Utils.createLine(secondLinePoints, configuration);
             var left = (x1 + x2) / 2;
             var top = (y1 + y2) / 2 + 5;
             var lineText = _utils.Utils.createTextLabel(angle.text, {
                 left: left,
                 top: top
-            }, this.configuration);
+            }, configuration);
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
+                selectable: false
+            });
+            canvas.add(group);
+        }
+    }, {
+        key: 'drawRect',
+        value: function drawRect(rect, canvas, configuration) {
+
+            var x1 = angle.points[0].x;
+            var x2 = angle.points[1].x;
+            var y1 = angle.points[0].y;
+            var y2 = angle.points[1].y;
+
+            var rectCoords = [rect.points[0].x, rect.points[0].y, rect.points[1].x - rect.points[0].x, rect.points[1].y - rect.points[0].y];
+
+            var rectDrawer = _utils.Utils.createRect(rectCoords, configuration);
+
+            var left = (x1 + x2) / 2;
+            var top = (y1 + y2) / 2 + 5;
+            var lineText = _utils.Utils.createTextLabel(angle.text, {
+                left: left,
+                top: top
+            }, configuration);
+
+            var group = new fabric.Group([rectDrawer, lineText], {
                 selectable: false
             });
             canvas.add(group);
@@ -425,9 +508,21 @@ var LineDrawer = exports.LineDrawer = function () {
         this.configuration = options.configuration;
         this.component = options.component;
         this.points = [];
+        this.drawMode = options.drawMode;
+        this.preventUp = false;
     }
 
     _createClass(LineDrawer, [{
+        key: 'setDrawMode',
+        value: function setDrawMode(drawMode) {
+            this.drawMode = drawMode;
+        }
+    }, {
+        key: 'setConfiguration',
+        value: function setConfiguration(configuration) {
+            this.configuration = configuration;
+        }
+    }, {
         key: 'onMouseMove',
         value: function onMouseMove(event, canvas) {
             if (this.currentDraw) {
@@ -447,6 +542,9 @@ var LineDrawer = exports.LineDrawer = function () {
     }, {
         key: 'onMouseUp',
         value: function onMouseUp(event, canvas) {
+            if (this.preventUp) {
+                return;
+            }
             var pointer = canvas.getPointer(event.e);
 
             if (pointer.eq(this.points[0])) {
@@ -454,14 +552,20 @@ var LineDrawer = exports.LineDrawer = function () {
                 return;
             }
 
+            if (this.drawMode === "SHOW") {
+                canvas.remove(this.currentDraw);
+                canvas.renderAll();
+            }
+
             this.points.push(pointer);
-            this.figure = new _figure.Figure("LINE", this.points, "");
+            this.figure = new _figure.Figure("LINE", this.points, "", this.drawMode === "DRAW");
             this.component.onDrawFigure(JSON.stringify(this.figure));
         }
     }, {
         key: 'onMouseDown',
         value: function onMouseDown(event, canvas) {
             this.points = [];
+            this.preventUp = false;
             var pointer = canvas.getPointer(event.e);
             this.rect = canvas.calcViewportBoundaries();
             this.points.push(pointer);
@@ -474,6 +578,10 @@ var LineDrawer = exports.LineDrawer = function () {
     }, {
         key: 'setText',
         value: function setText(text, canvas) {
+
+            if (this.drawMode === "SHOW") {
+                return;
+            }
 
             if (this.figure) {
                 this.figure.text = text;
@@ -510,6 +618,15 @@ var LineDrawer = exports.LineDrawer = function () {
             });
             canvas.add(group);
         }
+    }, {
+        key: 'cancelDraw',
+        value: function cancelDraw(canvas) {
+            this.preventUp = true;
+            this.points = [];
+            if (this.currentDraw) {
+                canvas.remove(this.currentDraw);
+            }
+        }
     }]);
 
     return LineDrawer;
@@ -525,6 +642,157 @@ var LineDrawer = exports.LineDrawer = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.RectDrawer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _figure = __webpack_require__(1);
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RectDrawer = exports.RectDrawer = function () {
+    function RectDrawer(options) {
+        _classCallCheck(this, RectDrawer);
+
+        this.configuration = options.configuration;
+        this.component = options.component;
+        this.points = [];
+        this.drawMode = options.drawMode;
+        this.preventUp = false;
+    }
+
+    _createClass(RectDrawer, [{
+        key: 'setDrawMode',
+        value: function setDrawMode(drawMode) {
+            this.drawMode = drawMode;
+        }
+    }, {
+        key: 'setConfiguration',
+        value: function setConfiguration(configuration) {
+            this.configuration = configuration;
+        }
+    }, {
+        key: 'onMouseMove',
+        value: function onMouseMove(event, canvas) {
+            if (this.currentDraw) {
+                var pointer = canvas.getPointer(event.e);
+
+                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
+                    return;
+                }
+
+                this.currentDraw.set({
+                    width: pointer.x - this.points[0].x,
+                    height: pointer.y - this.points[0].y
+                });
+                canvas.renderAll();
+            }
+        }
+    }, {
+        key: 'onMouseUp',
+        value: function onMouseUp(event, canvas) {
+            if (this.preventUp) {
+                return;
+            }
+            var pointer = canvas.getPointer(event.e);
+
+            if (pointer.eq(this.points[0])) {
+                canvas.remove(this.currentDraw);
+                return;
+            }
+
+            if (this.drawMode === "SHOW") {
+                canvas.remove(this.currentDraw);
+                canvas.renderAll();
+            }
+
+            this.points.push(pointer);
+            this.figure = new _figure.Figure("RECT", this.points, "", this.drawMode === "DRAW");
+            this.component.onDrawFigure(JSON.stringify(this.figure));
+        }
+    }, {
+        key: 'onMouseDown',
+        value: function onMouseDown(event, canvas) {
+            this.preventUp = false;
+            this.points = [];
+            var pointer = canvas.getPointer(event.e);
+            this.rect = canvas.calcViewportBoundaries();
+            this.points.push(pointer);
+            var pointsToDraw = [pointer.x, pointer.y, 0, 0];
+            this.currentDraw = _utils.Utils.createRect(pointsToDraw, this.configuration);
+
+            canvas.add(this.currentDraw);
+            canvas.renderAll();
+        }
+    }, {
+        key: 'setText',
+        value: function setText(text, canvas) {
+
+            if (this.drawMode === "SHOW") {
+                return;
+            }
+
+            if (this.figure) {
+                this.figure.text = text;
+            }
+
+            if (this.currentDraw) {
+                canvas.remove(this.currentDraw);
+            }
+
+            if (this.lineText) {
+                canvas.remove(this.lineText);
+            }
+
+            var x1 = this.points[0].x;
+            var x2 = this.points[1].x;
+            var y1 = this.points[0].y;
+            var y2 = this.points[1].y;
+
+            var deltaY = y2 - y1;
+            var deltaX = x2 - x1;
+
+            //const pad = 1 / 2;
+
+            //const angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+            var left = (x1 + x2) / 2;
+            var top = (y1 + y2) / 2 + 5;
+            this.lineText = _utils.Utils.createTextLabel(text, {
+                left: left,
+                top: top
+            }, this.configuration);
+
+            var group = new fabric.Group([this.currentDraw, this.lineText], {
+                selectable: false
+            });
+            canvas.add(group);
+        }
+    }, {
+        key: 'cancelDraw',
+        value: function cancelDraw(canvas) {
+            this.preventUp = true;
+            this.points = [];
+            if (this.currentDraw) {
+                canvas.remove(this.currentDraw);
+            }
+        }
+    }]);
+
+    return RectDrawer;
+}();
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.FabricJsApp = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -532,6 +800,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _line = __webpack_require__(4);
 
 var _angle = __webpack_require__(2);
+
+var _rect = __webpack_require__(5);
 
 var _drawer = __webpack_require__(3);
 
@@ -648,13 +918,10 @@ var FabricJsApp = exports.FabricJsApp = function () {
         _classCallCheck(this, FabricJsApp);
 
         this.options = options;
-
-        this.drawer = new _drawer.Drawer({
-            configuration: this.options.configuration
-        });
+        this.configuration = this.options.configuration;
 
         this._currentAction = this.options.action;
-        this.options.container.style.backgroundColor = this.options.configuration.backgroundColor;
+        this.options.container.style.backgroundColor = this.configuration.backgroundColor;
 
         var canvasImageId = privateMethods.generateCanvasIds("canvas_image");
         var canvasNotesId = privateMethods.generateCanvasIds("canvas_notes");
@@ -744,6 +1011,17 @@ var FabricJsApp = exports.FabricJsApp = function () {
         this.canvasDraw.on("mouse:wheel", function (o) {
             _this.options.component.onMouseWheel(o.e.wheelDelta);
         });
+
+        var wrapper = this.canvasDraw.wrapperEl;
+        wrapper.tabIndex = 1000;
+
+        wrapper.addEventListener("keyup", function (event) {
+            if (event.which === 27) {
+                if (_this.currentDraw) {
+                    _this.currentDraw.cancelDraw(_this.canvasDraw);
+                }
+            }
+        }, false);
     }
 
     _createClass(FabricJsApp, [{
@@ -754,14 +1032,44 @@ var FabricJsApp = exports.FabricJsApp = function () {
             switch (this._currentAction) {
                 case "DRAW_LINE":
                     this.currentDraw = new _line.LineDrawer({
-                        configuration: this.options.configuration,
-                        component: this.options.component
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "DRAW"
                     });
                     break;
                 case "DRAW_ANGLE":
                     this.currentDraw = new _angle.AngleDrawer({
-                        configuration: this.options.configuration,
-                        component: this.options.component
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "DRAW"
+                    });
+                    break;
+                case "DRAW_RECT":
+                    this.currentDraw = new _rect.RectDrawer({
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "DRAW"
+                    });
+                    break;
+                case "SHOW_LINE":
+                    this.currentDraw = new _line.LineDrawer({
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "SHOW"
+                    });
+                    break;
+                case "SHOW_ANGLE":
+                    this.currentDraw = new _angle.AngleDrawer({
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "SHOW"
+                    });
+                    break;
+                case "SHOW_RECT":
+                    this.currentDraw = new _rect.RectDrawer({
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "SHOW"
                     });
                     break;
                 default:
@@ -774,10 +1082,13 @@ var FabricJsApp = exports.FabricJsApp = function () {
         value: function draw(figure) {
             switch (figure.figureType) {
                 case "LINE":
-                    this.drawer.drawLine(figure, this.canvasDraw);
+                    _drawer.Drawer.drawLine(figure, this.canvasDraw, this.configuration);
                     break;
                 case "ANGLE":
-                    this.drawer.drawAngle(figure, this.canvasDraw);
+                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, this.configuration);
+                    break;
+                case "RECT":
+                    _drawer.Drawer.drawRect(figure, this.canvasDraw, this.configuration);
                     break;
             }
         }
@@ -786,6 +1097,14 @@ var FabricJsApp = exports.FabricJsApp = function () {
         value: function setText(text) {
             if (this.currentDraw) {
                 this.currentDraw.setText(text, this.canvasDraw);
+            }
+        }
+    }, {
+        key: 'setConfiguration',
+        value: function setConfiguration(configuration) {
+            this.configuration = configuration;
+            if (this.currentDraw) {
+                this.currentDraw.setConfiguration(this.configuration);
             }
         }
     }, {
@@ -877,9 +1196,9 @@ var FabricJsApp = exports.FabricJsApp = function () {
             var points = [x1, y1, x2, y2];
 
             this.currentLine = new fabric.Line(points, {
-                strokeWidth: this.options.configuration.strokeWidth,
-                fill: this.options.configuration.fillColor,
-                stroke: this.options.configuration.strokeColor,
+                strokeWidth: this.configuration.strokeWidth,
+                fill: this.configuration.fillColor,
+                stroke: this.configuration.strokeColor,
                 originX: 'center',
                 originY: 'center',
 
@@ -903,12 +1222,12 @@ var FabricJsApp = exports.FabricJsApp = function () {
                     top: (y1 + y2) / 2 + 5,
                     // angle: angleInDegrees,
                     backgroundColor: 'transparent',
-                    fill: this.options.configuration.fillColor,
-                    stroke: this.options.configuration.strokeColor,
-                    fontWeight: this.options.configuration.textFontWeight,
-                    fontStyle: this.options.configuration.textFontStyle,
-                    fontSize: this.options.configuration.textFontSize,
-                    fontFamily: this.options.configuration.textFontFamily,
+                    fill: this.configuration.fillColor,
+                    stroke: this.configuration.strokeColor,
+                    fontWeight: this.configuration.textFontWeight,
+                    fontStyle: this.configuration.textFontStyle,
+                    fontSize: this.configuration.textFontSize,
+                    fontFamily: this.configuration.textFontFamily,
                     selectable: false
                 });
 

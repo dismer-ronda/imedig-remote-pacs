@@ -21,5 +21,5 @@ package es.pryades.fabricjs.enums;
  * @author geanny
  */
 public enum FigureType {
-    LINE,ANGLE;
+    LINE,ANGLE,RECT;
 }

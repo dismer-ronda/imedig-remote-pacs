@@ -29,18 +29,20 @@ public class Figure implements Serializable {
     private FigureType figureType;
     private List<Point> points; 
     private String text;
-
+    private boolean isDraw;
  
     public Figure(FigureType figureType, List<Point> points) {
         this.figureType = figureType;
         this.points = points;
         this.text = "";
+        this.isDraw = true;
     }
     
     public Figure(FigureType figureType, List<Point> points,String text) {
         this.figureType = figureType;
         this.text = text;
         this.points = points;
+        this.isDraw = true;
     }
 
     public FigureType getFigureType() {
@@ -66,5 +68,12 @@ public class Figure implements Serializable {
     public void setText(String text) {
         this.text = text;
     }
-     
+
+    public boolean isIsDraw() {
+        return isDraw;
+    }
+
+    public void setIsDraw(boolean isDraw) {
+        this.isDraw = isDraw;
+    }             
 }
