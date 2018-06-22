@@ -90,6 +90,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.addStyleName("canvas-wrapper");
 
         this.notes = new ArrayList<>();
+        this.canvasConfiguration = canvasConfiguration;
 
         this.createDefaultsDimesions();
         this.generateConfiguration();
@@ -99,7 +100,6 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         notesConfiguration = new NotesConfiguration();
         backgroundImage = "";
-        this.canvasConfiguration = canvasConfiguration;
     }
                    
     public void setImageUrl(String url) {

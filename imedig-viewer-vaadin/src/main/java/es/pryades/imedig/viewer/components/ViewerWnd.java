@@ -176,6 +176,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		leftToolBar.clearThumnails();
 		
 		studies.clear();
+		imageCanvas.clear();
 	}
 	
 	private void openStudies(List<String> studies) {

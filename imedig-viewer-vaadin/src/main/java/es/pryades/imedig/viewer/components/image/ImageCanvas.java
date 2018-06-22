@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -67,9 +68,8 @@ public class ImageCanvas extends VerticalLayout {
 		buildCanvasConfiguration();
 		
 		canvas = new FabricJs(canvasConfiguration);
-		//canvas = new FabricJs();
 		canvas.setSizeFull();
-		canvas.setCursor("pointer");
+		canvas.setCursor("default");
 		addComponent(canvas);
 		
 		//Inicializar listeners
@@ -89,7 +89,7 @@ public class ImageCanvas extends VerticalLayout {
 			private void calculateValue(Figure figure) {
 				switch (figure.getFigureType()) {
 				case ANGLE:
-					
+					calculateGrade(figure);
 					break;
 				case LINE:
 					calculateDistance(figure);
@@ -147,53 +147,38 @@ public class ImageCanvas extends VerticalLayout {
 		String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
 		figure.setText(text);
 		canvas.setText(text);
-		//canvasImage.setAnnotations( getViewSpaceAnnotations( canvasImage ) );
-		//canvasImage.setRefresh( false );
+	}
+	
+	private void calculateGrade(Figure figure) {
+		Point p1 = figure.getPoints().get(0);
+		Point p2 = figure.getPoints().get(1);
+		Point p3 = figure.getPoints().get(2);
 		
-		/*
+		double angle = Utils.roundDouble( getAngle( p1.getX(), p1.getY(), p2.getX(), p2.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY() ), 2 );
+		double other = 180-angle;
 		
+		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  other + " grados";
+		figure.setText(text);
+		canvas.setText(text);
+	}
+
+	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
+		double angle = Math.toDegrees( Math.abs( getAngle( x1, y1, x2, y2 ) - getAngle( xp1, yp1, xp2, yp2 ) ) );
 		
+		return angle > 90 ? 180 - angle : angle;
+	}
+	
+	private double getAngle( double x1, double y1, double x2, double y2 ){
+		double angle = 0;
 		
-		String spacing = metadata.getPixelSpacing();
-		
-		if ( spacing != null )
+		if ( x2 - x1 == 0 )
+			angle = Math.PI / 2;
+		else
 		{
-			
-			
-			if ( sp.length == 2 )
-			{
-				double mx = (double) ( ix2 - ix1 ) / ( vx2 - vx1 );
-				double nx = ix1 - mx * vx1;
-				
-				double my = (double) ( iy2 - iy1 ) / ( vy2 - vy1 );
-				double ny = iy1 - my * vy1;
-				
-				double ipx1 = mx * vpx1 + nx;
-				double ipx2 = mx * vpx2 + nx;
-				
-				double ipy1 = my * vpy1 + ny;
-				double ipy2 = my * vpy2 + ny;
-				
-				double dx = ( ipx2 - ipx1 ) * Double.parseDouble( sp[0] );
-				double dy = ( ipy2 - ipy1 ) * Double.parseDouble( sp[1] );
-				
-				double distance = Math.sqrt( dx * dx + dy * dy );
-				
-				String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
-				
-				annotations.add( new DistanceAnnotation( (int) ipx1, (int) ipy1, (int) ipx2, (int) ipy2, text ) );
-				
-				canvasImage.setAnnotations( getViewSpaceAnnotations( canvasImage ) );
-				canvasImage.setRefresh( false );
-			}
-			else
-			{
-				MessageDialog messageDialog = new MessageDialog( "Error", getResString( "NoPixelSizeMsg" ), MessageDialog.CONTROLS_OK, resourceBundle );
-				getApplication().getMainWindow().getContent().add( messageDialog );
-			}
+			angle = Math.atan( ( y2 - y1 ) / ( x2 - x1 ) );
 		}
-	}*/
 		
+		return angle;
 	}
 
 	private void buildCanvasConfiguration(){
@@ -201,6 +186,9 @@ public class ImageCanvas extends VerticalLayout {
 		canvasConfiguration.setStrokeWidth(1.0);
 		canvasConfiguration.setFillColor("#FFFF00");
 		canvasConfiguration.setStrokeColor("#FFFF00");
+		canvasConfiguration.setTextFontFamily("Open Sans");
+		canvasConfiguration.setTextFontSize(14);
+		canvasConfiguration.setTextFillColor("#FFFF00");
 	}
 	
 	private void resizeAction(){
@@ -234,7 +222,6 @@ public class ImageCanvas extends VerticalLayout {
 			Double currentWidth = getDouble(imageHeader.getWindowWidth());
 			Integer currentFrame = 0;
 			
-			/**********************************************/
 			double ix1 = imageRect.getX();
 			double iy1 = imageRect.getY();
 			double ix2 = ix1 + imageRect.getWidth() - 1;
@@ -263,26 +250,15 @@ public class ImageCanvas extends VerticalLayout {
 			LOG.info(urlimage);
 			canvas.setImageUrl(new ExternalResource(urlimage));
 			
-			//showInformation(metadata);
-			
-			//HttpImageReference imgRef = new HttpImageReference( app.getServerUrl() + url );
+			showInformation(imageHeader);
 			
 			ReportInfo info = new ReportInfo();
 			
 			info.setHeader( imageHeader );
 			info.setUrl( url );
 			info.setIcon( urlIcon );
-			
-			//imagesInfo.put( user.getLogin(), info );
-
-			//canvasImage.setOverlays( getViewSpaceOverlays( canvasImage ) );
-			//canvasImage.setAnnotations( getViewSpaceAnnotations( canvasImage ) );
-			//canvasImage.setImage( imgRef );
-			//canvasImage.setRefresh( true );
-			/***********************************************************************/
 		}catch ( Throwable ex )	{
-			//MessageDialog messageDialog = new MessageDialog( "Error", ex.getMessage(), MessageDialog.CONTROLS_OK, resourceBundle );
-			//getApplication().getMainWindow().getContent().add( messageDialog );
+			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
 		}
 	}
 
@@ -341,41 +317,10 @@ public class ImageCanvas extends VerticalLayout {
                  append(string( metadata.getInstanceNumber() )).append("\n");
         
         canvas.addNotes(sbuilder.toString(), configuration);
-        
-        /*ImageHeader metadata = (ImageHeader) canvasImage.get( "metadata" );
-		Image image = (Image) canvasImage.get( "ImageBean" );
-		SeriesTree series = (SeriesTree) canvasImage.get( "SeriesBean" );
-
-		int index = getImageIndex( series, image ) + 1;
-		int total = series.getImageList().size();
-		
-		String ret = "";
-		
-		int size = 16;
-		int left = 4;
-		int top = 4;
-		String color = Colors.STR_METRO_YELLOW;
-		String font = "sans-serif";
-		
-		ret += color + "," + size + "," + font + "," + left + "," + top + "," + getString( metadata.getPatientName() ) + " " + getString( metadata.getPatientSex() ) + "|";
-		top += size + 2;
-		
-		ret += color + "," + size + "," + font + "," + left + "," + top + "," + getString( metadata.getPatientID() ) + "|";
-		top += size + 2;
-		
-		ret += color + "," + size + "," + font + "," + left + "," + top + "," + getString( metadata.getStudyDate() ) + "|";
-		top += size + 2;
-		
-//		ret += color + "," + size + "," + font + "," + left + "," + top + "," + getString( metadata.getInstanceNumber() ) + "|";
-//		top += size + 2;
-		
-		ret += color + "," + size + "," + font + "," + left + "," + top + "," + index + "/" + total + "|";
-		top += size + 2;
-
-		return ret;*/
 	}
 
 	public void clear() {
+		noneAction();
 		imageData = null;
 		figures.clear();
 		canvas.clear();
@@ -384,16 +329,23 @@ public class ImageCanvas extends VerticalLayout {
 	public void noneAction(){
 		currentAction = CanvasAction.NONE;
 		canvas.setAction(currentAction);
+		canvas.setCursor("default");
 	}
 
 	public void distanceAction(){
+		if (imageData == null) return;
+		
 		currentAction = CanvasAction.DRAW_LINE;
 		canvas.setAction(currentAction);
+		canvas.setCursor("crosshair");
 	}
 
 	public void angleAction(){
+		if (imageData == null) return;
+
 		currentAction = CanvasAction.DRAW_ANGLE;
 		canvas.setAction(currentAction);
+		canvas.setCursor("crosshair");
 	}
 
 }
