@@ -38,7 +38,7 @@ public class ImageCanvas extends VerticalLayout {
 
 	private FabricJs canvas;
 	private FabricCanvasConfiguration canvasConfiguration;
-	private List<Figure> figures;
+	private List<Figure> normalizeFigures;
 	private ImageData imageData = null;
 	private CanvasAction currentAction = CanvasAction.NONE; 
 	private Rectangle imageRect;
@@ -61,7 +61,7 @@ public class ImageCanvas extends VerticalLayout {
 	
 
 	private void init() {
-		figures = new ArrayList<Figure>();
+		normalizeFigures = new ArrayList<Figure>();
 	}
 
 	private void settingCanvas() {
@@ -146,6 +146,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
 		figure.setText(text);
+		addNormalizeFigure(figure);
 		canvas.setText(text);
 	}
 	
@@ -159,6 +160,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  other + " grados";
 		figure.setText(text);
+		addNormalizeFigure(figure);
 		canvas.setText(text);
 	}
 
@@ -180,6 +182,23 @@ public class ImageCanvas extends VerticalLayout {
 		
 		return angle;
 	}
+	
+	private void addNormalizeFigure(Figure figure){
+		
+		List<Point> npoints = new ArrayList<>();
+		
+		double dx = viewRect.getWidth();
+		double dy = viewRect.getHeight();
+		
+		for (Point point : figure.getPoints()) {
+			double x = point.getX()/dx;
+			double y = point.getY()/dy;
+			
+			npoints.add(new Point(x, y));
+		}
+		
+		normalizeFigures.add(new Figure(figure.getFigureType(), npoints, figure.getText()));
+	}
 
 	private void buildCanvasConfiguration(){
 		canvasConfiguration = new FabricCanvasConfiguration();
@@ -193,9 +212,33 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private void resizeAction(){
 		canvas.clear();
+		
 		if (imageData == null) return;
+		
 		openImage();
+		
+		showNormalizeFigures();
 	}
+
+	private void showNormalizeFigures() {
+		double dx = viewRect.getWidth();
+		double dy = viewRect.getHeight();
+		
+		for (Figure nf : normalizeFigures) {
+			
+			List<Point> npoints = new ArrayList<>();
+			for (Point point : nf.getPoints()) {
+				double x = point.getX()*dx;
+				double y = point.getY()*dy;
+				
+				npoints.add(new Point(x, y));
+			}
+			
+			canvas.draw(new Figure(nf.getFigureType(), npoints, nf.getText()));
+		}
+	}
+
+
 
 	public void openImage(ImageData imageData) {
 		if (this.imageData != null) {
@@ -322,7 +365,7 @@ public class ImageCanvas extends VerticalLayout {
 	public void clear() {
 		noneAction();
 		imageData = null;
-		figures.clear();
+		normalizeFigures.clear();
 		canvas.clear();
 	}
 
