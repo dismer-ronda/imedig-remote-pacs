@@ -43,6 +43,9 @@ public class ImageCanvas extends VerticalLayout {
 	private CanvasAction currentAction = CanvasAction.NONE; 
 	private Rectangle imageRect;
 	private Rectangle viewRect;
+	private Double currentCenter; 
+	private Double currentWidth;
+	private Integer currentFrame;
 	private ImageHeader imageHeader;
 	
 
@@ -89,11 +92,14 @@ public class ImageCanvas extends VerticalLayout {
 			private void calculateValue(Figure figure) {
 				switch (figure.getFigureType()) {
 				case ANGLE:
-					calculateGrade(figure);
+					calculateAngle(figure);
 					break;
 				case LINE:
 					calculateDistance(figure);
 					break;
+				case RECT:
+					zoomOperation(figure);
+					break;	
 				default:
 					break;
 				}// TODO Auto-generated method stub
@@ -150,7 +156,7 @@ public class ImageCanvas extends VerticalLayout {
 		canvas.setText(text);
 	}
 	
-	private void calculateGrade(Figure figure) {
+	private void calculateAngle(Figure figure) {
 		Point p1 = figure.getPoints().get(0);
 		Point p2 = figure.getPoints().get(1);
 		Point p3 = figure.getPoints().get(2);
@@ -162,6 +168,141 @@ public class ImageCanvas extends VerticalLayout {
 		figure.setText(text);
 		addNormalizeFigure(figure);
 		canvas.setText(text);
+	}
+	
+	private void zoomOperation(Figure figure) {
+		
+		double ix1 = imageRect.getX();
+		double iy1 = imageRect.getY();
+		double ix2 = ix1 + imageRect.getWidth() - 1;
+		double iy2 = iy1 + imageRect.getHeight() - 1;
+		
+		double vx1 = viewRect.getX();
+		double vy1 = viewRect.getY();
+		double vx2 = vx1 + viewRect.getWidth() - 1;
+		double vy2 = vy1 + viewRect.getHeight() - 1;
+
+		double vpx1 = figure.getPoints().get(0).getX();
+		double vpy1 = figure.getPoints().get(0).getY();
+		double vpx2 = figure.getPoints().get(1).getX();
+		double vpy2 = figure.getPoints().get(1).getY();
+		
+		if ( vpx1 < 0 ) vpx1 = 0;
+		if ( vpx1 > vx2 ) vpx1 = vx2;
+		if ( vpy1 < 0 ) vpy1 = 0;
+		if ( vpy1 >= vy2 ) 	vpy1 = vy2;
+		if ( vpx2 < 0 ) vpx2 = 0;
+		if ( vpx2 >= vx2 ) 	vpx2 = vx2;
+		if ( vpy2 < 0 )	vpy2 = 0;
+		if ( vpy2 >= vy2 )	vpy2 = vy2;
+		
+		if ( vpx1 > vpx2 ){
+			double temp = vpx1;
+			
+			vpx1 = vpx2;
+			vpx2 = temp;
+		}
+		
+		if ( vpy1 > vpy2 ) {
+			double temp = vpy1;
+			
+			vpy1 = vpy2;
+			vpy2 = temp;
+		}
+		
+		if ( vpx2 - vpx1 > 10 && vpy2 - vpy1 > 10 ){
+			double mx = (double) ( ix2 - ix1 ) / ( vx2 - vx1 );
+			double nx = ix1 - mx * vx1;
+			
+			double my = (double) ( iy2 - iy1 ) / ( vy2 - vy1 );
+			double ny = iy1 - my * vy1;
+			
+			int nix1 = (int) ( mx * vpx1 + nx );
+			int nix2 = (int) ( mx * vpx2 + nx );
+			
+			int niy1 = (int) ( my * vpy1 + ny );
+			int niy2 = (int) ( my * vpy2 + ny );
+			
+			//ArrayList<Status> backStatus = (ArrayList<Status>) canvasImage.get( "backStatus" );
+				
+			currentCenter = getDouble(imageHeader.getWindowCenter());
+			currentWidth = getDouble(imageHeader.getWindowWidth());
+			currentFrame = 0;
+				
+			//backStatus.add( new Status( ix1, iy1, ix2, iy2, currentCenter, currentWidth, currentFrame ) );
+			imageRect = new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 );
+			
+			viewRect = getCanvasImage();
+			
+			canvas.clear();
+			
+			openImage();
+		}
+		
+		/*
+		if ( vpx2 - vpx1 > 10 && vpy2 - vpy1 > 10 )
+		{
+			double mx = (double) ( ix2 - ix1 ) / ( vx2 - vx1 );
+			double nx = ix1 - mx * vx1;
+			
+			double my = (double) ( iy2 - iy1 ) / ( vy2 - vy1 );
+			double ny = iy1 - my * vy1;
+			
+			int nix1 = (int) ( mx * vpx1 + nx );
+			int nix2 = (int) ( mx * vpx2 + nx );
+			
+			int niy1 = (int) ( my * vpy1 + ny );
+			int niy2 = (int) ( my * vpy2 + ny );
+			
+			if ( !replicate )
+			{
+				ArrayList<Status> backStatus = (ArrayList<Status>) canvasImage.get( "backStatus" );
+				
+				double currentCenter = (Double) canvasImage.get( "currentCenter" );
+				double currentWidth = (Double) canvasImage.get( "currentWidth" );
+				
+				int currentFrame = (Integer) canvasImage.get( "currentFrame" );
+				
+				backStatus.add( new Status( ix1, iy1, ix2, iy2, currentCenter, currentWidth, currentFrame ) );
+				
+				canvasImage.set( "irect", new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 ) );
+				
+				setViewRect( canvasImage );
+				
+				openCurrentImage( canvasImage );
+			}
+			else
+			{
+				ImageHeader meta1 = (ImageHeader) canvasImage.get( "metadata" );
+				
+				for ( ImedigCanvas canvas : canvasImages )
+				{
+					ImageHeader meta2 = (ImageHeader) canvas.get( "metadata" );
+					
+					if ( meta2 != null )
+					{
+						if ( meta1.getColumns() == meta2.getColumns() && meta1.getRows() == meta2.getRows() )
+						{
+							ArrayList<Status> backStatus = (ArrayList<Status>) canvas.get( "backStatus" );
+							
+							double currentCenter = (Double) canvas.get( "currentCenter" );
+							double currentWidth = (Double) canvas.get( "currentWidth" );
+							
+							int currentFrame = (Integer) canvas.get( "currentFrame" );
+							
+							backStatus.add( new Status( ix1, iy1, ix2, iy2, currentCenter, currentWidth, currentFrame ) );
+							
+							canvas.set( "irect", new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 ) );
+							
+							setViewRect( canvas );
+							
+							openCurrentImage( canvas );
+						}
+					}
+				}
+			}
+		}*/
+		
 	}
 
 	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
@@ -246,10 +387,7 @@ public class ImageCanvas extends VerticalLayout {
 		}
 
 		this.imageData = imageData;
-		openImage();
-	}
 
-	private void openImage(){
 		HashMap<String,String> params = new HashMap<String,String>();
 		
 		params.put( "StudyInstanceUID", imageData.getStudy().getStudyData().getStudyInstanceUID() );
@@ -259,12 +397,23 @@ public class ImageCanvas extends VerticalLayout {
 		try{
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
 			
-			viewRect = getCanvasImage(imageHeader);
 			imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
-			Double currentCenter = getDouble(imageHeader.getWindowCenter()); 
-			Double currentWidth = getDouble(imageHeader.getWindowWidth());
-			Integer currentFrame = 0;
+			currentCenter = getDouble(imageHeader.getWindowCenter()); 
+			currentWidth = getDouble(imageHeader.getWindowWidth());
+			currentFrame = new Integer(0);
+			viewRect = getCanvasImage();
 			
+			openImage();
+			
+		}catch ( Throwable ex )	{
+			//TODO Mostar error
+		}
+		
+		
+	}
+
+	private void openImage(){
+		try{
 			double ix1 = imageRect.getX();
 			double iy1 = imageRect.getY();
 			double ix2 = ix1 + imageRect.getWidth() - 1;
@@ -320,13 +469,13 @@ public class ImageCanvas extends VerticalLayout {
 		return source != null ? source : "";
 	}
 
-	private Rectangle getCanvasImage(ImageHeader metadata) {
+	private Rectangle getCanvasImage() {
 
 		int vcols = canvas.getvWidth().intValue();
 		int vrows = canvas.getvHeight().intValue();
 
-		int icols = metadata.getColumns();
-		int irows = metadata.getRows();
+		int icols = (int)imageRect.getWidth();
+		int irows = (int)imageRect.getHeight();
 
 		double ar = (double) icols / irows;
 
@@ -368,7 +517,7 @@ public class ImageCanvas extends VerticalLayout {
 		normalizeFigures.clear();
 		canvas.clear();
 	}
-
+	
 	public void noneAction(){
 		currentAction = CanvasAction.NONE;
 		canvas.setAction(currentAction);
@@ -387,6 +536,14 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = CanvasAction.DRAW_ANGLE;
+		canvas.setAction(currentAction);
+		canvas.setCursor("crosshair");
+	}
+	
+	public void zoomAction(){
+		if (imageData == null) return;
+
+		currentAction = CanvasAction.SHOW_RECT;
 		canvas.setAction(currentAction);
 		canvas.setCursor("crosshair");
 	}
