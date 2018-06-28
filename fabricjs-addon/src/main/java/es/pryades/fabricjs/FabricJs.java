@@ -1,31 +1,34 @@
 package es.pryades.fabricjs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import es.pryades.fabricjs.data.Note;
+import es.pryades.fabricjs.listeners.ResizeListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
+import es.pryades.fabricjs.listeners.MouseUpListener;
+import es.pryades.fabricjs.listeners.MouseDownListener;
+import es.pryades.fabricjs.listeners.MouseMoveListener;
+import es.pryades.fabricjs.config.CanvasDimensions;
+import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.config.FabricCanvasConfiguration;
+import es.pryades.fabricjs.config.NotesConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vaadin.annotations.JavaScript;
+import es.pryades.fabricjs.client.FabricJsState;
+import es.pryades.fabricjs.data.Command;
+
+import es.pryades.fabricjs.geometry.Figure;
 import com.vaadin.server.ExternalResource;
+
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.JavaScriptFunction;
-
 import elemental.json.JsonArray;
-import es.pryades.fabricjs.client.FabricJsState;
-import es.pryades.fabricjs.config.CanvasDimensions;
-import es.pryades.fabricjs.config.FabricCanvasConfiguration;
-import es.pryades.fabricjs.config.NotesConfiguration;
-import es.pryades.fabricjs.data.Command;
-import es.pryades.fabricjs.data.Note;
-import es.pryades.fabricjs.enums.CanvasAction;
-import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
-import es.pryades.fabricjs.listeners.MouseDownListener;
-import es.pryades.fabricjs.listeners.MouseMoveListener;
-import es.pryades.fabricjs.listeners.MouseUpListener;
-import es.pryades.fabricjs.listeners.MouseWheelListener;
-import es.pryades.fabricjs.listeners.ResizeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 // This is the server-side UI component that provides public API 
 // for FabricJs
@@ -42,7 +45,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     private CanvasDimensions canvasDimensions;
     private final CanvasAction defauAction = CanvasAction.NONE;
-    
+
     private CanvasAction action;
 
     private final List<Note> notes;
@@ -50,8 +53,6 @@ public class FabricJs extends AbstractJavaScriptComponent {
     private List<Figure> figures;
 
     private final List<Command> commands;
-    
-    
 
     /**
      * Listeners
@@ -68,28 +69,31 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     private DrawFigureListener drawFigureListener;
 
-    public FabricJs() {       
+    public FabricJs() {
         this.commands = new ArrayList<>();
         this.figures = new ArrayList<>();
         this.addStyleName("canvas-wrapper");
 
         this.notes = new ArrayList<>();
         this.canvasConfiguration = new FabricCanvasConfiguration();
+        notesConfiguration = new NotesConfiguration();
+        backgroundImage = "";
 
         this.createDefaultsDimesions();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
-        notesConfiguration = new NotesConfiguration();
-        backgroundImage = "";
     }
 
-    public FabricJs(FabricCanvasConfiguration canvasConfiguration) {        
+    public FabricJs(FabricCanvasConfiguration canvasConfiguration) {
         this.commands = new ArrayList<>();
         this.figures = new ArrayList<>();
         this.addStyleName("canvas-wrapper");
 
         this.notes = new ArrayList<>();
+
+        notesConfiguration = new NotesConfiguration();
+        backgroundImage = "";
         this.canvasConfiguration = canvasConfiguration;
 
         this.createDefaultsDimesions();
@@ -98,10 +102,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         this.action = defauAction;
 
-        notesConfiguration = new NotesConfiguration();
-        backgroundImage = "";
     }
-                   
+
     public void setImageUrl(String url) {
         backgroundImage = url;
         this.commands.add(new Command("SET_IMAGE", this.backgroundImage));
@@ -122,10 +124,10 @@ public class FabricJs extends AbstractJavaScriptComponent {
         getState().commands = getPayload(this.commands);
     }
 
-    public void setText(String text) {
+    public void setText(Figure figure, String text) {
         this.commands.add(new Command("SET_TEXT", text));
         getState().commands = getPayload(this.commands);
-        this.figures.get(this.figures.size() - 1).setText(text);
+        this.setFigureText(figure.getKey(), text);
     }
 
     public void draw(Figure figure) {
@@ -169,8 +171,21 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void addNotes(String text, NotesConfiguration configuration) {
-        notes.add(new Note(text, configuration));
-        this.commands.add(new Command("ADD_NOTE", getPayload(notes)));
+        Note note = new Note(text, configuration);
+        notes.add(note);
+        this.commands.add(new Command("ADD_NOTE", getPayload(note)));
+        this.getState().commands = getPayload(this.commands);
+    }
+
+    public void removeFigure(Figure figure) {
+        this.figures.remove(figure);
+        this.commands.add(new Command("REMOVE_FIGURE", figure.getKey()));
+        this.getState().commands = getPayload(this.commands);
+    }
+
+    public void removeNote(Note note) {
+        this.notes.remove(note);
+        this.commands.add(new Command("REMOVE_NOTE", note.getKey()));
         this.getState().commands = getPayload(this.commands);
     }
 
@@ -181,7 +196,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     public void setCanvasConfiguration(FabricCanvasConfiguration canvasConfiguration) {
         this.canvasConfiguration = canvasConfiguration;
         getState().canvasConfiguration = getPayload(this.canvasConfiguration);
-    }        
+    }
 
     public CanvasDimensions getCanvasDimensions() {
         return canvasDimensions;
@@ -197,11 +212,11 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.generateCanvasDimensions();
     }
 
-    public Double getvWidth() {
+    public double getvWidth() {
         return vWidth;
     }
 
-    public Double getvHeight() {
+    public double getvHeight() {
         return vHeight;
     }
 
@@ -262,12 +277,21 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     //métodos privados
+    private void setFigureText(String key, String text) {
+        for (int i = 0; i < this.figures.size(); i++) {
+            if (this.figures.get(i).getKey().equals(key)) {
+                this.figures.get(i).setText(text);
+                break;
+            }
+        }
+    }
+
     private String getPayload(Object object) {
         Gson gson = new GsonBuilder().create();
         return gson.toJson(object);
     }
 
-    private void generateConfiguration() {      
+    private void generateConfiguration() {
         getState().canvasConfiguration = getPayload(this.canvasConfiguration);
     }
 
@@ -294,7 +318,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                commands.clear();              
+                commands.clear();
                 //getState().commands = getPayload(commands);
             }
         });
@@ -328,7 +352,9 @@ public class FabricJs extends AbstractJavaScriptComponent {
                 if (!Objects.isNull(drawFigureListener)) {
                     Gson gson = new GsonBuilder().create();
                     Figure figure = gson.fromJson(arguments.getString(0), Figure.class);
-                    figures.add(figure);
+                    if (figure.isDrawed()) {
+                        figures.add(figure);
+                    }
                     drawFigureListener.onDrawFigure(figure);
                 }
             }

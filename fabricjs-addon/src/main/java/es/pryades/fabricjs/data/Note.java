@@ -18,6 +18,7 @@ package es.pryades.fabricjs.data;
 import es.pryades.fabricjs.config.NotesConfiguration;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  *
@@ -26,6 +27,7 @@ import java.util.Objects;
 public class Note implements Serializable {
 
     private String text;
+    private String key;
     private NotesConfiguration notesConfiguration;
 
     public Note(String text) {
@@ -34,6 +36,7 @@ public class Note implements Serializable {
     }
 
     public Note(String text, NotesConfiguration notesConfiguration) {
+        this.key = UUID.randomUUID().toString().replaceAll("-", "_");
         this.text = text;
         if (Objects.isNull(notesConfiguration)) {
             this.notesConfiguration = new NotesConfiguration();
@@ -57,5 +60,37 @@ public class Note implements Serializable {
     public void setNotesConfiguration(NotesConfiguration notesConfiguration) {
         this.notesConfiguration = notesConfiguration;
     }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 61 * hash + Objects.hashCode(this.key);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Note other = (Note) obj;
+        if (!Objects.equals(this.key, other.key)) {
+            return false;
+        }
+        return true;
+    }
+
+          
 
 }

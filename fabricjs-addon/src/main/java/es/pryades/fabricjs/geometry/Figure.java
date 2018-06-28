@@ -19,6 +19,7 @@ import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.FigureType;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -27,22 +28,31 @@ import java.util.List;
 public class Figure implements Serializable {
 
     private FigureType figureType;
-    private List<Point> points; 
+    private List<Point> points;
     private String text;
-    private boolean isDraw;
- 
+    private boolean Drawed;
+    private String key;
+
     public Figure(FigureType figureType, List<Point> points) {
         this.figureType = figureType;
         this.points = points;
         this.text = "";
-        this.isDraw = true;
+        this.Drawed = true;
     }
-    
-    public Figure(FigureType figureType, List<Point> points,String text) {
+
+    public Figure(FigureType figureType, List<Point> points, String text) {
         this.figureType = figureType;
         this.text = text;
         this.points = points;
-        this.isDraw = true;
+        this.Drawed = true;
+    }
+    
+     public Figure(String key,FigureType figureType, List<Point> points, String text) {
+        this.figureType = figureType;
+        this.text = text;
+        this.points = points;
+        this.Drawed = true;
+        this.key = key;
     }
 
     public FigureType getFigureType() {
@@ -69,11 +79,44 @@ public class Figure implements Serializable {
         this.text = text;
     }
 
-    public boolean isIsDraw() {
-        return isDraw;
+    public boolean isDrawed() {
+        return Drawed;
     }
 
-    public void setIsDraw(boolean isDraw) {
-        this.isDraw = isDraw;
-    }             
+    public void setDrawed(boolean Drawed) {
+        this.Drawed = Drawed;
+    }
+    
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 89 * hash + Objects.hashCode(this.key);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Figure other = (Figure) obj;
+        if (!Objects.equals(this.key, other.key)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
+
 }

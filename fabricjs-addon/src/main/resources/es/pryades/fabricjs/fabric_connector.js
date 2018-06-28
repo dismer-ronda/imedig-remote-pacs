@@ -45,10 +45,8 @@ var es_pryades_fabricjs_FabricJs = function() {
                     break;
                 case "ADD_NOTE":
                     if (command.payload) {
-                        var notes = JSON.parse(command.payload);
-                        if (notes.length) {
-                            fabricJs.addNotes(notes[notes.length - 1].text, notes[notes.length - 1].notesConfiguration);
-                        }
+                        var note = JSON.parse(command.payload);
+                        fabricJs.addNotes(note.key, note.text, note.notesConfiguration);
                     }
                     break;
                 case "DRAW_LINE":
@@ -66,6 +64,16 @@ var es_pryades_fabricjs_FabricJs = function() {
                         fabricJs.draw(figure);
                     }
                     break;
+                case "REMOVE_FIGURE":
+                    if (command.payload) {                 
+                        fabricJs.removeFigure(command.payload);
+                    }
+                    break;
+                case "REMOVE_NOTE":
+                    if (command.payload) {           
+                        fabricJs.removeNote(command.payload);
+                    }
+                    break;
                 case "SET_ACTION":
                     if (command.payload) {
                         fabricJs.setAction(command.payload);
@@ -80,7 +88,7 @@ var es_pryades_fabricjs_FabricJs = function() {
 
                 case "SET_CURSOR":
                     if (command.payload) {
-                        fabricJs.setCursor("url('./images/anadir-puntero.png')");
+                        fabricJs.setCursor(command.payload);
                     }
                     break;
 

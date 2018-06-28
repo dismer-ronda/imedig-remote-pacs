@@ -156,6 +156,11 @@ var Utils = exports.Utils = function () {
             });
             return textObject;
         }
+    }, {
+        key: 'generateUniqueId',
+        value: function generateUniqueId() {
+            return 'obj_' + Math.random().toString(36).substr(2, 16) + "_" + new Date().getTime();
+        }
     }]);
 
     return Utils;
@@ -174,13 +179,14 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Figure = exports.Figure = function Figure(figureType, points, text, isDraw) {
+var Figure = exports.Figure = function Figure(key, figureType, points, text, Drawed) {
     _classCallCheck(this, Figure);
 
+    this.key = key;
     this.figureType = figureType;
     this.points = points;
     this.text = "";
-    this.isDraw = isDraw;
+    this.Drawed = Drawed;
 };
 
 /***/ }),
@@ -214,6 +220,7 @@ var AngleDrawer = exports.AngleDrawer = function () {
         this.movePointer = null;
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.parent = options.parent;
     }
 
     _createClass(AngleDrawer, [{
@@ -270,16 +277,24 @@ var AngleDrawer = exports.AngleDrawer = function () {
 
             if (!this.isFirtLine) {
 
-                if (this.drawMode === "SHOW") {
-                    if (this.firstLine) {
-                        canvas.remove(this.firstLine);
-                    }
-                    if (this.secondLine) {
-                        canvas.remove(this.secondLine);
-                    }
+                if (this.firstLine) {
+                    canvas.remove(this.firstLine);
+                }
+                if (this.secondLine) {
+                    canvas.remove(this.secondLine);
                 }
 
-                this.figure = new _figure.Figure("ANGLE", this.points, "", this.drawMode === "DRAW");
+                this.figure = new _figure.Figure(_utils.Utils.generateUniqueId(), "ANGLE", this.points, "", this.drawMode === "DRAW");
+
+                if (this.drawMode === "SHOW") {
+                    canvas.remove(this.currentDraw);
+                    canvas.renderAll();
+                } else {
+                    this.angle = new fabric.Group([this.firstLine, this.secondLine]);
+                    canvas.add(this.angle);
+                    this.parent.setFigure(this.figure.key, this.angle);
+                }
+
                 this.component.onDrawFigure(JSON.stringify(this.figure));
             }
             this.isFirtLine = !this.isFirtLine;
@@ -325,11 +340,8 @@ var AngleDrawer = exports.AngleDrawer = function () {
                 this.figure.text = text;
             }
 
-            if (this.firstLine) {
-                canvas.remove(this.firstLine);
-            }
-            if (this.secondLine) {
-                canvas.remove(this.secondLine);
+            if (this.angle) {
+                canvas.remove(this.angle);
             }
 
             if (this.lineText) {
@@ -353,10 +365,11 @@ var AngleDrawer = exports.AngleDrawer = function () {
                 left: left,
                 top: top
             }, this.configuration);
-            var group = new fabric.Group([this.firstLine, this.secondLine, this.lineText], {
+            var group = new fabric.Group([this.angle, this.lineText], {
                 selectable: false
             });
             canvas.add(group);
+            this.parent.setFigure(this.figure.key, group);
         }
     }, {
         key: 'cancelDraw',
@@ -365,11 +378,17 @@ var AngleDrawer = exports.AngleDrawer = function () {
             this.isFirtLine = true;
             this.points = [];
             this.movePointer = null;
+
             if (this.firstLine) {
                 canvas.remove(this.firstLine);
             }
+
             if (this.secondLine) {
                 canvas.remove(this.secondLine);
+            }
+
+            if (this.angle) {
+                canvas.remove(this.angle);
             }
         }
     }]);
@@ -510,6 +529,7 @@ var LineDrawer = exports.LineDrawer = function () {
         this.points = [];
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.parent = options.parent;
     }
 
     _createClass(LineDrawer, [{
@@ -552,13 +572,16 @@ var LineDrawer = exports.LineDrawer = function () {
                 return;
             }
 
+            this.points.push(pointer);
+            this.figure = new _figure.Figure(_utils.Utils.generateUniqueId(), "LINE", this.points, "", this.drawMode === "DRAW");
+
             if (this.drawMode === "SHOW") {
                 canvas.remove(this.currentDraw);
                 canvas.renderAll();
+            } else {
+                this.parent.setFigure(this.figure.key, this.currentDraw);
             }
 
-            this.points.push(pointer);
-            this.figure = new _figure.Figure("LINE", this.points, "", this.drawMode === "DRAW");
             this.component.onDrawFigure(JSON.stringify(this.figure));
         }
     }, {
@@ -617,6 +640,7 @@ var LineDrawer = exports.LineDrawer = function () {
                 selectable: false
             });
             canvas.add(group);
+            this.parent.setFigure(this.figure.key, group);
         }
     }, {
         key: 'cancelDraw',
@@ -661,6 +685,7 @@ var RectDrawer = exports.RectDrawer = function () {
         this.points = [];
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.parent = options.parent;
     }
 
     _createClass(RectDrawer, [{
@@ -683,10 +708,32 @@ var RectDrawer = exports.RectDrawer = function () {
                     return;
                 }
 
+                if (this.points[0].x > pointer.x) {
+                    this.currentDraw.set({
+                        left: Math.abs(pointer.x)
+                    });
+                }
+                if (this.points[0].y > pointer.y) {
+                    this.currentDraw.set({
+                        top: Math.abs(pointer.y)
+                    });
+                }
+
                 this.currentDraw.set({
-                    width: pointer.x - this.points[0].x,
-                    height: pointer.y - this.points[0].y
+                    width: Math.abs(this.points[0].x - pointer.x)
                 });
+                this.currentDraw.set({
+                    height: Math.abs(this.points[0].y - pointer.y)
+                });
+
+                /*const xDiff = pointer.x - this.points[0].x;
+                const yDiff = pointer.y - this.points[0].y;
+                const width = (xDiff < 0) ? pointer.x : xDiff;
+                const height = (yDiff < 0) ? pointer.y : yDiff;
+                 this.currentDraw.set({
+                    width: width,
+                    height: height
+                });*/
                 canvas.renderAll();
             }
         }
@@ -703,13 +750,16 @@ var RectDrawer = exports.RectDrawer = function () {
                 return;
             }
 
+            this.points.push(pointer);
+            this.figure = new _figure.Figure(_utils.Utils.generateUniqueId(), "RECT", this.points, "", this.drawMode === "DRAW");
+
             if (this.drawMode === "SHOW") {
                 canvas.remove(this.currentDraw);
                 canvas.renderAll();
+            } else {
+                this.parent.setFigure(this.figure.key, this.currentDraw);
             }
 
-            this.points.push(pointer);
-            this.figure = new _figure.Figure("RECT", this.points, "", this.drawMode === "DRAW");
             this.component.onDrawFigure(JSON.stringify(this.figure));
         }
     }, {
@@ -768,6 +818,7 @@ var RectDrawer = exports.RectDrawer = function () {
                 selectable: false
             });
             canvas.add(group);
+            this.parent.setFigure(this.figure.key, group);
         }
     }, {
         key: 'cancelDraw',
@@ -919,6 +970,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         this.options = options;
         this.configuration = this.options.configuration;
+        this.figures = new Map();
+        this.notes = new Map();
 
         this._currentAction = this.options.action;
         this.options.container.style.backgroundColor = this.configuration.backgroundColor;
@@ -1028,48 +1081,56 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'setAction',
         value: function setAction(action) {
             this._currentAction = action;
-
+            if (this.currentDraw) {
+                this.currentDraw.cancelDraw(this.canvasDraw);
+            }
             switch (this._currentAction) {
                 case "DRAW_LINE":
                     this.currentDraw = new _line.LineDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "DRAW"
+                        drawMode: "DRAW",
+                        parent: this
                     });
                     break;
                 case "DRAW_ANGLE":
                     this.currentDraw = new _angle.AngleDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "DRAW"
+                        drawMode: "DRAW",
+                        parent: this
                     });
                     break;
                 case "DRAW_RECT":
                     this.currentDraw = new _rect.RectDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "DRAW"
+                        drawMode: "DRAW",
+                        parent: this
                     });
                     break;
                 case "SHOW_LINE":
                     this.currentDraw = new _line.LineDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "SHOW"
+                        drawMode: "SHOW",
+                        parent: this
                     });
                     break;
                 case "SHOW_ANGLE":
                     this.currentDraw = new _angle.AngleDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "SHOW"
+                        drawMode: "SHOW",
+                        parent: this
                     });
                     break;
                 case "SHOW_RECT":
                     this.currentDraw = new _rect.RectDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
-                        drawMode: "SHOW"
+                        drawMode: "SHOW",
+                        parent: this
                     });
                     break;
                 default:
@@ -1175,15 +1236,35 @@ var FabricJsApp = exports.FabricJsApp = function () {
         }
     }, {
         key: 'addNotes',
-        value: function addNotes(note, configuration) {
+        value: function addNotes(key, note, configuration) {
             var text = _utils.Utils.createTextNotes(note, configuration);
             this.canvasNotes.add(text);
+            this.notes.set(key, text);
 
             privateMethods.calculateOriginY(this.canvasNotes, text, configuration.originX, configuration.originY);
             privateMethods.calculateOriginX(this.canvasNotes, text, configuration.originX, configuration.originY);
 
             text.setCoords();
 
+            this.canvasNotes.renderAll();
+        }
+    }, {
+        key: 'setFigure',
+        value: function setFigure(key, figure) {
+            this.figures.set(key, figure);
+        }
+    }, {
+        key: 'removeFigure',
+        value: function removeFigure(key) {
+            this.canvasDraw.remove(this.figures.get(key));
+            this.figures.delete(key);
+            this.canvasDraw.renderAll();
+        }
+    }, {
+        key: 'removeNote',
+        value: function removeNote(key) {
+            this.canvasNotes.remove(this.notes.get(key));
+            this.notes.delete(key);
             this.canvasNotes.renderAll();
         }
     }, {
