@@ -164,7 +164,7 @@ public class ImageCanvas extends VerticalLayout {
 		double angle = Utils.roundDouble( getAngle( p1.getX(), p1.getY(), p2.getX(), p2.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY() ), 2 );
 		double other = 180-angle;
 		
-		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  other + " grados";
+		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  Double.toString( Utils.roundDouble( other, 2 ) ) + " grados";
 		figure.setText(text);
 		addNormalizeFigure(figure);
 		canvas.setText(figure, text);
