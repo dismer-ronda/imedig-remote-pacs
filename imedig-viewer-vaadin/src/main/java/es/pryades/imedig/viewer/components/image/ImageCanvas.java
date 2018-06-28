@@ -153,7 +153,7 @@ public class ImageCanvas extends VerticalLayout {
 		String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
 		figure.setText(text);
 		addNormalizeFigure(figure);
-		canvas.setText(text);
+		canvas.setText(figure, text);
 	}
 	
 	private void calculateAngle(Figure figure) {
@@ -167,7 +167,7 @@ public class ImageCanvas extends VerticalLayout {
 		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  other + " grados";
 		figure.setText(text);
 		addNormalizeFigure(figure);
-		canvas.setText(text);
+		canvas.setText(figure, text);
 	}
 	
 	private void zoomOperation(Figure figure) {
@@ -419,8 +419,8 @@ public class ImageCanvas extends VerticalLayout {
 			double ix2 = ix1 + imageRect.getWidth() - 1;
 			double iy2 = iy1 + imageRect.getHeight() - 1;
 			
-			int vcols = canvas.getvWidth().intValue();
-			int vrows = canvas.getvHeight().intValue();
+			int vcols = (int)canvas.getvWidth();
+			int vrows = (int)canvas.getvHeight();
 			
 			String dx1 = Double.toString( (double) ix1 / ( imageHeader.getColumns() - 1 ) );
 			String dy1 = Double.toString( (double) iy1 / ( imageHeader.getRows() - 1 ) );
@@ -471,8 +471,8 @@ public class ImageCanvas extends VerticalLayout {
 
 	private Rectangle getCanvasImage() {
 
-		int vcols = canvas.getvWidth().intValue();
-		int vrows = canvas.getvHeight().intValue();
+		int vcols =  (int)canvas.getvWidth();
+		int vrows =  (int)canvas.getvHeight();
 
 		int icols = (int)imageRect.getWidth();
 		int irows = (int)imageRect.getHeight();
