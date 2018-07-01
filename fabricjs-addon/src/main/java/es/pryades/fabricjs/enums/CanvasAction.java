@@ -21,5 +21,5 @@ package es.pryades.fabricjs.enums;
  * @author geanny
  */
 public enum CanvasAction {
-    DRAW_LINE,SHOW_LINE,SHOW_ANGLE,DRAW_ANGLE,DRAW_RECT,SHOW_RECT,NONE;
+    DRAW_LINE,SHOW_LINE,SHOW_ANGLE,DRAW_ANGLE,DRAW_FREE_ANGLE,DRAW_RECT,SHOW_RECT,NONE;
 }

@@ -726,14 +726,6 @@ var RectDrawer = exports.RectDrawer = function () {
                     height: Math.abs(this.points[0].y - pointer.y)
                 });
 
-                /*const xDiff = pointer.x - this.points[0].x;
-                const yDiff = pointer.y - this.points[0].y;
-                const width = (xDiff < 0) ? pointer.x : xDiff;
-                const height = (yDiff < 0) ? pointer.y : yDiff;
-                 this.currentDraw.set({
-                    width: width,
-                    height: height
-                });*/
                 canvas.renderAll();
             }
         }
@@ -851,6 +843,8 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _line = __webpack_require__(4);
 
 var _angle = __webpack_require__(2);
+
+var _freeAngle = __webpack_require__(7);
 
 var _rect = __webpack_require__(5);
 
@@ -1095,6 +1089,14 @@ var FabricJsApp = exports.FabricJsApp = function () {
                     break;
                 case "DRAW_ANGLE":
                     this.currentDraw = new _angle.AngleDrawer({
+                        configuration: this.configuration,
+                        component: this.options.component,
+                        drawMode: "DRAW",
+                        parent: this
+                    });
+                    break;
+                case "DRAW_FREE_ANGLE":
+                    this.currentDraw = new _freeAngle.FreeAngleDrawer({
                         configuration: this.configuration,
                         component: this.options.component,
                         drawMode: "DRAW",
@@ -1356,6 +1358,214 @@ var FabricJsApp = exports.FabricJsApp = function () {
     }]);
 
     return FabricJsApp;
+}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.FreeAngleDrawer = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _figure = __webpack_require__(1);
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var FreeAngleDrawer = exports.FreeAngleDrawer = function () {
+    function FreeAngleDrawer(options) {
+        _classCallCheck(this, FreeAngleDrawer);
+
+        this.configuration = options.configuration;
+        this.component = options.component;
+        this.isFirtLine = true;
+        this.points = [];
+        this.movePointer = null;
+        this.drawMode = options.drawMode;
+        this.preventUp = false;
+        this.parent = options.parent;
+    }
+
+    _createClass(FreeAngleDrawer, [{
+        key: 'setDrawMode',
+        value: function setDrawMode(drawMode) {
+            this.drawMode = drawMode;
+        }
+    }, {
+        key: 'setConfiguration',
+        value: function setConfiguration(configuration) {
+            this.configuration = configuration;
+        }
+    }, {
+        key: 'onMouseMove',
+        value: function onMouseMove(event, canvas) {
+            if (this.currentDraw) {
+                var pointer = canvas.getPointer(event.e);
+
+                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
+                    return;
+                }
+
+                this.movePointer = pointer;
+
+                this.currentDraw.set({
+                    x2: pointer.x,
+                    y2: pointer.y
+                });
+                canvas.renderAll();
+            }
+        }
+    }, {
+        key: 'onMouseUp',
+        value: function onMouseUp(event, canvas) {
+            if (this.preventUp) {
+                return;
+            }
+
+            var pointer = canvas.getPointer(event.e);
+
+            if (this.isFirtLine) {
+                if (pointer.eq(this.points[0])) {
+                    canvas.remove(this.currentDraw);
+                    this.firstLine = true;
+                    return;
+                }
+            }
+
+            if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
+                this.points.push(this.movePointer);
+            } else {
+                this.points.push(pointer);
+            }
+
+            if (!this.isFirtLine) {
+
+                if (this.firstLine) {
+                    canvas.remove(this.firstLine);
+                }
+                if (this.secondLine) {
+                    canvas.remove(this.secondLine);
+                }
+
+                this.figure = new _figure.Figure(_utils.Utils.generateUniqueId(), "ANGLE", this.points, "", this.drawMode === "DRAW");
+
+                if (this.drawMode === "SHOW") {
+                    canvas.remove(this.currentDraw);
+                    canvas.renderAll();
+                } else {
+                    this.angle = new fabric.Group([this.firstLine, this.secondLine]);
+                    canvas.add(this.angle);
+                    this.parent.setFigure(this.figure.key, this.angle);
+                }
+
+                this.component.onDrawFigure(JSON.stringify(this.figure));
+            }
+            this.isFirtLine = !this.isFirtLine;
+        }
+    }, {
+        key: 'onMouseDown',
+        value: function onMouseDown(event, canvas) {
+            this.preventUp = false;
+            var pointer = canvas.getPointer(event.e);
+            this.rect = canvas.calcViewportBoundaries();
+
+            if (this.isFirtLine) {
+                this.points = [];
+                this.points.push(pointer);
+                this.drawLine(pointer, canvas);
+                this.firstLine = this.currentDraw;
+            } else {
+                this.drawLine(pointer, canvas);
+                this.points.push(pointer);
+                this.currentDraw.set({
+                    x2: pointer.x,
+                    y2: pointer.y
+                });
+                this.secondLine = this.currentDraw;
+            }
+            canvas.renderAll();
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine(pointer, canvas) {
+            var pointsToDraw = [pointer.x, pointer.y, pointer.x, pointer.y];
+            this.currentDraw = _utils.Utils.createLine(pointsToDraw, this.configuration);
+            canvas.add(this.currentDraw);
+        }
+    }, {
+        key: 'setText',
+        value: function setText(text, canvas) {
+
+            if (this.drawMode === "SHOW") {
+                return;
+            }
+
+            if (this.figure) {
+                this.figure.text = text;
+            }
+
+            if (this.angle) {
+                canvas.remove(this.angle);
+            }
+
+            if (this.lineText) {
+                canvas.remove(this.lineText);
+            }
+
+            var x1 = this.points[2].x;
+            var x2 = this.points[3].x;
+            var y1 = this.points[2].y;
+            var y2 = this.points[3].y;
+
+            var deltaY = y2 - y1;
+            var deltaX = x2 - x1;
+
+            //const pad = 1 / 2;
+
+            //const angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+            var left = (x1 + x2) / 2;
+            var top = (y1 + y2) / 2 + 5;
+            this.lineText = _utils.Utils.createTextLabel(text, {
+                left: left,
+                top: top
+            }, this.configuration);
+            var group = new fabric.Group([this.angle, this.lineText], {
+                selectable: false
+            });
+            canvas.add(group);
+            this.parent.setFigure(this.figure.key, group);
+        }
+    }, {
+        key: 'cancelDraw',
+        value: function cancelDraw(canvas) {
+            this.preventUp = true;
+            this.isFirtLine = true;
+            this.points = [];
+            this.movePointer = null;
+
+            if (this.firstLine) {
+                canvas.remove(this.firstLine);
+            }
+
+            if (this.secondLine) {
+                canvas.remove(this.secondLine);
+            }
+
+            if (this.angle) {
+                canvas.remove(this.angle);
+            }
+        }
+    }]);
+
+    return FreeAngleDrawer;
 }();
 
 /***/ })
