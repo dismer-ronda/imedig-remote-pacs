@@ -38,7 +38,8 @@ public class ImageCanvas extends VerticalLayout {
 
 	private FabricJs canvas;
 	private FabricCanvasConfiguration canvasConfiguration;
-	private List<Figure> normalizeFigures;
+	//private List<Figure> normalizeFigures;
+	private List<Figure> imagenFigures;
 	private ImageData imageData = null;
 	private CanvasAction currentAction = CanvasAction.NONE; 
 	private Rectangle imageRect;
@@ -64,7 +65,8 @@ public class ImageCanvas extends VerticalLayout {
 	
 
 	private void init() {
-		normalizeFigures = new ArrayList<Figure>();
+		//normalizeFigures = new ArrayList<Figure>();
+		imagenFigures = new ArrayList<Figure>();
 	}
 
 	private void settingCanvas() {
@@ -153,6 +155,7 @@ public class ImageCanvas extends VerticalLayout {
 		String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
 		figure.setText(text);
 		addNormalizeFigure(figure);
+		addImagenFigure(figure);
 		canvas.setText(figure, text);
 	}
 	
@@ -160,13 +163,15 @@ public class ImageCanvas extends VerticalLayout {
 		Point p1 = figure.getPoints().get(0);
 		Point p2 = figure.getPoints().get(1);
 		Point p3 = figure.getPoints().get(2);
+		Point p4 = figure.getPoints().get(3);
 		
-		double angle = Utils.roundDouble( getAngle( p1.getX(), p1.getY(), p2.getX(), p2.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY() ), 2 );
+		double angle = Utils.roundDouble( getAngle( p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY(), p4.getX(), p4.getY() ), 2 );
 		double other = 180-angle;
 		
 		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  Double.toString( Utils.roundDouble( other, 2 ) ) + " grados";
 		figure.setText(text);
 		addNormalizeFigure(figure);
+		addImagenFigure(figure);
 		canvas.setText(figure, text);
 	}
 	
@@ -237,6 +242,7 @@ public class ImageCanvas extends VerticalLayout {
 			canvas.clear();
 			
 			openImage();
+			showImagenFigures();
 		}
 		
 		/*
@@ -328,8 +334,8 @@ public class ImageCanvas extends VerticalLayout {
 		
 		List<Point> npoints = new ArrayList<>();
 		
-		double dx = viewRect.getWidth();
-		double dy = viewRect.getHeight();
+		double dx = viewRect.getWidth()-1;
+		double dy = viewRect.getHeight()-1;
 		
 		for (Point point : figure.getPoints()) {
 			double x = point.getX()/dx;
@@ -338,7 +344,37 @@ public class ImageCanvas extends VerticalLayout {
 			npoints.add(new Point(x, y));
 		}
 		
-		normalizeFigures.add(new Figure(figure.getFigureType(), npoints, figure.getText()));
+		//normalizeFigures.add(new Figure(figure.getFigureType(), npoints, figure.getText()));
+	}
+	
+	private void addImagenFigure(Figure figure){
+		
+		double ix1 = imageRect.getX();
+		double iy1 = imageRect.getY();
+		double ix2 = ix1 + imageRect.getWidth() - 1;
+		double iy2 = iy1 + imageRect.getHeight() - 1;
+		
+		double vx1 = viewRect.getX();
+		double vy1 = viewRect.getY();
+		double vx2 = vx1 + viewRect.getWidth() - 1;
+		double vy2 = vy1 + viewRect.getHeight() - 1;
+		
+		double mx = ( ix2 - ix1 ) / ( vx2 - vx1 );
+		double nx = ix1 - mx * vx1;
+		
+		double my = ( iy2 - iy1 ) / ( vy2 - vy1 );
+		double ny = iy1 - my * vy1;
+		
+		List<Point> newpoints = new ArrayList<>();
+		
+		for (Point point : figure.getPoints()) {
+			double x = mx * point.getX() + nx;
+			double y = my * point.getY() + ny;
+			
+			newpoints.add(new Point(x, y));
+		}
+		
+		imagenFigures.add(new Figure(figure.getFigureType(), newpoints, figure.getText()));
 	}
 
 	private void buildCanvasConfiguration(){
@@ -358,24 +394,61 @@ public class ImageCanvas extends VerticalLayout {
 		
 		openImage();
 		
-		showNormalizeFigures();
+		//showNormalizeFigures();
+		viewRect = getCanvasImage();
+		showImagenFigures();
 	}
 
-	private void showNormalizeFigures() {
-		double dx = viewRect.getWidth();
-		double dy = viewRect.getHeight();
+//	private void showNormalizeFigures() {
+//		double dx = viewRect.getWidth();
+//		double dy = viewRect.getHeight();
+//		
+//		for (Figure nf : normalizeFigures) {
+//			
+//			List<Point> npoints = new ArrayList<>();
+//			for (Point point : nf.getPoints()) {
+//				double x = point.getX()*dx;
+//				double y = point.getY()*dy;
+//				
+//				npoints.add(new Point(x, y));
+//			}
+//			
+//			canvas.draw(new Figure(nf.getFigureType(), npoints, nf.getText()));
+//		}
+//	}
+	
+	private void showImagenFigures() {
 		
-		for (Figure nf : normalizeFigures) {
+		Rectangle vrect = viewRect;
+		Rectangle irect = imageRect;
+		
+		int ix1 = (int) irect.getX();
+		int iy1 = (int) irect.getY();
+		int ix2 = (int) ( ix1 + irect.getWidth() - 1 );
+		int iy2 = (int) ( iy1 + irect.getHeight() - 1 );
+		
+		int vx1 = (int) vrect.getX();
+		int vy1 = (int) vrect.getY();
+		int vx2 = (int) ( vx1 + vrect.getWidth() - 1 );
+		int vy2 = (int) ( vy1 + vrect.getHeight() - 1 );
+		
+		double mx = (double) ( vx2 - vx1 ) / ( ix2 - ix1 );
+		double nx = vx1 - mx * ix1;
+		
+		double my = (double) ( vy2 - vy1 ) / ( iy2 - iy1 );
+		double ny = vy1 - my * iy1;
+		
+		for (Figure fig : imagenFigures) {
 			
 			List<Point> npoints = new ArrayList<>();
-			for (Point point : nf.getPoints()) {
-				double x = point.getX()*dx;
-				double y = point.getY()*dy;
+			for (Point point : fig.getPoints()) {
+				double x = mx * point.getX() + nx;
+				double y = my * point.getY() + ny;
 				
 				npoints.add(new Point(x, y));
 			}
 			
-			canvas.draw(new Figure(nf.getFigureType(), npoints, nf.getText()));
+			canvas.draw(new Figure(fig.getFigureType(), npoints, fig.getText()));
 		}
 	}
 
@@ -514,7 +587,7 @@ public class ImageCanvas extends VerticalLayout {
 	public void clear() {
 		noneAction();
 		imageData = null;
-		normalizeFigures.clear();
+		imagenFigures.clear();
 		canvas.clear();
 	}
 	
@@ -535,7 +608,7 @@ public class ImageCanvas extends VerticalLayout {
 	public void angleAction(){
 		if (imageData == null) return;
 
-		currentAction = CanvasAction.DRAW_ANGLE;
+		currentAction = CanvasAction.DRAW_FREE_ANGLE;
 		canvas.setAction(currentAction);
 		canvas.setCursor("crosshair");
 	}
