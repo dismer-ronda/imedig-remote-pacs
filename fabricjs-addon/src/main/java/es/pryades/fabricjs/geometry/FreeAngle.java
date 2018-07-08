@@ -13,13 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package es.pryades.fabricjs.geometry;
 
-package es.pryades.fabricjs.enums;
+import es.pryades.fabricjs.data.Point;
+import es.pryades.fabricjs.enums.FigureType;
+import java.io.Serializable;
+import java.util.List;
 
 /**
  *
  * @author geanny
  */
-public enum FigureType {
-    LINE,ANGLE,FREE_ANGLE,RECT;
+public class FreeAngle extends Figure implements Serializable {
+
+    public FreeAngle(List<Point> points) {
+        super(FigureType.FREE_ANGLE, points);
+    }
+
+    public FreeAngle(List<Point> points, String text) {
+        super(FigureType.FREE_ANGLE, points, text);
+    }
+
 }

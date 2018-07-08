@@ -82,7 +82,8 @@ var es_pryades_fabricjs_FabricJs = function() {
 
                 case "SET_TEXT":
                     if (command.payload) {
-                        fabricJs.setText(command.payload);
+                        var figure = JSON.parse(command.payload);
+                        fabricJs.setText(figure);
                     }
                     break;
 
