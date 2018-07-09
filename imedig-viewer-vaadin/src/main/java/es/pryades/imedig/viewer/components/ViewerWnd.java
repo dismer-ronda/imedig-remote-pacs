@@ -25,6 +25,7 @@ import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
+import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
@@ -150,6 +151,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			imageCanvas.distanceAction();
 		}else if (action instanceof ZoomAction) {
 			imageCanvas.zoomAction();
+		}else if (action instanceof UndoAction) {
+			imageCanvas.undoAction();
 		}else if (action instanceof NoneAction) {
 			imageCanvas.noneAction();
 		}

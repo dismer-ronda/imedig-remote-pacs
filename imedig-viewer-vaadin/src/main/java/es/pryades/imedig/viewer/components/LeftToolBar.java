@@ -17,6 +17,7 @@ import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
+import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 
@@ -121,6 +122,13 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new ZoomAction(this, null));
+			}
+		});
+		
+		buttonUndo.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				listenerAction.doAction(new UndoAction(this, null));
 			}
 		});
 
