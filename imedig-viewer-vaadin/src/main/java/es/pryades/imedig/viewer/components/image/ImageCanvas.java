@@ -28,6 +28,7 @@ import es.pryades.imedig.cloud.dto.viewer.ImageHeader;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
+import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
@@ -39,10 +40,9 @@ public class ImageCanvas extends VerticalLayout {
 
 	private FabricJs canvas;
 	private FabricCanvasConfiguration canvasConfiguration;
-	//private List<Figure> normalizeFigures;
 	private List<Figure> imagenFigures;
 	private ImageData imageData = null;
-	private CanvasAction currentAction = CanvasAction.NONE; 
+	private EnumActions currentAction = EnumActions.NONE; 
 	private Rectangle imageRect;
 	private Rectangle viewRect;
 	private Double currentCenter; 
@@ -106,7 +106,12 @@ public class ImageCanvas extends VerticalLayout {
 					calculateDistance(figure);
 					break;
 				case RECT:
-					zoomOperation(figure);
+					if (currentAction == EnumActions.ZOOM){
+						zoomOperation(figure);
+					}else if (currentAction == EnumActions.CONTRAST){
+						contrastOperation(figure);
+					}
+					
 					break;	
 				default:
 					break;
@@ -315,6 +320,43 @@ public class ImageCanvas extends VerticalLayout {
 		
 		imagenFigures.add(new Figure(figure.getFigureType(), newpoints, figure.getText()));
 	}
+	
+	private void contrastOperation(Figure figure) {
+		double ix1 = imageRect.getX();
+		double iy1 = imageRect.getY();
+		double ix2 = ix1 + imageRect.getWidth() - 1;
+		double iy2 = iy1 + imageRect.getHeight() - 1;
+		
+		double vx1 = viewRect.getX();
+		double vy1 = viewRect.getY();
+		double vx2 = vx1 + viewRect.getWidth() - 1;
+		double vy2 = vy1 + viewRect.getHeight() - 1;
+		
+		if ( currentWidth > 0 )
+		{
+			double center = getDouble(imageHeader.getWindowCenter());
+			double width = getDouble( imageHeader.getWindowWidth() );
+			
+			double mw = (double) ( width ) / ( vx2 - vx1 );
+			double mc = (double) ( center ) / ( vy2 - vy1 );
+			
+			double nw = currentWidth + ( mw * ( figure.getPoints().get(1).getX() - figure.getPoints().get(0).getX() ) );
+			double nc = currentCenter - ( mc * ( figure.getPoints().get(1).getY() - figure.getPoints().get(0).getY() ) );
+			
+			if ( nc > 0 ){
+				back.push(new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame));
+				
+				currentCenter = nc;
+				currentWidth = nw;
+				
+				canvas.clear();
+				
+				openImage();
+				showImagenFigures();
+			}
+		}
+	}
+
 
 	private void buildCanvasConfiguration(){
 		canvasConfiguration = new FabricCanvasConfiguration();
@@ -511,34 +553,43 @@ public class ImageCanvas extends VerticalLayout {
 	}
 	
 	public void noneAction(){
-		currentAction = CanvasAction.NONE;
-		canvas.setAction(currentAction);
+		currentAction = EnumActions.NONE;
+		canvas.setAction(CanvasAction.NONE);
 		canvas.setCursor("default");
 	}
 
 	public void distanceAction(){
 		if (imageData == null) return;
 		
-		currentAction = CanvasAction.DRAW_LINE;
-		canvas.setAction(currentAction);
+		currentAction = EnumActions.DISTANCE;
+		canvas.setAction(CanvasAction.DRAW_LINE);
 		canvas.setCursor("crosshair");
 	}
 
 	public void angleAction(){
 		if (imageData == null) return;
 
-		currentAction = CanvasAction.DRAW_FREE_ANGLE;
-		canvas.setAction(currentAction);
+		currentAction = EnumActions.ANGLE;
+		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE);
 		canvas.setCursor("crosshair");
 	}
 	
 	public void zoomAction(){
 		if (imageData == null) return;
 
-		currentAction = CanvasAction.SHOW_RECT;
-		canvas.setAction(currentAction);
+		currentAction = EnumActions.ZOOM;
+		canvas.setAction(CanvasAction.SHOW_RECT);
 		canvas.setCursor("crosshair");
 	}
+
+	public void contrastAction() {
+		if (imageData == null) return;
+
+		currentAction = EnumActions.CONTRAST;
+		canvas.setAction(CanvasAction.SHOW_RECT);
+		canvas.setCursor("crosshair");
+	}
+
 
 
 	public void undoAction() {

@@ -20,6 +20,7 @@ import es.pryades.imedig.viewer.Action;
 import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
+import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
@@ -155,6 +156,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			imageCanvas.undoAction();
 		}else if (action instanceof NoneAction) {
 			imageCanvas.noneAction();
+		}else if (action instanceof ContrastAction) {
+			imageCanvas.contrastAction();
 		}
 	}
 

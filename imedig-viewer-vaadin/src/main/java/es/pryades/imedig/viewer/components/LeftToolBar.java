@@ -14,6 +14,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
+import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
@@ -129,6 +130,13 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new UndoAction(this, null));
+			}
+		});
+		
+		buttonContrast.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				listenerAction.doAction(new ContrastAction(this, null));
 			}
 		});
 
