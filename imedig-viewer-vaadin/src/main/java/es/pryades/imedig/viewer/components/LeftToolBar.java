@@ -17,7 +17,6 @@ import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
-import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -38,7 +37,7 @@ public class LeftToolBar extends VerticalLayout {
 	private Button buttonZoom = null;
 	private Button buttonContrast = null;
 	private Button buttonUndo = null;
-	private Button buttonFont = null;
+	//private Button buttonFont = null;
 	
 	private final ListenerAction listenerAction;
 	
@@ -78,7 +77,7 @@ public class LeftToolBar extends VerticalLayout {
 		grid.addComponent( buttonUndo = getButton( "undo", "ViewerWnd.Undo" ));
 		grid.addComponent( buttonDistance = getButton( "distance", "ViewerWnd.Distance" ));
 		grid.addComponent( buttonAngle = getButton( "angle", "ViewerWnd.Angle" ));
-		grid.addComponent( buttonFont = getButton( "angle", "ViewerWnd.Angle" ));
+		//grid.addComponent( buttonFont = getButton( "angle", "ViewerWnd.Angle" ));
 		buttonOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		buttonOpen.addStyleName(ValoTheme.BUTTON_LARGE);
 		buttonClose.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
@@ -95,7 +94,7 @@ public class LeftToolBar extends VerticalLayout {
 		buttonContrast.addStyleName(ValoTheme.BUTTON_LARGE);
 		buttonUndo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		buttonUndo.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		//buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -153,12 +152,12 @@ public class LeftToolBar extends VerticalLayout {
 			}
 		});
 		
-		buttonFont.addClickListener(new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				listenerAction.doAction(new FontAction(this, null));
-			}
-		});
+//		buttonFont.addClickListener(new Button.ClickListener() {
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//				listenerAction.doAction(new FontAction(this, null));
+//			}
+//		});
 
 		//grid.setEnabled(false);
 		inside.addComponent(grid);
