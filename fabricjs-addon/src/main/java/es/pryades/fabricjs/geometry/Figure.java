@@ -15,6 +15,7 @@
  */
 package es.pryades.fabricjs.geometry;
 
+import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.FigureType;
 import java.io.Serializable;
@@ -32,6 +33,7 @@ public class Figure implements Serializable {
     private String text;
     private boolean Drawed;
     private String key;
+    private FigureConfiguration configuration;
 
     public Figure(FigureType figureType, List<Point> points) {
         this.figureType = figureType;
@@ -94,6 +96,14 @@ public class Figure implements Serializable {
     public void setKey(String key) {
         this.key = key;
     }
+
+    public FigureConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(FigureConfiguration configuration) {
+        this.configuration = configuration;
+    }        
 
     @Override
     public int hashCode() {

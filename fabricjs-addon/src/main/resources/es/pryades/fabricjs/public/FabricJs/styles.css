@@ -8,4 +8,5 @@ div.FabricJs {
 
 .canvas-wrapper{
     position: relative;  
+    background-color: transparent !important;
 }

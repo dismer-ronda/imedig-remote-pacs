@@ -103,6 +103,9 @@ var Utils = exports.Utils = function () {
                 strokeWidth: configuration.strokeWidth,
                 fill: configuration.fillColor,
                 stroke: configuration.strokeColor,
+                strokeDashArray: configuration.strokeDashArray,
+                strokeLineCap: configuration.strokeLineCap,
+                visible: configuration.visible,
                 originX: 'center',
                 originY: 'center'
             });
@@ -117,6 +120,9 @@ var Utils = exports.Utils = function () {
                 top: points[1],
                 width: points[2],
                 height: points[3],
+                strokeDashArray: configuration.strokeDashArray,
+                strokeLineCap: configuration.strokeLineCap,
+                visible: configuration.visible,
                 fill: 'transparent',
                 stroke: configuration.strokeColor,
                 strokeWidth: configuration.strokeWidth
@@ -136,6 +142,7 @@ var Utils = exports.Utils = function () {
                 fontStyle: configuration.textFontStyle,
                 fontSize: configuration.textFontSize,
                 fontFamily: configuration.textFontFamily,
+                visible: configuration.visible,
                 selectable: false
             });
             return textObject;
@@ -1236,7 +1243,9 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         this.options.container.appendChild(this._divContainer);
 
-        this.canvasImage = new fabric.StaticCanvas(canvasImageId);
+        this.canvasImage = new fabric.StaticCanvas(canvasImageId, {
+            backgroundColor: 'transparent'
+        });
 
         this.canvasNotes = new fabric.StaticCanvas(canvasNotesId, {
             backgroundColor: 'transparent'
@@ -1255,8 +1264,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 return;
             }
 
-            //const pointer = _this.canvasDraw.getPointer(o.e);
-            //_this.options.component.onMouseDown(pointer.x, pointer.y);
             if (_this.currentDraw) {
                 _this.currentDraw.onMouseDown(o, _this.canvasDraw);
             }
@@ -1269,9 +1276,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 return;
             }
 
-            // const pointer = _this.canvasDraw.getPointer(o.e);
-            // _this.options.component.onMouseMove(pointer.x, pointer.y);
-
             if (_this.currentDraw) {
                 _this.currentDraw.onMouseMove(o, _this.canvasDraw);
             }
@@ -1283,8 +1287,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
             if (!_this.loadedImage) {
                 return;
             }
-            //const pointer = _this.canvasDraw.getPointer(o.e);
-            //_this.options.component.onMouseUp(pointer.x, pointer.y);
+
             if (_this.currentDraw) {
                 _this.currentDraw.onMouseUp(o, _this.canvasDraw);
             }
@@ -1380,16 +1383,16 @@ var FabricJsApp = exports.FabricJsApp = function () {
         value: function draw(figure) {
             switch (figure.figureType) {
                 case "LINE":
-                    _drawer.Drawer.drawLine(figure, this.canvasDraw, this.configuration);
+                    _drawer.Drawer.drawLine(figure, this.canvasDraw, figure.configuration);
                     break;
                 case "ANGLE":
-                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, this.configuration);
+                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, figure.configuration);
                     break;
                 case "FREE_ANGLE":
-                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, this.configuration);
+                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, figure.configuration);
                     break;
                 case "RECT":
-                    _drawer.Drawer.drawRect(figure, this.canvasDraw, this.configuration);
+                    _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration);
                     break;
             }
         }
@@ -1397,7 +1400,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'setText',
         value: function setText(figure) {
             if (this.currentDraw) {
-                //this.figures.get(figure.key).setText(figure.text, this.canvasDraw);
                 this.currentDraw.setText(figure.text, this.canvasDraw);
             }
         }
@@ -1535,14 +1537,10 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
                 var deltaY = y2 - y1;
                 var deltaX = x2 - x1;
-                //const pad = 1 / 2;
-
-                //const angleInDegrees = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
 
                 this.lineText = new fabric.Text(text, {
                     left: (x1 + x2) / 2, //Take the block's position
                     top: (y1 + y2) / 2 + 5,
-                    // angle: angleInDegrees,
                     backgroundColor: 'transparent',
                     fill: this.configuration.fillColor,
                     stroke: this.configuration.strokeColor,
@@ -1573,7 +1571,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'clearNotes',
         value: function clearNotes() {
             this.canvasNotes.clear();
-            //this.options.component.clearNotes();
         }
     }, {
         key: 'clearImage',
@@ -1584,7 +1581,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'clearDraw',
         value: function clearDraw() {
             this.canvasDraw.clear();
-            //this.options.component.clearFigures();
         }
     }, {
         key: 'setCursor',

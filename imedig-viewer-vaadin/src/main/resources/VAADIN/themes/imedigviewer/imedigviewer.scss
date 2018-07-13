@@ -1,7 +1,7 @@
 /* Parameters for Valo */
 
 //$v-app-background-color: white;
-$v-font-family: droidsans, 'Open Sans', sans-serif, 'Source Sans Pro';
+/*$v-font-family: droidsans, 'Open Sans', sans-serif, 'Source Sans Pro';
 $v-app-background-color: #fff;
 $v-background-color: #eee;
 $v-focus-color: #0072C6;
@@ -25,18 +25,43 @@ $v-selection-overlay-padding-vertical: 6px;
 $v-panel-border: 2px solid v-shade;
 $v-unit-size: 30px;
 
-/*$v-background-color: hsl(0, 0, 99.5%);
+$v-background-color: hsl(0, 0, 99.5%);
 $v-app-background-color: #fff;
 $v-focus-color: hsl(218, 80%, 60%);
 $v-border: 1px solid (v-shade 0.6);
 $v-border-radius: 1px;
 $v-bevel: inset 0 1px 0 v-tint;
 $v-textfield-bevel: false;
+$v-bevel: false;
+$v-gradient: false;
+$v-shadow: false;
 $v-gradient: v-linear 3%;
 $v-shadow: false;
 $valo-menu-background-color: hsl(218, 20%, 98%);
 $v-friendly-color: hsl(163, 61%, 41%);
 $v-error-indicator-color: hsl(349, 66%, 56%);*/
+
+$v-app-loading-text: "imedig";
+$v-background-color: #444d50;
+//$v-focus-color: #07a9ca;
+$v-focus-color: #02925d;
+$v-focus-style: 0 0 3px 2px $v-focus-color;
+$v-bevel-depth: 40%;
+$v-bevel: false;
+$v-gradient: false;
+$v-shadow: false;
+//$v-gradient: v-linear 12%;
+$v-border-radius: 1px;
+$v-font-family: Roboto, sans-serif;
+$v-font-weight: 400;
+$v-font-weight--header: 400;
+$v-bevel: inset 0 1px 2px v-tint, inset 0 0 1px (v-tint 0.1);
+//$v-shadow: 0 0 0 3px rgba(0,0,0,0.32), 0 1px 0 3px rgba(255,255,255,0.14);
+//$v-textfield-bevel: inset 0 2px 2px v-shade;
+//$v-textfield-shadow: $v-shadow;
+$v-unit-size: 30px;
+$v-overlay-shadow: 0 0 0 3px (v-shade 8), 0 5px 10px (v-shade 4);
+$v-component-group-spacing: 6px;
 
 /* Import the valo theme.*/
 @import "../valo/valo";

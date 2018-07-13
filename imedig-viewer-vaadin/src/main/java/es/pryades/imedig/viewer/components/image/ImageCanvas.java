@@ -14,7 +14,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.fabricjs.FabricJs;
-import es.pryades.fabricjs.config.FabricCanvasConfiguration;
+import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
@@ -39,7 +39,7 @@ public class ImageCanvas extends VerticalLayout {
 	private User user;
 
 	private FabricJs canvas;
-	private FabricCanvasConfiguration canvasConfiguration;
+	private FigureConfiguration canvasConfiguration;
 	private List<Figure> imagenFigures;
 	private ImageData imageData = null;
 	private EnumActions currentAction = EnumActions.NONE; 
@@ -359,7 +359,7 @@ public class ImageCanvas extends VerticalLayout {
 
 
 	private void buildCanvasConfiguration(){
-		canvasConfiguration = new FabricCanvasConfiguration();
+		canvasConfiguration = new FigureConfiguration();
 		canvasConfiguration.setStrokeWidth(1.0);
 		canvasConfiguration.setFillColor("#FFFF00");
 		canvasConfiguration.setStrokeColor("#FFFF00");

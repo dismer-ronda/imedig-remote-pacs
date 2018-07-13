@@ -5,8 +5,8 @@ import com.vaadin.shared.ui.JavaScriptComponentState;
 public class FabricJsState extends JavaScriptComponentState {
 
     // State can have both public variable and bean properties
-    public String canvasConfiguration = "{}";
-    public String notesConfiguration = "{}";
+    public String figureConfiguration = "{}";
+    public String notesConfiguration = "{}";    
     public String notes = "[]";
     public String bgImage = "";
     public String figures = "[]";
@@ -15,5 +15,5 @@ public class FabricJsState extends JavaScriptComponentState {
     public String cursor = "default";
     public String commands = "[{\"canvasAction\":\"NONE\"}]";
     public String drawMode;
-    
+
 }

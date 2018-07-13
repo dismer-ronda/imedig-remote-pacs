@@ -41,7 +41,7 @@ public class FontConfiguration implements Serializable {
         this.textFontWeight = "normal";
     }
 
-   public String getTextBackgroundColor() {
+    public String getTextBackgroundColor() {
         return textBackgroundColor;
     }
 

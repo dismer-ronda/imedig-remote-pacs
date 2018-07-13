@@ -15,7 +15,10 @@
  */
 package es.pryades.fabricjs.config;
 
+import es.pryades.fabricjs.enums.StrokeLineCap;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -29,13 +32,18 @@ public class FabricCanvasConfiguration extends FontConfiguration implements Seri
     private String fillColor;
     private String strokeColor;
 
+    private List<Double> strokeDashArray;
+
+    private String strokeLineCap;
+
     public FabricCanvasConfiguration() {
         super();
         this.backgroundColor = "#FFF";
         this.strokeWidth = 2;
         this.fillColor = "red";
         this.strokeColor = "red";
-
+        this.strokeLineCap = "butt";
+        this.strokeDashArray = new ArrayList<>();      
     }
 
     public String getBackgroundColor() {
@@ -68,6 +76,22 @@ public class FabricCanvasConfiguration extends FontConfiguration implements Seri
 
     public void setStrokeColor(String strokeColor) {
         this.strokeColor = strokeColor;
+    }
+
+    public List<Double> getStrokeDashArray() {
+        return strokeDashArray;
+    }
+
+    public void setStrokeDashArray(List<Double> strokeDashArray) {
+        this.strokeDashArray = strokeDashArray;
+    }
+
+    public StrokeLineCap getStrokeLineCap() {
+        return StrokeLineCap.valueOf(strokeLineCap.toUpperCase());
+    }
+
+    public void setStrokeLineCap(StrokeLineCap strokeLineCap) {
+        this.strokeLineCap = strokeLineCap.name().toLowerCase();
     }
 
 }

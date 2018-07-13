@@ -6,7 +6,7 @@ var es_pryades_fabricjs_FabricJs = function() {
 
 
     var fabricJs = new FabricJs.FabricJsApp({
-        configuration: JSON.parse(state.canvasConfiguration),
+        configuration: JSON.parse(state.figureConfiguration),
         container: container,
         action: state.action,
         component: component,
@@ -27,7 +27,7 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-        fabricJs.setConfiguration(JSON.parse(state.canvasConfiguration));
+        fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
 
         var commands = JSON.parse(state.commands);
 
@@ -108,7 +108,7 @@ var es_pryades_fabricjs_FabricJs = function() {
             }
         }
 
-        if (commands.length) {
+        if (commands.length && command.canvasAction !== "NONE") {
             component.clearCommands();
         }
     };

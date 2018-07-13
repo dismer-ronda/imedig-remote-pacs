@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -55,7 +55,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 		setModal(true);
 		setResizable(false);
-		setClosable(false);
+		//setClosable(false);
 		setWidth("900px");
 		setHeight("480px");
 		content = new VerticalLayout();
@@ -118,8 +118,9 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnQuery = new Button();
 		btnQuery.setDescription(ViewerApplicationUI.getText("QueryForm.QueryTip"));
 		btnQuery.setImmediate(true);
-		btnQuery.setIcon(new ThemeResource("img/search.png"));
+		btnQuery.setIcon(FontAwesome.SEARCH);
 		btnQuery.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		btnQuery.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnQuery.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -130,8 +131,9 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		Button btnOpen = new Button();
 		btnOpen.setDescription(ViewerApplicationUI.getText("QueryForm.Open"));
 		btnOpen.setImmediate(true);
-		btnOpen.setIcon(new ThemeResource("img/open-24.png"));
+		btnOpen.setIcon(FontAwesome.FOLDER_OPEN);
 		btnOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		btnOpen.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnOpen.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -141,19 +143,19 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 			}
 		});
 
-		Button btnExit = new Button();
+		/*Button btnExit = new Button();
 		btnExit.setDescription(ViewerApplicationUI.getText("QueryForm.CloseTip"));
 		btnExit.setImmediate(true);
-		btnExit.setIcon(new ThemeResource("img/exit-24.png"));
+		btnExit.setIcon(FontAwesome.CLOSE);
 		btnExit.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				close();
 			}
 		});
-		btnExit.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		btnExit.addStyleName(ValoTheme.BUTTON_ICON_ONLY);*/
 
-		HorizontalLayout layout = new HorizontalLayout(btnQuery, btnOpen, btnExit);
+		HorizontalLayout layout = new HorizontalLayout(btnQuery, btnOpen);
 		layout.setSpacing(true);
 		return layout;
 	}

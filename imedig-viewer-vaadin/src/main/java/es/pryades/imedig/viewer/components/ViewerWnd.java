@@ -22,6 +22,7 @@ import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
@@ -29,6 +30,7 @@ import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
+import es.pryades.imedig.viewer.components.query.FontsDlg;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
@@ -140,6 +142,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 
 		if (action instanceof QueryStudies) {
 			queryStudies();
+		}else if (action instanceof FontAction) {
+			queryFonts();
 		}else if (action instanceof OpenStudies) {
 			openStudies((List<String>)action.getData());
 		}else if (action instanceof CloseStudies) {
@@ -178,6 +182,11 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private void queryStudies() {
 		QueryDlg dlg = new QueryDlg(user);
 		dlg.setListener(this);
+		UI.getCurrent().addWindow(dlg);
+	}
+	
+	private void queryFonts() {
+		FontsDlg dlg = new FontsDlg();
 		UI.getCurrent().addWindow(dlg);
 	}
 	
