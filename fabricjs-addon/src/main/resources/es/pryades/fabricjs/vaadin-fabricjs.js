@@ -107,7 +107,8 @@ var Utils = exports.Utils = function () {
                 strokeLineCap: configuration.strokeLineCap,
                 visible: configuration.visible,
                 originX: 'center',
-                originY: 'center'
+                originY: 'center',
+                objectCaching: false
             });
 
             return line;
@@ -125,7 +126,8 @@ var Utils = exports.Utils = function () {
                 visible: configuration.visible,
                 fill: 'transparent',
                 stroke: configuration.strokeColor,
-                strokeWidth: configuration.strokeWidth
+                strokeWidth: configuration.strokeWidth,
+                objectCaching: false
             });
             return rect;
         }
@@ -143,7 +145,8 @@ var Utils = exports.Utils = function () {
                 fontSize: configuration.textFontSize,
                 fontFamily: configuration.textFontFamily,
                 visible: configuration.visible,
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             return textObject;
         }
@@ -159,7 +162,8 @@ var Utils = exports.Utils = function () {
                 fontFamily: configuration.textFontFamily,
                 left: configuration.textLeft,
                 top: configuration.textTop,
-                textAlign: configuration.textAlign
+                textAlign: configuration.textAlign,
+                objectCaching: false
             });
             return textObject;
         }
@@ -373,7 +377,8 @@ var AngleDrawer = exports.AngleDrawer = function () {
                 top: top
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -446,7 +451,8 @@ var Drawer = exports.Drawer = function () {
             }, configuration);
 
             var group = new fabric.Group([lineDrawer, lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
         }
@@ -473,7 +479,8 @@ var Drawer = exports.Drawer = function () {
             }, configuration);
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
         }
@@ -500,7 +507,8 @@ var Drawer = exports.Drawer = function () {
             }, configuration);
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
         }
@@ -525,7 +533,8 @@ var Drawer = exports.Drawer = function () {
             }, configuration);
 
             var group = new fabric.Group([rectDrawer, lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
         }
@@ -635,7 +644,10 @@ var FreeAngleDrawer = exports.FreeAngleDrawer = function () {
                     canvas.remove(this.currentDraw);
                     canvas.renderAll();
                 } else {
-                    this.angle = new fabric.Group([this.firstLine, this.secondLine]);
+                    this.angle = new fabric.Group([this.firstLine, this.secondLine], {
+                        selectable: false,
+                        objectCaching: false
+                    });
                     canvas.add(this.angle);
                     this.parent.setFigure(this.figure.key, this.angle);
                 }
@@ -712,7 +724,8 @@ var FreeAngleDrawer = exports.FreeAngleDrawer = function () {
                 top: top
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -879,7 +892,8 @@ var LineDrawer = exports.LineDrawer = function () {
             }, this.configuration);
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -1049,7 +1063,8 @@ var RectDrawer = exports.RectDrawer = function () {
             }, this.configuration);
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
-                selectable: false
+                selectable: false,
+                objectCaching: false
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);

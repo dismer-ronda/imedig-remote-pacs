@@ -15,9 +15,13 @@
  */
 package es.pryades.fabricjs.config;
 
+import es.pryades.fabricjs.enums.FontStyle;
+import es.pryades.fabricjs.enums.FontWeight;
 import es.pryades.fabricjs.enums.NotesAlignment;
+import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -72,7 +76,55 @@ public class NotesConfiguration extends FontConfiguration implements Serializabl
     public void setTextAlign(TextAlign textAlign) {
         this.textAlign = textAlign.name().toLowerCase().replaceAll("_", "-");
     }
-    
-    
+
+    public NotesConfiguration withNotesAlignment(NotesAlignment notesAlignment) {
+        this.setNotesAlignment(notesAlignment);
+        return this;
+    }
+
+    public NotesConfiguration withTextLeft(double textLeft) {
+        this.setTextLeft(textLeft);
+        return this;
+    }
+
+    public NotesConfiguration withTextTop(double textTop) {
+        this.setTextTop(textTop);
+        return this;
+    }
+
+    public NotesConfiguration withTextAlign(TextAlign textAlign) {
+        this.setTextAlign(textAlign);
+        return this;
+    }
+
+    public NotesConfiguration withTextBackgroundColor(String textBackgroundColor) {
+        this.setTextBackgroundColor(textBackgroundColor);
+        return this;
+    }
+
+    public NotesConfiguration withTextFillColor(String textFillColor) {
+        this.setTextFillColor(textFillColor);
+        return this;
+    }
+
+    public NotesConfiguration withTextFontFamily(String textFontFamily) {
+        this.setTextFontFamily(textFontFamily);
+        return this;
+    }
+
+    public NotesConfiguration withTextFontSize(double textFontSize) {
+        this.setTextFontSize(textFontSize);
+        return this;
+    }
+
+    public NotesConfiguration withTextFontStyle(FontStyle textFontStyle) {
+        this.setTextFontStyle(textFontStyle);
+        return this;
+    }
+
+    public NotesConfiguration withTextFontWeight(FontWeight textFontWeight) {
+        this.setTextFontWeight(textFontWeight);
+        return this;
+    }
 
 }

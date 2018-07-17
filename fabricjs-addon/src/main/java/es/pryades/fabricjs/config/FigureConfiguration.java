@@ -149,7 +149,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     }
 
     public FigureConfiguration withTextBackgroundColor(String textBackgroundColor) {
-        this.setBackgroundColor(backgroundColor);
+        this.setTextBackgroundColor(textBackgroundColor);
         return this;
     }
 
