@@ -274,8 +274,8 @@
 			<artifactId>refresher</artifactId>
 			<version>${refresher.version}</version>
 		</dependency>
-						
-		<dependency>
+	
+	    <dependency>
 		   <groupId>com.vaadin.addon</groupId>
 		   <artifactId>vaadin-charts</artifactId>
 		   <version>${charts.version}</version>

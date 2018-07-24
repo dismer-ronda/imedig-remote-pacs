@@ -12,6 +12,9 @@
   	
   	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<vaadin.version>7.7.6</vaadin.version>
+		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+		<dcm4che-version>2.0.26</dcm4che-version>
 	</properties>
 
   	<build>
@@ -28,7 +31,11 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>${vaadin.plugin.version}</version>
+			</plugin>
 		</plugins>
 
 	</build>
@@ -53,6 +60,38 @@
 			<artifactId>geronimo-spec-jta</artifactId>
 			<version>1.0.1B-rc4</version>
 			<scope>provided</scope>
+		</dependency>
+		
+		<!-- Dependencias viewer -->
+		<dependency>
+			<groupId>es.pryades</groupId>
+			<artifactId>fabricjs-addon</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- dcm4che -->
+		<dependency>
+			<groupId>dcm4che</groupId>
+			<artifactId>dcm4che-core</artifactId>
+			<version>${dcm4che-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dcm4che</groupId>
+			<artifactId>dcm4che-net</artifactId>
+			<version>${dcm4che-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dcm4che</groupId>
+			<artifactId>dcm4che-image</artifactId>
+			<version>${dcm4che-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>dcm4che</groupId>
+			<artifactId>dcm4che-imageio</artifactId>
+			<version>${dcm4che-version}</version>
 		</dependency>
 
  	</dependencies>

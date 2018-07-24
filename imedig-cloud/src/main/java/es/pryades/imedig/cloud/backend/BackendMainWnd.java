@@ -4,19 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
@@ -43,6 +40,7 @@ import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.query.CentroQuery;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
+import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Administration.AdministrationDlg;
 import es.pryades.imedig.cloud.modules.Configuration.ConfigurationDlg;
@@ -51,6 +49,7 @@ import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.components.ViewerWnd;
 import lombok.Getter;
 
 public class BackendMainWnd extends VerticalLayout implements ModalParent
@@ -91,6 +90,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private DetalleCentro detalleCentro;
 	@Getter 
 	private InformeImagen imagen;
+	
+	private ViewerWnd window;
 
 	public BackendMainWnd( ImedigContext ctx )
 	{
@@ -553,30 +554,40 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		if ( bttnRequest != null )
 			operacionesContainer.addComponent( bttnRequest );
 		
-		long ts = new Date().getTime();
+		//long ts = new Date().getTime();
 		
 		Usuario usuario = getUsuario( getContext() );
-
-		String extra = "ts=" + ts + 
-				"&login=" + usuario.getLogin() + 
-				"&filter=" + usuario.getFiltro() +
-				"&query=" + usuario.getQuery() +
-				"&compression=" + usuario.getCompresion() +
-				"&uid=" + "";
 		
-		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
-		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
+		User user = new User();
+		user.setLogin(  usuario.getLogin() );
+		user.setCompression( usuario.getCompresion() );
+		user.setQuery( Utils.getInt( usuario.getQuery(), 1 ) );
+		user.setUid( "" );
+		String filter = usuario.getFiltro();
+		user.setFilter( filter == null || filter.isEmpty() ? "*" : filter );
+		
+		window = new ViewerWnd( user );
+
+//		String extra = "ts=" + ts + 
+//				"&login=" + usuario.getLogin() + 
+//				"&filter=" + usuario.getFiltro() +
+//				"&query=" + usuario.getQuery() +
+//				"&compression=" + usuario.getCompresion() +
+//				"&uid=" + "";
+//		
+//		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
+//		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
 
 		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
-		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer-vaadin" + "?" + token + "&" + code + "&debug";
+		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer-vaadin" + "?" + token + "&" + code + "&debug";
 
-		ExternalResource resource = new ExternalResource( url );
-		BrowserFrame e = new BrowserFrame( null, resource );
+		//ExternalResource resource = new ExternalResource( url );
+		//BrowserFrame e = new BrowserFrame( null, resource );
 	    //e.setType(Embedded.TYPE_BROWSER);
-	    e.setSizeFull();
+	    //e.setSizeFull();
 
-		componentsContainer.addComponent( e );
-		
+		//componentsContainer.addComponent( e );
+		componentsContainer.addComponent( window );
 		contents.addComponent( componentsContainer );
 		contents.addComponent( operacionesContainer );
 		contents.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
