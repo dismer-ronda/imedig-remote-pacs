@@ -7,8 +7,8 @@ import java.util.Date;
 import com.vaadin.ui.CheckBox;
 
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,9 +23,13 @@ public class QueryTableItem {
 	private String patientAge;
 	private String referringPhysicianName;
 	private Study study;
+	
+	private final ImedigContext context;
 
-	public QueryTableItem(Study study) {
+	public QueryTableItem(ImedigContext context, Study study) {
+		
 		this.study = study;
+		this.context = context;
 		selected = new CheckBox();
 		studyDate = study.getStudyDate();
 		modality = study.getModalitiesInStudy();
@@ -49,8 +53,8 @@ public class QueryTableItem {
 
 				if (dob != null)
 					age = Utils.getAge(dob, 
-							ViewerApplicationUI.getText("Generic.Month"),
-							ViewerApplicationUI.getText("Generic.Year"));
+							context.getString("Generic.Month"),
+							context.getString("Generic.Year"));
 			} catch (ParseException e) {
 			}
 		}

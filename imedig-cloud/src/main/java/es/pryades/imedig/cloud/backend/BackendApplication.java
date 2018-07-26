@@ -28,11 +28,13 @@ import es.pryades.imedig.cloud.core.dal.ImagenesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Imagen;
 import es.pryades.imedig.cloud.ioc.IOCManager;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The Application's "main" class
  */
-@Theme(value = "indigo")
+@Theme("imedig")
 @PreserveOnRefresh
 public class BackendApplication extends UI //implements HttpServletRequestListener
 {
@@ -52,6 +54,8 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	private ImagenesManager imagenesManager;
 	
 	ResourceBundle resources;
+	
+	@Getter @Setter private String serverUrl;
 	
 	public BackendApplication()
 	{
@@ -84,6 +88,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     public void init( VaadinRequest request )
     {
 		resources = ResourceBundle.getBundle( "language", getLanguage( Settings.LANGUAGES ) );
+		serverUrl = Utils.getEnviroment( "CLOUD_URL" ) + request.getContextPath();
 		
 		ctx = new ImedigContext();
 		

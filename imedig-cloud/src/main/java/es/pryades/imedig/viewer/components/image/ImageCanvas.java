@@ -23,13 +23,14 @@ import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
+import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.ImageHeader;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.EnumActions;
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
 
@@ -51,8 +52,12 @@ public class ImageCanvas extends VerticalLayout {
 	private ImageHeader imageHeader;
 	private Stack<ImageStatus> back;
 	
+	private final ImedigContext context;
 
-	public ImageCanvas( User user) {
+	public ImageCanvas( ImedigContext context, User user) {
+		
+		this.context = context;
+		
 		setSizeFull();
 		setMargin(false);
 		setSpacing(false);
@@ -140,7 +145,7 @@ public class ImageCanvas extends VerticalLayout {
 		String sp[] = spacing.split( "\\\\" );
 		
 		if ( sp.length != 2 ){
-			Notification.show("Error", ViewerApplicationUI.getText("ViewerWnd.NoPixelSizeMsg"), Notification.Type.ERROR_MESSAGE);
+			Notification.show("Error", context.getString( "ViewerWnd.NoPixelSizeMsg"), Notification.Type.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -360,13 +365,14 @@ public class ImageCanvas extends VerticalLayout {
 
 
 	private void buildCanvasConfiguration(){
-		canvasConfiguration = new FigureConfiguration();
-		canvasConfiguration.setStrokeWidth(1.0);
-		canvasConfiguration.setFillColor("#FFFF00");
-		canvasConfiguration.setStrokeColor("#FFFF00");
-		canvasConfiguration.setTextFontFamily("Open Sans");
-		canvasConfiguration.setTextFontSize(14);
-		canvasConfiguration.setTextFillColor("#FFFF00");
+		canvasConfiguration = new FigureConfiguration()
+				.withStrokeWidth(1.0)
+				.withFillColor("#FFFF00")
+				.withStrokeColor("#FFFF00")
+				.withBackgroundColor( "transparent" )
+				.withTextFontFamily("Roboto")
+				.withTextFontSize(14)
+				.withTextFillColor("#FFFF00");
 	}
 	
 	private void resizeAction(){
@@ -472,7 +478,7 @@ public class ImageCanvas extends VerticalLayout {
 			String url = imageData.getImage().getWadoUrl() + "&" + zoom + "&" + region + "&" + content + "&" + bright + "&" + frame;
 			String urlIcon = imageData.getImage().getWadoUrl() + "&" + zoomIcon + "&" + region + "&" + contentIcon + "&" + bright + "&" + frame;
 			
-			String urlimage = ((ViewerApplicationUI) UI.getCurrent()).getServerUrl() + url;
+			String urlimage = ((BackendApplication) UI.getCurrent()).getServerUrl() + url;
 			LOG.info(urlimage);
 			canvas.setImageUrl(new ExternalResource(urlimage));
 			
@@ -528,13 +534,13 @@ public class ImageCanvas extends VerticalLayout {
 	}
 	
 	private void showInformation(ImageHeader metadata){
-        NotesConfiguration configuration = new NotesConfiguration();
-        configuration.setTextFontSize(16);
-        configuration.setTextFillColor("#FFFF00");
-        configuration.setTextBackgroundColor("transparent");
-        configuration.setNotesAlignment(NotesAlignment.TOP_LEFT);
-        configuration.setTextAlign(TextAlign.LEFT);
-        configuration.setTextFontFamily("Open Sans");
+        NotesConfiguration configuration = new NotesConfiguration()
+        		.withTextFontSize( 16 )
+        		.withTextFillColor( "#FFFF00" )
+        		.withTextBackgroundColor( "transparent" )
+        		.withNotesAlignment(NotesAlignment.TOP_LEFT)
+        		.withTextAlign(TextAlign.LEFT)
+        		.withTextFontFamily("Roboto");
         
         StringBuilder sbuilder = new StringBuilder();
         sbuilder.append(string( metadata.getPatientName())).append(" ").append(string( metadata.getPatientSex())).append("\n").
@@ -563,7 +569,9 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 		
 		currentAction = EnumActions.DISTANCE;
-		canvas.setAction(CanvasAction.DRAW_LINE);
+		FigureConfiguration config = canvas.getFigureConfiguration();
+		config.setVisible( true );
+		canvas.setAction(CanvasAction.DRAW_LINE, config);
 		canvas.setCursor("crosshair");
 	}
 
@@ -571,7 +579,9 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ANGLE;
-		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE);
+		FigureConfiguration config = canvas.getFigureConfiguration();
+		config.setVisible( true );
+		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE, config);
 		canvas.setCursor("crosshair");
 	}
 	
@@ -579,7 +589,9 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ZOOM;
-		canvas.setAction(CanvasAction.SHOW_RECT);
+		FigureConfiguration config = canvas.getFigureConfiguration();
+		config.setVisible( true );
+		canvas.setAction(CanvasAction.SHOW_RECT, config);
 		canvas.setCursor("crosshair");
 	}
 
@@ -587,7 +599,9 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.CONTRAST;
-		canvas.setAction(CanvasAction.SHOW_RECT);
+		FigureConfiguration config = canvas.getFigureConfiguration();
+		config.setVisible( false );
+		canvas.setAction(CanvasAction.SHOW_RECT, config);
 		canvas.setCursor("crosshair");
 	}
 

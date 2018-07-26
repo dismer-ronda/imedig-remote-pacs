@@ -12,6 +12,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
@@ -40,30 +41,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();
 	
-	private class Status {
-		int ix1;
-		int iy1;
-		int ix2;
-		int iy2;
-
-		double windowWidth;
-		double windowCenter;
-
-		int frame;
-
-		public Status(int ix1, int iy1, int ix2, int iy2, double windowCenter, double windowWidth, int frame) {
-			this.ix1 = ix1;
-			this.iy1 = iy1;
-			this.ix2 = ix2;
-			this.iy2 = iy2;
-
-			this.windowCenter = windowCenter;
-			this.windowWidth = windowWidth;
-
-			this.frame = frame;
-		}
-	}
-
 	public static final Integer OPERATION_NONE = 0;
 	public static final Integer OPERATION_ZOOM = 1;
 	public static final Integer OPERATION_PAN = 2;
@@ -110,9 +87,12 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
+	
+	private final ImedigContext context;
 
-	public ViewerWnd(User user) {
+	public ViewerWnd(ImedigContext context, User user) {
 		super();
+		this.context = context;
 		this.user = user;
 		setSizeFull();
 		setSpacing(true);
@@ -127,10 +107,10 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	}
 
 	private void buidComponent() {
-		leftToolBar = new LeftToolBar(this);
+		leftToolBar = new LeftToolBar(context, this);
 		addComponent(leftToolBar);
 		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
-		imageCanvas = new ImageCanvas( user );
+		imageCanvas = new ImageCanvas( context, user );
 		addComponent(imageCanvas);
 		setExpandRatio(imageCanvas, 1.0f);
 	}
@@ -180,7 +160,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	}
 
 	private void queryStudies() {
-		QueryDlg dlg = new QueryDlg(user);
+		QueryDlg dlg = new QueryDlg(context, user);
 		dlg.setListener(this);
 		UI.getCurrent().addWindow(dlg);
 	}

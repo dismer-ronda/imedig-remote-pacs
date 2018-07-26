@@ -12,6 +12,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
@@ -21,7 +22,6 @@ import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 
 public class LeftToolBar extends VerticalLayout {
 	
@@ -39,6 +39,8 @@ public class LeftToolBar extends VerticalLayout {
 	private Button buttonUndo = null;
 	//private Button buttonFont = null;
 	
+	private final ImedigContext context;
+	
 	private final ListenerAction listenerAction;
 	
 	private static final List<String> BG_COLORS = Arrays.asList(ViewerTheme.BG_BLUE,
@@ -49,10 +51,11 @@ public class LeftToolBar extends VerticalLayout {
 	
 	private Integer studyCount = 0;
 	
-	public LeftToolBar(ListenerAction listenerAction){
+	public LeftToolBar(ImedigContext context, ListenerAction listenerAction){
 		setWidth("120px");
 		setHeight("100%");
 		this.listenerAction = listenerAction;
+		this.context = context;
 		buidInsideLayout();
 	}
 
@@ -177,22 +180,22 @@ public class LeftToolBar extends VerticalLayout {
 	}
 
 	
-	private static Button getButton(String name, String keytooltip){
+	private Button getButton(String name, String keytooltip){
 		
 		Button btn = new Button( );
 		btn.setId("btn.tool."+name);
-		btn.setIcon( new ThemeResource( "img/"+name+".png" ) );
-		btn.setDescription( ViewerApplicationUI.getText( keytooltip ) );
+		btn.setIcon( new ThemeResource( "images/"+name+".png" ) );
+		btn.setDescription( context.getString( keytooltip ) );
 		
 		return btn;
 	}
 	
-	private static Button getButton(FontAwesome font, String name, String keytooltip){
+	private Button getButton(FontAwesome font, String name, String keytooltip){
 		
 		Button btn = new Button( );
 		btn.setId("btn.tool."+name);
 		btn.setIcon( font );
-		btn.setDescription( ViewerApplicationUI.getText( keytooltip ) );
+		btn.setDescription( context.getString( keytooltip ) );
 		
 		return btn;
 	}

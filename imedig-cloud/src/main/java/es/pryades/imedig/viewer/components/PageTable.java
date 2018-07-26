@@ -9,7 +9,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,11 +31,13 @@ public class PageTable extends HorizontalLayout {
 	
 	@Setter private PaginatorListener listener;
 	
-	
+	private final ImedigContext context;
 
-	public PageTable() {
+	public PageTable(ImedigContext context) {
 		super();
-
+		
+		this.context = context;
+		
 		setWidth("100%");
 		inside = new HorizontalLayout();
 		inside.setWidthUndefined();
@@ -101,10 +103,10 @@ public class PageTable extends HorizontalLayout {
 		inside.addComponents(first, previous, label, next, last);
 	}
 
-	private static Button getButton(String tooltip, String img) {
+	private Button getButton(String tooltip, String img) {
 
-		Button btn = new Button(new ThemeResource("img/" + img));
-		btn.setDescription(ViewerApplicationUI.getText(tooltip));
+		Button btn = new Button(new ThemeResource("images/" + img));
+		btn.setDescription(context.getString(tooltip));
 		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		btn.addStyleName(ValoTheme.BUTTON_TINY);
 

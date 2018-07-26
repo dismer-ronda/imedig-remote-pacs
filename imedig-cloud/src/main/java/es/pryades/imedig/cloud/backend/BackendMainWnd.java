@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -66,7 +67,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private LoginPanel loginPanel;
 
 	private VerticalLayout mainLayout;
-	private HorizontalLayout banner;
+	//private HorizontalLayout banner;
 
 	private HorizontalLayout topBar;
 	private HorizontalLayout logoBar;
@@ -87,11 +88,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	@Getter
 	private ImedigContext context;
 
+	private ViewerWnd viewer;
 	private DetalleCentro detalleCentro;
 	@Getter 
 	private InformeImagen imagen;
-	
-	private ViewerWnd window;
 
 	public BackendMainWnd( ImedigContext ctx )
 	{
@@ -242,19 +242,19 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		topBar.setHeight( "-1px" ); //BAR_HEIGHT );
 		topBar.setSpacing( false );
 		topBar.setMargin( true );
-		topBar.setStyleName( "topbanner" );
+		topBar.addStyleName( "menu-layout" );
 
 		topLayout.addComponent( topBar );
 		topLayout.setComponentAlignment( topBar, Alignment.MIDDLE_CENTER );
 
-		banner = new HorizontalLayout();
-		banner.setWidth( "100.0%" );
-		banner.setHeight( "1px" );
-		banner.setMargin( false );
-		banner.setSpacing( false );
-		banner.setStyleName( "banner" );
-
-		topLayout.addComponent( banner );
+//		banner = new HorizontalLayout();
+//		banner.setWidth( "100.0%" );
+//		banner.setHeight( "1px" );
+//		banner.setMargin( false );
+//		banner.setSpacing( false );
+//		banner.setStyleName( "banner" );
+//
+//		topLayout.addComponent( banner );
 
 		logoBar = new HorizontalLayout();
 		logoBar.setSpacing( false );
@@ -513,13 +513,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	public void showViewer()
 	{
-		VerticalLayout componentsContainer = new VerticalLayout();
-		componentsContainer.setMargin( false );
-		componentsContainer.setSpacing( true );
-		componentsContainer.setSizeFull();
+//		VerticalLayout componentsContainer = new VerticalLayout();
+//		componentsContainer.setMargin( false );
+//		componentsContainer.setSpacing( true );
+//		componentsContainer.setSizeFull();
 		
 		HorizontalLayout operacionesContainer = new HorizontalLayout();
-		operacionesContainer.setMargin( true );
 		operacionesContainer.setSpacing( true );
 
 		if ( getContext().hasRight( "informes.crear" ) )
@@ -554,29 +553,19 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		if ( bttnRequest != null )
 			operacionesContainer.addComponent( bttnRequest );
 		
-		//long ts = new Date().getTime();
+		long ts = new Date().getTime();
 		
 		Usuario usuario = getUsuario( getContext() );
-		
-		User user = new User();
-		user.setLogin(  usuario.getLogin() );
-		user.setCompression( usuario.getCompresion() );
-		user.setQuery( Utils.getInt( usuario.getQuery(), 1 ) );
-		user.setUid( "" );
-		String filter = usuario.getFiltro();
-		user.setFilter( filter == null || filter.isEmpty() ? "*" : filter );
-		
-		window = new ViewerWnd( user );
 
-//		String extra = "ts=" + ts + 
-//				"&login=" + usuario.getLogin() + 
-//				"&filter=" + usuario.getFiltro() +
-//				"&query=" + usuario.getQuery() +
-//				"&compression=" + usuario.getCompresion() +
-//				"&uid=" + "";
-//		
-//		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
-//		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
+		String extra = "ts=" + ts + 
+				"&login=" + usuario.getLogin() + 
+				"&filter=" + usuario.getFiltro() +
+				"&query=" + usuario.getQuery() +
+				"&compression=" + usuario.getCompresion() +
+				"&uid=" + "";
+		
+		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
+		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
 
 		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
 		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer-vaadin" + "?" + token + "&" + code + "&debug";
@@ -585,13 +574,35 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		//BrowserFrame e = new BrowserFrame( null, resource );
 	    //e.setType(Embedded.TYPE_BROWSER);
 	    //e.setSizeFull();
+		
+		viewer = new ViewerWnd( context, getUser( usuario ) );
 
-		//componentsContainer.addComponent( e );
-		componentsContainer.addComponent( window );
-		contents.addComponent( componentsContainer );
-		contents.addComponent( operacionesContainer );
-		contents.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
-		contents.setExpandRatio( componentsContainer, 1.0f );
+		//componentsContainer.addComponent( viewer );
+		
+		HorizontalLayout banner = new HorizontalLayout();
+		banner.setWidth( "100%" );
+		banner.setMargin( true );
+		banner.addStyleName( "menu-layout" );
+		banner.addComponent( operacionesContainer );
+		banner.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
+		
+		contents.addComponent( viewer );
+		contents.addComponent( banner );
+		contents.setComponentAlignment( banner, Alignment.BOTTOM_CENTER );
+		contents.setExpandRatio( viewer, 1.0f );
+	}
+	
+	private User getUser(Usuario usuario){
+		User user = new User();
+		user.setLogin( usuario.getLogin());
+		user.setQuery( Utils.getInt( usuario.getQuery(), 1 ) );
+		user.setCompression( usuario.getCompresion());
+		user.setUid( "" );
+		
+		String filter = usuario.getFiltro();
+		user.setFilter( filter == null || filter.isEmpty() ? "*" : filter );
+		
+		return user;
 	}
 
 	private boolean userHasCenterAccess()

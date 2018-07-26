@@ -6,14 +6,12 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
-
 public class FontsDlg extends Window {
 
 	private CssLayout content;
 
 	public FontsDlg() {
-		super(ViewerApplicationUI.getText("QueryForm.Title"));
+		super("QueryForm.Title");
 
 		setModal(true);
 		setResizable(false);

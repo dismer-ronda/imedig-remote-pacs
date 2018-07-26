@@ -21,20 +21,21 @@
         <param-value>es.pryades.imedig.cloud.backend.BackendApplication</param-value>
     </init-param>    
     <init-param>
-    	<description>Application widgetset</description>
+    	<description>
+    	Application widgetset</description>
     	<param-name>widgetset</param-name>
     	<param-value>es.pryades.imedig.cloud.backend.widgetset.Imedig_instanceWidgetset</param-value>
     </init-param>
 	<load-on-startup>1</load-on-startup>	
   </servlet>
-  
+
   <servlet>
     <display-name>imedig-init</display-name>
     <servlet-name>imedig-init</servlet-name>
     <servlet-class>es.pryades.imedig.servlets.InitServlet</servlet-class>
 	<load-on-startup>1</load-on-startup>	
   </servlet>
-
+  
   <servlet>
     <description></description>
     <display-name>services</display-name>

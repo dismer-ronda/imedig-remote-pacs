@@ -20,11 +20,11 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.OpenStudies;
-import es.pryades.imedig.viewer.application.ViewerApplicationUI;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
 import lombok.Setter;
@@ -47,10 +47,13 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	private ListenerAction listener; 
 	
 	private Button btnQuery;
+	
+	private final ImedigContext context;
 
-	public QueryDlg(User user) {
-		super(ViewerApplicationUI.getText("QueryForm.Title"));
-
+	public QueryDlg(ImedigContext context, User user) {
+		super(context.getString("QueryForm.Title"));
+		
+		this.context = context;
 		this.user = user;
 
 		setModal(true);
@@ -74,16 +77,16 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);
 
-		layout.addComponent(fieldName = new TextField(ViewerApplicationUI.getText("QueryForm.PatientName")));
+		layout.addComponent(fieldName = new TextField(context.getString("QueryForm.PatientName")));
 		fieldName.setWidth("150px");
-		layout.addComponent(filedId = new TextField(ViewerApplicationUI.getText("QueryForm.PatientId")));
+		layout.addComponent(filedId = new TextField(context.getString("QueryForm.PatientId")));
 		filedId.setWidth("150px");
-		layout.addComponent(type = new ComboBox(ViewerApplicationUI.getText("QueryForm.Modality")));
+		layout.addComponent(type = new ComboBox(context.getString("QueryForm.Modality")));
 		type.setNewItemsAllowed(false);
 		type.setFilteringMode(FilteringMode.CONTAINS);
 		type.setWidth("100px");
 		initTypeList();
-		layout.addComponent(bydate = new ComboBox(ViewerApplicationUI.getText("QueryForm.StudyDate")));
+		layout.addComponent(bydate = new ComboBox(context.getString("QueryForm.StudyDate")));
 		bydate.setNewItemsAllowed(false);
 		bydate.setFilteringMode(FilteringMode.CONTAINS);
 		initByDateList();
@@ -95,7 +98,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	}
 
 	private void initTypeList() {
-		String modList = ViewerApplicationUI.getText("QueryForm.Modalities");
+		String modList = context.getString("QueryForm.Modalities");
 
 		String modalities[] = modList.split(",");
 
@@ -106,17 +109,17 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 	private void initByDateList() {
 		bydate.addItems(1, 2, 3, 4, 5);
-		bydate.setItemCaption(1, ViewerApplicationUI.getText("QueryForm.Today"));
-		bydate.setItemCaption(2, ViewerApplicationUI.getText("QueryForm.Yesterday"));
-		bydate.setItemCaption(3, ViewerApplicationUI.getText("QueryForm.LastWeek"));
-		bydate.setItemCaption(4, ViewerApplicationUI.getText("QueryForm.LastMonth"));
-		bydate.setItemCaption(5, ViewerApplicationUI.getText("QueryForm.LastYear"));
+		bydate.setItemCaption(1, context.getString("QueryForm.Today"));
+		bydate.setItemCaption(2, context.getString("QueryForm.Yesterday"));
+		bydate.setItemCaption(3, context.getString("QueryForm.LastWeek"));
+		bydate.setItemCaption(4, context.getString("QueryForm.LastMonth"));
+		bydate.setItemCaption(5, context.getString("QueryForm.LastYear"));
 		bydate.setValue(4);
 	}
 
 	private Component filterButtons() {
 		btnQuery = new Button();
-		btnQuery.setDescription(ViewerApplicationUI.getText("QueryForm.QueryTip"));
+		btnQuery.setDescription(context.getString("QueryForm.QueryTip"));
 		btnQuery.setImmediate(true);
 		btnQuery.setIcon(FontAwesome.SEARCH);
 		btnQuery.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
@@ -129,7 +132,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		});
 
 		Button btnOpen = new Button();
-		btnOpen.setDescription(ViewerApplicationUI.getText("QueryForm.Open"));
+		btnOpen.setDescription(context.getString("QueryForm.Open"));
 		btnOpen.setImmediate(true);
 		btnOpen.setIcon(FontAwesome.FOLDER_OPEN);
 		btnOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
@@ -144,7 +147,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		});
 
 		/*Button btnExit = new Button();
-		btnExit.setDescription(ViewerApplicationUI.getText("QueryForm.CloseTip"));
+		btnExit.setDescription(context.getString("QueryForm.CloseTip"));
 		btnExit.setImmediate(true);
 		btnExit.setIcon(FontAwesome.CLOSE);
 		btnExit.addClickListener(new ClickListener() {
@@ -203,17 +206,17 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	}
 
 	private void buildTable() {
-		content.addComponent(paginator = new PageTable());
+		content.addComponent(paginator = new PageTable(context));
 		container = new BeanItemContainer<>(QueryTableItem.class);
 		tableEstudies = new Table();
 		tableEstudies.setContainerDataSource(container);
 		tableEstudies.setSizeFull();
 		tableEstudies.setVisibleColumns(new String[] { "selected", "studyDate", "modality", "patientId", "patientName",
 				"patientAge", "referringPhysicianName" });
-		tableEstudies.setColumnHeaders(new String[] { "", ViewerApplicationUI.getText("QueryForm.StudyDate"),
-				ViewerApplicationUI.getText("QueryForm.Modality"), ViewerApplicationUI.getText("QueryForm.PatientId"),
-				ViewerApplicationUI.getText("QueryForm.PatientName"), ViewerApplicationUI.getText("QueryForm.Age"),
-				ViewerApplicationUI.getText("QueryForm.Referrer") });
+		tableEstudies.setColumnHeaders(new String[] { "", context.getString("QueryForm.StudyDate"),
+				context.getString("QueryForm.Modality"), context.getString("QueryForm.PatientId"),
+				context.getString("QueryForm.PatientName"), context.getString("QueryForm.Age"),
+				context.getString("QueryForm.Referrer") });
 		tableEstudies.setSelectable(true);
 		tableEstudies.setMultiSelect(false);
 		tableEstudies.setSortEnabled(false);
@@ -250,7 +253,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		container.removeAllItems();
 		
 		for (Study study : studies) {
-			container.addItem(new QueryTableItem(study));
+			container.addItem(new QueryTableItem(context, study));
 		}
 	}
 	

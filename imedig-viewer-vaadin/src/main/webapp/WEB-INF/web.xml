@@ -27,7 +27,7 @@
     <url-pattern>/services/*</url-pattern>
   </servlet-mapping>
 
-<context-param>
+ <context-param>
     <param-name>productionMode</param-name>
     <param-value>true</param-value>
   </context-param>
@@ -40,11 +40,6 @@
         <param-name>UI</param-name>
         <param-value>es.pryades.imedig.viewer.application.ViewerApplicationUI</param-value>
     </init-param>    
-    <!-- <init-param>
-    	<description>Application widgetset</description>
-    	<param-name>widgetset</param-name>
-    	<param-value>es.pryades.imedig.viewer.widgetset.Imedig_ViewerWidgetset</param-value>
-    </init-param>-->
 	<load-on-startup>1</load-on-startup>	
   </servlet>
   
