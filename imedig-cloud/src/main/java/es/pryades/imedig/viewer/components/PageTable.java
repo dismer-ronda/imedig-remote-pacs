@@ -1,5 +1,6 @@
 package es.pryades.imedig.viewer.components;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -59,7 +60,8 @@ public class PageTable extends HorizontalLayout {
 	private void buildBotones() {
 		label = new Label();
 		updateLabel();
-		first = getButton("QueryForm.FirstPage", "go-first.png");
+		//first = getButton("QueryForm.FirstPage", "go-first.png");
+		first = getButton("QueryForm.FirstPage", FontAwesome.ANGLE_DOUBLE_LEFT);
 		first.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -69,7 +71,8 @@ public class PageTable extends HorizontalLayout {
 				if (listener != null) listener.onFirst();
 			}
 		});
-		previous = getButton("QueryForm.PreviousPage", "go-previous.png");
+		//previous = getButton("QueryForm.PreviousPage", "go-previous.png");
+		previous = getButton("QueryForm.PreviousPage", FontAwesome.ANGLE_LEFT);
 		previous.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -79,7 +82,8 @@ public class PageTable extends HorizontalLayout {
 				if (listener != null) listener.onPrevious();
 			}
 		});
-		next = getButton("QueryForm.NextPage", "go-next.png");
+		//next = getButton("QueryForm.NextPage", "go-next.png");
+		next = getButton("QueryForm.NextPage", FontAwesome.ANGLE_RIGHT);
 		next.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -89,7 +93,8 @@ public class PageTable extends HorizontalLayout {
 				if (listener != null) listener.onNext();
 			}
 		});
-		last = getButton("QueryForm.LastPage", "go-last.png");
+		//last = getButton("QueryForm.LastPage", "go-last.png");
+		last = getButton("QueryForm.LastPage", FontAwesome.ANGLE_DOUBLE_RIGHT);
 		last.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -109,6 +114,17 @@ public class PageTable extends HorizontalLayout {
 		btn.setDescription(context.getString(tooltip));
 		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		btn.addStyleName(ValoTheme.BUTTON_TINY);
+
+		return btn;
+	}
+	
+	private Button getButton(String tooltip, FontAwesome icon) {
+
+		Button btn = new Button(icon);
+		btn.setDescription(context.getString(tooltip));
+		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		//btn.addStyleName(ValoTheme.BUTTON_TINY);
+		btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 
 		return btn;
 	}

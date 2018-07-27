@@ -1,6 +1,6 @@
-package es.pryades.imedig.viewer.components;
+package es.pryades.imedig.cloud.common;
 
-public class ViewerTheme {
+public class ImedigTheme {
 	public static final String STUDY_PANEL	= "studypanel";
 	public static final String CURSOR_POINTER	= "cursor_pointer";
 	
@@ -16,4 +16,7 @@ public class ViewerTheme {
 	public static final String BG_MAGENTA 	= "bg_magenta";
 	public static final String BG_YELLOW	= "bg_yelow";
 	public static final String BG_LIGHT_BLUE= "bg_light_blue";
+	
+	public static final String BUTTON_TOOLBOX= "toolbox";
+	public static final String BUTTON_TOOLBAR= "toolbar";
 }

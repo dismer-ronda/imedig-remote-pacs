@@ -15,6 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.backend.BackendApplication;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
@@ -33,7 +34,7 @@ public class StudyPanel extends VerticalLayout {
 	private ListenerAction listenerAction;
 	
 	public StudyPanel(StudyTree study, ListenerAction listenerAction) {
-		addStyleName(ViewerTheme.STUDY_PANEL);
+		addStyleName(ImedigTheme.STUDY_PANEL);
 
 		this.study = study;
 		this.listenerAction = listenerAction;
@@ -71,7 +72,7 @@ public class StudyPanel extends VerticalLayout {
 
 			for (Image image : imageList) {
 				com.vaadin.ui.Image img = getImage(study, series, image, false);
-				img.addStyleName(ViewerTheme.CURSOR_POINTER);
+				img.addStyleName(ImedigTheme.CURSOR_POINTER);
 				
 				ImageData data = new ImageData(); 
 				data.setImage(image);

@@ -19,6 +19,7 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.Action;
 import es.pryades.imedig.viewer.ListenerAction;
+import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
@@ -53,37 +54,13 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 
 	protected ResourceBundle resourceBundle;
 
-	private int buttonSize;
-
-	// private QueryDlg queryDlg = null;
-
 	ArrayList<String> selectedStudies = null;
 	private ArrayList<StudyTree> studies;
 
-	private String currentSelMode;
-	private boolean currentShowLine;
-	private int currentOperation;
-	private int currentCursorOffsetX;
-	private int currentCursorOffsetY;
-
-	private String currentCursor;
-
 	boolean replicate = false;
-	// ImedigCanvas activeCanvas = null;
-	// private ArrayList<ImedigCanvas> canvasImages;
-
 	boolean firstLine = true;
 
-	private double aix1;
-	private double aiy1;
-	private double aix2;
-	private double aiy2;
-
-	// private ImedigApplication app;
-
 	private User user;
-
-	private boolean firstTime = true;
 
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
@@ -110,7 +87,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		leftToolBar = new LeftToolBar(context, this);
 		addComponent(leftToolBar);
 		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
-		imageCanvas = new ImageCanvas( context, user );
+		imageCanvas = new ImageCanvas( context, user, this );
 		addComponent(imageCanvas);
 		setExpandRatio(imageCanvas, 1.0f);
 	}
@@ -126,10 +103,13 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {
 			openStudies((List<String>)action.getData());
+			leftToolBar.studiesOpen();
 		}else if (action instanceof CloseStudies) {
 			closeStudies();
+			leftToolBar.allButtonsDisable();
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
+			leftToolBar.studyInViewer();
 		}else if (action instanceof AngleAction) {
 			imageCanvas.angleAction();
 		}else if (action instanceof DistanceAction) {
@@ -137,11 +117,15 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		}else if (action instanceof ZoomAction) {
 			imageCanvas.zoomAction();
 		}else if (action instanceof UndoAction) {
-			imageCanvas.undoAction();
+			if (!imageCanvas.undoAction()){
+				leftToolBar.enableUndo( false );
+			}
 		}else if (action instanceof NoneAction) {
 			imageCanvas.noneAction();
 		}else if (action instanceof ContrastAction) {
 			imageCanvas.contrastAction();
+		}else if (action instanceof AddToUndoAction) {
+			leftToolBar.enableUndo( true );
 		}
 	}
 

@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.FileDownloader;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
@@ -23,8 +24,10 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.ImedigException;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageDlg;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
@@ -282,10 +285,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		Button btn;
 		
-		buttonManual = new Button( context.getString( "words.manual" ) );
-		buttonManual.setIcon( new ThemeResource( "images/manual.png" ) );
+		buttonManual = new Button( context.getString( "words.manual" ), FontAwesome.BOOK );
+		//buttonManual.setIcon( new ThemeResource( "images/manual.png" ) );
 		buttonManual.setDescription( context.getString( "words.user.manual" ) );
-		buttonManual.setStyleName( "borderless icon-on-top" );
+		setStyleButtonBar( buttonManual );
 		buttonManual.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 3827413316030851767L;
@@ -297,10 +300,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		} );
 		buttonsBar.addComponent( buttonManual );
 
-		buttonReports = new Button( context.getString( "words.reports" ) );
-		buttonReports.setIcon( new ThemeResource( "images/reports.png" ) );
+		buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
+		//buttonReports.setIcon( new ThemeResource( "images/reports.png" ) );
 		buttonReports.setDescription( context.getString( "words.reports" ) );
-		buttonReports.setStyleName( "borderless icon-on-top" );
+		setStyleButtonBar( buttonReports );
 		buttonReports.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 3827413316030851767L;
@@ -314,10 +317,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
-			btn = new Button( context.getString( "words.configuration" ) );
-			btn.setIcon( new ThemeResource( "images/config.png" ) );
+			btn = new Button( context.getString( "words.configuration" ), FontAwesome.GEAR );
+			//btn.setIcon( new ThemeResource( "images/config.png" ) );
 			btn.setDescription( context.getString( "words.configuration" ) );
-			btn.setStyleName( "borderless icon-on-top" );
+			setStyleButtonBar( btn );
 
 			btn.addClickListener( new Button.ClickListener()
 			{
@@ -332,10 +335,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			
 			if ( Settings.LOCAL_server )
 			{
-				btn = new Button( context.getString( "words.system" ) );
-				btn.setIcon( new ThemeResource( "images/server.png" ) );
+				btn = new Button( context.getString( "words.system" ), FontAwesome.SERVER );
+				//btn.setIcon( new ThemeResource( "images/server.png" ) );
 				btn.setDescription( context.getString( "words.system" ) );
-				btn.setStyleName( "borderless icon-on-top" );
+				setStyleButtonBar( btn );
 	
 				btn.addClickListener( new Button.ClickListener()
 				{
@@ -350,10 +353,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			}
 		}
 
-		btn = new Button( context.getString( "words.status" ) );
-		btn.setIcon( new ThemeResource( "images/storage-status.png" ) );
+		btn = new Button( context.getString( "words.status" ), FontAwesome.TACHOMETER );
+		//btn.setIcon( new ThemeResource( "images/storage-status.png" ) );
 		btn.setDescription( context.getString( "StorageStatusDlg.title" ) );
-		btn.setStyleName( "borderless icon-on-top" );
+		setStyleButtonBar( btn );
 
 		btn.addClickListener( new Button.ClickListener()
 		{
@@ -368,10 +371,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		if ( getContext().hasRight( AUTH_ADMINISTRACION ) )
 		{
-			btn = new Button( context.getString( "words.administration" ) );
-			btn.setIcon( new ThemeResource( "images/admin.png" ) );
+			btn = new Button( context.getString( "words.administration" ), FontAwesome.GEARS );
+			//btn.setIcon( new ThemeResource( "images/admin.png" ) );
 			btn.setDescription( context.getString( "words.administration" ) );
-			btn.setStyleName( "borderless icon-on-top" );
+			setStyleButtonBar( btn );
 
 			btn.addClickListener( new Button.ClickListener()
 			{
@@ -385,10 +388,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			buttonsBar.addComponent( btn );
 		}
 
-		btn = new Button( context.getString( "words.logout" ) );
-		btn.setIcon( new ThemeResource( "images/logout.png" ) );
+		btn = new Button( context.getString( "words.logout" ), FontAwesome.POWER_OFF);
+		//btn.setIcon( new ThemeResource( "images/logout.png" ) );
 		btn.setDescription( context.getString( "words.logout" ) );
-		btn.setStyleName( "borderless icon-on-top" );
+		setStyleButtonBar( btn );
 
 		btn.addClickListener( new Button.ClickListener()
 		{
@@ -400,6 +403,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			}
 		} );
 		buttonsBar.addComponent( btn );
+	}
+	
+	private static void setStyleButtonBar(Button button){
+		button.addStyleName( ValoTheme.BUTTON_LARGE );
+		button.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
+		button.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		button.addStyleName( ImedigTheme.BUTTON_TOOLBAR );
 	}
 
 	private void showLogoLayout()

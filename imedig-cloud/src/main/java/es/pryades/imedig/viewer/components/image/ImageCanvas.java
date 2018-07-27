@@ -30,6 +30,8 @@ import es.pryades.imedig.cloud.dto.viewer.ImageHeader;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
+import es.pryades.imedig.viewer.ListenerAction;
+import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
@@ -53,10 +55,13 @@ public class ImageCanvas extends VerticalLayout {
 	private Stack<ImageStatus> back;
 	
 	private final ImedigContext context;
+	
+	private final ListenerAction listenerAction;
 
-	public ImageCanvas( ImedigContext context, User user) {
+	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction) {
 		
 		this.context = context;
+		this.listenerAction = listenerAction;
 		
 		setSizeFull();
 		setMargin(false);
@@ -245,7 +250,7 @@ public class ImageCanvas extends VerticalLayout {
 			int niy1 = (int) ( my * vpy1 + ny );
 			int niy2 = (int) ( my * vpy2 + ny );
 
-			back.push(new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame));
+			addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
 			
 			currentCenter = getDouble(imageHeader.getWindowCenter());
 			currentWidth = getDouble(imageHeader.getWindowWidth());
@@ -261,6 +266,12 @@ public class ImageCanvas extends VerticalLayout {
 			showImagenFigures();
 		}
 	}
+	
+	private void addToUndo(ImageStatus status){
+		back.push(status);
+		listenerAction.doAction( new AddToUndoAction( this, null ) );
+	}
+	
 
 	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
 		double angle = Math.toDegrees( Math.abs( getAngle( x1, y1, x2, y2 ) - getAngle( xp1, yp1, xp2, yp2 ) ) );
@@ -350,7 +361,7 @@ public class ImageCanvas extends VerticalLayout {
 			double nc = currentCenter - ( mc * ( figure.getPoints().get(1).getY() - figure.getPoints().get(0).getY() ) );
 			
 			if ( nc > 0 ){
-				back.push(new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame));
+				addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame));
 				
 				currentCenter = nc;
 				currentWidth = nw;
@@ -607,8 +618,8 @@ public class ImageCanvas extends VerticalLayout {
 
 
 
-	public void undoAction() {
-		if (back.isEmpty()) return;
+	public boolean undoAction() {
+		if (back.isEmpty()) return false;
 		
 		ImageStatus status = back.pop();
 		
@@ -623,6 +634,10 @@ public class ImageCanvas extends VerticalLayout {
 		
 		openImage();
 		showImagenFigures();
+		
+		if (back.isEmpty()) return false;
+		
+		return true;
 	}
 
 }

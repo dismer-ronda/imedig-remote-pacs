@@ -12,12 +12,14 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -37,22 +39,22 @@ public class LeftToolBar extends VerticalLayout {
 	private Button buttonZoom = null;
 	private Button buttonContrast = null;
 	private Button buttonUndo = null;
-	//private Button buttonFont = null;
+	private Button buttonFont = null;
 	
 	private final ImedigContext context;
 	
 	private final ListenerAction listenerAction;
 	
-	private static final List<String> BG_COLORS = Arrays.asList(ViewerTheme.BG_BLUE,
-			ViewerTheme.BG_GREEN,
-			ViewerTheme.BG_BROWN,
-			ViewerTheme.BG_ORANGE,
-			ViewerTheme.BG_RED);
+	private static final List<String> BG_COLORS = Arrays.asList(ImedigTheme.BG_BLUE,
+			ImedigTheme.BG_GREEN,
+			ImedigTheme.BG_BROWN,
+			ImedigTheme.BG_ORANGE,
+			ImedigTheme.BG_RED);
 	
 	private Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ListenerAction listenerAction){
-		setWidth("120px");
+		setWidth("-1px");
 		setHeight("100%");
 		this.listenerAction = listenerAction;
 		this.context = context;
@@ -72,32 +74,22 @@ public class LeftToolBar extends VerticalLayout {
 
 	private void buildButtons() {
 		GridLayout grid = new GridLayout(3, 3);
-		grid.addComponent( buttonOpen = getButton( "open", "ViewerWnd.Open" ));
-		grid.addComponent( buttonClose = getButton( "close", "ViewerWnd.Close" ));
-		grid.addComponent( buttonNone = getButton( "cursor-green", "ViewerWnd.NoOperation" ));
-		grid.addComponent( buttonZoom = getButton( "magnifier", "ViewerWnd.Zoom" ));
-		grid.addComponent( buttonContrast = getButton( "contrast", "ViewerWnd.Contrast" ));
-		grid.addComponent( buttonUndo = getButton( "undo", "ViewerWnd.Undo" ));
+		grid.addComponent( buttonOpen = getButton( FontAwesome.FOLDER_OPEN, "open", "ViewerWnd.Open" ));
+		grid.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
+		grid.addComponent( buttonNone = getButton( FontAwesome.MOUSE_POINTER, "cursor-green", "ViewerWnd.NoOperation" ));
+		grid.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
+		grid.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
+		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
 		grid.addComponent( buttonDistance = getButton( "distance", "ViewerWnd.Distance" ));
 		grid.addComponent( buttonAngle = getButton( "angle", "ViewerWnd.Angle" ));
-		//grid.addComponent( buttonFont = getButton( "angle", "ViewerWnd.Angle" ));
-		buttonOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonOpen.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonClose.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonClose.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonNone.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonNone.addStyleName(ValoTheme.BUTTON_LARGE);
+		grid.addComponent( buttonFont = getButton( "angle", "ViewerWnd.Angle" ));
+
 		buttonDistance.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		buttonDistance.addStyleName(ValoTheme.BUTTON_LARGE);
 		buttonAngle.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		buttonAngle.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonZoom.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonZoom.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonContrast.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonContrast.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonUndo.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonUndo.addStyleName(ValoTheme.BUTTON_LARGE);
-		//buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		buttonFont.setVisible( false );
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -155,14 +147,15 @@ public class LeftToolBar extends VerticalLayout {
 			}
 		});
 		
-//		buttonFont.addClickListener(new Button.ClickListener() {
-//			@Override
-//			public void buttonClick(ClickEvent event) {
-//				listenerAction.doAction(new FontAction(this, null));
-//			}
-//		});
+		allButtonsDisable();
+		
+		buttonFont.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				listenerAction.doAction(new FontAction(this, null));
+			}
+		});
 
-		//grid.setEnabled(false);
 		inside.addComponent(grid);
 	}
 	
@@ -196,6 +189,10 @@ public class LeftToolBar extends VerticalLayout {
 		btn.setId("btn.tool."+name);
 		btn.setIcon( font );
 		btn.setDescription( context.getString( keytooltip ) );
+		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		btn.addStyleName(ValoTheme.BUTTON_LARGE);
+		btn.addStyleName(ImedigTheme.BUTTON_TOOLBOX);
+		btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		
 		return btn;
 	}
@@ -211,4 +208,32 @@ public class LeftToolBar extends VerticalLayout {
 		thumnails.addComponent(panel);
 	}
 	
+	
+	public void allButtonsDisable(){
+		buttonClose.setEnabled( false );
+		buttonNone.setEnabled( false );
+		buttonDistance.setEnabled( false );
+		buttonAngle.setEnabled( false );
+		buttonZoom.setEnabled( false );
+		buttonContrast.setEnabled( false );
+		buttonUndo.setEnabled( false );
+	}
+
+	public void studiesOpen(){
+		buttonClose.setEnabled( true );
+	}
+
+	public void studyInViewer(){
+		buttonNone.setEnabled( true );
+		buttonDistance.setEnabled( true );
+		buttonAngle.setEnabled( true );
+		buttonZoom.setEnabled( true );
+		buttonContrast.setEnabled( true );
+		buttonUndo.setEnabled( false );
+	}
+	
+	public void enableUndo(boolean enabled){
+		buttonUndo.setEnabled( enabled );
+	}
+
 }

@@ -71,3 +71,19 @@
 .cursor_pointer{
   cursor: pointer;
 }
+
+.toolbox{
+  font-size: 26px !important;
+}
+
+.v-button-toolbox:focus:after{
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
+.v-button-toolbar{
+	& .v-button-caption{
+		font-size: 16px !important;
+	}
+}
+

@@ -123,7 +123,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnQuery.setImmediate(true);
 		btnQuery.setIcon(FontAwesome.SEARCH);
 		btnQuery.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		btnQuery.addStyleName(ValoTheme.BUTTON_LARGE);
+		//btnQuery.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnQuery.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -136,7 +136,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnOpen.setImmediate(true);
 		btnOpen.setIcon(FontAwesome.FOLDER_OPEN);
 		btnOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		btnOpen.addStyleName(ValoTheme.BUTTON_LARGE);
+		//btnOpen.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnOpen.addClickListener(new ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
