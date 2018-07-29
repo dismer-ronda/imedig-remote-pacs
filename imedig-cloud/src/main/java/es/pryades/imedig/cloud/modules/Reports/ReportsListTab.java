@@ -5,22 +5,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Alignment;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -54,6 +51,8 @@ import es.pryades.imedig.cloud.vto.refs.InformeVtoFieldRef;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -555,7 +554,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	
 	public Component getQueryFecha()
 	{
-		ComboBox combo = new ComboBox();
+		ComboBox combo = new ComboBox(getContext().getString( "words.date" ));
 		combo.setWidth( "120px" );
 		combo.setNullSelectionAllowed( false );
 		combo.setTextInputAllowed( false );
@@ -573,53 +572,23 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 		combo.addItem( 5 );
 		combo.setItemCaption( 5, getContext().getString( "words.lastyear" ) );
 		
-		Label label = new Label( getContext().getString( "words.date" ) );
-
-		HorizontalLayout rowFecha = new HorizontalLayout();
-		rowFecha.addComponent( label );
-		rowFecha.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		rowFecha.addComponent( combo );
-		rowFecha.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		rowFecha.setSpacing( true );
-		rowFecha.setMargin( false );
-
-		return rowFecha;
+		return getRow( combo );
 	}
 
 	public Component getQueryPaciente()
 	{
-		TextField text = new TextField( bi.getItemProperty( "paciente" ) );
+		TextField text = new TextField( getContext().getString( "words.patient" ), bi.getItemProperty( "paciente" ) );
 		text.setNullRepresentation( "" );
 		
-		Label label = new Label( getContext().getString( "words.patient" ) );
-		
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( text );
-		row.setComponentAlignment( text, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( text );
 	}
 
 	public Component getQueryEstudio()
 	{
-		TextField text = new TextField( bi.getItemProperty( "estudio" ) );
+		TextField text = new TextField( getContext().getString( "words.study" ), bi.getItemProperty( "estudio" ) );
 		text.setNullRepresentation( "" );
 		
-		Label label = new Label( getContext().getString( "words.study" ) );
-
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( text );
-		row.setComponentAlignment( text, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( text );
 	}
 
 	private void fillComboCentro( ComboBox comboCentro )
@@ -677,7 +646,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 
 	public Component getQueryCentro()
 	{
-		ComboBox combo = new ComboBox();
+		ComboBox combo = new ComboBox(getContext().getString( "words.center" ));
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "centro" ) );
@@ -685,22 +654,12 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 
 		fillComboCentro( combo );
 		
-		Label label = new Label( getContext().getString( "words.center" ) );
-		
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( combo );
-		row.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( combo );
 	}
 
 	public Component getQueryEstado()
 	{
-		ComboBox combo = new ComboBox(); 
+		ComboBox combo = new ComboBox(getContext().getString( "words.status" )); 
 		combo.setWidth( "120px" );
 		combo.setNullSelectionAllowed( false );
 		combo.setTextInputAllowed( false );
@@ -717,53 +676,23 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 		combo.addItem( Informe.STATUS_FINISHED );
 		combo.setItemCaption( Informe.STATUS_FINISHED, getContext().getString( "words.finished" ) );
 		
-		Label label = new Label( getContext().getString( "words.status" ) );
-
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( combo );
-		row.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( combo );
 	}
 
 	public Component getQueryCodigo()
 	{
-		TextField text = new TextField( bi.getItemProperty( "icd10cm" ) );
+		TextField text = new TextField( getContext().getString( "words.icd10cm" ), bi.getItemProperty( "icd10cm" ) );
 		text.setNullRepresentation( "" );
 		
-		Label label = new Label( getContext().getString( "words.icd10cm" ) );
-
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( text );
-		row.setComponentAlignment( text, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( text );
 	}
 
 	public Component getQueryClaves()
 	{
-		TextField text = new TextField( bi.getItemProperty( "claves" ) );
+		TextField text = new TextField( getContext().getString( "words.keywords" ), bi.getItemProperty( "claves" ) );
 		text.setNullRepresentation( "" );
 		
-		Label label = new Label( getContext().getString( "words.keywords" ) );
-
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( text );
-		row.setComponentAlignment( text, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( text );
 	}
 
 	private void fillComboMedicos( ComboBox comboCentro )
@@ -821,7 +750,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 
 	public Component getQueryRefiere()
 	{
-		ComboBox combo = new ComboBox();
+		ComboBox combo = new ComboBox(getContext().getString( "words.refer" ));
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "refiere" ) );
@@ -829,45 +758,25 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 		
 		fillComboMedicos( combo );
 		
-		Label label = new Label( getContext().getString( "words.refer" ) );
-		
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( combo );
-		row.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
-
-		return row;
+		return getRow( combo );
 	}
 
 	public Component getQueryInforma()
 	{
-		ComboBox combo = new ComboBox();
+		ComboBox combo = new ComboBox(getContext().getString( "words.report" ));
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "informa" ) );
 		combo.setWidth( "200px" );
 		
 		fillComboMedicos( combo );
-		
-		Label label = new Label( getContext().getString( "words.report" ) );
-		
-		HorizontalLayout row = new HorizontalLayout();
-		row.addComponent( label );
-		row.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		row.addComponent( combo );
-		row.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		row.setSpacing( true );
-		row.setMargin( false );
 
-		return row;
+		return getRow( combo );
 	}
 
 	public Component getQueryModalidad()
 	{
-		ComboBox combo = new ComboBox(); 
+		ComboBox combo = new ComboBox(getContext().getString( "words.modality" )); 
 		combo.setWidth( "120px" );
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
@@ -881,17 +790,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 			combo.setItemCaption( modality, getContext().getString( "words.modality." + modality ) );
 		}
 		
-		Label label = new Label( getContext().getString( "words.modality" ) );
-
-		HorizontalLayout rowFecha = new HorizontalLayout();
-		rowFecha.addComponent( label );
-		rowFecha.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
-		rowFecha.addComponent( combo );
-		rowFecha.setComponentAlignment( combo, Alignment.MIDDLE_LEFT );
-		rowFecha.setSpacing( true );
-		rowFecha.setMargin( false );
-
-		return rowFecha;
+		return getRow( combo );
 	}
 
 	
@@ -966,5 +865,14 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	public boolean isExtrasAvailable()
 	{
 		return true;
+	}
+	
+	private static final Component getRow(Component component){
+		FormLayout layout = new FormLayout( component );
+		layout.setMargin( new MarginInfo( false, true, false, false ) );
+		layout.setSpacing( false );
+		layout.setWidthUndefined();
+		
+		return layout;
 	}
 }

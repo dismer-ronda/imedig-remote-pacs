@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 
 import com.vaadin.data.Item;
@@ -21,6 +19,7 @@ import es.pryades.imedig.cloud.common.ObjectMetaInfo;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.ioc.IOCManager;
+import lombok.Getter;
 
 /**
  * 
@@ -81,6 +80,7 @@ public class TableImedig extends VerticalLayout
     	this.context = ctx;
 	
    		this.tableHeaders =  tableObjectMetaInfo.getAttributesNamesArratString();
+   		setSpacing( true );
     }
     
     /**

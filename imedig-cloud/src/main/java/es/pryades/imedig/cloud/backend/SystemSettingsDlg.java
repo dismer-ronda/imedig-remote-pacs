@@ -1,12 +1,10 @@
 package es.pryades.imedig.cloud.backend;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -18,10 +16,12 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.core.common.ModalParent;
+import lombok.Getter;
 
 public class SystemSettingsDlg extends Window implements ModalParent
 {
@@ -108,6 +108,7 @@ public class SystemSettingsDlg extends Window implements ModalParent
 
 		VerticalLayout layoutSettings = new VerticalLayout();
 		layoutSettings.setSizeFull();
+		layoutSettings.setSpacing( true );
 
 		settings = new TextArea();
         settings.setValue( Utils.readFile( "/opt/network/interfaces" ) );
@@ -169,7 +170,7 @@ public class SystemSettingsDlg extends Window implements ModalParent
 	private Component buildWorkspace()
 	{
 		workSpace = new VerticalLayout();
-		workSpace.setMargin( true );
+		//workSpace.setMargin( true );
 		workSpace.setSizeFull();
 
 		return workSpace;
@@ -208,9 +209,9 @@ public class SystemSettingsDlg extends Window implements ModalParent
 
 		Button btn;
 
-		btn = new Button( getContext().getString( "SystemSettingsDlg.storage" ) );
-		btn.setIcon( new ThemeResource( "images/storage.png" ) );
-		btn.addStyleName( "borderless icon-on-top" );
+		btn = new Button( getContext().getString( "SystemSettingsDlg.storage" ), FontAwesome.DATABASE );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		btn.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 507605970879641156L;
@@ -222,10 +223,10 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		} );
 		globalBar.addComponent( btn );
 		
-		btn = new Button( context.getString( "words.status" ) );
-		btn.setIcon( new ThemeResource( "images/storage-status.png" ) );
+		btn = new Button( context.getString( "words.status" ), FontAwesome.TACHOMETER );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		btn.setDescription( context.getString( "StorageStatusDlg.title" ) );
-		btn.setStyleName( "borderless icon-on-top" );
 
 		btn.addClickListener( new Button.ClickListener()
 		{
@@ -239,9 +240,9 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		globalBar.addComponent( btn );
 		
 
-		btn = new Button( getContext().getString( "SystemSettingsDlg.update" ) );
-		btn.setIcon( new ThemeResource( "images/update.png" ) );
-		btn.addStyleName( "borderless icon-on-top" );
+		btn = new Button( getContext().getString( "SystemSettingsDlg.update" ), FontAwesome.UPLOAD );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		btn.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 3827413316030851767L;
@@ -253,9 +254,9 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		} );
 		globalBar.addComponent( btn );
 
-		btn = new Button( getContext().getString( "SystemSettingsDlg.restore" ) );
-		btn.setIcon( new ThemeResource( "images/restore.png" ) );
-		btn.addStyleName( "borderless icon-on-top" );
+		btn = new Button( getContext().getString( "SystemSettingsDlg.restore" ) , FontAwesome.HISTORY);
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		btn.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 3827413316030851767L;
@@ -267,9 +268,9 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		} );
 		globalBar.addComponent( btn );
 
-		btn = new Button( getContext().getString( "SystemSettingsDlg.reboot" ) );
-		btn.setIcon( new ThemeResource( "images/reboot.png" ) );
-		btn.addStyleName( "borderless icon-on-top" );
+		btn = new Button( getContext().getString( "SystemSettingsDlg.reboot" ), FontAwesome.POWER_OFF );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		btn.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = -2811321741260832007L;

@@ -1,15 +1,15 @@
 package es.pryades.imedig.cloud.backend;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
@@ -19,12 +19,10 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.BaseDesktopWindow;
-import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.PerfilesDerechosManager;
@@ -108,7 +106,6 @@ public class LoginPanel extends VerticalLayout
 		HorizontalLayout rowHeader = new HorizontalLayout();
 		rowHeader.setWidth( "100%" );
 		rowHeader.setHeight( "33px" );
-		rowHeader.setStyleName( "header" );
 		rowHeader.setMargin( false );
 		rowHeader.setSpacing( false );
 
@@ -118,12 +115,14 @@ public class LoginPanel extends VerticalLayout
 		rowButton.setSpacing( false );
 
 		Label labelCaption = new Label( ctx.getString( "LoginDlg.title" ) );
-		labelCaption.setStyleName( "header" );
+		labelCaption.addStyleName( ValoTheme.LABEL_H3 );
+		labelCaption.addStyleName( ValoTheme.LABEL_COLORED );
 		labelCaption.setWidth( "100%" );
 		
 		rowHeader.addComponent( labelCaption );
 		rowHeader.setComponentAlignment( labelCaption, Alignment.MIDDLE_LEFT );
 		form.addComponent( rowHeader );
+		form.addComponent( new Label( "<hr/>", ContentMode.HTML ));
 
 		VerticalLayout inside = new VerticalLayout();
 		inside.setStyleName( "loginuser" );
@@ -220,7 +219,6 @@ public class LoginPanel extends VerticalLayout
 		HorizontalLayout rowHeader = new HorizontalLayout();
 		rowHeader.setWidth( "100%" );
 		rowHeader.setHeight( "33px" );
-		rowHeader.setStyleName( "header" );
 		rowHeader.setMargin( false );
 		rowHeader.setSpacing( false );
 		
@@ -230,11 +228,13 @@ public class LoginPanel extends VerticalLayout
 		rowButton.setSpacing( false );
 
 		Label labelCaption = new Label( ctx.getString( "LoginDlg.password.forgot" ) );
-		labelCaption.setStyleName( "header" );
 		labelCaption.setWidth( "100%" );
+		labelCaption.addStyleName( ValoTheme.LABEL_H3 );
+		labelCaption.addStyleName( ValoTheme.LABEL_COLORED );
 		rowHeader.addComponent( labelCaption );
 		rowHeader.setComponentAlignment( labelCaption, Alignment.MIDDLE_LEFT );
 		form.addComponent( rowHeader );
+		form.addComponent( new Label( "<hr/>", ContentMode.HTML ));
 
 		VerticalLayout inside = new VerticalLayout();
 		inside.setStyleName( "loginuser" );

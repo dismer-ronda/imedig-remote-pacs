@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.Logger;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.Background;
 import com.vaadin.addon.charts.model.ChartType;
@@ -23,7 +20,7 @@ import com.vaadin.addon.charts.model.style.GradientColor;
 import com.vaadin.addon.charts.model.style.SolidColor;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -34,6 +31,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.StorageConfiguration;
@@ -46,6 +44,8 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.pacs.dal.StudiesManager;
 import es.pryades.imedig.pacs.dto.query.StudyQuery;
+import lombok.Getter;
+import lombok.Setter;
 
 public class StorageStatusDlg extends Window implements ModalParent
 {
@@ -122,10 +122,9 @@ public class StorageStatusDlg extends Window implements ModalParent
 		rowButton.setWidth( "100%" );
 		rowButton.setHeight( "100%" );
 		
-		bttnApply = new Button();
-		bttnApply.setStyleName( "borderless icon-on-top" );
+		bttnApply = new Button(FontAwesome.SEARCH);
+		bttnApply.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		bttnApply.setDescription( context.getString( "words.search" ) );
-		bttnApply.setIcon( new ThemeResource( "images/search.png" ) );
 		bttnApply.setClickShortcut( KeyCode.ENTER );
 		
 		rowButton.addComponent( bttnApply );

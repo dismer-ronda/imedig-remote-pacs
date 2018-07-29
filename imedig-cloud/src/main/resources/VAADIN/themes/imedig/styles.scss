@@ -82,8 +82,11 @@
 }
 
 .v-button-toolbar{
+	font-size: 26px !important;
+	line-height: 1;
 	& .v-button-caption{
-		font-size: 16px !important;
+		font-size: 13px !important;
+		font-weight: normal;
 	}
 }
 

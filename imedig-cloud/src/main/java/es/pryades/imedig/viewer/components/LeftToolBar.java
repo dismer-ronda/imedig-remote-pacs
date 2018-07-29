@@ -89,7 +89,7 @@ public class LeftToolBar extends VerticalLayout {
 		buttonAngle.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		buttonAngle.addStyleName(ValoTheme.BUTTON_LARGE);
 		buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonFont.setVisible( false );
+		//buttonFont.setVisible( false );
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -192,7 +192,7 @@ public class LeftToolBar extends VerticalLayout {
 		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		btn.addStyleName(ValoTheme.BUTTON_LARGE);
 		btn.addStyleName(ImedigTheme.BUTTON_TOOLBOX);
-		btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+		//btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		
 		return btn;
 	}

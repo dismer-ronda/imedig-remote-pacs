@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
@@ -23,8 +24,8 @@ import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dal.ImagenesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
-import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Imagen;
+import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.query.CentroQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
@@ -87,13 +88,13 @@ public class ModalNewImage extends ModalWindowsCRUD implements Upload.SucceededL
 		lbFicheroImagen = new Label( getContext().getString( "modalNewImage.lbFicheroImagen" ) );
 		lbFicheroImagen.setWidth( "120px" );
 
-		comboCentro = new ComboBox();
+		comboCentro = new ComboBox(getContext().getString( "words.center" ));
 		comboCentro.setWidth( "100%" );
 		comboCentro.setNullSelectionAllowed( false );
 		comboCentro.setTextInputAllowed( false );
 		comboCentro.setPropertyDataSource( bi.getItemProperty( "centro" ) );
 
-		editImageNombre = new TextField( bi.getItemProperty( "nombre" ) );
+		editImageNombre = new TextField( getContext().getString( "modalNewImage.lbImageNombre" ), bi.getItemProperty( "nombre" ) );
 		editImageNombre.setWidth( "100%" );
 		editImageNombre.setImmediate( true );
 		editImageNombre.setNullRepresentation( "" );
@@ -124,14 +125,20 @@ public class ModalNewImage extends ModalWindowsCRUD implements Upload.SucceededL
 
 		HorizontalLayout rowSeleccionar = new HorizontalLayout();
 		rowSeleccionar.setWidth( "100%" );
-		rowSeleccionar.addComponent( lbFicheroImagen );
+		rowSeleccionar.setCaption( getContext().getString( "modalNewImage.lbFicheroImagen" ) );
 		rowSeleccionar.addComponent( editImageFicheroSeleccionado );
 		rowSeleccionar.setExpandRatio( editImageFicheroSeleccionado, 1.0f );
 		rowSeleccionar.addComponent( upload );
+		
+		FormLayout form = new FormLayout(comboCentro, editImageNombre, rowSeleccionar);
+		form.setMargin( false );
+		form.setSpacing( true );
+		form.setWidth( "100%" );
+		
 
-		componentsContainer.addComponent( rowTipo );
-		componentsContainer.addComponent( rowNombre );
-		componentsContainer.addComponent( rowSeleccionar );
+		componentsContainer.addComponent( form );
+		//componentsContainer.addComponent( rowNombre );
+		//componentsContainer.addComponent( rowSeleccionar );
 	}
 
 	@Override

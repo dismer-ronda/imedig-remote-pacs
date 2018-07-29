@@ -3,9 +3,6 @@ package es.pryades.imedig.cloud.modules.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Layout;
@@ -14,14 +11,16 @@ import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 
-import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.FilteredContent;
+import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.CentrosConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.ImagenesConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.InformesPlantillasConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.StudiesListTab;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.UsuariosConfig;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Dismer Ronda
@@ -120,7 +119,7 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 
 		content.setWidth( "100%" );
 		content.setHeight( "100%" );
-		content.setMargin( true );
+		//content.setMargin( true );
 		content.setSpacing( false );
 		content.setSizeFull();
 

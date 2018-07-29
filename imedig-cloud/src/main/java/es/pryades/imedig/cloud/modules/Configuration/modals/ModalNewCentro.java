@@ -7,11 +7,11 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
-import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.CentrosManager;
@@ -20,9 +20,9 @@ import es.pryades.imedig.cloud.core.dal.ImagenesManager;
 import es.pryades.imedig.cloud.core.dal.MonedasManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
-import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Horario;
 import es.pryades.imedig.cloud.dto.Imagen;
+import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Moneda;
 import es.pryades.imedig.cloud.dto.query.ImagenQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
@@ -41,21 +41,10 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 
 	protected DetalleCentro newCentro;
 
-	private Label lbCentroNombre;
-	private Label lbCentroDescripcion;
-	private Label lbCentroDireccion;
-	private Label lbCentroContactos;
-	private Label lbCentroCoordenadas;
-	private Label lbCentroImagen;
-	private Label lbCentroOrden;
-	private Label lbCentroHorario;
-	private Label lbCentroMoneda;
-	private Label lbCentroSerie;
-
 	private TextField editCentroNombre;
 	private TextField editCentroDescripcion;
-	private TextField editCentroDireccion;
-	private TextField editCentroContactos;
+	private TextArea editCentroDireccion;
+	private TextArea editCentroContactos;
 	private TextField editCentroCoordenadas;
 	private ComboBox comboBoxCentroImagen;
 	private TextField editCentroOrden;
@@ -93,176 +82,79 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 
 		bi = new BeanItem<ImedigDto>( newCentro );
 
-		lbCentroNombre = new Label( getContext().getString( "modalNewCenter.lbCentroNombre" ) );
-		lbCentroNombre.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroDescripcion = new Label( getContext().getString( "modalNewCenter.lbCentroDescripcion" ) );
-		lbCentroDescripcion.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroDireccion = new Label( getContext().getString( "modalNewCenter.lbCentroDireccion" ) );
-		lbCentroDireccion.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroContactos = new Label( getContext().getString( "modalNewCenter.lbCentroContactos" ) );
-		lbCentroContactos.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroCoordenadas = new Label( getContext().getString( "modalNewCenter.lbCentroCoordenadas" ) );
-		lbCentroCoordenadas.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroImagen = new Label( getContext().getString( "modalNewCenter.lbCentroImagen" ) );
-		lbCentroImagen.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroOrden = new Label( getContext().getString( "modalNewCenter.lbCentroOrden" ) );
-		lbCentroOrden.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroHorario = new Label( getContext().getString( "modalNewCenter.lbCentroHorario" ) );
-		lbCentroHorario.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroMoneda = new Label( getContext().getString( "modalNewCenter.lbCentroMoneda" ) );
-		lbCentroMoneda.setWidth( Constants.WIDTH_LABEL );
-
-		lbCentroSerie = new Label( getContext().getString( "modalNewCenter.lbCentroSerie" ) );
-		lbCentroSerie.setWidth( Constants.WIDTH_LABEL );
-
-		editCentroNombre = new TextField( bi.getItemProperty( "nombre" ) );
+		editCentroNombre = new TextField( getContext().getString( "modalNewCenter.lbCentroNombre" ), bi.getItemProperty( "nombre" ) );
 		editCentroNombre.setWidth( "100%" );
 		editCentroNombre.setNullRepresentation( "" );
 
-		editCentroDescripcion = new TextField( bi.getItemProperty( "descripcion" ) );
+		editCentroDescripcion = new TextField( getContext().getString( "modalNewCenter.lbCentroDescripcion" ), bi.getItemProperty( "descripcion" ) );
 		editCentroDescripcion.setWidth( "100%" );
 		editCentroDescripcion.setNullRepresentation( "" );
 
-		editCentroDireccion = new TextField( bi.getItemProperty( "direccion" ) );
+		editCentroDireccion = new TextArea( getContext().getString( "modalNewCenter.lbCentroDireccion" ), bi.getItemProperty( "direccion" ) );
 		editCentroDireccion.setWidth( "100%" );
+		editCentroDireccion.setRows( 3 );
 		editCentroDireccion.setNullRepresentation( "" );
 
-		editCentroContactos = new TextField( bi.getItemProperty( "contactos" ) );
+		editCentroContactos = new TextArea( getContext().getString( "modalNewCenter.lbCentroContactos" ), bi.getItemProperty( "contactos" ) );
 		editCentroContactos.setWidth( "100%" );
+		editCentroContactos.setRows( 3 );
 		editCentroContactos.setNullRepresentation( "" );
 
-		editCentroCoordenadas = new TextField( bi.getItemProperty( "coordenadas" ) );
+		editCentroCoordenadas = new TextField( getContext().getString( "modalNewCenter.lbCentroCoordenadas" ), bi.getItemProperty( "coordenadas" ) );
 		editCentroCoordenadas.setWidth( "100%" );
 		editCentroCoordenadas.setNullRepresentation( "" );
 
-		comboBoxCentroImagen = new ComboBox();
+		comboBoxCentroImagen = new ComboBox(getContext().getString( "modalNewCenter.lbCentroImagen" ));
 		comboBoxCentroImagen.setWidth( "100%" );
 		comboBoxCentroImagen.setNullSelectionAllowed( true );
 		comboBoxCentroImagen.setTextInputAllowed( false );
 		comboBoxCentroImagen.setImmediate( true );
 		comboBoxCentroImagen.setPropertyDataSource( bi.getItemProperty( "imagen" ) );
 
-		editCentroOrden = new TextField( bi.getItemProperty( "orden" ) );
+		editCentroOrden = new TextField( getContext().getString( "modalNewCenter.lbCentroOrden" ), bi.getItemProperty( "orden" ) );
 		editCentroOrden.setWidth( "100%" );
 		editCentroOrden.setNullRepresentation( "" );
 
-		comboBoxCentroHorario = new ComboBox();
+		comboBoxCentroHorario = new ComboBox(getContext().getString( "modalNewCenter.lbCentroHorario" ));
 		comboBoxCentroHorario.setWidth( "100%" );
 		comboBoxCentroHorario.setTextInputAllowed( false );
 		comboBoxCentroHorario.setNullSelectionAllowed( false );
 		comboBoxCentroHorario.setPropertyDataSource( bi.getItemProperty( "horario" ) );
 
-		comboBoxCentroMoneda = new ComboBox();
+		comboBoxCentroMoneda = new ComboBox(getContext().getString( "modalNewCenter.lbCentroMoneda" ));
 		comboBoxCentroMoneda.setWidth( "100%" );
 		comboBoxCentroMoneda.setTextInputAllowed( false );
 		comboBoxCentroMoneda.setNullSelectionAllowed( false );
 		comboBoxCentroMoneda.setPropertyDataSource( bi.getItemProperty( "moneda" ) );
 
-		editCentroSerie = new TextField( bi.getItemProperty( "serie" ) );
+		editCentroSerie = new TextField( getContext().getString( "modalNewCenter.lbCentroSerie" ), bi.getItemProperty( "serie" ) );
 		editCentroSerie.setWidth( "100%" );
 		editCentroSerie.setNullRepresentation( "" );
 
 		fillComboBoxes();
 
-		HorizontalLayout rowNombre = new HorizontalLayout();
-		rowNombre.setWidth( "100%" );
-		rowNombre.addComponent( lbCentroNombre );
-		rowNombre.addComponent( editCentroNombre );
-		rowNombre.setExpandRatio( editCentroNombre, 1.0f );
-
-		HorizontalLayout rowDescripcion = new HorizontalLayout();
-		rowDescripcion.setWidth( "100%" );
-		rowDescripcion.addComponent( lbCentroDescripcion );
-		rowDescripcion.addComponent( editCentroDescripcion );
-		rowDescripcion.setExpandRatio( editCentroDescripcion, 1.0f );
-
-		HorizontalLayout rowDireccion = new HorizontalLayout();
-		rowDireccion.setWidth( "100%" );
-		rowDireccion.addComponent( lbCentroDireccion );
-		rowDireccion.addComponent( editCentroDireccion );
-		rowDireccion.setExpandRatio( editCentroDireccion, 1.0f );
-
-		HorizontalLayout rowContactos = new HorizontalLayout();
-		rowContactos.setWidth( "100%" );
-		rowContactos.addComponent( lbCentroContactos );
-		rowContactos.addComponent( editCentroContactos );
-		rowContactos.setExpandRatio( editCentroContactos, 1.0f );
-
-		HorizontalLayout rowCoordenadas = new HorizontalLayout();
-		rowCoordenadas.setWidth( "100%" );
-		rowCoordenadas.addComponent( lbCentroCoordenadas );
-		rowCoordenadas.addComponent( editCentroCoordenadas );
-		rowCoordenadas.setExpandRatio( editCentroCoordenadas, 1.0f );
-
-		HorizontalLayout rowImagen = new HorizontalLayout();
-		rowImagen.setWidth( "100%" );
-		rowImagen.addComponent( lbCentroImagen );
-		rowImagen.addComponent( comboBoxCentroImagen );
-		rowImagen.setExpandRatio( comboBoxCentroImagen, 1.0f );
-
-		HorizontalLayout rowOrden = new HorizontalLayout();
-		rowOrden.setWidth( "100%" );
-		rowOrden.addComponent( lbCentroOrden );
-		rowOrden.addComponent( editCentroOrden );
-		rowOrden.setExpandRatio( editCentroOrden, 1.0f );
-
-		HorizontalLayout rowHorarios = new HorizontalLayout();
-		rowHorarios.setWidth( "100%" );
-		rowHorarios.addComponent( lbCentroHorario );
-		rowHorarios.addComponent( comboBoxCentroHorario );
-		rowHorarios.setExpandRatio( comboBoxCentroHorario, 1.0f );
-
-		HorizontalLayout rowMoneda = new HorizontalLayout();
-		rowMoneda.setWidth( "100%" );
-		rowMoneda.addComponent( lbCentroMoneda );
-		rowMoneda.addComponent( comboBoxCentroMoneda );
-		rowMoneda.setExpandRatio( comboBoxCentroMoneda, 1.0f );
-
-		HorizontalLayout rowSerie = new HorizontalLayout();
-		rowSerie.setWidth( "100%" );
-		rowSerie.addComponent( lbCentroSerie );
-		rowSerie.addComponent( editCentroSerie );
-		rowSerie.setExpandRatio( editCentroSerie, 1.0f );
-
-
-		HorizontalLayout row1 = new HorizontalLayout();
-		row1.setWidth( "100%" );
-		row1.setSpacing( true );
-		row1.addComponent( rowSerie );
-		row1.addComponent( rowOrden );
-
-		HorizontalLayout row2 = new HorizontalLayout();
-		row2.setWidth( "100%" );
-		row2.setSpacing( true );
-		row2.addComponent( rowNombre );
-		row2.addComponent( rowDescripcion );
+		FormLayout left = new FormLayout(editCentroSerie, editCentroNombre, comboBoxCentroImagen, comboBoxCentroHorario, editCentroDireccion);
+		left.setMargin( false );
 		
-		HorizontalLayout row3 = new HorizontalLayout();
-		row3.setWidth( "100%" );
-		row3.setSpacing( true );
-		row3.addComponent( rowImagen );
-		row3.addComponent( rowCoordenadas );
+		FormLayout right = new FormLayout(editCentroOrden, editCentroDescripcion, editCentroCoordenadas, comboBoxCentroMoneda, editCentroContactos);
+		right.setMargin( false );
+		HorizontalLayout top = new HorizontalLayout( left, right );
+		top.setWidth( "100%" );
+		top.setSpacing( true );
+		
+		int index = 1;
+		editCentroSerie.setTabIndex( index++ );
+		editCentroOrden.setTabIndex( index++ );
+		editCentroNombre.setTabIndex( index++ );
+		editCentroDescripcion.setTabIndex( index++ );
+		comboBoxCentroImagen.setTabIndex( index++ );
+		editCentroCoordenadas.setTabIndex( index++ );
+		comboBoxCentroHorario.setTabIndex( index++ );
+		comboBoxCentroMoneda.setTabIndex( index++ );
+		editCentroDireccion.setTabIndex( index++ );
+		editCentroContactos.setTabIndex( index++ );
 
-		HorizontalLayout row4 = new HorizontalLayout();
-		row4.setWidth( "100%" );
-		row4.setSpacing( true );
-		row4.addComponent( rowHorarios );
-		row4.addComponent( rowMoneda );
-
-		componentsContainer.addComponent( row1 );
-		componentsContainer.addComponent( row2 );
-		componentsContainer.addComponent( row3 );
-		componentsContainer.addComponent( row4 );
-		componentsContainer.addComponent( rowDireccion );
-		componentsContainer.addComponent( rowContactos );
+		componentsContainer.addComponent( top );
 	}
 
 	@Override

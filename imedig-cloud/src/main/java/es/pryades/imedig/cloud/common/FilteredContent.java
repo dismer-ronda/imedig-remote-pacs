@@ -7,13 +7,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -22,12 +19,15 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedig;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -41,7 +41,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 
 	@Setter @Getter protected ImedigContext context;
 
-	protected Button bttnApply;
+	protected Button btnApply;
 	protected HorizontalLayout rowQuery;
 
 	private TableImedigPaged tableRows;
@@ -79,13 +79,12 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		rowButton.setWidth( "100%" );
 		rowButton.setHeight( "100%" );
 
-		bttnApply = new Button();
-		bttnApply.setStyleName( "borderless icon-on-top" );
-		bttnApply.setDescription( context.getString( "words.search" ) );
-		bttnApply.setIcon( new ThemeResource( "images/search.png" ) );
-		bttnApply.setClickShortcut( KeyCode.ENTER );
+		btnApply = new Button(FontAwesome.SEARCH);
+		btnApply.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnApply.setDescription( context.getString( "words.search" ) );
+		btnApply.setClickShortcut( KeyCode.ENTER );
 		
-		rowButton.addComponent( bttnApply );
+		rowButton.addComponent( btnApply );
 		//rowButton.setComponentAlignment( bttnApply, Alignment.MIDDLE_CENTER );
 		
 		addButtonApplyFilterClickListener();
@@ -96,9 +95,9 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		{
 			rowQuery = new HorizontalLayout();
 			rowQuery.setSpacing( true );
-			rowQuery.setMargin( new MarginInfo( true, false, false, true ) );
+			rowQuery.setMargin( new MarginInfo( true, false, false, false ) );
 			rowQuery.addComponent( component );
-			rowQuery.addComponent( bttnApply );
+			rowQuery.addComponent( btnApply );
 		}
 	}
 	
@@ -139,7 +138,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			
 			mainLayout = new VerticalLayout();
 			mainLayout.setSpacing( true );
-			mainLayout.setMargin( false ); //new MarginInfo( false, true, true, true ) );
+			//mainLayout.setMargin( false ); //new MarginInfo( false, true, true, true ) );
 			mainLayout.setSizeFull();
 	
 			initQueryComponents();
@@ -153,7 +152,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			
 			if ( tableRows != null )
 			{
-				tableRows.setMargin( new MarginInfo(true, false, false, false));
+				//tableRows.setMargin( new MarginInfo(true, false, false, false));
 
 				visibleCols = getVisibleCols();
 				if ( visibleCols != null )
@@ -233,7 +232,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			if ( tableRows != null )
 			{
 				HorizontalLayout cellOppLayoutRight = new HorizontalLayout();
-				cellOppLayoutRight.setMargin( true );
+				//cellOppLayoutRight.setMargin( true );
 				cellOppLayoutRight.addComponent( tableRows.getTablePageOppContainer() );
 
 				oppLayout.addComponent( cellOppLayoutRight );
@@ -264,7 +263,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 
 	public void addButtonApplyFilterClickListener()
 	{
-		bttnApply.addClickListener( new Button.ClickListener()
+		btnApply.addClickListener( new Button.ClickListener()
 		{
 			@Override
 			public void buttonClick( ClickEvent event )
