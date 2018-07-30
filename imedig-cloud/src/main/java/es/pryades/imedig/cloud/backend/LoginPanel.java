@@ -116,7 +116,6 @@ public class LoginPanel extends VerticalLayout
 
 		Label labelCaption = new Label( ctx.getString( "LoginDlg.title" ) );
 		labelCaption.addStyleName( ValoTheme.LABEL_H3 );
-		labelCaption.addStyleName( ValoTheme.LABEL_COLORED );
 		labelCaption.setWidth( "100%" );
 		
 		rowHeader.addComponent( labelCaption );
@@ -230,7 +229,6 @@ public class LoginPanel extends VerticalLayout
 		Label labelCaption = new Label( ctx.getString( "LoginDlg.password.forgot" ) );
 		labelCaption.setWidth( "100%" );
 		labelCaption.addStyleName( ValoTheme.LABEL_H3 );
-		labelCaption.addStyleName( ValoTheme.LABEL_COLORED );
 		rowHeader.addComponent( labelCaption );
 		rowHeader.setComponentAlignment( labelCaption, Alignment.MIDDLE_LEFT );
 		form.addComponent( rowHeader );

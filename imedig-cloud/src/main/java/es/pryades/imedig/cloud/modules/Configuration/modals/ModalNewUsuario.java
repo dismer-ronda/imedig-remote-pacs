@@ -8,17 +8,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Form;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TwinColSelect;
 
-import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -47,19 +45,6 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 	private static final Logger LOG = Logger.getLogger( ModalNewUsuario.class );
 
 	protected Usuario newUsuario;
-
-	private Label lbUserLogin;
-	private Label lbUserEmail;
-	private Label lbUserPwd;
-	private Label lbUserTitulo;
-	private Label lbUserNombre;
-	private Label lbUserApellido1;
-	private Label lbUserApellido2;
-	private Label lbUserContactos;
-	private Label lbUserPerfil;
-	private Label lbUserFiltro;
-	private Label lbUserQuery;
-	private Label lbUserCompresion;
 
 	private TextField editUserLogin;
 	private TextField editUserEmail;
@@ -117,75 +102,39 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 
 		bi = new BeanItem<ImedigDto>( newUsuario );
 
-		lbUserLogin = new Label( getContext().getString( "modalNewUser.lbUserLogin" ) );
-		lbUserLogin.setWidth( Constants.WIDTH_LABEL );
-		
-		lbUserEmail= new Label( getContext().getString( "modalNewUser.lbUserEmail" ) );
-		lbUserEmail.setWidth( Constants.WIDTH_LABEL );
-		
-		lbUserPwd = new Label( getContext().getString( "modalNewUser.lbUserPwd" ) );
-		lbUserPwd.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserTitulo = new Label( getContext().getString( "modalNewUser.lbUserTitulo" ) );
-		lbUserTitulo.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserNombre = new Label( getContext().getString( "modalNewUser.lbUserNombre" ) );
-		lbUserNombre.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserApellido1 = new Label( getContext().getString( "modalNewUser.lbUserApellido1" ) );
-		lbUserApellido1.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserApellido2 = new Label( getContext().getString( "modalNewUser.lbUserApellido2" ) );
-		lbUserApellido2.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserContactos = new Label( getContext().getString( "modalNewUser.lbUserContactos" ) );
-		lbUserContactos.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserPerfil = new Label( getContext().getString( "modalNewUser.lbUserPerfil" ) );
-		lbUserPerfil.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserFiltro = new Label( getContext().getString( "modalNewUser.lbUserFiltro" ) );
-		lbUserFiltro.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserQuery = new Label( getContext().getString( "modalNewUser.lbUserQuery" ) );
-		lbUserQuery.setWidth( Constants.WIDTH_LABEL );
-
-		lbUserCompresion = new Label( getContext().getString( "modalNewUser.lbUserCompresion" ) );
-		lbUserCompresion.setWidth( Constants.WIDTH_LABEL );
-
-		editUserLogin = new TextField( bi.getItemProperty( "login" ) );
+		editUserLogin = new TextField( getContext().getString( "modalNewUser.lbUserLogin" ), bi.getItemProperty( "login" ) );
 		editUserLogin.setWidth( "100%" );
 		editUserLogin.setNullRepresentation( "" );
 
-		editUserEmail = new TextField( bi.getItemProperty( "email" ) );
+		editUserEmail = new TextField( getContext().getString( "modalNewUser.lbUserEmail" ), bi.getItemProperty( "email" ) );
 		editUserEmail.setWidth( "100%" );
 		editUserEmail.setNullRepresentation( "" );
 
-		editUserPwd = new PasswordField( bi.getItemProperty( "pwd" ) );
+		editUserPwd = new PasswordField( getContext().getString( "modalNewUser.lbUserPwd" ), bi.getItemProperty( "pwd" ) );
 		editUserPwd.setWidth( "100%" );
 		editUserPwd.setNullRepresentation( "" );
 
-		editUserTitulo = new TextField( bi.getItemProperty( "titulo" ) );
+		editUserTitulo = new TextField( getContext().getString( "modalNewUser.lbUserTitulo" ), bi.getItemProperty( "titulo" ) );
 		editUserTitulo.setWidth( "100%" );
 		editUserTitulo.setNullRepresentation( "" );
 
-		editUserNombre = new TextField( bi.getItemProperty( "nombre" ) );
+		editUserNombre = new TextField( getContext().getString( "modalNewUser.lbUserNombre" ), bi.getItemProperty( "nombre" ) );
 		editUserNombre.setWidth( "100%" );
 		editUserNombre.setNullRepresentation( "" );
 
-		editUserApellido1 = new TextField( bi.getItemProperty( "ape1" ) );
+		editUserApellido1 = new TextField( getContext().getString( "modalNewUser.lbUserApellido1" ), bi.getItemProperty( "ape1" ) );
 		editUserApellido1.setWidth( "100%" );
 		editUserApellido1.setNullRepresentation( "" );
 
-		editUserApellido2 = new TextField( bi.getItemProperty( "ape2" ) );
+		editUserApellido2 = new TextField( getContext().getString( "modalNewUser.lbUserApellido2" ), bi.getItemProperty( "ape2" ) );
 		editUserApellido2.setWidth( "100%" );
 		editUserApellido2.setNullRepresentation( "" );
 
-		editUserContactos = new TextArea( bi.getItemProperty( "contactos" ) );
+		editUserContactos = new TextArea( getContext().getString( "modalNewUser.lbUserContactos" ), bi.getItemProperty( "contactos" ) );
 		editUserContactos.setWidth( "100%" );
 		editUserContactos.setNullRepresentation( "" );
 
-		editUserFiltro = new TextField( bi.getItemProperty( "filtro" ) );
+		editUserFiltro = new TextField( getContext().getString( "modalNewUser.lbUserFiltro" ), bi.getItemProperty( "filtro" ) );
 		editUserFiltro.setWidth( "100%" );
 		editUserFiltro.setNullRepresentation( "" );
 
@@ -199,7 +148,7 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 		twnColSelUsuariosCentros.setWidth( "100%" );
 		twnColSelUsuariosCentros.setHeight( "150px" );
 
-		comboPerfiles = new ComboBox();
+		comboPerfiles = new ComboBox(getContext().getString( "modalNewUser.lbUserPerfil" ));
 		comboPerfiles.setWidth( "100%" );
 		comboPerfiles.setNullSelectionAllowed( false );
 		comboPerfiles.setTextInputAllowed( false );
@@ -227,7 +176,7 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 		comboQuery.addItem( "5" );
 		comboQuery.setItemCaption( "5", getContext().getString( "words.lastyear" ) );
 		
-		comboCompresion = new ComboBox();
+		comboCompresion = new ComboBox(getContext().getString( "modalNewUser.lbUserCompresion" ));
 		comboCompresion.setWidth( "100%" );
 		comboCompresion.setNullSelectionAllowed( false );
 		comboCompresion.setTextInputAllowed( false );
@@ -237,73 +186,15 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 		comboCompresion.setItemCaption( "image/png", getContext().getString( "words.lossless" ) );
 		comboCompresion.addItem( "image/jpeg" );
 		comboCompresion.setItemCaption( "image/jpeg", getContext().getString( "words.lossy" ) );
-		
-		HorizontalLayout rowLogin = new HorizontalLayout();
-		rowLogin.setWidth( "100%" );
-		rowLogin.addComponent( lbUserLogin);
-		rowLogin.addComponent( editUserLogin);
-		rowLogin.setExpandRatio( editUserLogin, 1.0f );
-
-		HorizontalLayout rowEmail = new HorizontalLayout();
-		rowEmail.setWidth( "100%" );
-		rowEmail.addComponent( lbUserEmail);
-		rowEmail.addComponent( editUserEmail);
-		rowEmail.setExpandRatio( editUserEmail, 1.0f );
-
-		HorizontalLayout rowPwd = new HorizontalLayout();
-		rowPwd.setWidth( "100%" );
-		rowPwd.addComponent( lbUserPwd );
-		rowPwd.addComponent( editUserPwd );
-		rowPwd.setExpandRatio( editUserPwd, 1.0f );
-
-		HorizontalLayout rowTitulo = new HorizontalLayout();
-		rowTitulo.setWidth( "100%" );
-		rowTitulo.addComponent( lbUserTitulo );
-		rowTitulo.addComponent( editUserTitulo );
-		rowTitulo.setExpandRatio( editUserTitulo, 1.0f );
-
-		HorizontalLayout rowNombre = new HorizontalLayout();
-		rowNombre.setWidth( "100%" );
-		rowNombre.addComponent( lbUserNombre );
-		rowNombre.addComponent( editUserNombre );
-		rowNombre.setExpandRatio( editUserNombre, 1.0f );
-
-		HorizontalLayout rowApellido1 = new HorizontalLayout();
-		rowApellido1.setWidth( "100%" );
-		rowApellido1.addComponent( lbUserApellido1 );
-		rowApellido1.addComponent( editUserApellido1 );
-		rowApellido1.setExpandRatio( editUserApellido1, 1.0f );
-
-		HorizontalLayout rowApellido2 = new HorizontalLayout();
-		rowApellido2.setWidth( "100%" );
-		rowApellido2.addComponent( lbUserApellido2 );
-		rowApellido2.addComponent( editUserApellido2 );
-		rowApellido2.setExpandRatio( editUserApellido2, 1.0f );
-
-		HorizontalLayout rowPerfil = new HorizontalLayout();
-		rowPerfil.setWidth( "100%" );
-		rowPerfil.addComponent( lbUserPerfil );
-		rowPerfil.addComponent( comboPerfiles );
-		rowPerfil.setExpandRatio( comboPerfiles, 1.0f );
-
-		HorizontalLayout rowContactos = new HorizontalLayout();
-		rowContactos.setWidth( "100%" );
-		rowContactos.addComponent( lbUserContactos );
-		rowContactos.addComponent( editUserContactos );
-		rowContactos.setExpandRatio( editUserContactos, 1.0f );
-
-		HorizontalLayout rowFiltro = new HorizontalLayout();
-		rowFiltro.setWidth( "100%" );
-		rowFiltro.addComponent( lbUserFiltro );
-		rowFiltro.addComponent( editUserFiltro );
-		rowFiltro.setExpandRatio( editUserFiltro, 1.0f );
 
 		HorizontalLayout rowTwinCentrosUsuarios = new HorizontalLayout();
 		rowTwinCentrosUsuarios.setWidth( "100%" );
+		rowTwinCentrosUsuarios.setMargin( false );
 
 		HorizontalLayout rowTwinCentrosUsuariosContainer = new HorizontalLayout();
 		rowTwinCentrosUsuariosContainer.setWidth( "100%" );
-		rowTwinCentrosUsuariosContainer.setMargin( new MarginInfo( false, true, true, true ) );
+		//rowTwinCentrosUsuariosContainer.setMargin( new MarginInfo( false, true, true, true ) );
+		rowTwinCentrosUsuariosContainer.setMargin( false );
 
 		// OJO DISMER 
 		Form frmCentrosUsuarios = new Form( rowTwinCentrosUsuariosContainer );
@@ -317,55 +208,34 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 
 		initializeTwinColSelUsuariosCentros();
 
-		HorizontalLayout rowQuery = new HorizontalLayout();
-		rowQuery.setWidth( "100%" );
-		rowQuery.addComponent( lbUserQuery );
-		rowQuery.addComponent( comboQuery);
-		rowQuery.setExpandRatio( comboQuery, 1.0f );
-
-		HorizontalLayout rowCompresion = new HorizontalLayout();
-		rowCompresion.setWidth( "100%" );
-		rowCompresion.addComponent( lbUserCompresion );
-		rowCompresion.addComponent( comboCompresion );
-		rowCompresion.setExpandRatio( comboCompresion, 1.0f );
-
-		HorizontalLayout row1 = new HorizontalLayout();
-		row1.setWidth( "100%" );
-		row1.setSpacing( true );
-		row1.addComponent( rowLogin );
-		row1.addComponent( rowPwd );
-
-		HorizontalLayout row2 = new HorizontalLayout();
-		row2.setWidth( "100%" );
-		row2.setSpacing( true );
-		row2.addComponent( rowTitulo );
-		row2.addComponent( rowNombre );
-
-		HorizontalLayout row3 = new HorizontalLayout();
-		row3.setWidth( "100%" );
-		row3.setSpacing( true );
-		row3.addComponent( rowApellido1 );
-		row3.addComponent( rowApellido2 );
-
-		HorizontalLayout row4 = new HorizontalLayout();
-		row4.setWidth( "100%" );
-		row4.setSpacing( true );
-		row4.addComponent( rowEmail );
-		row4.addComponent( rowPerfil );
-
-		HorizontalLayout row5 = new HorizontalLayout();
+		FormLayout formComp = new FormLayout( comboCompresion );
+		formComp.setMargin( false );
+		formComp.setWidth( "100%" );
+		FormLayout formFilt = new FormLayout( editUserFiltro );
+		formFilt.setMargin( false );
+		formFilt.setWidth( "100%" );
+		HorizontalLayout row5 = new HorizontalLayout(comboQuery, formComp, formFilt);
 		row5.setWidth( "100%" );
 		row5.setSpacing( true );
-		row5.addComponent( rowQuery );
-		row5.addComponent( rowCompresion );
-		row5.addComponent( rowFiltro );
+		row5.setMargin( false );
+		row5.setCaption( getContext().getString( "modalNewUser.lbUserQuery" ) );
+		
+		FormLayout left = new FormLayout(editUserLogin, editUserTitulo, editUserApellido1, editUserEmail);
+		FormLayout right = new FormLayout(editUserPwd, editUserNombre, editUserApellido2, comboPerfiles);
+		left.setWidth( "100%" );
+		left.setMargin( false );
+		right.setWidth( "100%" );
+		right.setMargin( false );
+		
+		HorizontalLayout top = new HorizontalLayout( left, right );
+		top.setWidth( "100%" );
+		top.setSpacing( true );
 
-		componentsContainer.addComponent( row1 );
-		componentsContainer.addComponent( row2 );
-		componentsContainer.addComponent( row3 );
-		componentsContainer.addComponent( row4 );
-		componentsContainer.addComponent( row5 );
-		componentsContainer.addComponent( rowContactos );
+		componentsContainer.addComponent( top );
+		FormLayout bottom = new FormLayout( row5, editUserContactos );
+		bottom.setMargin( false );
+		bottom.setWidth( "100%" );
+		componentsContainer.addComponent( bottom );
 		componentsContainer.addComponent( rowTwinCentrosUsuarios );
 	}
 
