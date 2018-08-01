@@ -23,14 +23,22 @@ import java.io.Serializable;
  */
 public enum FontStyle implements Serializable {
 
+    NONE(""),
     NORMAL("normal"),
     ITALIC("italic"),
     OBLIQUE("oblique");
     
-    private String value;
+    
+    private final String value;
 
     private FontStyle(String value) {
         this.value = value;
     }
+
+    public String getValue() {
+        return value;
+    }
+    
+    
 
 }

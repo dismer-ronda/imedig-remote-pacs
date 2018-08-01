@@ -43,7 +43,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public FigureConfiguration() {
         super();
         this.backgroundColor = "#FFF";
-        this.strokeWidth = 2;
+        this.strokeWidth = 1;
         this.fillColor = "red";
         this.strokeColor = "red";
         this.strokeLineCap = "butt";

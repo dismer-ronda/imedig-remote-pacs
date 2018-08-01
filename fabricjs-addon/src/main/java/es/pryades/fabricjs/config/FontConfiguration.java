@@ -74,11 +74,15 @@ public class FontConfiguration implements Serializable {
     }
 
     public FontStyle getTextFontStyle() {
+        
+        if(textFontStyle.isEmpty()){
+            return FontStyle.NONE;
+        }
         return FontStyle.valueOf(textFontStyle.toUpperCase());
     }
 
     public void setTextFontStyle(FontStyle textFontStyle) {
-        this.textFontStyle = textFontStyle.name().toLowerCase();
+        this.textFontStyle = textFontStyle.getValue();
     }
 
     public FontWeight getTextFontWeight() {

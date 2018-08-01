@@ -135,15 +135,14 @@ var Utils = exports.Utils = function () {
         key: 'createTextLabel',
         value: function createTextLabel(text, options, configuration) {
             var textObject = new fabric.Text(text, {
-                left: options.left,
-                top: options.top,
                 backgroundColor: 'transparent',
-                fill: configuration.fillColor,
-                stroke: configuration.strokeColor,
+                fill: configuration.textFillColor,
                 fontWeight: configuration.textFontWeight,
                 fontStyle: configuration.textFontStyle,
                 fontSize: configuration.textFontSize,
                 fontFamily: configuration.textFontFamily,
+                left: options.left,
+                top: options.top,
                 visible: configuration.visible,
                 selectable: false,
                 objectCaching: false
@@ -1156,6 +1155,7 @@ var privateMethods = {
         _div.style.left = 0;
         _div.style.top = 0;
         _div.style.cursor = "none";
+        _div.style.outline = "none";
         return _div;
     },
     calculateOriginX: function calculateOriginX(canvas, text, originX, originY) {

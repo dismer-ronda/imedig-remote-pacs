@@ -22,7 +22,7 @@ import java.io.Serializable;
  * @author geanny
  */
 public enum FontWeight implements Serializable {
-
+   
     NORMAL("normal"),
     BOLD("bold"),
     BOLDER("bolder"),
