@@ -34,6 +34,7 @@ import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
+import es.pryades.imedig.viewer.exceptions.OperationException;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
 
 public class ImageCanvas extends VerticalLayout {
@@ -249,12 +250,22 @@ public class ImageCanvas extends VerticalLayout {
 			
 			int niy1 = (int) ( my * vpy1 + ny );
 			int niy2 = (int) ( my * vpy2 + ny );
+			
+			try
+			{
+				verifyImagenOperation( new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 ) );
+			}
+			catch ( OperationException e )
+			{
+				Notification.show( context.getString( "ViewerWnd.error.zoom.operation" ), Notification.Type.WARNING_MESSAGE);
+				return;
+			}
 
 			addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
 			
-			currentCenter = getDouble(imageHeader.getWindowCenter());
-			currentWidth = getDouble(imageHeader.getWindowWidth());
-			currentFrame = 0;
+			//currentCenter = getDouble(imageHeader.getWindowCenter());
+			//currentWidth = getDouble(imageHeader.getWindowWidth());
+			//currentFrame = 0;
 				
 			imageRect = new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 );
 						
@@ -429,6 +440,18 @@ public class ImageCanvas extends VerticalLayout {
 			}
 			
 			canvas.draw(new Figure(fig.getFigureType(), npoints, fig.getText()));
+		}
+	}
+	
+	
+	private void verifyImagenOperation(Rectangle irect) throws OperationException{
+		int ix1 = (int) irect.getX();
+		int iy1 = (int) irect.getY();
+		int ix2 = (int) ( ix1 + irect.getWidth() - 1 );
+		int iy2 = (int) ( iy1 + irect.getHeight() - 1 );
+		
+		if (( ix2 - ix1 ) == 0 || ( iy2 - iy1 )==0){
+			throw new OperationException();
 		}
 	}
 

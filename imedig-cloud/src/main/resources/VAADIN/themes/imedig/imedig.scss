@@ -23,6 +23,9 @@ $v-component-group-spacing: 6px;
 /* Import the valo theme.*/
 @import "../valo/valo";
 
+@include v-font(IcoMoon,
+              '../../../../imedig/fonts/icomoon');
+
 /* This contains all of your theme.*/
 /* If somebody wants to extend the theme she will include this mixin. */
 @mixin imedig {

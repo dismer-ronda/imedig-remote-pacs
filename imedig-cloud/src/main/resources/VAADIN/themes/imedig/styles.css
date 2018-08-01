@@ -1533,6 +1533,24 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+@font-face {
+	font-family: IcoMoon;
+	font-weight: normal;
+	font-style: normal;
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/icomoon.eot);
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/icomoon.eot?#iefix) format("embedded-opentype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/icomoon.woff) format("woff"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/icomoon.ttf) format("truetype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/icomoon.svg#IcoMoon) format("svg");
+}
+
+.IcoMoon {
+	font-family: IcoMoon;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	text-align: center;
+}
+
 .imedig.v-app, .imedig.v-app-loading {
 	font: 400 16px/1.55 Roboto, sans-serif;
 	color: #cacecf;

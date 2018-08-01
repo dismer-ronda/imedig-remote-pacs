@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.FontIcon;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -12,6 +13,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.viewer.ListenerAction;
@@ -19,7 +21,6 @@ import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
-import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -39,7 +40,6 @@ public class LeftToolBar extends VerticalLayout {
 	private Button buttonZoom = null;
 	private Button buttonContrast = null;
 	private Button buttonUndo = null;
-	private Button buttonFont = null;
 	
 	private final ImedigContext context;
 	
@@ -80,16 +80,8 @@ public class LeftToolBar extends VerticalLayout {
 		grid.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
 		grid.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
 		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
-		grid.addComponent( buttonDistance = getButton( "distance", "ViewerWnd.Distance" ));
-		grid.addComponent( buttonAngle = getButton( "angle", "ViewerWnd.Angle" ));
-		grid.addComponent( buttonFont = getButton( "angle", "ViewerWnd.Angle" ));
-
-		buttonDistance.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonDistance.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonAngle.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		buttonAngle.addStyleName(ValoTheme.BUTTON_LARGE);
-		buttonFont.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		//buttonFont.setVisible( false );
+		grid.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
+		grid.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -149,13 +141,6 @@ public class LeftToolBar extends VerticalLayout {
 		
 		allButtonsDisable();
 		
-		buttonFont.addClickListener(new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				listenerAction.doAction(new FontAction(this, null));
-			}
-		});
-
 		inside.addComponent(grid);
 	}
 	
@@ -183,7 +168,7 @@ public class LeftToolBar extends VerticalLayout {
 		return btn;
 	}
 	
-	private Button getButton(FontAwesome font, String name, String keytooltip){
+	private Button getButton(FontIcon font, String name, String keytooltip){
 		
 		Button btn = new Button( );
 		btn.setId("btn.tool."+name);
