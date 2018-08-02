@@ -1,6 +1,6 @@
 package es.pryades.imedig.viewer.actions;
 
-import es.pryades.imedig.viewer.Action;
+import es.pryades.imedig.cloud.core.action.Action;
 
 public abstract class AbstractAction implements Action {
 	

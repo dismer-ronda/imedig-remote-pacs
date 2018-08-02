@@ -351,6 +351,30 @@
 	text-align: center;
 }
 
+@font-face {
+	font-family: "Open Sans";
+	src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot);
+	src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.ttf) format("truetype");
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot);
+	src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.ttf) format("truetype");
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: "Open Sans";
+	src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot);
+	src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.ttf) format("truetype");
+	font-weight: 600;
+	font-style: normal;
+}
+
 @-webkit-keyframes v-rotate-360 {
 		to {
 		-webkit-transform: rotate(360deg);
@@ -1552,7 +1576,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig.v-app, .imedig.v-app-loading {
-	font: 400 16px/1.55 Roboto, sans-serif;
+	font: 400 16px/1.55 Roboto, "Open Sans", Lato;
 	color: #cacecf;
 	background-color: #444d50;
 	cursor: default;
@@ -2130,9 +2154,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 }
 
 .imedig .v-button:before {
@@ -2219,9 +2242,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #02925d;
-	-webkit-box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
-	box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0 18px;
 	font-weight: bold;
 	min-width: 77px;
@@ -2263,9 +2285,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #2c9720;
-	-webkit-box-shadow: inset 0 1px 0 #4bb240, inset 0 -1px 0 #2c8b20;
-	box-shadow: inset 0 1px 0 #4bb240, inset 0 -1px 0 #2c8b20;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 }
 
 .imedig .v-button-friendly:after {
@@ -2300,9 +2321,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #ed473b;
-	-webkit-box-shadow: inset 0 1px 0 #ef817a, inset 0 -1px 0 #e34035;
-	box-shadow: inset 0 1px 0 #ef817a, inset 0 -1px 0 #e34035;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 }
 
 .imedig .v-button-danger:after {
@@ -2591,8 +2611,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-checkbox > input ~ label:before, :root .imedig .v-checkbox > input ~ label:after {
@@ -2621,9 +2641,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 18px;
 }
@@ -2717,8 +2736,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-checkbox-small > input ~ label:before, :root .imedig .v-checkbox-small > input ~ label:after {
@@ -2747,9 +2766,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 15px;
 }
@@ -2843,8 +2861,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-checkbox-large > input ~ label:before, :root .imedig .v-checkbox-large > input ~ label:after {
@@ -2873,9 +2891,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 21px;
 }
@@ -2966,8 +2983,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #2a2f31;
 	background: #3b4245;
 	color: #c7cbcc;
-	-webkit-box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -2993,8 +3010,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: none;
 	-moz-transition: none;
 	transition: none;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
 }
@@ -3374,8 +3391,8 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: none;
 	background: #444d50;
 	cursor: inherit;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	
+	
 	border: 1px solid #303739;
 	text-shadow: inherit;
 	text-overflow: ellipsis;
@@ -3387,8 +3404,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: none;
 	-moz-transition: none;
 	transition: none;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
 }
@@ -4979,8 +4996,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: none;
 	border-radius: 0;
 	background: transparent;
-	-webkit-box-shadow: inset 0 1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #40484b;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 
 .imedig .v-grid-editor-cells > div input[type="text"].v-datefield-textfield {
@@ -5107,8 +5124,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #2a2f31;
 	background: #3b4245;
 	color: #c7cbcc;
-	-webkit-box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -5131,8 +5148,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: none;
 	-moz-transition: none;
 	transition: none;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
 }
@@ -5597,8 +5614,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #2a2f31;
 	background: #3b4245;
 	color: #c7cbcc;
-	-webkit-box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -5624,8 +5641,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: none;
 	-moz-transition: none;
 	transition: none;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
 }
@@ -5885,8 +5902,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #2a2f31;
 	background: #3b4245;
 	color: #c7cbcc;
-	-webkit-box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -5912,8 +5929,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-transition: none;
 	-moz-transition: none;
 	transition: none;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 0 3px 2px #02925d, 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
 }
@@ -7241,9 +7258,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	text-align: left;
 	line-height: 33px;
@@ -7319,8 +7335,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	
+	
 	background: transparent;
 	-webkit-box-shadow: none;
 	box-shadow: none;
@@ -7407,9 +7423,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0;
 	border: 1px solid #303739;
 	background: #02925d;
-	-webkit-box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
-	box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	border-top-width: 0;
 	border-left-width: 0;
 	border-bottom-width: 0;
@@ -7673,8 +7688,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-radiobutton > input ~ label:before, :root .imedig .v-radiobutton > input ~ label:after {
@@ -7703,9 +7718,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 18px;
 }
@@ -7832,8 +7846,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-select-optiongroup-small .v-checkbox > input ~ label:before, :root .imedig .v-select-optiongroup-small .v-checkbox > input ~ label:after {
@@ -7862,9 +7876,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 15px;
 }
@@ -7957,8 +7970,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-select-optiongroup-small .v-radiobutton > input ~ label:before, :root .imedig .v-select-optiongroup-small .v-radiobutton > input ~ label:after {
@@ -7987,9 +8000,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 15px;
 }
@@ -8116,8 +8128,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-select-optiongroup-large .v-checkbox > input ~ label:before, :root .imedig .v-select-optiongroup-large .v-checkbox > input ~ label:after {
@@ -8146,9 +8158,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 21px;
 }
@@ -8241,8 +8252,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #303739;
 	-webkit-box-shadow: 0 0 3px 2px #02925d;
 	box-shadow: 0 0 3px 2px #02925d;
-	-webkit-box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: 0 0 3px 2px #02925d, inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	-webkit-box-shadow: 0 0 3px 2px #02925d;
+	box-shadow: 0 0 3px 2px #02925d;
 }
 
 :root .imedig .v-select-optiongroup-large .v-radiobutton > input ~ label:before, :root .imedig .v-select-optiongroup-large .v-radiobutton > input ~ label:after {
@@ -8271,9 +8282,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	padding: 0;
 	height: 21px;
 }
@@ -9216,9 +9226,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 	position: absolute;
 	z-index: 2;
 	top: 0;
@@ -9585,9 +9594,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: none;
+	box-shadow: none;
 	height: auto;
 	padding: 0;
 	border-radius: 0;
@@ -9639,9 +9647,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: none;
+	box-shadow: none;
 	height: auto;
 	padding: 0;
 	border-radius: 0;
@@ -9688,9 +9695,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: none;
+	box-shadow: none;
 	height: auto;
 	padding: 0;
 	border-radius: 0;
@@ -9756,9 +9762,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b, none;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: none;
+	box-shadow: none;
 	height: auto;
 	padding: 0;
 	border-radius: 0;
@@ -9976,9 +9981,8 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 0px;
 	border: 1px solid #303739;
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
+	
+	
 }
 
 .imedig .v-slider-handle:before:after {
@@ -10663,8 +10667,8 @@ div.v-layout.v-horizontal.v-widget {
 	color: #cacecf;
 	font-weight: 400;
 	font-size: 14px;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	
+	
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
 	border-radius: -1px -1px 0 0;
 }
@@ -10814,8 +10818,8 @@ div.v-layout.v-horizontal.v-widget {
 	color: #cacecf;
 	font-weight: 400;
 	font-size: 14px;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	
+	
 	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.05);
 	display: block;
 	background: transparent;
@@ -11848,8 +11852,8 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #2a2f31;
 	background: #3b4245;
 	color: #c7cbcc;
-	-webkit-box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
-	box-shadow: inset 0 1px 0 #383e41, 0 1px 0 rgba(255, 255, 255, 0.1);
+	-webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -11869,8 +11873,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-richtextarea .gwt-RichTextToolbar {
 	background: #444d50;
-	-webkit-box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
-	box-shadow: inset 0 1px 0 #646464, inset 0 -1px 0 #40484b;
+	
+	
 	border-bottom: 1px solid #303739;
 	color: #cacecf;
 }
@@ -12458,8 +12462,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .valo-menu-title .v-menubar-menuitem {
 	background: transparent;
-	-webkit-box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
-	box-shadow: inset 0 1px 0 #17b678, inset 0 -1px 0 #028556;
+	
+	
 	text-shadow: inherit;
 	font-size: 16px;
 	border-color: inherit;

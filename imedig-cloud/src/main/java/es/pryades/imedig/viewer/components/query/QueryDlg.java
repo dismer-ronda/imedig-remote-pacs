@@ -20,10 +20,10 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
 import es.pryades.imedig.cloud.dto.viewer.User;
-import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
@@ -114,7 +114,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		bydate.setItemCaption(3, context.getString("QueryForm.LastWeek"));
 		bydate.setItemCaption(4, context.getString("QueryForm.LastMonth"));
 		bydate.setItemCaption(5, context.getString("QueryForm.LastYear"));
-		bydate.setValue(4);
+		bydate.setValue(user.getQuery());
 	}
 
 	private Component filterButtons() {
@@ -146,24 +146,12 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 			}
 		});
 
-		/*Button btnExit = new Button();
-		btnExit.setDescription(context.getString("QueryForm.CloseTip"));
-		btnExit.setImmediate(true);
-		btnExit.setIcon(FontAwesome.CLOSE);
-		btnExit.addClickListener(new ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				close();
-			}
-		});
-		btnExit.addStyleName(ValoTheme.BUTTON_ICON_ONLY);*/
-
 		HorizontalLayout layout = new HorizontalLayout(btnQuery, btnOpen);
 		layout.setSpacing(true);
 		return layout;
 	}
 
-	protected void onQuery() {
+	public void onQuery() {
 		paginator.setPage(0);
 
 		model = new QueryTableModel(10);

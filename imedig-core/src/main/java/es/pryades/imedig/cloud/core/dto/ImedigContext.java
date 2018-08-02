@@ -1,10 +1,9 @@
 package es.pryades.imedig.cloud.core.dto;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import lombok.Data;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -12,12 +11,15 @@ import org.apache.log4j.Logger;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dal.ibatis.ClientDalManager;
 import es.pryades.imedig.cloud.dto.Derecho;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.Parametros;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.pacs.dal.ibatis.PacsDalManager;
+import lombok.Data;
 
 /**
  * @author Dismer Ronda
@@ -50,6 +52,8 @@ public class ImedigContext
 	Integer template;
 	Boolean images;
 	
+	private List<ListenerAction> listeners;
+	
 	public ImedigContext()
 	{
 		instanceName = null;
@@ -63,12 +67,15 @@ public class ImedigContext
 		pagesize = "A4";
 		template = 0;
 		images = Boolean.TRUE;
+		
+		listeners = new ArrayList<>();
 	}
 	
 	protected void finalize() throws Throwable 
 	{
 		closeSessionCloud();
 		closeSessionPacs();
+		listeners.clear();
 	}
 
 	public SqlSession openSessionCloud() throws ImedigException
@@ -164,4 +171,21 @@ public class ImedigContext
 			return key;
 		}
 	}	
+	
+	public void sendAction(Action action){
+		for ( ListenerAction listener : listeners )
+		{
+			listener.doAction( action );
+		}
+	}
+	
+	
+	public void addListener(ListenerAction listener){
+		listeners.add( listener );
+	}
+
+	public void removeListener(ListenerAction listener){
+		listeners.remove( listener );
+	}
+
 }

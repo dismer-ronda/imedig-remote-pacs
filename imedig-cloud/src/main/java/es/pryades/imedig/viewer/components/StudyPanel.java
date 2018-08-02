@@ -16,10 +16,10 @@ import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
-import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.datas.ImageData;
 
@@ -112,23 +112,6 @@ public class StudyPanel extends VerticalLayout {
 
 		return result;
 	}
-
-	/*
-	 * private Button getImage( StudyTree study, SeriesTree series, Image image,
-	 * boolean group ){
-	 * 
-	 * String imageUrl = ((ViewerApplicationUI)UI.getCurrent()).getServerUrl() +
-	 * image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
-	 * LOG.info( "imageUrl " + imageUrl );
-	 * 
-	 * String modality = series.getSeriesData().getModality(); String hint =
-	 * " "; if ( !modality.isEmpty() ) hint += modality + " ";
-	 * 
-	 * Button result = new Button(new ExternalResource(imageUrl));
-	 * result.setWidth("64px"); result.setDescription(hint);
-	 * result.setData(study); result.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-	 * result.addStyleName(ValoTheme.BUTTON_ICON_ONLY); return result; }
-	 */
 
 	private String getPatientInitials(String name) {
 		String ret = "";

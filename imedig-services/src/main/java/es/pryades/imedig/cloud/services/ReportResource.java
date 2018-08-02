@@ -14,7 +14,6 @@ import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ResourceException;
 
-import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigResource;
 import es.pryades.imedig.cloud.common.Return;
 import es.pryades.imedig.cloud.common.ReturnFactory;
@@ -107,7 +106,8 @@ public class ReportResource extends ImedigResource
 									List<InformeImagen> imagenes = imagenesManager.getRows( ctx, query );
 	
 									for ( InformeImagen imagen : imagenes )
-										imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" +  imagen.getUrl() );
+										imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" +  imagen.getUrl() );
+										//imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" +  imagen.getUrl() );
 
 									export.setImagenes( imagenes );
 								}

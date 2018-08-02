@@ -378,7 +378,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 			}
 	
 			for ( InformeImagen imagen : imagenes )
-				imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" + imagen.getUrl() );
+				imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + imagen.getUrl() );
 		
 			export.setImagenes( imagenes );
 		}

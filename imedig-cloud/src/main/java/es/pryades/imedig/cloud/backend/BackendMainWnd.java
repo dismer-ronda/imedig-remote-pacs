@@ -438,8 +438,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	private void doRequest()
 	{
-		ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
-		
+		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
+		ReportInfo reportInfo = viewer.getReportInfo();
 		if ( reportInfo != null )
 		{
 			List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
@@ -486,9 +486,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	private String getCurrentImageUrl()
 	{
-		ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
+		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
 		
-		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" + reportInfo.getUrl() : null;
+		ReportInfo reportInfo = viewer.getReportInfo();
+		
+		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + reportInfo.getUrl() : null;
 		
 		LOG.info(  "imageUrl " + imageUrl );
 		

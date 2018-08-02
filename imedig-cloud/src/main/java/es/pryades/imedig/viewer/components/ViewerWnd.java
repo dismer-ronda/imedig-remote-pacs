@@ -12,13 +12,13 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
-import es.pryades.imedig.viewer.Action;
-import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
@@ -36,6 +36,7 @@ import es.pryades.imedig.viewer.components.query.FontsDlg;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
+import lombok.Getter;
 
 public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
@@ -65,7 +66,12 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
 	
+	@Getter
+	private ReportInfo reportInfo;
+	
 	private final ImedigContext context;
+	
+	private QueryDlg queryDlg;
 
 	public ViewerWnd(ImedigContext context, User user) {
 		super();
@@ -107,6 +113,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		}else if (action instanceof CloseStudies) {
 			closeStudies();
 			leftToolBar.allButtonsDisable();
+			reportInfo = null;
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
 			leftToolBar.studyInViewer();
@@ -140,13 +147,17 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	}
 
 	private void openImage(ImageData data) {
-		imageCanvas.openImage(data);
+		reportInfo = imageCanvas.openImage(data);
 	}
 
 	private void queryStudies() {
-		QueryDlg dlg = new QueryDlg(context, user);
-		dlg.setListener(this);
-		UI.getCurrent().addWindow(dlg);
+		if (queryDlg == null){
+			queryDlg = new QueryDlg(context, user);
+			queryDlg.setListener(this);
+		}else{
+			queryDlg.onQuery();
+		}
+		UI.getCurrent().addWindow(queryDlg);
 	}
 	
 	private void queryFonts() {

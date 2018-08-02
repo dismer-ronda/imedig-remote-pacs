@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.log4j.Logger;
+import org.apache.tapestry5.ioc.annotations.Inject;
 
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Settings;
@@ -69,9 +69,8 @@ public class InformesManagerImpl extends ImedigManagerImpl implements InformesMa
     		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
     		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ); 
     		
-			//String url = "http://" + temp.getIp() + ":" + temp.getPuerto() + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;;
-
-    		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+			//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+    		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
 
     		LOG.info( "url " + url  );
 			

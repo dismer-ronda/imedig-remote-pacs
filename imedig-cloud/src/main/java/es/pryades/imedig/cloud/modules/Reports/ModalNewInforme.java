@@ -3,9 +3,6 @@ package es.pryades.imedig.cloud.modules.Reports;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 import org.vaadin.openesignforms.ckeditor.CKEditorConfig;
@@ -13,16 +10,18 @@ import org.vaadin.openesignforms.ckeditor.CKEditorTextField;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.ImedigException;
@@ -43,6 +42,8 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.cloud.submodules.centers.ShowExternalViewerDlg;
 import es.pryades.imedig.core.common.ModalParent;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -169,26 +170,26 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		lbIcd10cm = new Label( getContext().getString( "modalNewReport.lbIcd10cm" ) );
 		lbIcd10cm.setWidth( Constants.WIDTH_LABEL );
 
-		editPacienteId = new TextField( bi.getItemProperty( "paciente_id" ) );
+		editPacienteId = new TextField( getContext().getString( "modalNewReport.lbPatientId" ), bi.getItemProperty( "paciente_id" ) );
 		editPacienteId.setWidth( "100%" );
 		editPacienteId.setNullRepresentation( "" );
 		editPacienteId.setReadOnly( true );
 		
-		editPacienteNombre = new TextField( bi.getItemProperty( "paciente_nombre" ) );
+		editPacienteNombre = new TextField( getContext().getString( "modalNewReport.lbPatientName" ), bi.getItemProperty( "paciente_nombre" ) );
 		editPacienteNombre.setWidth( "100%" );
 		editPacienteNombre.setNullRepresentation( "" );
 
-		editEstudioId = new TextField( bi.getItemProperty( "estudio_id" ) );
+		editEstudioId = new TextField( getContext().getString( "modalNewReport.lbStudyId" ), bi.getItemProperty( "estudio_id" ) );
 		editEstudioId.setWidth( "100%" );
 		editEstudioId.setNullRepresentation( "" );
 		editEstudioId.setReadOnly( true );
 
-		editEstudioAcceso = new TextField( bi.getItemProperty( "estudio_acceso" ) );
+		editEstudioAcceso = new TextField( getContext().getString( "modalNewReport.lbStudyAccession" ), bi.getItemProperty( "estudio_acceso" ) );
 		editEstudioAcceso.setWidth( "100%" );
 		editEstudioAcceso.setNullRepresentation( "" );
 		editEstudioAcceso.setReadOnly( true );
 
-		editClaves = new TextField( bi.getItemProperty( "claves" ) );
+		editClaves = new TextField( getContext().getString( "modalNewReport.lbKeywords" ), bi.getItemProperty( "claves" ) );
 		editClaves.setWidth( "100%" );
 		editClaves.setNullRepresentation( "" );
 		editClaves.setReadOnly( request );
@@ -214,13 +215,13 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		
 		//editTexto.setNullRepresentation( "" );
 
-		comboRefiere = new ComboBox();
+		comboRefiere = new ComboBox(getContext().getString( "modalNewReport.lbReferrer" ));
 		comboRefiere.setWidth( "100%" );
 		comboRefiere.setTextInputAllowed( false );
 		comboRefiere.setNullSelectionAllowed( true );
 		comboRefiere.setPropertyDataSource( bi.getItemProperty( "refiere" ) );
 
-		editInforma = new TextField();
+		editInforma = new TextField(getContext().getString( "modalNewReport.lbReport" ));
 		editInforma.setWidth( "100%" );
 		editInforma.setValue( newInforme.getInformaNombreCompleto() );
 		editInforma.setReadOnly( true );
@@ -230,11 +231,12 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		editIcd10cm.setNullRepresentation( "" );
 		editIcd10cm.setReadOnly( request );
 
-		bttnIcd10cm = new Button();
-		bttnIcd10cm.setWidth( "16px" );
-		bttnIcd10cm.setStyleName( "borderless icon-on-top" );
+		bttnIcd10cm = new Button(FontAwesome.SEARCH);
+		//bttnIcd10cm.setWidth( "16px" );
+		bttnIcd10cm.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		bttnIcd10cm.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		bttnIcd10cm.addStyleName( ValoTheme.BUTTON_TINY );
 		bttnIcd10cm.setDescription( getContext().getString( "words.search" ) );
-		bttnIcd10cm.setIcon( new ThemeResource( "images/search-16.png" ) );
 		bttnIcd10cmListener();
 		
 		rowImagenes = new HorizontalLayout();
@@ -290,25 +292,13 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		rowTexto.addComponent( editTexto );
 		rowTexto.setExpandRatio( editTexto, 1.0f );
 
-		HorizontalLayout rowRefiere = new HorizontalLayout();
-		rowRefiere.setWidth( "100%" );
-		rowRefiere.addComponent( lbRefiere );
-		rowRefiere.addComponent( comboRefiere );
-		rowRefiere.setExpandRatio( comboRefiere, 1.0f );
-
-		HorizontalLayout rowInforma = new HorizontalLayout();
-		rowInforma.setWidth( "100%" );
-		rowInforma.addComponent( lbInforma );
-		rowInforma.addComponent( editInforma );
-		rowInforma.setExpandRatio( editInforma, 1.0f );
-
 		HorizontalLayout rowIcd10cm = new HorizontalLayout();
 		rowIcd10cm.setWidth( "100%" );
-		rowIcd10cm.addComponent( lbIcd10cm );
 		rowIcd10cm.addComponent( editIcd10cm );
 		rowIcd10cm.addComponent( bttnIcd10cm );
 		rowIcd10cm.setComponentAlignment( bttnIcd10cm, Alignment.MIDDLE_CENTER );
 		rowIcd10cm.setExpandRatio( editIcd10cm, 1.0f );
+		rowIcd10cm.setCaption( getContext().getString( "modalNewReport.lbIcd10cm" ) );
 
 		HorizontalLayout row1 = new HorizontalLayout();
 		row1.setWidth( "100%" );
@@ -331,12 +321,31 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		HorizontalLayout row4 = new HorizontalLayout();
 		row4.setWidth( "100%" );
 		row4.setSpacing( true );
+		
+		FormLayout rowRefiere = new FormLayout();
+		rowRefiere.setWidth( "100%" );
+		rowRefiere.setMargin( false );
+		rowRefiere.addComponent( comboRefiere );
+
+		FormLayout rowInforma = new FormLayout();
+		rowInforma.setWidth( "100%" );
+		rowInforma.setMargin( false );
+		rowInforma.addComponent( editInforma );
+		
 		row4.addComponent( rowRefiere );
 		row4.addComponent( rowInforma );
+		
+		FormLayout left = new FormLayout(editPacienteId, editEstudioId, rowIcd10cm);
+		left.setMargin( false );
+		
+		FormLayout right = new FormLayout(editPacienteNombre, editEstudioAcceso, editClaves);
+		right.setMargin( false );
+		HorizontalLayout top = new HorizontalLayout( left, right );
+		top.setWidth( "100%" );
+		top.setSpacing( true );
+		
 
-		componentsContainer.addComponent( row1 );
-		componentsContainer.addComponent( row2 );
-		componentsContainer.addComponent( row3 );
+		componentsContainer.addComponent( top );
 		componentsContainer.addComponent( editTexto  );
 		componentsContainer.addComponent( row4 );
 		componentsContainer.addComponent( checkProtegido );
@@ -545,7 +554,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 			}
 		} );
 
-		btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" + image.getIcon() ) );
+		btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + image.getIcon() ) );
 	
 		rowImagenes.addComponent( btn );
 		rowImagenes.setComponentAlignment( btn, Alignment.MIDDLE_LEFT );

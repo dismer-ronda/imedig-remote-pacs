@@ -25,12 +25,12 @@ import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
 import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.ImageHeader;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
-import es.pryades.imedig.viewer.ListenerAction;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
@@ -457,7 +457,7 @@ public class ImageCanvas extends VerticalLayout {
 
 
 
-	public void openImage(ImageData imageData) {
+	public ReportInfo openImage(ImageData imageData) {
 		if (this.imageData != null) {
 			clear();
 		}
@@ -479,14 +479,16 @@ public class ImageCanvas extends VerticalLayout {
 			currentFrame = new Integer(0);
 			viewRect = getCanvasImage();
 			
-			openImage();
+			return openImage();
 			
 		}catch ( Throwable ex )	{
-			//TODO Mostar error
+			//TODO Mostrar error
 		}
+		
+		return null;
 	}
 
-	private void openImage(){
+	private ReportInfo openImage(){
 		try{
 			double ix1 = imageRect.getX();
 			double iy1 = imageRect.getY();
@@ -523,9 +525,13 @@ public class ImageCanvas extends VerticalLayout {
 			info.setHeader( imageHeader );
 			info.setUrl( url );
 			info.setIcon( urlIcon );
+			
+			return info;
 		}catch ( Throwable ex )	{
 			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
 		}
+		
+		return null;
 	}
 
 	private static double getDouble(String value) {
