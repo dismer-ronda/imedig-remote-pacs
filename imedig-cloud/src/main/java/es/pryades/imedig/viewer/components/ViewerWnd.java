@@ -36,7 +36,6 @@ import es.pryades.imedig.viewer.components.query.FontsDlg;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
-import lombok.Getter;
 
 public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
@@ -65,9 +64,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
-	
-	@Getter
-	private ReportInfo reportInfo;
 	
 	private final ImedigContext context;
 	
@@ -113,7 +109,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		}else if (action instanceof CloseStudies) {
 			closeStudies();
 			leftToolBar.allButtonsDisable();
-			reportInfo = null;
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
 			leftToolBar.studyInViewer();
@@ -141,13 +136,12 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		
 	}
 
-	private void settingAngleAction() {
-		// TODO Auto-generated method stub
-		
+	public ReportInfo getReportInfo() {
+		return imageCanvas.getReportInfo();
 	}
 
 	private void openImage(ImageData data) {
-		reportInfo = imageCanvas.openImage(data);
+		imageCanvas.openImage(data);
 	}
 
 	private void queryStudies() {

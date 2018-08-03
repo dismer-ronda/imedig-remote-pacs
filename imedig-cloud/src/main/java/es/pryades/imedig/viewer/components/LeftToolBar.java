@@ -1,8 +1,5 @@
 package es.pryades.imedig.viewer.components;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
 import com.vaadin.server.ThemeResource;
@@ -45,16 +42,16 @@ public class LeftToolBar extends VerticalLayout {
 	
 	private final ListenerAction listenerAction;
 	
-	private static final List<String> BG_COLORS = Arrays.asList(ImedigTheme.BG_BLUE,
-			ImedigTheme.BG_GREEN,
-			ImedigTheme.BG_BROWN,
-			ImedigTheme.BG_ORANGE,
-			ImedigTheme.BG_RED);
+//	private static final List<String> BG_COLORS = Arrays.asList(ImedigTheme.BG_BLUE,
+//			ImedigTheme.BG_GREEN,
+//			ImedigTheme.BG_BROWN,
+//			ImedigTheme.BG_ORANGE,
+//			ImedigTheme.BG_RED);
 	
 	private Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ListenerAction listenerAction){
-		setWidth("-1px");
+		setWidth("130px");
 		setHeight("100%");
 		this.listenerAction = listenerAction;
 		this.context = context;
@@ -188,7 +185,7 @@ public class LeftToolBar extends VerticalLayout {
 	}
 	
 	public void addStudyPanel( StudyPanel panel){
-		panel.addStyleName(BG_COLORS.get(studyCount % 5));
+		panel.addStyleName(ImedigTheme.BG_THUMNAIL+ (studyCount % 2));
 		studyCount ++;
 		thumnails.addComponent(panel);
 	}

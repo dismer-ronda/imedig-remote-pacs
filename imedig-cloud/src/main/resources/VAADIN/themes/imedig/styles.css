@@ -13041,6 +13041,14 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #97D0FC;
 }
 
+.bg_thumnails0 {
+	background-color: #BABABA;
+}
+
+.bg_thumnails1 {
+	background-color: #ECEDEE;
+}
+
 .cursor_pointer {
 	cursor: pointer;
 }

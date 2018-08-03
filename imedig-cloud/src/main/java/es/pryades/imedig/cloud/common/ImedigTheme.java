@@ -16,6 +16,7 @@ public class ImedigTheme {
 	public static final String BG_MAGENTA 	= "bg_magenta";
 	public static final String BG_YELLOW	= "bg_yelow";
 	public static final String BG_LIGHT_BLUE= "bg_light_blue";
+	public static final String BG_THUMNAIL  = "bg_thumnails";
 	
 	public static final String BUTTON_TOOLBOX= "toolbox";
 	public static final String BUTTON_TOOLBAR= "toolbar";

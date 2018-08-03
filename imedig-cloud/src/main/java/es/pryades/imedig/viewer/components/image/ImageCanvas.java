@@ -36,6 +36,7 @@ import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
+import lombok.Getter;
 
 public class ImageCanvas extends VerticalLayout {
 	private static final Logger LOG = Logger.getLogger(ImageCanvas.class);
@@ -58,6 +59,9 @@ public class ImageCanvas extends VerticalLayout {
 	private final ImedigContext context;
 	
 	private final ListenerAction listenerAction;
+	
+	@Getter
+	private ReportInfo reportInfo;
 
 	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction) {
 		
@@ -271,9 +275,10 @@ public class ImageCanvas extends VerticalLayout {
 						
 			viewRect = getCanvasImage();
 			
-			canvas.clear();
+			canvas.clearDraw();
 			
-			openImage();
+			reportInfo = openImage();
+			
 			showImagenFigures();
 		}
 	}
@@ -377,9 +382,10 @@ public class ImageCanvas extends VerticalLayout {
 				currentCenter = nc;
 				currentWidth = nw;
 				
-				canvas.clear();
+				canvas.clearDraw();
 				
-				openImage();
+				reportInfo = openImage();
+				
 				showImagenFigures();
 			}
 		}
@@ -389,16 +395,16 @@ public class ImageCanvas extends VerticalLayout {
 	private void buildCanvasConfiguration(){
 		canvasConfiguration = new FigureConfiguration()
 				.withStrokeWidth(1.0)
-				.withFillColor("#FFFF00")
-				.withStrokeColor("#FFFF00")
+				.withFillColor("#ff2121")
+				.withStrokeColor("#ff2121")
 				.withBackgroundColor( "transparent" )
 				.withTextFontFamily("Roboto")
 				.withTextFontSize(14)
-				.withTextFillColor("#FFFF00");
+				.withTextFillColor("#ff2121");
 	}
 	
 	private void resizeAction(){
-		canvas.clear();
+		canvas.clearDraw();
 		
 		if (imageData == null) return;
 		
@@ -407,7 +413,7 @@ public class ImageCanvas extends VerticalLayout {
 		viewRect = getCanvasImage();
 		showImagenFigures();
 	}
-
+	
 	private void showImagenFigures() {
 		
 		Rectangle vrect = viewRect;
@@ -429,6 +435,16 @@ public class ImageCanvas extends VerticalLayout {
 		double my = (double) ( vy2 - vy1 ) / ( iy2 - iy1 );
 		double ny = vy1 - my * iy1;
 		
+		FigureConfiguration config = canvas.getFigureConfiguration();
+		boolean visible = true;
+		
+		if (!config.isVisible()){
+			visible = false;
+			config.setVisible( true );
+			canvas.setFigureConfiguration( config );
+		}
+		
+		
 		for (Figure fig : imagenFigures) {
 			
 			List<Point> npoints = new ArrayList<>();
@@ -441,6 +457,13 @@ public class ImageCanvas extends VerticalLayout {
 			
 			canvas.draw(new Figure(fig.getFigureType(), npoints, fig.getText()));
 		}
+		
+		if (!visible){
+			config = canvas.getFigureConfiguration();
+			config.setVisible( false );
+			canvas.setFigureConfiguration( config );
+		}
+
 	}
 	
 	
@@ -457,7 +480,7 @@ public class ImageCanvas extends VerticalLayout {
 
 
 
-	public ReportInfo openImage(ImageData imageData) {
+	public void openImage(ImageData imageData) {
 		if (this.imageData != null) {
 			clear();
 		}
@@ -479,13 +502,12 @@ public class ImageCanvas extends VerticalLayout {
 			currentFrame = new Integer(0);
 			viewRect = getCanvasImage();
 			
-			return openImage();
+			reportInfo = openImage();
+			showInformation(imageHeader);
 			
 		}catch ( Throwable ex )	{
-			//TODO Mostrar error
+			reportInfo = null;
 		}
-		
-		return null;
 	}
 
 	private ReportInfo openImage(){
@@ -517,8 +539,6 @@ public class ImageCanvas extends VerticalLayout {
 			String urlimage = ((BackendApplication) UI.getCurrent()).getServerUrl() + url;
 			LOG.info(urlimage);
 			canvas.setImageUrl(new ExternalResource(urlimage));
-			
-			showInformation(imageHeader);
 			
 			ReportInfo info = new ReportInfo();
 			
@@ -575,12 +595,13 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private void showInformation(ImageHeader metadata){
         NotesConfiguration configuration = new NotesConfiguration()
-        		.withTextFontSize( 16 )
-        		.withTextFillColor( "#FFFF00" )
+        		.withTextFontSize( 17 )
+        		.withTextFillColor( "#ecedee" )
         		.withTextBackgroundColor( "transparent" )
         		.withNotesAlignment(NotesAlignment.TOP_LEFT)
         		.withTextAlign(TextAlign.LEFT)
         		.withTextFontFamily("Roboto");
+        
         
         StringBuilder sbuilder = new StringBuilder();
         sbuilder.append(string( metadata.getPatientName())).append(" ").append(string( metadata.getPatientSex())).append("\n").
@@ -659,7 +680,7 @@ public class ImageCanvas extends VerticalLayout {
 					
 		viewRect = getCanvasImage();
 		
-		canvas.clear();
+		canvas.clearDraw();
 		
 		openImage();
 		showImagenFigures();
