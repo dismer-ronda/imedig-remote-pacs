@@ -18,12 +18,10 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -60,16 +58,6 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 	@Setter protected List<InformeImagen> imagenes;
 
 	protected List<CheckBox> cbs;
-
-	private Label lbPacienteId;
-	private Label lbPacienteNombre;
-	private Label lbEstudioId;
-	private Label lbEstudioAcceso;
-	private Label lbClaves;
-	private Label lbTexto;
-	private Label lbRefiere;
-	private Label lbInforma;
-	private Label lbIcd10cm;
 
 	private TextField editPacienteId;
 	private TextField editPacienteNombre;
@@ -142,33 +130,6 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		}
 
 		bi = new BeanItem<ImedigDto>( newInforme );
-
-		lbPacienteId = new Label( getContext().getString( "modalNewReport.lbPatientId" ) );
-		lbPacienteId.setWidth( Constants.WIDTH_LABEL );
-
-		lbPacienteNombre = new Label( getContext().getString( "modalNewReport.lbPatientName" ) );
-		lbPacienteNombre.setWidth( Constants.WIDTH_LABEL );
-
-		lbEstudioId = new Label( getContext().getString( "modalNewReport.lbStudyId" ) );
-		lbEstudioId.setWidth( Constants.WIDTH_LABEL );
-
-		lbEstudioAcceso = new Label( getContext().getString( "modalNewReport.lbStudyAccession" ) );
-		lbEstudioAcceso.setWidth( Constants.WIDTH_LABEL );
-
-		lbClaves = new Label( getContext().getString( "modalNewReport.lbKeywords" ) );
-		lbClaves.setWidth( Constants.WIDTH_LABEL );
-
-		lbTexto = new Label( getContext().getString( "modalNewReport.lbText" ) );
-		lbTexto.setWidth( Constants.WIDTH_LABEL );
-
-		lbRefiere = new Label( getContext().getString( "modalNewReport.lbReferrer" ) );
-		lbRefiere.setWidth( Constants.WIDTH_LABEL );
-
-		lbInforma = new Label( getContext().getString( "modalNewReport.lbReport" ) );
-		lbInforma.setWidth( Constants.WIDTH_LABEL );
-
-		lbIcd10cm = new Label( getContext().getString( "modalNewReport.lbIcd10cm" ) );
-		lbIcd10cm.setWidth( Constants.WIDTH_LABEL );
 
 		editPacienteId = new TextField( getContext().getString( "modalNewReport.lbPatientId" ), bi.getItemProperty( "paciente_id" ) );
 		editPacienteId.setWidth( "100%" );
@@ -256,42 +217,6 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		
 		fillComboBoxes();
 
-		HorizontalLayout rowPacienteId = new HorizontalLayout();
-		rowPacienteId.setWidth( "100%" );
-		rowPacienteId.addComponent( lbPacienteId );
-		rowPacienteId.addComponent( editPacienteId );
-		rowPacienteId.setExpandRatio( editPacienteId, 1.0f );
-
-		HorizontalLayout rowPacienteNombre = new HorizontalLayout();
-		rowPacienteNombre.setWidth( "100%" );
-		rowPacienteNombre.addComponent( lbPacienteNombre );
-		rowPacienteNombre.addComponent( editPacienteNombre );
-		rowPacienteNombre.setExpandRatio( editPacienteNombre, 1.0f );
-
-		HorizontalLayout rowEstudioId = new HorizontalLayout();
-		rowEstudioId.setWidth( "100%" );
-		rowEstudioId.addComponent( lbEstudioId );
-		rowEstudioId.addComponent( editEstudioId );
-		rowEstudioId.setExpandRatio( editEstudioId, 1.0f );
-
-		HorizontalLayout rowEstudioAcceso = new HorizontalLayout();
-		rowEstudioAcceso.setWidth( "100%" );
-		rowEstudioAcceso.addComponent( lbEstudioAcceso );
-		rowEstudioAcceso.addComponent( editEstudioAcceso );
-		rowEstudioAcceso.setExpandRatio( editEstudioAcceso, 1.0f );
-
-		HorizontalLayout rowClaves = new HorizontalLayout();
-		rowClaves.setWidth( "100%" );
-		rowClaves.addComponent( lbClaves );
-		rowClaves.addComponent( editClaves );
-		rowClaves.setExpandRatio( editClaves, 1.0f );
-
-		HorizontalLayout rowTexto = new HorizontalLayout();
-		rowTexto.setWidth( "100%" );
-		rowTexto.addComponent( lbTexto );
-		rowTexto.addComponent( editTexto );
-		rowTexto.setExpandRatio( editTexto, 1.0f );
-
 		HorizontalLayout rowIcd10cm = new HorizontalLayout();
 		rowIcd10cm.setWidth( "100%" );
 		rowIcd10cm.addComponent( editIcd10cm );
@@ -299,24 +224,6 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		rowIcd10cm.setComponentAlignment( bttnIcd10cm, Alignment.MIDDLE_CENTER );
 		rowIcd10cm.setExpandRatio( editIcd10cm, 1.0f );
 		rowIcd10cm.setCaption( getContext().getString( "modalNewReport.lbIcd10cm" ) );
-
-		HorizontalLayout row1 = new HorizontalLayout();
-		row1.setWidth( "100%" );
-		row1.setSpacing( true );
-		row1.addComponent( rowPacienteId );
-		row1.addComponent( rowPacienteNombre );
-		
-		HorizontalLayout row2 = new HorizontalLayout();
-		row2.setWidth( "100%" );
-		row2.setSpacing( true );
-		row2.addComponent( rowEstudioId );
-		row2.addComponent( rowEstudioAcceso );
-
-		HorizontalLayout row3 = new HorizontalLayout();
-		row3.setWidth( "100%" );
-		row3.setSpacing( true );
-		row3.addComponent( rowIcd10cm );
-		row3.addComponent( rowClaves );
 
 		HorizontalLayout row4 = new HorizontalLayout();
 		row4.setWidth( "100%" );
@@ -504,7 +411,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 	    	
 	    	if ( url != null )
 	    	{
-	    		final ShowExternalViewerDlg viewerDlg = new ShowExternalViewerDlg( getContext(), detalleCentro, url, false );
+	    		final ShowExternalViewerDlg viewerDlg = new ShowExternalViewerDlg( getContext(), detalleCentro, newInforme.getEstudio_uid(), false );
 	    		
 	    		viewerDlg.addCloseListener
 				( 
@@ -545,7 +452,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		btn.setData( image );
 		btn.setWidth( "64px" );
 		btn.setHeight( "64px" );
-		btn.setStyleName( "borderless icon-on-top" );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		btn.addClickListener( new Button.ClickListener()
 		{
 			public void buttonClick( ClickEvent event )

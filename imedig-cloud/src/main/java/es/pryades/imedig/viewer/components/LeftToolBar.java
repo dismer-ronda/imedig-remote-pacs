@@ -29,24 +29,18 @@ public class LeftToolBar extends VerticalLayout {
 	private Panel panelThumnails;
 	private VerticalLayout thumnails;
 	
-	private Button buttonOpen = null;
-	private Button buttonClose = null;
-	private Button buttonNone = null;
-	private Button buttonDistance = null;
-	private Button buttonAngle = null;
-	private Button buttonZoom = null;
-	private Button buttonContrast = null;
-	private Button buttonUndo = null;
+	Button buttonOpen = null;
+	Button buttonClose = null;
+	Button buttonNone = null;
+	Button buttonDistance = null;
+	Button buttonAngle = null;
+	Button buttonZoom = null;
+	Button buttonContrast = null;
+	Button buttonUndo = null;
 	
 	private final ImedigContext context;
 	
 	private final ListenerAction listenerAction;
-	
-//	private static final List<String> BG_COLORS = Arrays.asList(ImedigTheme.BG_BLUE,
-//			ImedigTheme.BG_GREEN,
-//			ImedigTheme.BG_BROWN,
-//			ImedigTheme.BG_ORANGE,
-//			ImedigTheme.BG_RED);
 	
 	private Integer studyCount = 0;
 	
@@ -213,9 +207,4 @@ public class LeftToolBar extends VerticalLayout {
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
 	}
-	
-	public void enableUndo(boolean enabled){
-		buttonUndo.setEnabled( enabled );
-	}
-
 }

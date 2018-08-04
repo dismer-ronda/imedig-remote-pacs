@@ -68,9 +68,16 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	private final ImedigContext context;
 	
 	private QueryDlg queryDlg;
-
+	
+	private final boolean modeReport;
+	
 	public ViewerWnd(ImedigContext context, User user) {
+		this( context, user, false );
+	}
+	
+	public ViewerWnd(ImedigContext context, User user, boolean modeReport) {
 		super();
+		this.modeReport = modeReport;
 		this.context = context;
 		this.user = user;
 		setSizeFull();
@@ -83,6 +90,10 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 	
 	private void init(){
 		studies = new ArrayList<>();
+		if (modeReport){
+			leftToolBar.buttonOpen.setEnabled( false );
+			leftToolBar.buttonClose.setEnabled( false );
+		}
 	}
 
 	private void buidComponent() {
@@ -104,14 +115,19 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		}else if (action instanceof FontAction) {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {
-			openStudies((List<String>)action.getData());
-			leftToolBar.studiesOpen();
+			if (openStudies((List<String>)action.getData())){
+				if (modeReport){
+					leftToolBar.buttonClose.setEnabled( false );
+				}else{
+					leftToolBar.studiesOpen();
+				}
+			}
 		}else if (action instanceof CloseStudies) {
 			closeStudies();
 			leftToolBar.allButtonsDisable();
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
-			leftToolBar.studyInViewer();
+			enabledButtons();
 		}else if (action instanceof AngleAction) {
 			imageCanvas.angleAction();
 		}else if (action instanceof DistanceAction) {
@@ -120,14 +136,23 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			imageCanvas.zoomAction();
 		}else if (action instanceof UndoAction) {
 			if (!imageCanvas.undoAction()){
-				leftToolBar.enableUndo( false );
+				leftToolBar.buttonUndo.setEnabled( false );
 			}
 		}else if (action instanceof NoneAction) {
 			imageCanvas.noneAction();
 		}else if (action instanceof ContrastAction) {
 			imageCanvas.contrastAction();
 		}else if (action instanceof AddToUndoAction) {
-			leftToolBar.enableUndo( true );
+			leftToolBar.buttonUndo.setEnabled( true );
+		}
+	}
+
+	private void enabledButtons()
+	{
+		leftToolBar.studyInViewer();
+		if (modeReport){
+			leftToolBar.buttonOpen.setEnabled( false );
+			leftToolBar.buttonClose.setEnabled( false );
 		}
 	}
 
@@ -166,7 +191,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		imageCanvas.clear();
 	}
 	
-	private void openStudies(List<String> studies) {
+	private boolean openStudies(List<String> studies) {
+		if (studies == null || studies.isEmpty()) return false;
 		for ( String uid : studies ){
 			LOG.info( "selectedStudies uid " + uid );
 			
@@ -181,6 +207,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			}
 		}
 		setStudyThumbnails();
+		return true;
 	}
 
 	private void setStudyThumbnails() {

@@ -2049,19 +2049,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-margin-top {
-	padding-top: 20px;
+	padding-top: 15px;
 }
 
 .imedig .v-margin-right {
-	padding-right: 20px;
+	padding-right: 15px;
 }
 
 .imedig .v-margin-bottom {
-	padding-bottom: 20px;
+	padding-bottom: 15px;
 }
 
 .imedig .v-margin-left {
-	padding-left: 20px;
+	padding-left: 15px;
 }
 
 .imedig .v-spacing {
@@ -4068,27 +4068,27 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig [class*="margin-top"] > tbody > [class*="firstrow"] > td {
-	padding-top: 20px;
+	padding-top: 15px;
 }
 
 .imedig [class*="margin-bottom"] > tbody > [class*="lastrow"] > td {
-	padding-bottom: 20px;
+	padding-bottom: 15px;
 }
 
 .imedig [class*="margin-left"] > tbody > [class*="row"] > [class*="captioncell"] {
-	padding-left: 20px;
+	padding-left: 15px;
 }
 
 .imedig [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedig [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedig [class*="margin-left"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	left: 20px;
+	left: 15px;
 }
 
 .imedig [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"] {
-	padding-right: 20px;
+	padding-right: 15px;
 }
 
 .imedig [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h2, .imedig [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h3, .imedig [class*="margin-right"] > tbody > [class*="row"] > [class*="contentcell"]  > .v-label-h4 {
-	right: 20px;
+	right: 15px;
 }
 
 .imedig .v-formlayout > table {
@@ -7221,19 +7221,19 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-gridlayout-margin-top {
-	padding-top: 20px;
+	padding-top: 15px;
 }
 
 .imedig .v-gridlayout-margin-bottom {
-	padding-bottom: 20px;
+	padding-bottom: 15px;
 }
 
 .imedig .v-gridlayout-margin-left {
-	padding-left: 20px;
+	padding-left: 15px;
 }
 
 .imedig .v-gridlayout-margin-right {
-	padding-right: 20px;
+	padding-right: 15px;
 }
 
 .imedig .v-gridlayout-spacing-on {
@@ -13063,8 +13063,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .v-button-toolbar {
-	font-size: 26px !important;
-	line-height: 1;
+	font-size: 24px !important;
+	line-height: 0.9;
 }
 
 .v-button-toolbar .v-button-caption {

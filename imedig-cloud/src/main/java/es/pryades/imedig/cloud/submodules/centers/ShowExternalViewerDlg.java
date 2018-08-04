@@ -1,33 +1,36 @@
 package es.pryades.imedig.cloud.submodules.centers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-
-import lombok.Getter;
 
 import org.apache.log4j.Logger;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.BrowserFrame;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.InformeImagen;
+import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
+import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.actions.OpenStudies;
+import es.pryades.imedig.viewer.components.ViewerWnd;
+import lombok.Getter;
 
 /**
  * 
@@ -41,6 +44,7 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 	private static final Logger LOG = Logger.getLogger( ShowExternalViewerDlg.class );
 	
 	private String url;
+	private String estudioUid;
 	
 	protected VerticalLayout layout;
 	protected VerticalLayout componentsContainer;
@@ -55,6 +59,8 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 	private InformesManager informesManager;
 	private DetalleCentro centro;
 	private boolean request;
+	
+	private ViewerWnd viewer;
 	
 	@Getter private InformeImagen imagen;
 	
@@ -71,7 +77,7 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		super();
 		
 		this.context = ctx;
-		this.url = url;
+		this.estudioUid = url;
 		this.centro = centro;
 		this.request = request;
 		
@@ -132,13 +138,17 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		layout.addComponent( operacionesContainer );
 		layout.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
 		layout.setExpandRatio( componentsContainer, 1.0f );
+		
+		viewer = new ViewerWnd( context, getUser( context.getUsuario() ), true );
+		componentsContainer.addComponent( viewer );
+		viewer.doAction( new OpenStudies( this, Arrays.asList( estudioUid ) ) );
 
-		ExternalResource resource = new ExternalResource( url );
-		BrowserFrame e = new BrowserFrame( null, resource );
-	    //e.setType(Embedded.TYPE_BROWSER);
-	    e.setSizeFull();
-
-		componentsContainer.addComponent( e );
+//		ExternalResource resource = new ExternalResource( url );
+//		BrowserFrame e = new BrowserFrame( null, resource );
+//	    //e.setType(Embedded.TYPE_BROWSER);
+//	    e.setSizeFull();
+//
+//		componentsContainer.addComponent( e );
 		
 		bttnCloseListener();
 		if ( request ) 
@@ -147,6 +157,19 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 			bttnReportListener();
 
 		bttnClose.focus();
+	}
+	
+	private User getUser(Usuario usuario){
+		User user = new User();
+		user.setLogin( usuario.getLogin());
+		user.setQuery( Utils.getInt( usuario.getQuery(), 1 ) );
+		user.setCompression( usuario.getCompresion());
+		user.setUid( "" );
+		
+		String filter = usuario.getFiltro();
+		user.setFilter( filter == null || filter.isEmpty() ? "*" : filter );
+		
+		return user;
 	}
 
 	public void showModalWindow()
@@ -223,7 +246,8 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 
 	private void doReport()
 	{
-		ReportInfo reportInfo = informesManager.getReportInfo( getContext(), centro );
+		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), centro );
+		ReportInfo reportInfo = viewer.getReportInfo();
 		
 		if ( reportInfo != null )
 		{
