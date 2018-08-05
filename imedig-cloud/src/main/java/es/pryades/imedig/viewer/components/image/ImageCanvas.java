@@ -666,7 +666,7 @@ public class ImageCanvas extends VerticalLayout {
 
 		currentAction = EnumActions.ZOOM;
 		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
-		canvas.setCursor("move");
+		canvas.setCursor("pointer");
 	}
 
 	public void contrastAction() {
@@ -674,7 +674,7 @@ public class ImageCanvas extends VerticalLayout {
 
 		currentAction = EnumActions.CONTRAST;
 		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
-		canvas.setCursor("crosshair");
+		canvas.setCursor("move");
 	}
 
 

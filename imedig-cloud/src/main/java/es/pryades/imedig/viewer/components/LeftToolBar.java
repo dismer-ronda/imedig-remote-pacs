@@ -206,6 +206,10 @@ public class LeftToolBar extends VerticalLayout {
 		buttonContrast.setEnabled( false );
 		buttonUndo.setEnabled( false );
 		buttonErase.setEnabled( false );
+		
+		if (lastAction != null){
+			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
+		}
 	}
 
 	public void studiesOpen(){
@@ -219,6 +223,9 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( true );
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
+		if (lastAction != null){
+			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
+		}
 	}
 	
 	private void selectedAction(Button button){
