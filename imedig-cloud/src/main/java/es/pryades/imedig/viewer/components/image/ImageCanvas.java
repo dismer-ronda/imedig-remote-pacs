@@ -2,8 +2,10 @@ package es.pryades.imedig.viewer.components.image;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
@@ -18,7 +20,9 @@ import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.enums.FontWeight;
 import es.pryades.fabricjs.enums.NotesAlignment;
+import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
@@ -31,6 +35,7 @@ import es.pryades.imedig.cloud.dto.viewer.ImageHeader;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
+import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
@@ -44,7 +49,7 @@ public class ImageCanvas extends VerticalLayout {
 	private User user;
 
 	private FabricJs canvas;
-	private FigureConfiguration canvasConfiguration;
+	private FigureConfiguration defaultConfiguration;
 	private List<Figure> imagenFigures;
 	private ImageData imageData = null;
 	private EnumActions currentAction = EnumActions.NONE; 
@@ -59,6 +64,8 @@ public class ImageCanvas extends VerticalLayout {
 	private final ImedigContext context;
 	
 	private final ListenerAction listenerAction;
+	
+	private static Map<EnumActions, FigureConfiguration> configurations;
 	
 	@Getter
 	private ReportInfo reportInfo;
@@ -90,7 +97,7 @@ public class ImageCanvas extends VerticalLayout {
 	private void settingCanvas() {
 		buildCanvasConfiguration();
 		
-		canvas = new FabricJs(canvasConfiguration);
+		canvas = new FabricJs(defaultConfiguration);
 		canvas.setSizeFull();
 		canvas.setCursor("default");
 		addComponent(canvas);
@@ -351,7 +358,11 @@ public class ImageCanvas extends VerticalLayout {
 			newpoints.add(new Point(x, y));
 		}
 		
-		imagenFigures.add(new Figure(figure.getFigureType(), newpoints, figure.getText()));
+		Figure fig = new Figure(figure.getKey(), figure.getFigureType(), newpoints, figure.getText());
+		fig.setConfiguration( figure.getConfiguration() );
+		
+		imagenFigures.add(fig);
+		listenerAction.doAction( new AddFigure( this, null ) );
 	}
 	
 	private void contrastOperation(Figure figure) {
@@ -393,14 +404,33 @@ public class ImageCanvas extends VerticalLayout {
 
 
 	private void buildCanvasConfiguration(){
-		canvasConfiguration = new FigureConfiguration()
-				.withStrokeWidth(1.0)
-				.withFillColor("#ff2121")
-				.withStrokeColor("#ff2121")
+		
+		if (configurations != null) return;
+		configurations = new HashMap<>();
+		
+		defaultConfiguration = new FigureConfiguration()
+				.withStrokeWidth(2.0)
+				.withFillColor("#F0BE20")
+				.withStrokeColor("#F0BE20")
 				.withBackgroundColor( "transparent" )
 				.withTextFontFamily("Roboto")
-				.withTextFontSize(14)
-				.withTextFillColor("#ff2121");
+				.withTextFontSize(15)
+				.withTextFillColor("#F0BE20")
+				.withTextFontWeight( FontWeight.FW700 );
+		configurations.put( EnumActions.NONE, defaultConfiguration );
+		configurations.put( EnumActions.ANGLE, defaultConfiguration );
+		configurations.put( EnumActions.DISTANCE, defaultConfiguration );
+		
+		FigureConfiguration temp = defaultConfiguration.clone().withVisible( false );
+		configurations.put( EnumActions.CONTRAST, temp );
+
+		temp = defaultConfiguration.clone()
+				.withVisible( true )
+				.withStrokeWidth( 1.0 )
+				.withStrokeLineCap( StrokeLineCap.BUTT )
+				.withStrokeDashArray( new ArrayList<>( Arrays.asList( 3.0, 3.0 )) );
+		
+		configurations.put( EnumActions.ZOOM, temp );
 	}
 	
 	private void resizeAction(){
@@ -435,16 +465,6 @@ public class ImageCanvas extends VerticalLayout {
 		double my = (double) ( vy2 - vy1 ) / ( iy2 - iy1 );
 		double ny = vy1 - my * iy1;
 		
-		FigureConfiguration config = canvas.getFigureConfiguration();
-		boolean visible = true;
-		
-		if (!config.isVisible()){
-			visible = false;
-			config.setVisible( true );
-			canvas.setFigureConfiguration( config );
-		}
-		
-		
 		for (Figure fig : imagenFigures) {
 			
 			List<Point> npoints = new ArrayList<>();
@@ -454,16 +474,10 @@ public class ImageCanvas extends VerticalLayout {
 				
 				npoints.add(new Point(x, y));
 			}
-			
-			canvas.draw(new Figure(fig.getFigureType(), npoints, fig.getText()));
+			Figure figure = new Figure(fig.getFigureType(), npoints, fig.getText());
+			figure.setConfiguration( fig.getConfiguration() );
+			canvas.draw(figure);
 		}
-		
-		if (!visible){
-			config = canvas.getFigureConfiguration();
-			config.setVisible( false );
-			canvas.setFigureConfiguration( config );
-		}
-
 	}
 	
 	
@@ -620,6 +634,11 @@ public class ImageCanvas extends VerticalLayout {
 		back = new Stack<>();
 	}
 	
+	public void clearFigures() {
+		imagenFigures.clear();
+		canvas.clearDraw();
+	}
+	
 	public void noneAction(){
 		currentAction = EnumActions.NONE;
 		canvas.setAction(CanvasAction.NONE);
@@ -630,9 +649,7 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 		
 		currentAction = EnumActions.DISTANCE;
-		FigureConfiguration config = canvas.getFigureConfiguration();
-		config.setVisible( true );
-		canvas.setAction(CanvasAction.DRAW_LINE, config);
+		canvas.setAction(CanvasAction.DRAW_LINE, configurations.get( currentAction ));
 		canvas.setCursor("crosshair");
 	}
 
@@ -640,9 +657,7 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ANGLE;
-		FigureConfiguration config = canvas.getFigureConfiguration();
-		config.setVisible( true );
-		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE, config);
+		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE, configurations.get( currentAction ));
 		canvas.setCursor("crosshair");
 	}
 	
@@ -650,19 +665,15 @@ public class ImageCanvas extends VerticalLayout {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ZOOM;
-		FigureConfiguration config = canvas.getFigureConfiguration();
-		config.setVisible( true );
-		canvas.setAction(CanvasAction.SHOW_RECT, config);
-		canvas.setCursor("crosshair");
+		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
+		canvas.setCursor("move");
 	}
 
 	public void contrastAction() {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.CONTRAST;
-		FigureConfiguration config = canvas.getFigureConfiguration();
-		config.setVisible( false );
-		canvas.setAction(CanvasAction.SHOW_RECT, config);
+		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
 		canvas.setCursor("crosshair");
 	}
 

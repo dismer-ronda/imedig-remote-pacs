@@ -18,6 +18,7 @@ import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.addon.charts.model.YAxis;
 import com.vaadin.addon.charts.model.style.GradientColor;
 import com.vaadin.addon.charts.model.style.SolidColor;
+import com.vaadin.addon.charts.model.style.Style;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
@@ -278,7 +279,7 @@ public class StorageStatusDlg extends Window implements ModalParent
 		}
 		
 		storageConfiguration.setMinimunFreeDiskSpace( getOnlineStorageMinimunFreeDiskSpace() );
-		storageConfiguration.setMoveStudyIfNotAccessedFor( getMoveStudyIfNotAccessedFor() ); 
+		storageConfiguration.setMoveStudyIfNotAccessedFor("getMoveStudyIfNotAccessedFor()" ); 
 
 		LOG.info( "storageConfiguration " + storageConfiguration );
 	}
@@ -321,6 +322,9 @@ public class StorageStatusDlg extends Window implements ModalParent
         configuration.getChart().setPlotBorderWidth(0);
         configuration.getChart().setPlotShadow(false);
         configuration.setTitle( title + " (" + size + " GB)");
+        Style style = new Style();
+        style.setColor(  new SolidColor( "#ced1d2" ) );
+        configuration.getTitle().setStyle( style );
 
         GradientColor gradient1 = GradientColor.createLinear(0, 0, 0, 1);
         gradient1.addColorStop(0, new SolidColor("#FFF"));
@@ -350,6 +354,7 @@ public class StorageStatusDlg extends Window implements ModalParent
         configuration.getPane().setStartAngle(-150);
         configuration.getPane().setEndAngle(150);
         configuration.getPane().setBackground(background);
+        configuration.getChart().setBackgroundColor( new SolidColor( "#444d50" ) );
 
         YAxis yAxis = configuration.getyAxis();
         yAxis.setTitle(new Title("GB"));
@@ -387,6 +392,7 @@ public class StorageStatusDlg extends Window implements ModalParent
         plotOptions.getTooltip().setValueSuffix(" GB");
         series.setPlotOptions(plotOptions);
         configuration.setSeries(series);
+        
 
         chart.drawChart(configuration);
         return chart;
@@ -544,18 +550,18 @@ public class StorageStatusDlg extends Window implements ModalParent
 
 	private int getNumberStudiesDone()
 	{
-		StudyQuery queryObj = new StudyQuery();
-
-		setDateFilter( queryObj );
-		
-		try
-		{
-			return studiesManager.getNumberOfRows( getContext(), queryObj );
-		}
-		catch ( Throwable e )
-		{
-			Utils.logException( e, LOG );
-		}
+//		StudyQuery queryObj = new StudyQuery();
+//
+//		setDateFilter( queryObj );
+//		
+//		try
+//		{
+//			return studiesManager.getNumberOfRows( getContext(), queryObj );
+//		}
+//		catch ( Throwable e )
+//		{
+//			Utils.logException( e, LOG );
+//		}
 		
 		return 0;
 	}

@@ -15,19 +15,20 @@
  */
 package es.pryades.fabricjs.config;
 
-import es.pryades.fabricjs.enums.FontStyle;
-import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.StrokeLineCap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import es.pryades.fabricjs.enums.FontStyle;
+import es.pryades.fabricjs.enums.FontWeight;
+import es.pryades.fabricjs.enums.StrokeLineCap;
+
 /**
  *
  * @author geanny
  */
-public class FigureConfiguration extends FontConfiguration implements Serializable {
+public class FigureConfiguration extends FontConfiguration implements Cloneable, Serializable {
 
     private String backgroundColor;
 
@@ -97,6 +98,10 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
 
     public void setStrokeLineCap(StrokeLineCap strokeLineCap) {
         this.strokeLineCap = strokeLineCap.name().toLowerCase();
+    }
+    
+    protected void setStrokeLineCap(String strokeLineCap) {
+        this.strokeLineCap = strokeLineCap;
     }
 
     public boolean isVisible() {
@@ -176,6 +181,27 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public FigureConfiguration withTextFontWeight(FontWeight textFontWeight) {
         this.setTextFontWeight(textFontWeight);
         return this;
+    }
+    
+    @Override
+    public FigureConfiguration clone(){
+    	FigureConfiguration clone = new FigureConfiguration();
+    	clone.setTextBackgroundColor(this.getTextBackgroundColor());
+    	clone.setTextFillColor(this.getTextFillColor());
+    	clone.setTextFontFamily(this.getTextFontFamily());
+    	clone.setTextFontSize(this.getTextFontSize());
+    	clone.setTextFontStyle(this.getTextFontStyle());
+    	clone.setTextFontWeight(this.getTextFontWeight());
+    	
+    	clone.setBackgroundColor(backgroundColor);
+    	clone.setStrokeWidth(strokeWidth);
+    	clone.setFillColor(fillColor);
+    	clone.setStrokeColor(strokeColor);
+    	clone.setStrokeDashArray((List<Double>)((ArrayList<Double>)strokeDashArray).clone());
+    	clone.setStrokeLineCap(strokeLineCap);
+    	clone.setVisible(visible);
+    	    	
+    	return clone;
     }
 
 }

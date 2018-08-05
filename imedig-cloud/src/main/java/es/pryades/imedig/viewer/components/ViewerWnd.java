@@ -19,11 +19,13 @@ import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
+import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
@@ -144,7 +146,12 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			imageCanvas.contrastAction();
 		}else if (action instanceof AddToUndoAction) {
 			leftToolBar.buttonUndo.setEnabled( true );
+		}else if (action instanceof EraseAction) {
+			imageCanvas.clearFigures();
+		}else if (action instanceof AddFigure) {
+			leftToolBar.buttonErase.setEnabled( true );
 		}
+		
 	}
 
 	private void enabledButtons()

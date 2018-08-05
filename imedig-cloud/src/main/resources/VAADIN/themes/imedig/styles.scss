@@ -84,6 +84,10 @@
   font-size: 26px !important;
 }
 
+.selected{
+  color: $v-focus-color !important;
+}
+
 .v-button-toolbox:focus:after{
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;

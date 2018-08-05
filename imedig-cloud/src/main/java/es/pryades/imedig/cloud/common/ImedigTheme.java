@@ -20,4 +20,6 @@ public class ImedigTheme {
 	
 	public static final String BUTTON_TOOLBOX= "toolbox";
 	public static final String BUTTON_TOOLBAR= "toolbar";
+	public static final String BUTTON_SELECTED= "selected";
+	
 }

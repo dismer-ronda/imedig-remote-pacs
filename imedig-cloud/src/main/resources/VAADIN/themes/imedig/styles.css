@@ -13057,6 +13057,10 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 26px !important;
 }
 
+.selected {
+	color: #02925d !important;
+}
+
 .v-button-toolbox:focus:after {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;

@@ -2,7 +2,6 @@ package es.pryades.imedig.viewer.components;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.GridLayout;
@@ -18,6 +17,7 @@ import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -37,8 +37,12 @@ public class LeftToolBar extends VerticalLayout {
 	Button buttonZoom = null;
 	Button buttonContrast = null;
 	Button buttonUndo = null;
+	Button buttonErase = null;
+	Button buttonDownload = null;
+	Button buttonReport = null;
 	
 	private final ImedigContext context;
+	private Button lastAction = null;
 	
 	private final ListenerAction listenerAction;
 	
@@ -73,11 +77,15 @@ public class LeftToolBar extends VerticalLayout {
 		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
 		grid.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
 		grid.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
+		grid.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
+		grid.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
+		grid.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new QueryStudies(this, null));
+				selectedAction(buttonOpen);
 			}
 		});
 		
@@ -85,6 +93,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new CloseStudies(this, null));
+				selectedAction(buttonClose);
 			}
 		});
 		
@@ -92,6 +101,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new DistanceAction(this, null));
+				selectedAction(buttonDistance);
 			}
 		});
 
@@ -99,6 +109,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new AngleAction(this, null));
+				selectedAction(buttonAngle);
 			}
 		});
 		
@@ -106,6 +117,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new NoneAction(this, null));
+				selectedAction(buttonNone);
 			}
 		});
 		
@@ -113,6 +125,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new ZoomAction(this, null));
+				selectedAction(buttonZoom);
 			}
 		});
 		
@@ -120,6 +133,7 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new UndoAction(this, null));
+				selectedAction(buttonUndo);
 			}
 		});
 		
@@ -127,6 +141,16 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new ContrastAction(this, null));
+				selectedAction(buttonContrast);
+			}
+		});
+		
+		buttonErase.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				listenerAction.doAction(new EraseAction(this, null));
+				buttonErase.setEnabled( false );
+				//selectedAction(buttonErase);
 			}
 		});
 		
@@ -147,17 +171,6 @@ public class LeftToolBar extends VerticalLayout {
 		inside.addComponent(panelThumnails);
 		inside.setExpandRatio(panelThumnails, 1.0f);
 	}
-
-	
-	private Button getButton(String name, String keytooltip){
-		
-		Button btn = new Button( );
-		btn.setId("btn.tool."+name);
-		btn.setIcon( new ThemeResource( "images/"+name+".png" ) );
-		btn.setDescription( context.getString( keytooltip ) );
-		
-		return btn;
-	}
 	
 	private Button getButton(FontIcon font, String name, String keytooltip){
 		
@@ -168,7 +181,6 @@ public class LeftToolBar extends VerticalLayout {
 		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		btn.addStyleName(ValoTheme.BUTTON_LARGE);
 		btn.addStyleName(ImedigTheme.BUTTON_TOOLBOX);
-		//btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		
 		return btn;
 	}
@@ -193,6 +205,7 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( false );
 		buttonContrast.setEnabled( false );
 		buttonUndo.setEnabled( false );
+		buttonErase.setEnabled( false );
 	}
 
 	public void studiesOpen(){
@@ -206,5 +219,18 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( true );
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
+	}
+	
+	private void selectedAction(Button button){
+		if (lastAction != null){
+			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
+		}
+		if (button == buttonOpen || 
+				button == buttonClose || 
+				button == buttonErase ||
+				button == buttonUndo) return;
+		
+		button.addStyleName( ImedigTheme.BUTTON_SELECTED );
+		lastAction = button;
 	}
 }

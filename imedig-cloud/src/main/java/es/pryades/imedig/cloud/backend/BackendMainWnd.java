@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -250,15 +249,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		topLayout.addComponent( topBar );
 		topLayout.setComponentAlignment( topBar, Alignment.MIDDLE_CENTER );
 
-//		banner = new HorizontalLayout();
-//		banner.setWidth( "100.0%" );
-//		banner.setHeight( "1px" );
-//		banner.setMargin( false );
-//		banner.setSpacing( false );
-//		banner.setStyleName( "banner" );
-//
-//		topLayout.addComponent( banner );
-
 		logoBar = new HorizontalLayout();
 		logoBar.setSpacing( false );
 		logoBar.setMargin( false );
@@ -286,7 +276,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		Button btn;
 		
 		buttonManual = new Button( context.getString( "words.manual" ), FontAwesome.BOOK );
-		//buttonManual.setIcon( new ThemeResource( "images/manual.png" ) );
 		buttonManual.setDescription( context.getString( "words.user.manual" ) );
 		setStyleButtonBar( buttonManual );
 		buttonManual.addClickListener( new Button.ClickListener()
@@ -301,7 +290,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		buttonsBar.addComponent( buttonManual );
 
 		buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
-		//buttonReports.setIcon( new ThemeResource( "images/reports.png" ) );
 		buttonReports.setDescription( context.getString( "words.reports" ) );
 		setStyleButtonBar( buttonReports );
 		buttonReports.addClickListener( new Button.ClickListener()
@@ -354,7 +342,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		}
 
 		btn = new Button( context.getString( "words.status" ), FontAwesome.TACHOMETER );
-		//btn.setIcon( new ThemeResource( "images/storage-status.png" ) );
 		btn.setDescription( context.getString( "StorageStatusDlg.title" ) );
 		setStyleButtonBar( btn );
 
@@ -372,7 +359,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		if ( getContext().hasRight( AUTH_ADMINISTRACION ) )
 		{
 			btn = new Button( context.getString( "words.administration" ), FontAwesome.GEARS );
-			//btn.setIcon( new ThemeResource( "images/admin.png" ) );
 			btn.setDescription( context.getString( "words.administration" ) );
 			setStyleButtonBar( btn );
 
@@ -486,8 +472,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	private String getCurrentImageUrl()
 	{
-		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
-		
 		ReportInfo reportInfo = viewer.getReportInfo();
 		
 		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + reportInfo.getUrl() : null;
@@ -525,11 +509,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	public void showViewer()
 	{
-//		VerticalLayout componentsContainer = new VerticalLayout();
-//		componentsContainer.setMargin( false );
-//		componentsContainer.setSpacing( true );
-//		componentsContainer.setSizeFull();
-		
 		HorizontalLayout operacionesContainer = new HorizontalLayout();
 		operacionesContainer.setSpacing( true );
 
@@ -548,16 +527,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		}
 		
 		Button bttnDownload= new Button( getContext().getString( "words.download" ) );
-		/*bttnDownload.addClickListener( new Button.ClickListener()
-		{
-			private static final long serialVersionUID = 1731772233385937305L;
-
-			public void buttonClick( ClickEvent event )
-			{
-				doDownload();
-			}
-		} );*/
-
 		FileDownloader fileDownloaderCsv = new FileDownloader( createResource() );
         fileDownloaderCsv.extend( bttnDownload );
         
@@ -565,32 +534,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		if ( bttnRequest != null )
 			operacionesContainer.addComponent( bttnRequest );
 		
-		long ts = new Date().getTime();
-		
 		Usuario usuario = getUsuario( getContext() );
 
-		String extra = "ts=" + ts + 
-				"&login=" + usuario.getLogin() + 
-				"&filter=" + usuario.getFiltro() +
-				"&query=" + usuario.getQuery() +
-				"&compression=" + usuario.getCompresion() +
-				"&uid=" + "";
-		
-		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
-		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
-
-		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
-		//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer-vaadin" + "?" + token + "&" + code + "&debug";
-
-		//ExternalResource resource = new ExternalResource( url );
-		//BrowserFrame e = new BrowserFrame( null, resource );
-	    //e.setType(Embedded.TYPE_BROWSER);
-	    //e.setSizeFull();
-		
 		viewer = new ViewerWnd( context, getUser( usuario ) );
 
-		//componentsContainer.addComponent( viewer );
-		
 		HorizontalLayout banner = new HorizontalLayout();
 		banner.setWidth( "100%" );
 		banner.setMargin( true );
