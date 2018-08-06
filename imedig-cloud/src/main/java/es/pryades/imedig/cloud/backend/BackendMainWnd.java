@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
 
-import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
@@ -509,49 +508,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	public void showViewer()
 	{
-		HorizontalLayout operacionesContainer = new HorizontalLayout();
-		operacionesContainer.setSpacing( true );
-
-		if ( getContext().hasRight( "informes.crear" ) )
-		{
-			bttnRequest = new Button( getContext().getString( "words.report.request" ) );
-			bttnRequest.addClickListener( new Button.ClickListener()
-			{
-				private static final long serialVersionUID = 8238931466005672144L;
-	
-				public void buttonClick( ClickEvent event )
-				{
-					doRequest();
-				}
-			} );
-		}
-		
-		Button bttnDownload= new Button( getContext().getString( "words.download" ) );
-		FileDownloader fileDownloaderCsv = new FileDownloader( createResource() );
-        fileDownloaderCsv.extend( bttnDownload );
-        
-		operacionesContainer.addComponent( bttnDownload );
-		if ( bttnRequest != null )
-			operacionesContainer.addComponent( bttnRequest );
-		
-		Usuario usuario = getUsuario( getContext() );
-
-		viewer = new ViewerWnd( context, getUser( usuario ) );
-
-		HorizontalLayout banner = new HorizontalLayout();
-		banner.setWidth( "100%" );
-		banner.setMargin( true );
-		banner.addStyleName( "menu-layout" );
-		banner.addComponent( operacionesContainer );
-		banner.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
-		
+		viewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
 		contents.addComponent( viewer );
-		contents.addComponent( banner );
-		contents.setComponentAlignment( banner, Alignment.BOTTOM_CENTER );
 		contents.setExpandRatio( viewer, 1.0f );
 	}
 	
-	private User getUser(Usuario usuario){
+	private static User getUser(Usuario usuario){
 		User user = new User();
 		user.setLogin( usuario.getLogin());
 		user.setQuery( Utils.getInt( usuario.getQuery(), 1 ) );

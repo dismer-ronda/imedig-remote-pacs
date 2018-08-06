@@ -11,13 +11,26 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.Window.CloseEvent;
 
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ImageResource;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
+import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.DetalleCentro;
+import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
+import es.pryades.imedig.cloud.ioc.IOCManager;
+import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
+import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
+import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
+import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
@@ -31,6 +44,7 @@ import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
+import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
@@ -39,7 +53,7 @@ import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
-public class ViewerWnd extends HorizontalLayout implements ListenerAction {
+public class ViewerWnd extends HorizontalLayout implements ListenerAction, ImageResource, ModalParent {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();
@@ -95,11 +109,15 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 		if (modeReport){
 			leftToolBar.buttonOpen.setEnabled( false );
 			leftToolBar.buttonClose.setEnabled( false );
+			leftToolBar.buttonDownload.setVisible( false );
+			if (leftToolBar.buttonReport != null){
+				leftToolBar.buttonReport.setVisible( false );
+			}
 		}
 	}
 
 	private void buidComponent() {
-		leftToolBar = new LeftToolBar(context, this);
+		leftToolBar = new LeftToolBar(context, this, this);
 		addComponent(leftToolBar);
 		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
 		imageCanvas = new ImageCanvas( context, user, this );
@@ -150,6 +168,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			imageCanvas.clearFigures();
 		}else if (action instanceof AddFigure) {
 			leftToolBar.buttonErase.setEnabled( true );
+		}else if (action instanceof RequestReport) {
+			requestReport();
 		}
 		
 	}
@@ -161,11 +181,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			leftToolBar.buttonOpen.setEnabled( false );
 			leftToolBar.buttonClose.setEnabled( false );
 		}
-	}
-
-	private void settingDistanceAction() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public ReportInfo getReportInfo() {
@@ -225,6 +240,89 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction {
 			
 			leftToolBar.addStudyPanel(new StudyPanel(study, this));
 		}
+	}
+	
+	private void requestReport(){
+		ReportInfo reportInfo = getReportInfo();
+		if ( reportInfo == null ) return;
+		
+		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
+		
+		DetalleCentro detalleCentro = null; 
+		try
+		{
+			detalleCentro = (DetalleCentro)centrosManager.getRow( context, 1 );
+		}
+		catch ( Throwable e )
+		{
+			e.printStackTrace();
+			return;
+		}
+
+		List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
+		InformeImagen imagen = new InformeImagen();
+		imagen.setUrl( reportInfo.getUrl() );
+		imagen.setIcon( reportInfo.getIcon() );
+		imagenes.add( imagen );
+		
+		DetalleInforme informe = new DetalleInforme();
+
+		informe.setCentro( detalleCentro.getId() );
+		informe.setEstudio_acceso( reportInfo.getHeader().getAccessionNumber() );
+		informe.setEstudio_id( reportInfo.getHeader().getStudyID() );
+		informe.setEstudio_uid( reportInfo.getHeader().getStudyInstanceUID() );
+		informe.setModalidad( reportInfo.getHeader().getModality() );
+		informe.setPaciente_id( reportInfo.getHeader().getPatientID() );
+		informe.setPaciente_nombre( reportInfo.getHeader().getPatientName() );
+		informe.setCentro_ip( detalleCentro.getIp() );
+		informe.setCentro_puerto( detalleCentro.getPuerto() );
+
+		informe.setHorario_nombre( detalleCentro.getHorario_nombre() );
+		
+		informe.setEstado( 0 );
+		informe.setProtegido( 0 );
+
+		final ModalNewInforme report = new ModalNewInforme( context, Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
+		
+		report.addCloseListener(
+			new Window.CloseListener() 
+			{
+				private static final long serialVersionUID = -7551376683736330872L;
+
+				@Override
+			    public void windowClose( CloseEvent e ) 
+			    {
+					if ( report.isAdded() )
+						showReports();
+			    }
+			}
+		);
+		report.showModalWindow();
+	}
+	
+	private void showReports(){
+		ReportsDlg dlg = new ReportsDlg( context );
+
+		getUI().addWindow( dlg );
+	}
+
+	@Override
+	public String currentImageUrl()
+	{
+		ReportInfo reportInfo = getReportInfo();
+		
+		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + reportInfo.getUrl() : null;
+		
+		LOG.info(  "imageUrl " + imageUrl );
+		
+		return imageUrl;
+	}
+
+	@Override
+	public void refreshVisibleContent()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

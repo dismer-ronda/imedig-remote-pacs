@@ -1,7 +1,14 @@
 package es.pryades.imedig.viewer.components;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.GridLayout;
@@ -11,6 +18,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.ImageResource;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.viewer.actions.AngleAction;
@@ -20,6 +29,7 @@ import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
+import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 
@@ -45,13 +55,15 @@ public class LeftToolBar extends VerticalLayout {
 	private Button lastAction = null;
 	
 	private final ListenerAction listenerAction;
+	private final ImageResource imageResource; 
 	
 	private Integer studyCount = 0;
 	
-	public LeftToolBar(ImedigContext context, ListenerAction listenerAction){
+	public LeftToolBar(ImedigContext context, ListenerAction listenerAction, ImageResource imageResource){
 		setWidth("130px");
 		setHeight("100%");
 		this.listenerAction = listenerAction;
+		this.imageResource = imageResource;
 		this.context = context;
 		buidInsideLayout();
 	}
@@ -79,7 +91,19 @@ public class LeftToolBar extends VerticalLayout {
 		grid.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
 		grid.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
 		grid.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
-		grid.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
+		
+		if ( context.hasRight( "informes.crear" ) )
+		{
+			grid.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
+			
+			buttonReport.addClickListener( new Button.ClickListener()
+			{
+				public void buttonClick( ClickEvent event )
+				{
+					listenerAction.doAction(new RequestReport(this, null));
+				}
+			} );
+		}
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -133,7 +157,6 @@ public class LeftToolBar extends VerticalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				listenerAction.doAction(new UndoAction(this, null));
-				selectedAction(buttonUndo);
 			}
 		});
 		
@@ -154,6 +177,9 @@ public class LeftToolBar extends VerticalLayout {
 			}
 		});
 		
+		FileDownloader fileDownloaderCsv = new FileDownloader( getResource() );
+        fileDownloaderCsv.extend( buttonDownload );
+        
 		allButtonsDisable();
 		
 		inside.addComponent(grid);
@@ -206,6 +232,11 @@ public class LeftToolBar extends VerticalLayout {
 		buttonContrast.setEnabled( false );
 		buttonUndo.setEnabled( false );
 		buttonErase.setEnabled( false );
+		buttonDownload.setEnabled( false );
+		
+		if (buttonReport != null){
+			buttonReport.setEnabled( false );
+		}
 		
 		if (lastAction != null){
 			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
@@ -223,6 +254,10 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( true );
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
+		buttonDownload.setEnabled( true );
+		if (buttonReport != null){
+			buttonReport.setEnabled( true );
+		}
 		if (lastAction != null){
 			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
 		}
@@ -235,9 +270,40 @@ public class LeftToolBar extends VerticalLayout {
 		if (button == buttonOpen || 
 				button == buttonClose || 
 				button == buttonErase ||
-				button == buttonUndo) return;
+				button == buttonUndo  ||
+				button == buttonDownload ||
+				button == buttonReport) return;
 		
 		button.addStyleName( ImedigTheme.BUTTON_SELECTED );
 		lastAction = button;
+	}
+	
+	private StreamResource getResource()
+	{
+		StreamResource resource = new StreamResource( 
+				new StreamSource() 
+				{
+					private static final long serialVersionUID = 3171380160730576267L;
+
+					@Override
+		            public InputStream getStream() 
+		            {
+		                try 
+		                {
+		                	return new URL( imageResource.currentImageUrl()).openStream();
+		                } 
+		                catch ( IOException e ) 
+		                {
+		                    e.printStackTrace();
+		                    return null;
+		                }
+		
+		            }
+		        }, 
+		        Utils.getUUID() + ".png" );
+		
+		resource.setCacheTime( 0 );
+		
+		return resource;
 	}
 }

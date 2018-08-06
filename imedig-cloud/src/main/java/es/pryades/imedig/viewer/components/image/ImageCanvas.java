@@ -96,7 +96,7 @@ public class ImageCanvas extends VerticalLayout {
 
 	private void settingCanvas() {
 		buildCanvasConfiguration();
-		
+		defaultConfiguration = configurations.get(EnumActions.NONE);
 		canvas = new FabricJs(defaultConfiguration);
 		canvas.setSizeFull();
 		canvas.setCursor("default");
@@ -417,6 +417,7 @@ public class ImageCanvas extends VerticalLayout {
 				.withTextFontSize(15)
 				.withTextFillColor("#F0BE20")
 				.withTextFontWeight( FontWeight.FW700 );
+		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
 		configurations.put( EnumActions.ANGLE, defaultConfiguration );
 		configurations.put( EnumActions.DISTANCE, defaultConfiguration );
@@ -693,7 +694,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		canvas.clearDraw();
 		
-		openImage();
+		reportInfo = openImage();
 		showImagenFigures();
 		
 		if (back.isEmpty()) return false;

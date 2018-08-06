@@ -94,7 +94,7 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 
 		setContent( layout );
 
-		setModal( false );
+		setModal( true );
 		setResizable( false );
 		setClosable( false );
 		
