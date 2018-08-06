@@ -1422,6 +1422,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'setConfiguration',
         value: function setConfiguration(configuration) {
             this.configuration = configuration;
+            this.setAction(this.configuration.action);
+            this.setCursor(this.configuration.cursor);
             if (this.currentDraw) {
                 this.currentDraw.setConfiguration(this.configuration);
             }
@@ -1487,9 +1489,11 @@ var FabricJsApp = exports.FabricJsApp = function () {
         }
     }, {
         key: 'onLoadImage',
-        value: function onLoadImage(imageUrl) {
-            if (imageUrl) {
-                this.setBackgroundImage(imageUrl);
+        value: function onLoadImage(imageUrls) {
+            if (imageUrls.length) {
+                if (imageUrls.length === 1) {
+                    this.setBackgroundImage(imageUrls[0]);
+                }
             }
         }
     }, {

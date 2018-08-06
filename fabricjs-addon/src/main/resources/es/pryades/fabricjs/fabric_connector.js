@@ -38,9 +38,9 @@ var es_pryades_fabricjs_FabricJs = function() {
             switch (command.canvasAction) {
                 case "SET_IMAGE":
                     if (command.payload) {
-                        component.imageUrl = command.payload;
+                        component.imagesUrls = JSON.parse(command.payload);
                         fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-                        fabricJs.onLoadImage(command.payload);
+                        fabricJs.onLoadImage(component.imagesUrls);
                     }
                     break;
                 case "ADD_NOTE":
@@ -65,34 +65,21 @@ var es_pryades_fabricjs_FabricJs = function() {
                     }
                     break;
                 case "REMOVE_FIGURE":
-                    if (command.payload) {                 
+                    if (command.payload) {
                         fabricJs.removeFigure(command.payload);
                     }
                     break;
                 case "REMOVE_NOTE":
-                    if (command.payload) {           
+                    if (command.payload) {
                         fabricJs.removeNote(command.payload);
                     }
                     break;
-                case "SET_ACTION":
-                    if (command.payload) {
-                        fabricJs.setAction(command.payload);
-                    }
-                    break;
-
                 case "SET_TEXT":
                     if (command.payload) {
                         var figure = JSON.parse(command.payload);
                         fabricJs.setText(figure);
                     }
                     break;
-
-                case "SET_CURSOR":
-                    if (command.payload) {
-                        fabricJs.setCursor(command.payload);
-                    }
-                    break;
-
                 case "CLEAR_ALL":
                     fabricJs.clear();
                     break;

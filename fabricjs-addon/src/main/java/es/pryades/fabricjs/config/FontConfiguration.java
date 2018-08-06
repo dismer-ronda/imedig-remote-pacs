@@ -41,6 +41,15 @@ public class FontConfiguration implements Serializable {
         this.textFontWeight = "normal";
     }
 
+    public FontConfiguration(FontConfiguration configuration) {
+        this.textBackgroundColor = configuration.getTextBackgroundColor();
+        this.textFillColor = configuration.getTextFillColor();
+        this.textFontFamily = configuration.getTextFontFamily();
+        this.textFontSize = configuration.getTextFontSize();
+        this.textFontStyle = configuration.getTextFontStyle().getValue();
+        this.textFontWeight = configuration.getTextFontWeight().getValue();
+    }
+
     public String getTextBackgroundColor() {
         return textBackgroundColor;
     }
@@ -74,8 +83,8 @@ public class FontConfiguration implements Serializable {
     }
 
     public FontStyle getTextFontStyle() {
-        
-        if(textFontStyle.isEmpty()){
+
+        if (textFontStyle.isEmpty()) {
             return FontStyle.NONE;
         }
         return FontStyle.valueOf(textFontStyle.toUpperCase());
@@ -92,5 +101,6 @@ public class FontConfiguration implements Serializable {
     public void setTextFontWeight(FontWeight textFontWeight) {
         this.textFontWeight = textFontWeight.getValue();
     }
+
 
 }

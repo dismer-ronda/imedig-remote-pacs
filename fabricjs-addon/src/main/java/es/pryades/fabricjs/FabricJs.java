@@ -1,31 +1,32 @@
 package es.pryades.fabricjs;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
+import es.pryades.fabricjs.data.Note;
+import es.pryades.fabricjs.listeners.ResizeListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
+import es.pryades.fabricjs.listeners.MouseUpListener;
+import es.pryades.fabricjs.listeners.MouseDownListener;
+import es.pryades.fabricjs.listeners.MouseMoveListener;
+import es.pryades.fabricjs.config.CanvasDimensions;
+import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.config.NotesConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.vaadin.annotations.JavaScript;
+import es.pryades.fabricjs.client.FabricJsState;
+import es.pryades.fabricjs.data.Command;
+
+import es.pryades.fabricjs.geometry.Figure;
 import com.vaadin.server.ExternalResource;
+
 import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.JavaScriptFunction;
-
 import elemental.json.JsonArray;
-import es.pryades.fabricjs.client.FabricJsState;
-import es.pryades.fabricjs.config.CanvasDimensions;
 import es.pryades.fabricjs.config.FigureConfiguration;
-import es.pryades.fabricjs.config.NotesConfiguration;
-import es.pryades.fabricjs.data.Command;
-import es.pryades.fabricjs.data.Note;
-import es.pryades.fabricjs.enums.CanvasAction;
-import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
-import es.pryades.fabricjs.listeners.MouseDownListener;
-import es.pryades.fabricjs.listeners.MouseMoveListener;
-import es.pryades.fabricjs.listeners.MouseUpListener;
-import es.pryades.fabricjs.listeners.MouseWheelListener;
-import es.pryades.fabricjs.listeners.ResizeListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 // This is the server-side UI component that provides public API 
 // for FabricJs
@@ -38,12 +39,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
     private double vWidth;
     private double vHeight;
 
-    private String backgroundImage;
+    private List<String> images;
 
     private CanvasDimensions canvasDimensions;
-    private final CanvasAction defauAction = CanvasAction.NONE;
+    //private final CanvasAction defauAction = CanvasAction.NONE;
 
-    private CanvasAction action;
+    //private CanvasAction action;
 
     private final List<Command> commands;
 
@@ -69,7 +70,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         this.figureConfiguration = new FigureConfiguration();
         this.notesConfiguration = new NotesConfiguration();
-        this.backgroundImage = "";
+        this.images = new ArrayList<>();
 
         this.createDefaultsDimesions();
         this.generateConfiguration();
@@ -84,20 +85,20 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         //this.notes = new ArrayList<>();
         this.notesConfiguration = new NotesConfiguration();
-        backgroundImage = "";
+        this.images = new ArrayList<>();
         this.figureConfiguration = generalFigureConfiguration;
 
         this.createDefaultsDimesions();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
-        this.action = defauAction;
+        //this.action = defauAction;
 
     }
 
     public void setImageUrl(String url) {
-        backgroundImage = url;
-        this.commands.add(new Command("SET_IMAGE", this.backgroundImage));
+        images = Arrays.asList(url);
+        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
         this.getState().commands = getPayload(this.commands);
     }
 
@@ -105,7 +106,22 @@ public class FabricJs extends AbstractJavaScriptComponent {
         setImageUrl(resource.getURL());
     }
 
-    public void setAction(CanvasAction action) {
+    public void setImageUrlsAsString(List<String> images) {
+        //backgroundImage = url;
+        this.images = images;
+        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
+        this.getState().commands = getPayload(this.commands);
+    }
+
+    public void setImageUrlsAsResource(List<ExternalResource> resource) {
+        List<String> imgs = new ArrayList<>();
+        for (ExternalResource externalResource : resource) {
+            imgs.add(externalResource.getURL());
+        }
+        setImageUrlsAsString(imgs);
+    }
+
+    /*public void setAction(CanvasAction action) {
         this.commands.add(new Command("SET_ACTION", action.name()));
         this.getState().commands = getPayload(this.commands);
     }
@@ -117,12 +133,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         this.commands.add(new Command("SET_ACTION", action.name()));
         this.getState().commands = getPayload(this.commands);
-    }
+    }*/
 
-    public void setCursor(String cursor) {
+   /* public void setCursor(String cursor) {
         this.commands.add(new Command("SET_CURSOR", cursor));
         getState().commands = getPayload(this.commands);
-    }
+    }*/
 
     public void setText(Figure figure, String text) {
         figure.setText(text);

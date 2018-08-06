@@ -15,20 +15,20 @@
  */
 package es.pryades.fabricjs.config;
 
+import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.enums.FontStyle;
+import es.pryades.fabricjs.enums.FontWeight;
+import es.pryades.fabricjs.enums.StrokeLineCap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import es.pryades.fabricjs.enums.FontStyle;
-import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.StrokeLineCap;
-
 /**
  *
  * @author geanny
  */
-public class FigureConfiguration extends FontConfiguration implements Cloneable, Serializable {
+public class FigureConfiguration extends FontConfiguration implements Serializable {
 
     private String backgroundColor;
 
@@ -40,6 +40,8 @@ public class FigureConfiguration extends FontConfiguration implements Cloneable,
 
     private String strokeLineCap;
     private boolean visible;
+    private CanvasAction action;
+    private String cursor;
 
     public FigureConfiguration() {
         super();
@@ -50,6 +52,20 @@ public class FigureConfiguration extends FontConfiguration implements Cloneable,
         this.strokeLineCap = "butt";
         this.strokeDashArray = new ArrayList<>();
         this.visible = true;
+        this.cursor = "default";
+        this.action = CanvasAction.NONE;
+    }
+
+    public FigureConfiguration(FigureConfiguration configuration) {
+        super(configuration);
+        this.backgroundColor = configuration.getBackgroundColor();
+        this.strokeWidth = configuration.getStrokeWidth();
+        this.fillColor = configuration.getFillColor();
+        this.strokeColor = configuration.getStrokeColor();
+        this.strokeDashArray = configuration.getStrokeDashArray();
+        this.strokeLineCap = configuration.getStrokeLineCap().name().toLowerCase();
+        this.visible = configuration.isVisible();              
+
     }
 
     public String getBackgroundColor() {
@@ -99,10 +115,6 @@ public class FigureConfiguration extends FontConfiguration implements Cloneable,
     public void setStrokeLineCap(StrokeLineCap strokeLineCap) {
         this.strokeLineCap = strokeLineCap.name().toLowerCase();
     }
-    
-    protected void setStrokeLineCap(String strokeLineCap) {
-        this.strokeLineCap = strokeLineCap;
-    }
 
     public boolean isVisible() {
         return visible;
@@ -112,6 +124,22 @@ public class FigureConfiguration extends FontConfiguration implements Cloneable,
         this.visible = visible;
     }
 
+    public CanvasAction getAction() {
+        return action;
+    }
+
+    public void setAction(CanvasAction action) {
+        this.action = action;
+    }
+
+    public String getCursor() {
+        return cursor;
+    }
+
+    public void setCursor(String cursor) {
+        this.cursor = cursor;
+    }
+        
     public void clearStrokeDashArray() {
         if (!Objects.isNull(this.strokeDashArray)) {
             this.strokeDashArray.clear();
@@ -181,27 +209,20 @@ public class FigureConfiguration extends FontConfiguration implements Cloneable,
     public FigureConfiguration withTextFontWeight(FontWeight textFontWeight) {
         this.setTextFontWeight(textFontWeight);
         return this;
-    }
+        }
     
-    @Override
-    public FigureConfiguration clone(){
-    	FigureConfiguration clone = new FigureConfiguration();
-    	clone.setTextBackgroundColor(this.getTextBackgroundColor());
-    	clone.setTextFillColor(this.getTextFillColor());
-    	clone.setTextFontFamily(this.getTextFontFamily());
-    	clone.setTextFontSize(this.getTextFontSize());
-    	clone.setTextFontStyle(this.getTextFontStyle());
-    	clone.setTextFontWeight(this.getTextFontWeight());
-    	
-    	clone.setBackgroundColor(backgroundColor);
-    	clone.setStrokeWidth(strokeWidth);
-    	clone.setFillColor(fillColor);
-    	clone.setStrokeColor(strokeColor);
-    	clone.setStrokeDashArray((List<Double>)((ArrayList<Double>)strokeDashArray).clone());
-    	clone.setStrokeLineCap(strokeLineCap);
-    	clone.setVisible(visible);
-    	    	
-    	return clone;
+    public FigureConfiguration withAction(CanvasAction action) {
+        this.setAction(action);
+        return this;
+    }
+
+    public FigureConfiguration withCursor(String cursor) {
+        this.setCursor(cursor);
+        return this;
+    }
+       
+    public FigureConfiguration clone(){        
+        return new FigureConfiguration(this);
     }
 
 }
