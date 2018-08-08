@@ -16,8 +16,10 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -32,7 +34,6 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.AccesosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
-import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dal.ParametrosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Acceso;
@@ -64,6 +65,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 	private static final String AUTH_CONFIGURACION = "configuracion";
 	private static final String AUTH_ADMINISTRACION = "administracion";
+	
+	private static final String ID_FULLSCREEN = "btn.fullscreen";
+	private static final String ID_EXIT_FULLSCREEN = "btn.exitfullscreen";
+	
 
 	private LoginPanel loginPanel;
 
@@ -80,11 +85,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private Button buttonManual;
 	protected Button bttnRequest;
 	protected Button bttnReport;
+	protected Button bttnFullScreen;
+	protected Button bttnRestoreScreen;
 
 	private DetallesCentrosManager centrosManager;
 	private AccesosManager accesosManager;
 	private UsuariosManager usuariosManager;
-	private InformesManager informesManager;
+	//private InformesManager informesManager;
 
 	@Getter
 	private ImedigContext context;
@@ -101,7 +108,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
 		accesosManager = (AccesosManager)IOCManager.getInstanceOf( AccesosManager.class );
 		usuariosManager = (UsuariosManager)IOCManager.getInstanceOf( UsuariosManager.class );
-		informesManager = (InformesManager)IOCManager.getInstanceOf( InformesManager.class );
 		
 		try
 		{
@@ -255,6 +261,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		topBar.addComponent( logoBar );
 		topBar.setComponentAlignment( logoBar, Alignment.MIDDLE_LEFT );
+		
 
 		buttonsBar = new HorizontalLayout();
 		buttonsBar.setHeight( "-1px" ); //BAR_HEIGHT );
@@ -388,13 +395,70 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			}
 		} );
 		buttonsBar.addComponent( btn );
+		
+		buildFullScreenButtons();
+		
+		buttonsBar.addComponent( bttnFullScreen );
+		buttonsBar.addComponent( bttnRestoreScreen );
 	}
+	
+	private void fullScreenListener(){
+	    
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("document.getElementById('btn.fullscreen').addEventListener('click',function(){screenfull.request();});");
+        builder.append("document.getElementById('btn.exitfullscreen').addEventListener('click',function(){screenfull.exit();});");
+        
+        JavaScript.getCurrent().execute(builder.toString());
+        
+    }
 	
 	private static void setStyleButtonBar(Button button){
 		button.addStyleName( ValoTheme.BUTTON_LARGE );
 		button.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP );
 		button.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		button.addStyleName( ImedigTheme.BUTTON_TOOLBAR );
+	}
+	
+	private void buildFullScreenButtons(){
+		bttnFullScreen = new Button( FontAwesome.EXPAND );
+		bttnFullScreen.setImmediate( true );
+		bttnFullScreen.addStyleName( ImedigTheme.BUTTON_FULLSCREEN );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		bttnFullScreen.setId( ID_FULLSCREEN );
+		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+		bttnFullScreen.addClickListener( new ClickListener()
+		{
+			
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				bttnRestoreScreen.removeStyleName( ImedigTheme.BUTTON_INVISIBLE );
+				bttnFullScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
+			}
+		} );
+		
+		bttnRestoreScreen = new Button( FontAwesome.COMPRESS );
+		bttnRestoreScreen.setImmediate( true );
+		bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_RESTORE );
+		bttnRestoreScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		bttnRestoreScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		bttnRestoreScreen.setId( ID_EXIT_FULLSCREEN );
+		bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
+		bttnRestoreScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
+		bttnRestoreScreen.addClickListener( new ClickListener()
+		{
+			
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
+				bttnFullScreen.removeStyleName( ImedigTheme.BUTTON_INVISIBLE );
+			}
+		} );
+		
+		fullScreenListener();
 	}
 
 	private void showLogoLayout()

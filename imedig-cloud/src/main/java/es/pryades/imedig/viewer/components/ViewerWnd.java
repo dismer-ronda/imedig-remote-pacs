@@ -37,6 +37,7 @@ import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
+import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.FontAction;
@@ -86,6 +87,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	private QueryDlg queryDlg;
 	
 	private final boolean modeReport;
+	
+	private ImageData lastImageData;
 	
 	public ViewerWnd(ImedigContext context, User user) {
 		this( context, user, false );
@@ -147,9 +150,10 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 			leftToolBar.allButtonsDisable();
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
-			enabledButtons();
 		}else if (action instanceof AngleAction) {
 			imageCanvas.angleAction();
+		}else if (action instanceof DisableDistanceAction) {
+			leftToolBar.buttonDistance.setEnabled( false );
 		}else if (action instanceof DistanceAction) {
 			imageCanvas.distanceAction();
 		}else if (action instanceof ZoomAction) {
@@ -188,6 +192,16 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	}
 
 	private void openImage(ImageData data) {
+		if (lastImageData != null && !lastImageData.getSeries().getSeriesData().getStudyInstanceUID().equals( data.getSeries().getSeriesData().getStudyInstanceUID() )){
+			
+		}
+		
+		boolean enabled = leftToolBar.buttonUndo.isEnabled();
+		enabledButtons();
+		leftToolBar.buttonUndo.setEnabled( enabled );
+		
+		lastImageData = data;
+		
 		imageCanvas.openImage(data);
 	}
 

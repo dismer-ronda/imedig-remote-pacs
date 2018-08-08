@@ -255,12 +255,13 @@ public class LeftToolBar extends VerticalLayout {
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
 		buttonDownload.setEnabled( true );
+		
 		if (buttonReport != null){
 			buttonReport.setEnabled( true );
 		}
-		if (lastAction != null){
-			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
-		}
+//		if (lastAction != null){
+//			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
+//		}
 	}
 	
 	private void selectedAction(Button button){

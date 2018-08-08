@@ -37,6 +37,7 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
+import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
@@ -58,6 +59,7 @@ public class ImageCanvas extends VerticalLayout {
 	private Double currentCenter; 
 	private Double currentWidth;
 	private Integer currentFrame;
+	private String currentSerie = "";
 	private ImageHeader imageHeader;
 	private Stack<ImageStatus> back;
 	
@@ -99,7 +101,6 @@ public class ImageCanvas extends VerticalLayout {
 		defaultConfiguration = configurations.get(EnumActions.NONE);
 		canvas = new FabricJs(defaultConfiguration);
 		canvas.setSizeFull();
-		canvas.setCursor("default");
 		addComponent(canvas);
 		
 		//Inicializar listeners
@@ -155,16 +156,16 @@ public class ImageCanvas extends VerticalLayout {
 		double vx2 = vx1 + viewRect.getWidth() - 1;
 		double vy2 = vy1 + viewRect.getHeight() - 1;
 		
+		if (!verifyPixelSpacing()){
+			Notification.show("Error", context.getString( "ViewerWnd.NoPixelSizeMsg"), Notification.Type.ERROR_MESSAGE);
+			return;
+		}
+		
 		String spacing = imageHeader.getPixelSpacing();
 		
 		if (spacing == null) return;
 		
 		String sp[] = spacing.split( "\\\\" );
-		
-		if ( sp.length != 2 ){
-			Notification.show("Error", context.getString( "ViewerWnd.NoPixelSizeMsg"), Notification.Type.ERROR_MESSAGE);
-			return;
-		}
 		
 		Point p1 = figure.getPoints().get(0);
 		Point p2 = figure.getPoints().get(1);
@@ -188,9 +189,25 @@ public class ImageCanvas extends VerticalLayout {
 		
 		String text = Double.toString( Utils.roundDouble( distance, 2 ) ) + " mm";
 		figure.setText(text);
-		addNormalizeFigure(figure);
 		addImagenFigure(figure);
+		//figure.setConfiguration( configurations.get( currentAction ) );
 		canvas.setText(figure, text);
+	}
+	
+	private boolean verifyPixelSpacing(){
+		if (imageHeader == null) return false;
+		
+		String spacing = imageHeader.getPixelSpacing();
+		
+		if (spacing == null) return false;
+		
+		String sp[] = spacing.split( "\\\\" );
+		
+		if ( sp.length != 2 ){
+			return false;
+		}
+		
+		return true;
 	}
 	
 	private void calculateAngle(Figure figure) {
@@ -204,7 +221,6 @@ public class ImageCanvas extends VerticalLayout {
 		
 		String text = Double.toString( Utils.roundDouble( angle, 2 ) ) + " / " +  Double.toString( Utils.roundDouble( other, 2 ) ) + " grados";
 		figure.setText(text);
-		addNormalizeFigure(figure);
 		addImagenFigure(figure);
 		canvas.setText(figure, text);
 	}
@@ -273,10 +289,6 @@ public class ImageCanvas extends VerticalLayout {
 			}
 
 			addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
-			
-			//currentCenter = getDouble(imageHeader.getWindowCenter());
-			//currentWidth = getDouble(imageHeader.getWindowWidth());
-			//currentFrame = 0;
 				
 			imageRect = new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 );
 						
@@ -313,22 +325,6 @@ public class ImageCanvas extends VerticalLayout {
 		}
 		
 		return angle;
-	}
-	
-	private void addNormalizeFigure(Figure figure){
-		
-		List<Point> npoints = new ArrayList<>();
-		
-		double dx = viewRect.getWidth()-1;
-		double dy = viewRect.getHeight()-1;
-		
-		for (Point point : figure.getPoints()) {
-			double x = point.getX()/dx;
-			double y = point.getY()/dy;
-			
-			npoints.add(new Point(x, y));
-		}
-		
 	}
 	
 	private void addImagenFigure(Figure figure){
@@ -416,20 +412,23 @@ public class ImageCanvas extends VerticalLayout {
 				.withTextFontFamily("Roboto")
 				.withTextFontSize(15)
 				.withTextFillColor("#F0BE20")
-				.withTextFontWeight( FontWeight.FW700 );
+				.withTextFontWeight( FontWeight.FW700 )
+				.withAction( CanvasAction.NONE )
+				.withCursor( "default" );
 		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
-		configurations.put( EnumActions.ANGLE, defaultConfiguration );
-		configurations.put( EnumActions.DISTANCE, defaultConfiguration );
+		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ) );
+		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ) );
 		
-		FigureConfiguration temp = defaultConfiguration.clone().withVisible( false );
-		configurations.put( EnumActions.CONTRAST, temp );
-
-		temp = defaultConfiguration.clone()
+		configurations.put( EnumActions.CONTRAST, defaultConfiguration.clone().withVisible( false ).withAction( CanvasAction.SHOW_RECT ).withCursor( "move" ) );
+		
+		FigureConfiguration temp = defaultConfiguration.clone()
 				.withVisible( true )
 				.withStrokeWidth( 1.0 )
 				.withStrokeLineCap( StrokeLineCap.BUTT )
-				.withStrokeDashArray( new ArrayList<>( Arrays.asList( 3.0, 3.0 )) );
+				.withStrokeDashArray( new ArrayList<>( Arrays.asList( 3.0, 3.0 )) )
+				.withAction( CanvasAction.SHOW_RECT )
+				.withCursor( "crosshair" );
 		
 		configurations.put( EnumActions.ZOOM, temp );
 	}
@@ -497,9 +496,11 @@ public class ImageCanvas extends VerticalLayout {
 
 	public void openImage(ImageData imageData) {
 		if (this.imageData != null) {
-			clear();
+			this.imageData = null;
+			imagenFigures.clear();
+			canvas.clear();
 		}
-
+		
 		this.imageData = imageData;
 
 		HashMap<String,String> params = new HashMap<String,String>();
@@ -511,11 +512,21 @@ public class ImageCanvas extends VerticalLayout {
 		try{
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
 			
-			imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
+			if (!currentSerie.equals( imageData.getSeries().getSeriesData().getSeriesInstanceUID() )){
+				currentSerie = imageData.getSeries().getSeriesData().getSeriesInstanceUID();
+				back = new Stack<>();
+				openNewImage();
+			}
+			
+			if (!verifyPixelSpacing()){
+				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+			}
+			
+			/*imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
 			currentCenter = getDouble(imageHeader.getWindowCenter()); 
 			currentWidth = getDouble(imageHeader.getWindowWidth());
 			currentFrame = new Integer(0);
-			viewRect = getCanvasImage();
+			viewRect = getCanvasImage();*/
 			
 			reportInfo = openImage();
 			showInformation(imageHeader);
@@ -523,6 +534,14 @@ public class ImageCanvas extends VerticalLayout {
 		}catch ( Throwable ex )	{
 			reportInfo = null;
 		}
+	}
+	
+	private void openNewImage(){
+		imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
+		currentCenter = getDouble(imageHeader.getWindowCenter()); 
+		currentWidth = getDouble(imageHeader.getWindowWidth());
+		currentFrame = new Integer(0);
+		viewRect = getCanvasImage();
 	}
 
 	private ReportInfo openImage(){
@@ -633,6 +652,7 @@ public class ImageCanvas extends VerticalLayout {
 		imagenFigures.clear();
 		canvas.clear();
 		back = new Stack<>();
+		currentSerie = "";
 	}
 	
 	public void clearFigures() {
@@ -642,40 +662,35 @@ public class ImageCanvas extends VerticalLayout {
 	
 	public void noneAction(){
 		currentAction = EnumActions.NONE;
-		canvas.setAction(CanvasAction.NONE);
-		canvas.setCursor("default");
+		canvas.setFigureConfiguration( configurations.get( currentAction ) );
 	}
 
 	public void distanceAction(){
 		if (imageData == null) return;
 		
 		currentAction = EnumActions.DISTANCE;
-		canvas.setAction(CanvasAction.DRAW_LINE, configurations.get( currentAction ));
-		canvas.setCursor("crosshair");
+		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 
 	public void angleAction(){
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ANGLE;
-		canvas.setAction(CanvasAction.DRAW_FREE_ANGLE, configurations.get( currentAction ));
-		canvas.setCursor("crosshair");
+		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 	
 	public void zoomAction(){
 		if (imageData == null) return;
 
 		currentAction = EnumActions.ZOOM;
-		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
-		canvas.setCursor("pointer");
+		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 
 	public void contrastAction() {
 		if (imageData == null) return;
 
 		currentAction = EnumActions.CONTRAST;
-		canvas.setAction(CanvasAction.SHOW_RECT, configurations.get( currentAction ));
-		canvas.setCursor("move");
+		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 
 

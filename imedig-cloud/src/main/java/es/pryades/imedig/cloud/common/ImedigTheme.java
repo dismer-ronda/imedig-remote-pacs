@@ -21,5 +21,8 @@ public class ImedigTheme {
 	public static final String BUTTON_TOOLBOX= "toolbox";
 	public static final String BUTTON_TOOLBAR= "toolbar";
 	public static final String BUTTON_SELECTED= "selected";
+	public static final String BUTTON_INVISIBLE= "invisible";
+	public static final String BUTTON_FULLSCREEN= "fullscreen";
+	public static final String BUTTON_RESTORE= "restore";
 	
 }

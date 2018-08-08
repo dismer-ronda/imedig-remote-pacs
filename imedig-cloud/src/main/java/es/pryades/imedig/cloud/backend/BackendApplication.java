@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.backend;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -15,6 +17,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -36,6 +39,7 @@ import lombok.Setter;
  */
 @Theme("imedig")
 @PreserveOnRefresh
+@com.vaadin.annotations.JavaScript("vaadin://screenfull/screenfull.min.js")
 public class BackendApplication extends UI //implements HttpServletRequestListener
 {
 	private static final long serialVersionUID = 683154667075459739L;
@@ -111,6 +115,14 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     	LOG.info(  "Url " + ctx.getData( "Url") );
 
     	window.showLogin();
+    	
+    	executeJScripts();
+    }
+	
+	@Override
+	protected void refresh(VaadinRequest request) {
+		copyright();
+		fullScreenListener();
     }
 
 	public void messageAndExit( String title, ResourceBundle resources, String message )
@@ -217,5 +229,38 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 		{
 			return null;
 		}
+	}
+	
+	private void executeJScripts(){
+		copyright();
+	}
+	
+	private void fullScreenListener(){
+	    
+        StringBuilder builder = new StringBuilder();
+        
+        builder.append("document.getElementById('btn.fullscreen').addEventListener('click',function(){screenfull.request();});");
+        builder.append("document.getElementById('btn.exitfullscreen').addEventListener('click',function(){screenfull.exit();});");
+        
+        JavaScript.getCurrent().execute(builder.toString());
+        
+    }
+	
+	private void copyright() {
+        final String jsdivcopyright = 
+        		"var divcopyright=document.createElement('div');" +
+                "divcopyright.className='copyright';" +
+                "divcopyright.innerHTML='Copyright © "+getYear()+" <a href=\"https://www.pryades.es\" target=\"_blank\"><b>Pryades Soluciones Informáticas SL</b></a>" + "  v"+getVersion()+"';" +
+                "document.body.appendChild(divcopyright);";
+        
+        JavaScript.getCurrent().execute(jsdivcopyright);
+    }
+	
+	private int getYear(){
+		return new GregorianCalendar().get( Calendar.YEAR );
+	}
+	
+	private String getVersion(){
+		return this.getClass().getPackage().getImplementationVersion();
 	}
 }
