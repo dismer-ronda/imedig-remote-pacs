@@ -64,7 +64,9 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.strokeColor = configuration.getStrokeColor();
         this.strokeDashArray = configuration.getStrokeDashArray();
         this.strokeLineCap = configuration.getStrokeLineCap().name().toLowerCase();
-        this.visible = configuration.isVisible();              
+        this.visible = configuration.isVisible();  
+        this.action = configuration.getAction();
+        this.cursor = configuration.getCursor();
 
     }
 

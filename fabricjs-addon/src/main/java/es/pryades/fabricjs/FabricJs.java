@@ -211,7 +211,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void setFigureConfiguration(FigureConfiguration generalFigureConfiguration) {
         this.figureConfiguration = generalFigureConfiguration;
-        getState().figureConfiguration = getPayload(this.figureConfiguration);
+        this.commands.add(new Command("SET_CONFIG",getPayload(this.figureConfiguration)));
+        getState().commands = getPayload(this.commands);
     }
 
     public CanvasDimensions getCanvasDimensions() {

@@ -27,7 +27,7 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-        fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
+        //fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
 
         var commands = JSON.parse(state.commands);
 
@@ -36,6 +36,10 @@ var es_pryades_fabricjs_FabricJs = function() {
             var command = commands[i];
 
             switch (command.canvasAction) {
+                case "SET_CONFIG":
+                    var configuration = JSON.parse(command.payload);
+                    fabricJs.setConfiguration(configuration);
+                break;
                 case "SET_IMAGE":
                     if (command.payload) {
                         component.imagesUrls = JSON.parse(command.payload);
