@@ -13121,7 +13121,7 @@ div.v-layout.v-horizontal.v-widget {
 	color: #ecedee;
 	padding: 2px 3px;
 	position: fixed;
-	left: 0px;
+	right: 0px;
 	bottom: 0px;
 	z-index: 50;
 }

@@ -30,13 +30,11 @@ public class StudyPanel extends VerticalLayout {
 	private VerticalLayout studyInfo;
 	private VerticalLayout thumnails;
 
-	private final StudyTree study;
 	private ListenerAction listenerAction;
 	
-	public StudyPanel(StudyTree study, ListenerAction listenerAction) {
+	public StudyPanel(ListenerAction listenerAction) {
 		addStyleName(ImedigTheme.STUDY_PANEL);
 
-		this.study = study;
 		this.listenerAction = listenerAction;
 
 		setWidth("100%");
@@ -47,53 +45,36 @@ public class StudyPanel extends VerticalLayout {
 		thumnails.setWidth("100%");
 		thumnails.setSpacing(true);
 		addComponent(thumnails);
-
-		buildComponents();
 	}
 
-	private void buildComponents() {
-		addStudyInfo();
-		addStudyImages();
+	public void setStudy(StudyTree study, List<ImageData> datas){
+		addStudyInfo(study);
+		addStudyImages( datas );
 	}
-
-	private void addStudyInfo() {
+	private void addStudyInfo(StudyTree study) {
 		Label label = new Label(getPatientInitials( study.getStudyData().getPatientName() )+"<br/>"+study.getStudyData().getStudyDate()+"<br/>"+study.getStudyData().getPatientID());
 		label.setContentMode(ContentMode.HTML);
 		studyInfo.addComponent(label);
-		//studyInfo.addComponent(new Label( getPatientInitials( study.getStudyData().getPatientName() )));
-		//studyInfo.addComponent(new Label( study.getStudyData().getStudyDate()));
-		//studyInfo.addComponent(new Label( study.getStudyData().getPatientID()));
 	}
 
-	private void addStudyImages() {
-		for (SeriesTree series : study.getSeriesList()) {
-
-			List<Image> imageList = series.getImageList();
-
-			for (Image image : imageList) {
-				com.vaadin.ui.Image img = getImage(study, series, image, false);
-				img.addStyleName(ImedigTheme.CURSOR_POINTER);
-				
-				ImageData data = new ImageData(); 
-				data.setImage(image);
-				data.setSeries(series);
-				data.setStudy(study);
-				img.setData(data);
-				
-				img.addClickListener(new ClickListener() {
-					@Override
-					public void click(ClickEvent event) {
-						listenerAction.doAction(new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
-					}
-				});
-				thumnails.addComponent(img);
-				thumnails.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
-			}
+	private void addStudyImages(List<ImageData> datas) {
+		for (ImageData data : datas){
+			com.vaadin.ui.Image img = getImage(data.getSeries(), data.getImage());
+			img.addStyleName(ImedigTheme.CURSOR_POINTER);
+			img.setData(data);
+			
+			img.addClickListener(new ClickListener() {
+				@Override
+				public void click(ClickEvent event) {
+					listenerAction.doAction(new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
+				}
+			});
+			thumnails.addComponent(img);
+			thumnails.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
 		}
-
 	}
 
-	private com.vaadin.ui.Image getImage(StudyTree study, SeriesTree series, Image image, boolean group) {
+	private com.vaadin.ui.Image getImage(SeriesTree series, Image image) {
 
 		String imageUrl = ((BackendApplication) UI.getCurrent()).getServerUrl() + image.getWadoUrl()
 				+ "&contentType=image/jpeg&columns=64&rows=64";
@@ -107,7 +88,6 @@ public class StudyPanel extends VerticalLayout {
 
 		com.vaadin.ui.Image result = new com.vaadin.ui.Image(null, new ExternalResource(imageUrl));
 		result.setDescription(hint);
-		result.setData(study);
 		result.setWidth("64px");
 
 		return result;

@@ -1308,9 +1308,34 @@ var FabricJsApp = exports.FabricJsApp = function () {
             }
         });
 
-        this.canvasDraw.on("mouse:wheel", function (o) {
-            _this.options.component.onMouseWheel(o.e.wheelDelta);
-        });
+        /*this.canvasDraw.on("mouse:wheel", function (o) {
+            var e = o.e;
+            var delta = 0;
+             if (e.wheelDelta) {
+                if (e.wheelDelta < 0)
+                    delta = 1;
+                else
+                    delta = -1;
+            } else if (e.deltaY < 0)
+                delta = -1;
+            else
+                delta = 1;
+             _this.options.component.onMouseWheel(delta);
+        });*/
+
+        var handleScroll = function handleScroll(e) {
+            var delta = 0;
+
+            if (e.wheelDelta) {
+                if (e.wheelDelta < 0) delta = 1;else delta = -1;
+            } else if (e.detail < 0) delta = -1;else delta = 1;
+
+            _this.options.component.onMouseWheel(delta);
+        };
+
+        var canvasContainer = document.getElementsByClassName("canvas-container")[0];
+        canvasContainer.addEventListener('DOMMouseScroll', handleScroll, false); // For Firefox
+        canvasContainer.addEventListener('mousewheel', handleScroll, false);
 
         var wrapper = this.canvasDraw.wrapperEl;
         wrapper.tabIndex = 1000;

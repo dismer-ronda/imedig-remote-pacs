@@ -98,7 +98,7 @@ public class PageTable extends HorizontalLayout {
 		last.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				page = size - 1;
+				page = pages - 1;
 				updateLabel();
 				updateButtons();
 				if (listener != null) listener.onLast();

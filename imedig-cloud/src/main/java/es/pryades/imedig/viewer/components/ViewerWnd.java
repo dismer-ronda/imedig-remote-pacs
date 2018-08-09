@@ -3,6 +3,7 @@ package es.pryades.imedig.viewer.components;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
+import es.pryades.imedig.cloud.common.StudyUtils;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.Action;
 import es.pryades.imedig.cloud.core.action.ImageResource;
@@ -49,12 +51,13 @@ import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
+import es.pryades.imedig.viewer.components.image.ImageDataNavigator;
 import es.pryades.imedig.viewer.components.query.FontsDlg;
 import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
-public class ViewerWnd extends HorizontalLayout implements ListenerAction, ImageResource, ModalParent {
+public class ViewerWnd extends HorizontalLayout implements ListenerAction, ImageResource, ModalParent, ImageDataNavigator {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();
@@ -71,9 +74,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 
 	protected ResourceBundle resourceBundle;
 
-	ArrayList<String> selectedStudies = null;
-	private ArrayList<StudyTree> studies;
-
 	boolean replicate = false;
 	boolean firstLine = true;
 
@@ -88,7 +88,12 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	
 	private final boolean modeReport;
 	
-	private ImageData lastImageData;
+	//private ImageData lastImageData;
+	
+	private String currentStudy;
+	private Integer currentIndex;
+	private ArrayList<StudyTree> studies;
+	private Map<String, List<ImageData>> studiesImages = new HashMap<>();
 	
 	public ViewerWnd(ImedigContext context, User user) {
 		this( context, user, false );
@@ -101,7 +106,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		this.user = user;
 		setSizeFull();
 		setSpacing(true);
-		//setMargin(true);
 		buidComponent();
 		
 		init();
@@ -123,7 +127,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		leftToolBar = new LeftToolBar(context, this, this);
 		addComponent(leftToolBar);
 		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
-		imageCanvas = new ImageCanvas( context, user, this );
+		imageCanvas = new ImageCanvas( context, user, this, this );
 		addComponent(imageCanvas);
 		setExpandRatio(imageCanvas, 1.0f);
 	}
@@ -192,19 +196,16 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	}
 
 	private void openImage(ImageData data) {
-		if (lastImageData != null && !lastImageData.getSeries().getSeriesData().getStudyInstanceUID().equals( data.getSeries().getSeriesData().getStudyInstanceUID() )){
-			
-		}
-		
 		boolean enabled = leftToolBar.buttonUndo.isEnabled();
 		enabledButtons();
 		leftToolBar.buttonUndo.setEnabled( enabled );
 		
-		lastImageData = data;
+		currentStudy = data.getStudy().getStudyData().getStudyID();
+		currentIndex = studiesImages.get( currentStudy ).indexOf( data );
 		
 		imageCanvas.openImage(data);
 	}
-
+	
 	private void queryStudies() {
 		if (queryDlg == null){
 			queryDlg = new QueryDlg(context, user);
@@ -238,8 +239,9 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 				
 			StudyTree study = QueryManager.getInstance().getStudyTree( AETitle, Host, Port, Settings.IMEDIG_AETitle, uid, new HashMap<String,String>() );
 
-			if ( study != null ){
+			if ( study != null && study.getSeriesList().size() != 0 ){
 				this.studies.add( study );
+				studiesImages.put( study.getStudyData().getStudyID(), StudyUtils.readStudyImagesData( study ) );
 			}
 		}
 		setStudyThumbnails();
@@ -250,9 +252,9 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		leftToolBar.clearThumnails();
 		
 		for ( StudyTree study : studies ){
-			if ( study.getSeriesList().size() == 0 ) continue;
-			
-			leftToolBar.addStudyPanel(new StudyPanel(study, this));
+			StudyPanel panel = new StudyPanel(this);
+			panel.setStudy( study, studiesImages.get( study.getStudyData().getStudyID() ) );
+			leftToolBar.addStudyPanel(panel);
 		}
 	}
 	
@@ -337,6 +339,26 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ImageData getPriorImageData()
+	{
+		if (currentIndex == 0) return null;
+		
+		--currentIndex;
+		
+		return studiesImages.get( currentStudy ).get( currentIndex );
+	}
+
+	@Override
+	public ImageData getNextImageData()
+	{
+		if (currentIndex == (studiesImages.get( currentStudy ).size()-1)) return null;
+		
+		++currentIndex;
+		
+		return studiesImages.get( currentStudy ).get( currentIndex );
 	}
 
 }

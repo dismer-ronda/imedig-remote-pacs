@@ -154,7 +154,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	public void onQuery() {
 		paginator.setPage(0);
 
-		model = new QueryTableModel(10);
+		model = new QueryTableModel(7);
 
 		model.setPatientName("*" + fieldName.getValue() + "*");
 		model.setPatientId(filedId.getValue());
@@ -195,6 +195,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 	private void buildTable() {
 		content.addComponent(paginator = new PageTable(context));
+		paginator.setListener( this );
 		container = new BeanItemContainer<>(QueryTableItem.class);
 		tableEstudies = new Table();
 		tableEstudies.setContainerDataSource(container);

@@ -26,6 +26,7 @@ import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
 import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.Utils;
@@ -59,7 +60,7 @@ public class ImageCanvas extends VerticalLayout {
 	private Double currentCenter; 
 	private Double currentWidth;
 	private Integer currentFrame;
-	private String currentSerie = "";
+	private String currentStudy = "";
 	private ImageHeader imageHeader;
 	private Stack<ImageStatus> back;
 	
@@ -67,15 +68,19 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private final ListenerAction listenerAction;
 	
+	private final ImageDataNavigator imageDataNavigator;
+	
 	private static Map<EnumActions, FigureConfiguration> configurations;
+	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
 	
 	@Getter
 	private ReportInfo reportInfo;
 
-	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction) {
+	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction, ImageDataNavigator navidator) {
 		
 		this.context = context;
 		this.listenerAction = listenerAction;
+		this.imageDataNavigator = navidator;
 		
 		setSizeFull();
 		setMargin(false);
@@ -91,7 +96,6 @@ public class ImageCanvas extends VerticalLayout {
 	
 
 	private void init() {
-		//normalizeFigures = new ArrayList<Figure>();
 		imagenFigures = new ArrayList<Figure>();
 		back = new Stack<>();
 	}
@@ -142,6 +146,25 @@ public class ImageCanvas extends VerticalLayout {
 				
 			}
 		});
+		
+		canvas.setMouseWheelListener( new MouseWheelListener()
+		{
+			
+			@Override
+			public void onMouseWheel( double weelDelta )
+			{
+				ImageData data = null;
+				if (weelDelta < 0 ){
+					data = imageDataNavigator.getPriorImageData();
+				}else{
+					data = imageDataNavigator.getNextImageData();
+				}
+				
+				if (data != null){
+					openImage( data );
+				}
+			}
+		} );
 	}
 
 	private void calculateDistance(Figure figure) {
@@ -495,7 +518,14 @@ public class ImageCanvas extends VerticalLayout {
 
 
 	public void openImage(ImageData imageData) {
+		
+		if (this.imageData != null && this.imageData.equals( imageData )) {
+			return;
+		}
+		
 		if (this.imageData != null) {
+			
+			imageDataFigures.put( this.imageData, new ArrayList<>( imagenFigures ) );
 			this.imageData = null;
 			imagenFigures.clear();
 			canvas.clear();
@@ -510,12 +540,26 @@ public class ImageCanvas extends VerticalLayout {
 		params.put( "SOPInstanceUID", imageData.getImage().getSOPInstanceUID() );
 
 		try{
+			ImageHeader oldHeader = imageHeader;
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
 			
-			if (!currentSerie.equals( imageData.getSeries().getSeriesData().getSeriesInstanceUID() )){
-				currentSerie = imageData.getSeries().getSeriesData().getSeriesInstanceUID();
+			if (!currentStudy.equals( imageData.studyId())){
+				currentStudy = imageData.studyId();
 				back = new Stack<>();
-				openNewImage();
+				newImageData();
+			}else{
+				if (oldHeader != null && getDouble(oldHeader.getWindowWidth())<= 0.0){
+					currentWidth = getDouble(imageHeader.getWindowWidth());
+				}
+				
+				Rectangle oldRect = new Rectangle(0,  0, oldHeader.getColumns(), oldHeader.getRows());
+				if (imageRect.equals( oldRect )){
+					imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
+				}
+				
+				if (imageDataFigures.get( this.imageData ) != null){
+					imagenFigures = imageDataFigures.get( this.imageData );
+				}
 			}
 			
 			if (!verifyPixelSpacing()){
@@ -530,13 +574,14 @@ public class ImageCanvas extends VerticalLayout {
 			
 			reportInfo = openImage();
 			showInformation(imageHeader);
+			showImagenFigures();
 			
 		}catch ( Throwable ex )	{
 			reportInfo = null;
 		}
 	}
 	
-	private void openNewImage(){
+	private void newImageData(){
 		imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
 		currentCenter = getDouble(imageHeader.getWindowCenter()); 
 		currentWidth = getDouble(imageHeader.getWindowWidth());
@@ -652,7 +697,7 @@ public class ImageCanvas extends VerticalLayout {
 		imagenFigures.clear();
 		canvas.clear();
 		back = new Stack<>();
-		currentSerie = "";
+		currentStudy = "";
 	}
 	
 	public void clearFigures() {

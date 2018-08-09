@@ -46,6 +46,8 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 
 	private static final Logger LOG = Logger.getLogger( BackendApplication.class );
 	
+	private static final String VERSION = "2.0.1";
+	
 	private BackendMainWnd window;
 
     private String queryString;
@@ -121,6 +123,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	
 	@Override
 	protected void refresh(VaadinRequest request) {
+		super.refresh( request );
 		copyright();
 		fullScreenListener();
     }
@@ -250,7 +253,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
         final String jsdivcopyright = 
         		"var divcopyright=document.createElement('div');" +
                 "divcopyright.className='copyright';" +
-                "divcopyright.innerHTML='Copyright © "+getYear()+" <a href=\"https://www.pryades.es\" target=\"_blank\"><b>Pryades Soluciones Informáticas SL</b></a>" + "  v"+getVersion()+"';" +
+                "divcopyright.innerHTML='Copyright &copy; "+getYear()+" <a href=\"https://www.pryades.es\" target=\"_blank\"><b>Pryades Soluciones Informáticas SL</b></a>" + "  v"+getVersion()+"';" +
                 "document.body.appendChild(divcopyright);";
         
         JavaScript.getCurrent().execute(jsdivcopyright);
@@ -261,6 +264,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	}
 	
 	private String getVersion(){
-		return this.getClass().getPackage().getImplementationVersion();
+		return VERSION;
+		//return this.getClass().getPackage().getImplementationVersion();
 	}
 }

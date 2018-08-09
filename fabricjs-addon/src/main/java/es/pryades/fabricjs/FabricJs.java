@@ -121,25 +121,6 @@ public class FabricJs extends AbstractJavaScriptComponent {
         setImageUrlsAsString(imgs);
     }
 
-    /*public void setAction(CanvasAction action) {
-        this.commands.add(new Command("SET_ACTION", action.name()));
-        this.getState().commands = getPayload(this.commands);
-    }
-
-    public void setAction(CanvasAction action, FigureConfiguration figureConfiguration) {
-
-        this.figureConfiguration = figureConfiguration;
-        getState().figureConfiguration = getPayload(figureConfiguration);
-
-        this.commands.add(new Command("SET_ACTION", action.name()));
-        this.getState().commands = getPayload(this.commands);
-    }*/
-
-   /* public void setCursor(String cursor) {
-        this.commands.add(new Command("SET_CURSOR", cursor));
-        getState().commands = getPayload(this.commands);
-    }*/
-
     public void setText(Figure figure, String text) {
         figure.setText(text);
         this.commands.add(new Command("SET_TEXT", getPayload(figure)));
