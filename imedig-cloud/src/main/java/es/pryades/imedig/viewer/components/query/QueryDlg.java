@@ -255,6 +255,13 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 			result.add(item.getStudy().getStudyInstanceUID());
 		}
 		
+		if (result.isEmpty()){
+			QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
+			if (item != null){
+				result.add( item.getStudy().getStudyInstanceUID() );
+			}
+		}
+		
 		return result;
 	}
 }

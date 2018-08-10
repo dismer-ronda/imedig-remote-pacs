@@ -59,8 +59,9 @@ public class ImageCanvas extends VerticalLayout {
 	private Rectangle viewRect;
 	private Double currentCenter; 
 	private Double currentWidth;
-	private Integer currentFrame;
-	private String currentStudy = "";
+	private Integer numberOfFrames = 1;
+	private Integer currentFrame = 0;
+	private String currentSerie = "";
 	private ImageHeader imageHeader;
 	private Stack<ImageStatus> back;
 	
@@ -68,7 +69,7 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private final ListenerAction listenerAction;
 	
-	private final ImageDataNavigator imageDataNavigator;
+	private final ImageSerieNavigator imageDataNavigator;
 	
 	private static Map<EnumActions, FigureConfiguration> configurations;
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
@@ -76,7 +77,7 @@ public class ImageCanvas extends VerticalLayout {
 	@Getter
 	private ReportInfo reportInfo;
 
-	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction, ImageDataNavigator navidator) {
+	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction, ImageSerieNavigator navidator) {
 		
 		this.context = context;
 		this.listenerAction = listenerAction;
@@ -92,8 +93,6 @@ public class ImageCanvas extends VerticalLayout {
 
 		settingCanvas();
 	}
-	
-	
 
 	private void init() {
 		imagenFigures = new ArrayList<Figure>();
@@ -153,18 +152,57 @@ public class ImageCanvas extends VerticalLayout {
 			@Override
 			public void onMouseWheel( double weelDelta )
 			{
+				if (imageData == null) return;
+				
 				ImageData data = null;
 				if (weelDelta < 0 ){
-					data = imageDataNavigator.getPriorImageData();
+					openPreviousImage();
 				}else{
-					data = imageDataNavigator.getNextImageData();
-				}
-				
-				if (data != null){
-					openImage( data );
+					openNextImage();
 				}
 			}
 		} );
+	}
+	
+	private void openPreviousImage(){
+		if (numberOfFrames >1){
+			Integer frame = getPreviousFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			openImage();
+		}else{
+			openImage( imageDataNavigator.getPreviousImageSerie() );
+		}
+	}
+
+	private Integer getPreviousFrame(){
+		if (currentFrame.equals( 0 )) return currentFrame;
+		
+		return currentFrame - 1;
+	}
+
+	private void openNextImage(){
+		
+		if (numberOfFrames >1){
+			Integer frame = getNextFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			
+			openImage();
+		}else{
+			openImage( imageDataNavigator.getNextImageSerie() );
+		}
+	}
+
+	private Integer getNextFrame(){
+		if (currentFrame.equals( numberOfFrames - 1 )) return currentFrame;
+		
+		return currentFrame + 1;
+
 	}
 
 	private void calculateDistance(Figure figure) {
@@ -319,7 +357,7 @@ public class ImageCanvas extends VerticalLayout {
 			
 			canvas.clearDraw();
 			
-			reportInfo = openImage();
+			openImage();
 			
 			showImagenFigures();
 		}
@@ -414,7 +452,7 @@ public class ImageCanvas extends VerticalLayout {
 				
 				canvas.clearDraw();
 				
-				reportInfo = openImage();
+				openImage();
 				
 				showImagenFigures();
 			}
@@ -519,7 +557,14 @@ public class ImageCanvas extends VerticalLayout {
 
 	public void openImage(ImageData imageData) {
 		
+		if (imageData == null) {
+			return;
+		}
+		
 		if (this.imageData != null && this.imageData.equals( imageData )) {
+			if (!verifyPixelSpacing()){
+				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+			}
 			return;
 		}
 		
@@ -528,7 +573,8 @@ public class ImageCanvas extends VerticalLayout {
 			imageDataFigures.put( this.imageData, new ArrayList<>( imagenFigures ) );
 			this.imageData = null;
 			imagenFigures.clear();
-			canvas.clear();
+			canvas.clearDraw();
+			//canvas.clear();
 		}
 		
 		this.imageData = imageData;
@@ -540,23 +586,14 @@ public class ImageCanvas extends VerticalLayout {
 		params.put( "SOPInstanceUID", imageData.getImage().getSOPInstanceUID() );
 
 		try{
-			ImageHeader oldHeader = imageHeader;
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
+			numberOfFrames = imageHeader.getNumberOfFrames();
 			
-			if (!currentStudy.equals( imageData.studyId())){
-				currentStudy = imageData.studyId();
+			if (!currentSerie.equals( imageData.serieId())){
+				currentSerie = imageData.serieId();
 				back = new Stack<>();
 				newImageData();
 			}else{
-				if (oldHeader != null && getDouble(oldHeader.getWindowWidth())<= 0.0){
-					currentWidth = getDouble(imageHeader.getWindowWidth());
-				}
-				
-				Rectangle oldRect = new Rectangle(0,  0, oldHeader.getColumns(), oldHeader.getRows());
-				if (imageRect.equals( oldRect )){
-					imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
-				}
-				
 				if (imageDataFigures.get( this.imageData ) != null){
 					imagenFigures = imageDataFigures.get( this.imageData );
 				}
@@ -572,7 +609,7 @@ public class ImageCanvas extends VerticalLayout {
 			currentFrame = new Integer(0);
 			viewRect = getCanvasImage();*/
 			
-			reportInfo = openImage();
+			openImage();
 			showInformation(imageHeader);
 			showImagenFigures();
 			
@@ -585,11 +622,11 @@ public class ImageCanvas extends VerticalLayout {
 		imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
 		currentCenter = getDouble(imageHeader.getWindowCenter()); 
 		currentWidth = getDouble(imageHeader.getWindowWidth());
-		currentFrame = new Integer(0);
+		currentFrame = 0;
 		viewRect = getCanvasImage();
 	}
 
-	private ReportInfo openImage(){
+	private void openImage(){
 		try{
 			double ix1 = imageRect.getX();
 			double iy1 = imageRect.getY();
@@ -625,12 +662,10 @@ public class ImageCanvas extends VerticalLayout {
 			info.setUrl( url );
 			info.setIcon( urlIcon );
 			
-			return info;
+			reportInfo = info;
 		}catch ( Throwable ex )	{
 			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
 		}
-		
-		return null;
 	}
 
 	private static double getDouble(String value) {
@@ -687,7 +722,7 @@ public class ImageCanvas extends VerticalLayout {
                  append(string( metadata.getPatientID())).append("\n").
                  append(string( metadata.getStudyDate())).append("\n").
                  append(string( metadata.getInstanceNumber() )).append("\n");
-        
+		canvas.clearNotes();
         canvas.addNotes(sbuilder.toString(), configuration);
 	}
 
@@ -697,7 +732,7 @@ public class ImageCanvas extends VerticalLayout {
 		imagenFigures.clear();
 		canvas.clear();
 		back = new Stack<>();
-		currentStudy = "";
+		currentSerie = "";
 	}
 	
 	public void clearFigures() {
@@ -753,8 +788,7 @@ public class ImageCanvas extends VerticalLayout {
 		viewRect = getCanvasImage();
 		
 		canvas.clearDraw();
-		
-		reportInfo = openImage();
+		openImage();
 		showImagenFigures();
 		
 		if (back.isEmpty()) return false;

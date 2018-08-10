@@ -75,7 +75,8 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 	public ShowExternalViewerDlg( ImedigContext ctx, DetalleCentro centro, String url, boolean request )
 	{
 		super();
-		
+		setWidth( "1280px" );
+		setHeight( "830px" );
 		this.context = ctx;
 		this.estudioUid = url;
 		this.centro = centro;
@@ -89,8 +90,7 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		
 		layout.setMargin( false );
 		layout.setSpacing( false );
-		layout.setWidth( "1280px" );
-		layout.setHeight( "800px" );
+		layout.setSizeFull();
 
 		setContent( layout );
 
@@ -143,13 +143,6 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		componentsContainer.addComponent( viewer );
 		viewer.doAction( new OpenStudies( this, Arrays.asList( estudioUid ) ) );
 
-//		ExternalResource resource = new ExternalResource( url );
-//		BrowserFrame e = new BrowserFrame( null, resource );
-//	    //e.setType(Embedded.TYPE_BROWSER);
-//	    e.setSizeFull();
-//
-//		componentsContainer.addComponent( e );
-		
 		bttnCloseListener();
 		if ( request ) 
 			bttnRequestListener();
