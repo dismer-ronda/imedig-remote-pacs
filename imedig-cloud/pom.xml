@@ -105,7 +105,16 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
-		
+
+<!-- Esta dependencia se necesita solamente para compilar widgetsets 
+-->
+
+		<dependency>
+			<groupId>com.vaadin</groupId>
+		    <artifactId>vaadin-client-compiler</artifactId>
+		    <version>${vaadin.version}</version>
+		</dependency>
+						
 		<!-- dcm4che -->
 		<dependency>
 			<groupId>dcm4che</groupId>
