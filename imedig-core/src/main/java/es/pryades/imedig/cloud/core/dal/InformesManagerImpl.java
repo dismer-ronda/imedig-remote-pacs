@@ -70,7 +70,7 @@ public class InformesManagerImpl extends ImedigManagerImpl implements InformesMa
     		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ); 
     		
 			//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
-    		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+    		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
 
     		LOG.info( "url " + url  );
 			

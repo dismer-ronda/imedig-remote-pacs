@@ -462,7 +462,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 			}
 		} );
 
-		btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + image.getIcon() ) );
+		btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + image.getIcon() ) );
 	
 		rowImagenes.addComponent( btn );
 		rowImagenes.setComponentAlignment( btn, Alignment.MIDDLE_LEFT );

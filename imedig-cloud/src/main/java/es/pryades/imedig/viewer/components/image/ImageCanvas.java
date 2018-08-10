@@ -652,7 +652,7 @@ public class ImageCanvas extends VerticalLayout {
 			String url = imageData.getImage().getWadoUrl() + "&" + zoom + "&" + region + "&" + content + "&" + bright + "&" + frame;
 			String urlIcon = imageData.getImage().getWadoUrl() + "&" + zoomIcon + "&" + region + "&" + contentIcon + "&" + bright + "&" + frame;
 			
-			String urlimage = ((BackendApplication) UI.getCurrent()).getServerUrl() + url;
+			String urlimage = Utils.getEnviroment( "CLOUD_URL" ) + url;
 			LOG.info(urlimage);
 			canvas.setImageUrl(new ExternalResource(urlimage));
 			
