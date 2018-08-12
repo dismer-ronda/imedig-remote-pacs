@@ -32,6 +32,18 @@ public class ImageData{
 
 		ImageData data = (ImageData)obj;
 		
-		return studyId().equals( data.studyId() ) && serieId().equals( data.serieId() ) && imagenId().equals( data.imagenId() );
+		String stId = studyId();
+		if ( stId == null )
+			return false;
+		
+		String seId = serieId();
+		if ( seId == null )
+			return false;
+		
+		String imId = imagenId();
+		if ( imId == null )
+			return false;
+		
+		return stId.equals( data.studyId() ) && seId.equals( data.serieId() ) && imId.equals( data.imagenId() );
 	}
 }

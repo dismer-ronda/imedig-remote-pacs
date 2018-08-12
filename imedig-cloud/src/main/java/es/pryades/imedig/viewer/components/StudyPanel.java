@@ -16,6 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
@@ -76,7 +77,7 @@ public class StudyPanel extends VerticalLayout {
 
 	private com.vaadin.ui.Image getImage(SeriesTree series, Image image) {
 
-		String imageUrl = ((BackendApplication) UI.getCurrent()).getServerUrl() + image.getWadoUrl()
+		String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl()
 				+ "&contentType=image/jpeg&columns=64&rows=64";
 		
 		LOG.info("imageUrl " + imageUrl);

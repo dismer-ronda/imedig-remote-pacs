@@ -106,7 +106,7 @@ public class ReportResource extends ImedigResource
 									List<InformeImagen> imagenes = imagenesManager.getRows( ctx, query );
 	
 									for ( InformeImagen imagen : imagenes )
-										imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" +  imagen.getUrl() );
+										imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + imagen.getUrl() );
 										//imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" +  imagen.getUrl() );
 
 									export.setImagenes( imagenes );

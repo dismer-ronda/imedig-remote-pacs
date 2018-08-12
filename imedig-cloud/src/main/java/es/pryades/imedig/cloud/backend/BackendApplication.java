@@ -61,7 +61,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	
 	ResourceBundle resources;
 	
-	@Getter @Setter private String serverUrl;
+	//@Getter @Setter private String serverUrl;
 	
 	public BackendApplication()
 	{
@@ -94,7 +94,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     public void init( VaadinRequest request )
     {
 		resources = ResourceBundle.getBundle( "language", getLanguage( Settings.LANGUAGES ) );
-		serverUrl = Utils.getEnviroment( "CLOUD_URL" ) + request.getContextPath();
+		//serverUrl = Utils.getEnviroment( "CLOUD_URL" ) + request.getContextPath();
 		
 		ctx = new ImedigContext();
 		

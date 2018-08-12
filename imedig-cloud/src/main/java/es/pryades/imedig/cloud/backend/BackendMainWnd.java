@@ -537,7 +537,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	{
 		ReportInfo reportInfo = viewer.getReportInfo();
 		
-		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-cloud" + reportInfo.getUrl() : null;
+		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
 		
 		LOG.info(  "imageUrl " + imageUrl );
 		
