@@ -158,6 +158,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		CKEditorConfig config = new CKEditorConfig();
         config.disableElementsPath();
         config.setResizeEnabled( false );
+        config.setBodyClass( "reporttext" );
         config.addCustomToolbarLine("{ items : ['Bold', 'Italic', 'Underline', '-', " +
         		"'NumberedList','BulletedList', '-', " +
         		"'Indent', 'Outdent', '-', " +
@@ -173,6 +174,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		editTexto.setWidth( "100%" );
 		editTexto.setHeight( "400px" );
 		editTexto.setValue( newInforme.getTexto() );
+		editTexto.addStyleName( "PRUEBA" );
 		
 		//editTexto.setNullRepresentation( "" );
 
