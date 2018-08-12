@@ -25,6 +25,8 @@ $v-component-group-spacing: 6px;
 
 @include v-font(IcoMoon,
               '../../../../imedig/fonts/icomoon');
+@include v-font(Roboto,
+              '../../../../imedig/fonts/Roboto-Regular');              
 
 /* This contains all of your theme.*/
 /* If somebody wants to extend the theme she will include this mixin. */

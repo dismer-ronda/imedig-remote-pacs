@@ -155,6 +155,14 @@
 	text-decoration: none
 }
 
+.reporttext{
+	background-color: #848484 !important;
+}
+
+.cke_inner > div > iframe> #document > html{
+	background-color: #848484 !important;
+}
+
 .cke_top {
     background: #848484 !important;
 }
@@ -162,4 +170,3 @@
 .cke_chrome {
     border: none !important;
 }
-

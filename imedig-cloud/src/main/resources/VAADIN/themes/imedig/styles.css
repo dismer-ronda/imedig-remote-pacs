@@ -1575,6 +1575,24 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 }
 
+@font-face {
+	font-family: Roboto;
+	font-weight: normal;
+	font-style: normal;
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/Roboto-Regular.eot);
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/Roboto-Regular.eot?#iefix) format("embedded-opentype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/Roboto-Regular.woff) format("woff"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/Roboto-Regular.ttf) format("truetype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/Roboto-Regular.svg#Roboto) format("svg");
+}
+
+.Roboto {
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	text-align: center;
+}
+
 .imedig.v-app, .imedig.v-app-loading {
 	font: 400 16px/1.55 Roboto, "Open Sans", Lato;
 	color: #cacecf;
@@ -13129,6 +13147,14 @@ div.v-layout.v-horizontal.v-widget {
 .copyright > a {
 	color: #ecedee;
 	text-decoration: none;
+}
+
+.reporttext {
+	background-color: #848484 !important;
+}
+
+.cke_inner > div > iframe > #document > html {
+	background-color: #848484 !important;
 }
 
 .cke_top {
