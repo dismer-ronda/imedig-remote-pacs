@@ -44,6 +44,7 @@ import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
+import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
@@ -176,6 +177,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 			imageCanvas.clearFigures();
 		}else if (action instanceof AddFigure) {
 			leftToolBar.buttonErase.setEnabled( true );
+		}else if (action instanceof NotFigures) {
+			leftToolBar.buttonErase.setEnabled( false );
 		}else if (action instanceof RequestReport) {
 			requestReport();
 		}

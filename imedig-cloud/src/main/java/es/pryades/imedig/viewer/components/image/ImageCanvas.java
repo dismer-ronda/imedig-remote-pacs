@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.fabricjs.FabricJs;
@@ -28,7 +27,6 @@ import es.pryades.fabricjs.geometry.Figure;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
-import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -40,6 +38,7 @@ import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
+import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
@@ -601,6 +600,12 @@ public class ImageCanvas extends VerticalLayout {
 			
 			if (!verifyPixelSpacing()){
 				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+			}
+			
+			if (!imageDataFigures.isEmpty()){
+				listenerAction.doAction( new AddFigure( this, null ) );
+			}else{
+				listenerAction.doAction( new NotFigures( this, null ) );
 			}
 			
 			/*imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
