@@ -53,6 +53,7 @@ public class ImageCanvas extends VerticalLayout {
 	private FigureConfiguration defaultConfiguration;
 	private List<Figure> imagenFigures;
 	private ImageData imageData = null;
+	@Getter
 	private EnumActions currentAction = EnumActions.NONE; 
 	private Rectangle imageRect;
 	private Rectangle viewRect;
@@ -602,7 +603,7 @@ public class ImageCanvas extends VerticalLayout {
 				listenerAction.doAction( new DisableDistanceAction( this, null ) );
 			}
 			
-			if (!imageDataFigures.isEmpty()){
+			if (!imagenFigures.isEmpty()){
 				listenerAction.doAction( new AddFigure( this, null ) );
 			}else{
 				listenerAction.doAction( new NotFigures( this, null ) );

@@ -264,7 +264,7 @@ public class LeftToolBar extends VerticalLayout {
 //		}
 	}
 	
-	private void selectedAction(Button button){
+	public void selectedAction(Button button){
 		if (lastAction != null){
 			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
 		}

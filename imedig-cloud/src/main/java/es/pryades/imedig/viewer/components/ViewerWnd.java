@@ -41,6 +41,7 @@ import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
@@ -158,6 +159,10 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		}else if (action instanceof AngleAction) {
 			imageCanvas.angleAction();
 		}else if (action instanceof DisableDistanceAction) {
+			if (imageCanvas.getCurrentAction().equals( EnumActions.DISTANCE )){
+				imageCanvas.noneAction();
+				leftToolBar.selectedAction( leftToolBar.buttonNone );
+			}
 			leftToolBar.buttonDistance.setEnabled( false );
 		}else if (action instanceof DistanceAction) {
 			imageCanvas.distanceAction();
