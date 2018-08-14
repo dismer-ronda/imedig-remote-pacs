@@ -362,6 +362,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	@Override
 	public ImageData getPreviousImageSerie()
 	{
+		if (currentIndex == -1) return null;
+		
 		if (currentIndex == 0) return null;
 		
 		--currentIndex;
@@ -372,6 +374,8 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	@Override
 	public ImageData getNextImageSerie()
 	{
+		if (currentIndex == -1) return null;
+
 		if (currentIndex == (seriesImages.get( currentSerie ).size()-1)) return null;
 		
 		++currentIndex;

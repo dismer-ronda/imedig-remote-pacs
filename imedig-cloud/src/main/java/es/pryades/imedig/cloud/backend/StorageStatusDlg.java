@@ -550,18 +550,18 @@ public class StorageStatusDlg extends Window implements ModalParent
 
 	private int getNumberStudiesDone()
 	{
-//		StudyQuery queryObj = new StudyQuery();
-//
-//		setDateFilter( queryObj );
-//		
-//		try
-//		{
-//			return studiesManager.getNumberOfRows( getContext(), queryObj );
-//		}
-//		catch ( Throwable e )
-//		{
-//			Utils.logException( e, LOG );
-//		}
+		StudyQuery queryObj = new StudyQuery();
+
+		setDateFilter( queryObj );
+		
+		try
+		{
+			return studiesManager.getNumberOfRows( getContext(), queryObj );
+		}
+		catch ( Throwable e )
+		{
+			Utils.logException( e, LOG );
+		}
 		
 		return 0;
 	}

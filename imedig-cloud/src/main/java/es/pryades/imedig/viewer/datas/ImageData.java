@@ -14,11 +14,11 @@ public class ImageData{
 	private Image image;
 	
 	public String studyId(){
-		return study.getStudyData().getStudyID();
+		return image.getStudyInstanceUID();
 	}
 	
 	public String serieId(){
-		return series.getSeriesData().getSeriesInstanceUID();
+		return image.getSeriesInstanceUID();
 	}
 
 	public String imagenId(){
@@ -32,18 +32,18 @@ public class ImageData{
 
 		ImageData data = (ImageData)obj;
 		
-		String stId = studyId();
+		/*String stId = studyId();
 		if ( stId == null )
 			return false;
 		
 		String seId = serieId();
 		if ( seId == null )
-			return false;
+			return false;*/
 		
 		String imId = imagenId();
 		if ( imId == null )
 			return false;
 		
-		return stId.equals( data.studyId() ) && seId.equals( data.serieId() ) && imId.equals( data.imagenId() );
+		return imId.equals( data.imagenId() );
 	}
 }
