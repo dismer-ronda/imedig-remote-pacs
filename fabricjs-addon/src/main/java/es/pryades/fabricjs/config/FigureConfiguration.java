@@ -42,6 +42,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private boolean visible;
     private CanvasAction action;
     private String cursor;
+    private Integer cancelDrawKeyCode;
 
     public FigureConfiguration() {
         super();
@@ -54,6 +55,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.visible = true;
         this.cursor = "default";
         this.action = CanvasAction.NONE;
+        this.cancelDrawKeyCode = 27;
     }
 
     public FigureConfiguration(FigureConfiguration configuration) {
@@ -64,9 +66,10 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.strokeColor = configuration.getStrokeColor();
         this.strokeDashArray = configuration.getStrokeDashArray();
         this.strokeLineCap = configuration.getStrokeLineCap().name().toLowerCase();
-        this.visible = configuration.isVisible();  
+        this.visible = configuration.isVisible();
         this.action = configuration.getAction();
         this.cursor = configuration.getCursor();
+        this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
 
     }
 
@@ -141,7 +144,15 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public void setCursor(String cursor) {
         this.cursor = cursor;
     }
-        
+
+    public Integer getCancelDrawKeyCode() {
+        return cancelDrawKeyCode;
+    }
+
+    public void setCancelDrawKeyCode(Integer cancelDrawKeyCode) {
+        this.cancelDrawKeyCode = cancelDrawKeyCode;
+    }
+
     public void clearStrokeDashArray() {
         if (!Objects.isNull(this.strokeDashArray)) {
             this.strokeDashArray.clear();
@@ -211,8 +222,8 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public FigureConfiguration withTextFontWeight(FontWeight textFontWeight) {
         this.setTextFontWeight(textFontWeight);
         return this;
-        }
-    
+    }
+
     public FigureConfiguration withAction(CanvasAction action) {
         this.setAction(action);
         return this;
@@ -222,8 +233,13 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.setCursor(cursor);
         return this;
     }
-       
-    public FigureConfiguration clone(){        
+
+    public FigureConfiguration withCancelDrawKeyCode(Integer cancelDrawKeyCode) {
+        this.setCancelDrawKeyCode(cancelDrawKeyCode);
+        return this;
+    }
+
+    public FigureConfiguration clone() {
         return new FigureConfiguration(this);
     }
 

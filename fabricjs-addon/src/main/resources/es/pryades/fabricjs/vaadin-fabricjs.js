@@ -1333,7 +1333,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
             _this.options.component.onMouseWheel(delta);
         };
 
-        var canvasContainer = document.getElementsByClassName("canvas-container")[0];
+        var canvasContainer = document.getElementById(canvasDrawId).parentElement;
         canvasContainer.addEventListener('DOMMouseScroll', handleScroll, false); // For Firefox
         canvasContainer.addEventListener('mousewheel', handleScroll, false);
 
@@ -1341,7 +1341,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         wrapper.tabIndex = 1000;
 
         wrapper.addEventListener("keyup", function (event) {
-            if (event.which === 27) {
+            if (event.which === _this.configuration.cancelDrawKeyCode) {
                 if (_this.currentDraw) {
                     _this.currentDraw.cancelDraw(_this.canvasDraw);
                 }
