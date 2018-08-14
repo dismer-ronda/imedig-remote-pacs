@@ -49,6 +49,8 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	private Button btnQuery;
 	
 	private final ImedigContext context;
+	
+	public static final Integer PAGE_SIZE = 7;
 
 	public QueryDlg(ImedigContext context, User user) {
 		super(context.getString("QueryForm.Title"));
@@ -153,8 +155,9 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 	public void onQuery() {
 		paginator.setPage(0);
+		paginator.setSize( PAGE_SIZE );
 
-		model = new QueryTableModel(7);
+		model = new QueryTableModel(PAGE_SIZE);
 
 		model.setPatientName("*" + fieldName.getValue() + "*");
 		model.setPatientId(filedId.getValue());
