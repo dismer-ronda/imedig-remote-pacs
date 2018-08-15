@@ -31,8 +31,6 @@ import es.pryades.imedig.cloud.core.dal.ImagenesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Imagen;
 import es.pryades.imedig.cloud.ioc.IOCManager;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The Application's "main" class
