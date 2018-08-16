@@ -30,20 +30,11 @@ public class ImageData{
 		if (obj == null) return false;
 		if (!(obj instanceof ImageData)) return false;
 
-		ImageData data = (ImageData)obj;
-		
-		/*String stId = studyId();
-		if ( stId == null )
-			return false;
-		
-		String seId = serieId();
-		if ( seId == null )
-			return false;*/
-		
 		String imId = imagenId();
-		if ( imId == null )
-			return false;
 		
+		if ( imId == null ) return false;
+		
+		ImageData data = (ImageData)obj;
 		return imId.equals( data.imagenId() );
 	}
 }

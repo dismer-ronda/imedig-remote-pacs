@@ -73,6 +73,7 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private static Map<EnumActions, FigureConfiguration> configurations;
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
+	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
 	
 	@Getter
 	private ReportInfo reportInfo;
@@ -367,7 +368,6 @@ public class ImageCanvas extends VerticalLayout {
 		back.push(status);
 		listenerAction.doAction( new AddToUndoAction( this, null ) );
 	}
-	
 
 	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
 		double angle = Math.toDegrees( Math.abs( getAngle( x1, y1, x2, y2 ) - getAngle( xp1, yp1, xp2, yp2 ) ) );
@@ -472,7 +472,8 @@ public class ImageCanvas extends VerticalLayout {
 				.withBackgroundColor( "transparent" )
 				.withTextFontFamily("Roboto")
 				.withTextFontSize(15)
-				.withTextFillColor("#F0BE20")
+				.withTextFillColor("#c80000b3"/*"#F0BE20"*/)
+				.withTextBackgroundColor( "white" )
 				.withTextFontWeight( FontWeight.FW700 )
 				.withAction( CanvasAction.NONE )
 				.withCursor( "default" );
@@ -589,15 +590,34 @@ public class ImageCanvas extends VerticalLayout {
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
 			numberOfFrames = imageHeader.getNumberOfFrames();
 			
-			if (!currentSerie.equals( imageData.serieId())){
+			if (imageDataFigures.get( this.imageData ) != null){
+				imagenFigures = imageDataFigures.get( this.imageData );
+			}
+			
+			if (currentSerie.isEmpty()){
 				currentSerie = imageData.serieId();
 				back = new Stack<>();
 				newImageData();
-			}else{
+			}else if (!currentSerie.equals( imageData.serieId())){
+				//Guardar el estado actual
+				addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
+				serieStatus.put( currentSerie, back );
+				
+				//Obtener la nueva serie
+				currentSerie = imageData.serieId();
+				//Verificar si ya se tiene el estado almacenado
+				if (serieStatus.get( currentSerie ) != null){
+					back = serieStatus.get( currentSerie );
+					newImageDataFromStatus( back.pop() );
+				}else{
+					back = new Stack<>();
+					newImageData();
+				}
+			}/*else{
 				if (imageDataFigures.get( this.imageData ) != null){
 					imagenFigures = imageDataFigures.get( this.imageData );
 				}
-			}
+			}*/
 			
 			if (!verifyPixelSpacing()){
 				listenerAction.doAction( new DisableDistanceAction( this, null ) );
@@ -629,6 +649,14 @@ public class ImageCanvas extends VerticalLayout {
 		currentCenter = getDouble(imageHeader.getWindowCenter()); 
 		currentWidth = getDouble(imageHeader.getWindowWidth());
 		currentFrame = 0;
+		viewRect = getCanvasImage();
+	}
+	
+	private void newImageDataFromStatus(ImageStatus status){
+		imageRect = status.getIrect();
+		currentCenter = status.getWindowCenter(); 
+		currentWidth = status.getWindowWidth();
+		currentFrame = status.getFrame();
 		viewRect = getCanvasImage();
 	}
 
@@ -735,10 +763,12 @@ public class ImageCanvas extends VerticalLayout {
 	public void clear() {
 		noneAction();
 		imageData = null;
-		imagenFigures.clear();
+		imagenFigures = new ArrayList<>();
 		canvas.clear();
 		back = new Stack<>();
 		currentSerie = "";
+		serieStatus = new HashMap<>();
+		imageDataFigures = new HashMap<>();
 	}
 	
 	public void clearFigures() {
