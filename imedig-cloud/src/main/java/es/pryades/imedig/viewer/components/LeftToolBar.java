@@ -30,6 +30,7 @@ import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
+import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 
@@ -46,6 +47,7 @@ public class LeftToolBar extends VerticalLayout {
 	Button buttonAngle = null;
 	Button buttonZoom = null;
 	Button buttonContrast = null;
+	Button buttonRestore = null;
 	Button buttonUndo = null;
 	Button buttonErase = null;
 	Button buttonDownload = null;
@@ -81,15 +83,25 @@ public class LeftToolBar extends VerticalLayout {
 
 	private void buildButtons() {
 		GridLayout grid = new GridLayout(3, 3);
+		
+		Button invisible = new Button();
+		invisible.addStyleName( ImedigTheme.BUTTON_TOOLBOX );
+		invisible.setVisible( false );
 		grid.addComponent( buttonOpen = getButton( FontAwesome.FOLDER_OPEN, "open", "ViewerWnd.Open" ));
 		grid.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
 		grid.addComponent( buttonNone = getButton( FontAwesome.MOUSE_POINTER, "cursor-green", "ViewerWnd.NoOperation" ));
+		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
+		grid.addComponent( buttonRestore = getButton( FontAwesome.HISTORY, "restore", "ViewerWnd.Restore" ));
+		grid.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
 		grid.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
 		grid.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
-		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
+		grid.addComponent( invisible );
 		grid.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
 		grid.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
-		grid.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
+		invisible = new Button();
+		invisible.addStyleName( ImedigTheme.BUTTON_TOOLBOX );
+		invisible.setVisible( false );
+		grid.addComponent( invisible );
 		grid.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
 		
 		if ( context.hasRight( "informes.crear" ) )
@@ -153,6 +165,14 @@ public class LeftToolBar extends VerticalLayout {
 			}
 		});
 		
+		
+		buttonRestore.addClickListener(new Button.ClickListener() {
+			@Override
+			public void buttonClick(ClickEvent event) {
+				listenerAction.doAction(new RestoreAction(this, null));
+			}
+		});
+
 		buttonUndo.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
@@ -231,6 +251,7 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( false );
 		buttonContrast.setEnabled( false );
 		buttonUndo.setEnabled( false );
+		buttonRestore.setEnabled( false );
 		buttonErase.setEnabled( false );
 		buttonDownload.setEnabled( false );
 		
@@ -254,6 +275,7 @@ public class LeftToolBar extends VerticalLayout {
 		buttonZoom.setEnabled( true );
 		buttonContrast.setEnabled( true );
 		buttonUndo.setEnabled( false );
+		buttonRestore.setEnabled( false );
 		buttonDownload.setEnabled( true );
 		
 		if (buttonReport != null){
@@ -272,6 +294,7 @@ public class LeftToolBar extends VerticalLayout {
 				button == buttonClose || 
 				button == buttonErase ||
 				button == buttonUndo  ||
+				button == buttonRestore ||
 				button == buttonDownload ||
 				button == buttonReport) return;
 		

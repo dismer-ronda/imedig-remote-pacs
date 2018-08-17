@@ -832,4 +832,23 @@ public class ImageCanvas extends VerticalLayout {
 		return true;
 	}
 
+	public void restoreAction()	{
+		if (back.isEmpty()) return;
+
+		ImageStatus status = back.get( 0 );
+		currentCenter = status.getWindowCenter();
+		currentWidth = status.getWindowWidth();
+		currentFrame = status.getFrame();
+		imageRect = status.getIrect();
+		
+		viewRect = getCanvasImage();
+
+		back = new Stack<>();
+		serieStatus.remove( currentSerie );
+
+		canvas.clearDraw();
+		openImage();
+		showImagenFigures();
+	}
+
 }

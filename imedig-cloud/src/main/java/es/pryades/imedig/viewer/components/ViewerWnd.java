@@ -50,6 +50,7 @@ import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
+import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
@@ -171,13 +172,19 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		}else if (action instanceof UndoAction) {
 			if (!imageCanvas.undoAction()){
 				leftToolBar.buttonUndo.setEnabled( false );
+				leftToolBar.buttonRestore.setEnabled( false );
 			}
+		}else if (action instanceof RestoreAction) {
+			imageCanvas.restoreAction();
+			leftToolBar.buttonUndo.setEnabled( false );
+			leftToolBar.buttonRestore.setEnabled( false );
 		}else if (action instanceof NoneAction) {
 			imageCanvas.noneAction();
 		}else if (action instanceof ContrastAction) {
 			imageCanvas.contrastAction();
 		}else if (action instanceof AddToUndoAction) {
 			leftToolBar.buttonUndo.setEnabled( true );
+			leftToolBar.buttonRestore.setEnabled( true );
 		}else if (action instanceof EraseAction) {
 			imageCanvas.clearFigures();
 		}else if (action instanceof AddFigure) {
@@ -207,6 +214,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		boolean enabled = leftToolBar.buttonUndo.isEnabled();
 		enabledButtons();
 		leftToolBar.buttonUndo.setEnabled( enabled );
+		leftToolBar.buttonRestore.setEnabled( enabled );
 		
 		currentSerie = data.getSeries().getSeriesData().getSeriesInstanceUID();
 		currentIndex = seriesImages.get( currentSerie ).indexOf( data );
