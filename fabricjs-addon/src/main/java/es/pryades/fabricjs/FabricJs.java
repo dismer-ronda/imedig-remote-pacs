@@ -98,8 +98,9 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void setImageUrl(String url) {
         images = Arrays.asList(url);
-        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-        this.getState().commands = getPayload(this.commands);
+        this.getState().imagesUrl = getPayload(this.images);
+        //this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
+       // this.getState().commands = getPayload(this.commands);
     }
 
     public void setImageUrl(ExternalResource resource) {
@@ -109,8 +110,9 @@ public class FabricJs extends AbstractJavaScriptComponent {
     public void setImageUrlsAsString(List<String> images) {
         //backgroundImage = url;
         this.images = images;
-        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-        this.getState().commands = getPayload(this.commands);
+        this.getState().imagesUrl = getPayload(this.images);
+        //this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
+        //this.getState().commands = getPayload(this.commands);
     }
 
     public void setImageUrlsAsResource(List<ExternalResource> resource) {
@@ -137,11 +139,13 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void clear() {
         this.commands.add(new Command("CLEAR_ALL", ""));
+        getState().imagesUrl = "[]";
         getState().commands = getPayload(this.commands);
     }
 
     public void clearImage() {
         this.commands.add(new Command("CLEAR_IMAGE", ""));
+        getState().imagesUrl = "[]";
         getState().commands = getPayload(this.commands);
     }
 

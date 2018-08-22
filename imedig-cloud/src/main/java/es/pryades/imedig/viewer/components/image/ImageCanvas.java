@@ -468,19 +468,20 @@ public class ImageCanvas extends VerticalLayout {
 		defaultConfiguration = new FigureConfiguration()
 				.withStrokeWidth(2.0)
 				.withFillColor("#F0BE20")
+				.withHoverColor( "#F08E20" )
+				.withShowTooltip( true)				
 				.withStrokeColor("#F0BE20")
 				.withBackgroundColor( "transparent" )
 				.withTextFontFamily("Roboto")
 				.withTextFontSize(15)
-				.withTextFillColor("#c80000b3"/*"#F0BE20"*/)
-				.withTextBackgroundColor( "white" )
+				.withTextFillColor("#F0BE20")
 				.withTextFontWeight( FontWeight.FW700 )
 				.withAction( CanvasAction.NONE )
 				.withCursor( "default" );
 		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
-		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ) );
-		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ) );
+		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 2px" ));
+		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ).withTextBackgroundColor( "rgba(80, 90, 93, 0.3)" ) );
 		
 		configurations.put( EnumActions.CONTRAST, defaultConfiguration.clone().withVisible( false ).withAction( CanvasAction.SHOW_RECT ).withCursor( "move" ) );
 		

@@ -8,7 +8,7 @@ public class FabricJsState extends JavaScriptComponentState {
     public String figureConfiguration = "{}";
     public String notesConfiguration = "{}";    
     public String notes = "[]";
-    public String bgImage = "";
+    public String imagesUrl = "[]";
     public String figures = "[]";
     public String dimensions = "{}";
     public String action = "NONE";

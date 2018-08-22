@@ -35,6 +35,8 @@ public class FabricCanvasConfiguration extends FontConfiguration implements Seri
     private List<Double> strokeDashArray;
 
     private String strokeLineCap;
+    
+    
 
     public FabricCanvasConfiguration() {
         super();

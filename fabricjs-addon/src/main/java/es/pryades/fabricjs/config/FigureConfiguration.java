@@ -15,14 +15,15 @@
  */
 package es.pryades.fabricjs.config;
 
-import es.pryades.fabricjs.enums.CanvasAction;
-import es.pryades.fabricjs.enums.FontStyle;
-import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.StrokeLineCap;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.enums.FontStyle;
+import es.pryades.fabricjs.enums.FontWeight;
+import es.pryades.fabricjs.enums.StrokeLineCap;
 
 /**
  *
@@ -43,6 +44,10 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private CanvasAction action;
     private String cursor;
     private Integer cancelDrawKeyCode;
+    private String hoverColor;
+    private boolean showTooltip;
+
+    private TooltipConfiguration tooltipConfiguration;
 
     public FigureConfiguration() {
         super();
@@ -56,6 +61,8 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.cursor = "default";
         this.action = CanvasAction.NONE;
         this.cancelDrawKeyCode = 27;
+        this.showTooltip = false;
+        this.tooltipConfiguration = new TooltipConfiguration();
     }
 
     public FigureConfiguration(FigureConfiguration configuration) {
@@ -65,12 +72,46 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.fillColor = configuration.getFillColor();
         this.strokeColor = configuration.getStrokeColor();
         this.strokeDashArray = configuration.getStrokeDashArray();
-        this.strokeLineCap = configuration.getStrokeLineCap().name().toLowerCase();
+        this.strokeLineCap = configuration.getStrokeLineCap().toLowerCase();
         this.visible = configuration.isVisible();
         this.action = configuration.getAction();
         this.cursor = configuration.getCursor();
         this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
+        this.showTooltip = configuration.isShowTooltip();
+        this.hoverColor = configuration.getHoverColor();
+        this.tooltipConfiguration = configuration.getTooltipConfiguration();
+    }
 
+    public String getStrokeLineCap() {
+        return strokeLineCap;
+    }
+
+    public void setStrokeLineCap(String strokeLineCap) {
+        this.strokeLineCap = strokeLineCap;
+    }
+
+    public TooltipConfiguration getTooltipConfiguration() {
+        return tooltipConfiguration;
+    }
+
+    public void setTooltipConfiguration(TooltipConfiguration tooltipConfiguration) {
+        this.tooltipConfiguration = tooltipConfiguration;
+    }
+
+    public boolean isShowTooltip() {
+        return showTooltip;
+    }
+
+    public void setShowTooltip(boolean showTooltip) {
+        this.showTooltip = showTooltip;
+    }
+
+    public String getHoverColor() {
+        return hoverColor;
+    }
+
+    public void setHoverColor(String hoverColor) {
+        this.hoverColor = hoverColor;
     }
 
     public String getBackgroundColor() {
@@ -113,10 +154,6 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.strokeDashArray = strokeDashArray;
     }
 
-    public StrokeLineCap getStrokeLineCap() {
-        return StrokeLineCap.valueOf(strokeLineCap.toUpperCase());
-    }
-
     public void setStrokeLineCap(StrokeLineCap strokeLineCap) {
         this.strokeLineCap = strokeLineCap.name().toLowerCase();
     }
@@ -155,7 +192,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
 
     public void clearStrokeDashArray() {
         if (!Objects.isNull(this.strokeDashArray)) {
-            this.strokeDashArray.clear();
+            this.strokeDashArray = new ArrayList<>();
         }
     }
 
@@ -236,6 +273,26 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
 
     public FigureConfiguration withCancelDrawKeyCode(Integer cancelDrawKeyCode) {
         this.setCancelDrawKeyCode(cancelDrawKeyCode);
+        return this;
+    }
+
+    public FigureConfiguration withTextShadow(String textShadow) {
+        this.setTextShadow(textShadow);
+        return this;
+    }
+
+    public FigureConfiguration withHoverColor(String hoverColor) {
+        this.setHoverColor(hoverColor);
+        return this;
+    }
+
+    public FigureConfiguration withShowTooltip(boolean showTooltip) {
+        this.setShowTooltip(showTooltip);
+        return this;
+    }
+
+    public FigureConfiguration withTooltipConfiguration(TooltipConfiguration tooltipConfiguration) {
+        this.setTooltipConfiguration(tooltipConfiguration);
         return this;
     }
 

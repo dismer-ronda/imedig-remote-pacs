@@ -25,9 +25,19 @@ var es_pryades_fabricjs_FabricJs = function() {
     });
 
 
+    component.imagesUrls = JSON.parse(state.imagesUrl);
+    fabricJs.onLoadImage(component.imagesUrls);
+
+
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
         //fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
+        if (JSON.stringify(component.imagesUrls) !== state.imagesUrl) {
+            component.imagesUrls = JSON.parse(state.imagesUrl);
+            fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+            fabricJs.onLoadImage(component.imagesUrls);
+        }
+
 
         var commands = JSON.parse(state.commands);
 
@@ -39,14 +49,14 @@ var es_pryades_fabricjs_FabricJs = function() {
                 case "SET_CONFIG":
                     var configuration = JSON.parse(command.payload);
                     fabricJs.setConfiguration(configuration);
-                break;
-                case "SET_IMAGE":
-                    if (command.payload) {
-                        component.imagesUrls = JSON.parse(command.payload);
-                        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-                        fabricJs.onLoadImage(component.imagesUrls);
-                    }
                     break;
+                    /*case "SET_IMAGE":
+                     if (command.payload) {
+                     component.imagesUrls = JSON.parse(command.payload);
+                     fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+                     fabricJs.onLoadImage(component.imagesUrls);
+                     }
+                     break;*/
                 case "ADD_NOTE":
                     if (command.payload) {
                         var note = JSON.parse(command.payload);

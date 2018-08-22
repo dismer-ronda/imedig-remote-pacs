@@ -135,7 +135,7 @@ var Utils = exports.Utils = function () {
         key: 'createTextLabel',
         value: function createTextLabel(text, options, configuration) {
             var textObject = new fabric.Text(text, {
-                backgroundColor: 'transparent',
+                backgroundColor: configuration.textBackgroundColor,
                 fill: configuration.textFillColor,
                 fontWeight: configuration.textFontWeight,
                 fontStyle: configuration.textFontStyle,
@@ -145,7 +145,8 @@ var Utils = exports.Utils = function () {
                 top: options.top,
                 visible: configuration.visible,
                 selectable: false,
-                objectCaching: false
+                shadow: configuration.textShadow //,
+                // objectCaching: false
             });
             return textObject;
         }
@@ -162,9 +163,48 @@ var Utils = exports.Utils = function () {
                 left: configuration.textLeft,
                 top: configuration.textTop,
                 textAlign: configuration.textAlign,
-                objectCaching: false
+                shadow: configuration.textShadow //,
+                //objectCaching: false
             });
             return textObject;
+        }
+    }, {
+        key: 'createTooltip',
+        value: function createTooltip(text, configuration, center) {
+
+            var textObject = new fabric.Text(text, {
+                backgroundColor: "transparent",
+                fill: configuration.textFillColor,
+                fontWeight: configuration.textFontWeight,
+                fontStyle: configuration.textFontStyle,
+                fontSize: configuration.textFontSize,
+                fontFamily: configuration.textFontFamily,
+                visible: configuration.visible,
+                selectable: false,
+                shadow: configuration.textShadow //,
+                // objectCaching: false
+            });
+
+            var textHeight = textObject.calcTextHeight() + configuration.tooltipConfiguration.margin;
+            var textWidth = textObject.getScaledWidth() + configuration.tooltipConfiguration.margin;
+
+            var rect = new fabric.Rect({
+                width: textWidth,
+                height: textHeight,
+                visible: configuration.visible,
+                fill: configuration.tooltipConfiguration.backgroundColor,
+                backgroundColor: configuration.tooltipConfiguration.backgroundColor,
+                stroke: configuration.tooltipConfiguration.backgroundColor,
+                strokeWidth: configuration.strokeWidth,
+                objectCaching: false
+            });
+
+            var group = new fabric.Group([rect, textObject], {
+                left: center.x,
+                top: center.y
+            });
+
+            return group;
         }
     }, {
         key: 'generateUniqueId',
@@ -230,6 +270,7 @@ var AngleDrawer = exports.AngleDrawer = function () {
         this.movePointer = null;
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.offCanvas = false;
         this.parent = options.parent;
     }
 
@@ -248,10 +289,6 @@ var AngleDrawer = exports.AngleDrawer = function () {
         value: function onMouseMove(event, canvas) {
             if (this.currentDraw) {
                 var pointer = canvas.getPointer(event.e);
-
-                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
-                    return;
-                }
 
                 this.movePointer = pointer;
 
@@ -300,7 +337,9 @@ var AngleDrawer = exports.AngleDrawer = function () {
                     canvas.remove(this.currentDraw);
                     canvas.renderAll();
                 } else {
-                    this.angle = new fabric.Group([this.firstLine, this.secondLine]);
+                    this.angle = new fabric.Group([this.firstLine, this.secondLine], {
+                        perPixelTargetFind: true
+                    });
                     canvas.add(this.angle);
                     this.parent.setFigure(this.figure.key, this.angle);
                 }
@@ -377,7 +416,8 @@ var AngleDrawer = exports.AngleDrawer = function () {
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -724,7 +764,8 @@ var FreeAngleDrawer = exports.FreeAngleDrawer = function () {
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -783,6 +824,7 @@ var LineDrawer = exports.LineDrawer = function () {
         this.points = [];
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.offCanvas = false;
         this.parent = options.parent;
     }
 
@@ -802,10 +844,6 @@ var LineDrawer = exports.LineDrawer = function () {
             if (this.currentDraw) {
                 var pointer = canvas.getPointer(event.e);
 
-                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
-                    return;
-                }
-
                 this.currentDraw.set({
                     x2: pointer.x,
                     y2: pointer.y
@@ -819,6 +857,7 @@ var LineDrawer = exports.LineDrawer = function () {
             if (this.preventUp) {
                 return;
             }
+
             var pointer = canvas.getPointer(event.e);
 
             if (pointer.eq(this.points[0])) {
@@ -844,7 +883,6 @@ var LineDrawer = exports.LineDrawer = function () {
             this.points = [];
             this.preventUp = false;
             var pointer = canvas.getPointer(event.e);
-            this.rect = canvas.calcViewportBoundaries();
             this.points.push(pointer);
             var pointsToDraw = [pointer.x, pointer.y, pointer.x, pointer.y];
             this.currentDraw = _utils.Utils.createLine(pointsToDraw, this.configuration);
@@ -892,7 +930,8 @@ var LineDrawer = exports.LineDrawer = function () {
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -1063,7 +1102,8 @@ var RectDrawer = exports.RectDrawer = function () {
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -1224,6 +1264,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
         this.figures = new Map();
         this.notes = new Map();
 
+        this.offCanvas = false;
+
         this._currentAction = this.options.action;
         this.options.container.style.backgroundColor = this.configuration.backgroundColor;
 
@@ -1273,55 +1315,111 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         var _this = this;
         this.canvasDraw.on("mouse:down", function (o) {
-            _this.isMouseDown = true;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+                _this.isMouseDown = true;
+                _this.rect = _this.canvasDraw.calcViewportBoundaries();
+
+                if (_this.offCanvas) {
+                    _this.offCanvas = false;
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
                 _this.currentDraw.onMouseDown(o, _this.canvasDraw);
             }
         });
 
         this.canvasDraw.on('mouse:move', function (o) {
-            if (!_this.isMouseDown) return;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+
+                var pointer = _this.canvasDraw.getPointer(o.e);
+
+                if (!_this.isMouseDown && !_this.offCanvas) {
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
+
+                if (pointer.x < 0 || pointer.y < 0 || pointer.x > _this.rect.br.x || pointer.y > _this.rect.br.y) {
+                    _this.offCanvas = true;
+                    return;
+                }
+
                 _this.currentDraw.onMouseMove(o, _this.canvasDraw);
             }
         });
 
         this.canvasDraw.on("mouse:up", function (o) {
-            _this.isMouseDown = false;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+                _this.isMouseDown = false;
+
+                if (_this.offCanvas) {
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
+
                 _this.currentDraw.onMouseUp(o, _this.canvasDraw);
             }
         });
 
-        /*this.canvasDraw.on("mouse:wheel", function (o) {
-            var e = o.e;
-            var delta = 0;
-             if (e.wheelDelta) {
-                if (e.wheelDelta < 0)
-                    delta = 1;
-                else
-                    delta = -1;
-            } else if (e.deltaY < 0)
-                delta = -1;
-            else
-                delta = 1;
-             _this.options.component.onMouseWheel(delta);
-        });*/
+        var processGroup = function processGroup(target, color) {
+
+            var objects = target.getObjects();
+            for (var o in objects) {
+                switch (objects[o].type) {
+                    case "line":
+                        objects[o].set('stroke', color);
+                        break;
+                    case "rect":
+                        objects[o].set('stroke', color);
+                        break;
+                    case "group":
+                        _this.canvasDraw.remove(_this.tooltip);
+                        processGroup(objects[o], color);
+                        break;
+                }
+            }
+        };
+
+        this.canvasDraw.on('mouse:over', function (e) {
+            if (_this.configuration.hoverColor && e.target && _this.configuration.tooltipConfiguration && _this.configuration.showTooltip) {
+                var target = e.target;
+                
+                if (target.type === "group") {
+                    processGroup(target, _this.configuration.hoverColor);
+                    if (_this.tooltip) {
+                        _this.canvasDraw.remove(_this.tooltip);
+                    }
+                    var pointer = _this.canvasDraw.getPointer(e.e);
+                    var center = {
+                        x: pointer.x,
+                        y: pointer.y
+                    };
+                    _this.tooltip = _utils.Utils.createTooltip("", _this.configuration, center);
+                    _this.canvasDraw.add(_this.tooltip);
+                }
+                _this.canvasDraw.renderAll();
+            }
+        });
+
+        this.canvasDraw.on('mouse:out', function (e) {
+            if (_this.configuration.hoverColor && e.target && _this.configuration.tooltipConfiguration && _this.configuration.showTooltip) {
+                var target = e.target;
+                if (target.type === "group") {
+                    processGroup(target, _this.configuration.fillColor);
+                    _this.canvasDraw.remove(_this.tooltip);
+                    _this.tooltip = null;
+                }
+                _this.canvasDraw.renderAll();
+            }
+        });
 
         var handleScroll = function handleScroll(e) {
             var delta = 0;
@@ -1525,6 +1623,12 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'addNotes',
         value: function addNotes(key, note, configuration) {
             var text = _utils.Utils.createTextNotes(note, configuration);
+            var oldNote = this.notes.get(key);
+
+            if (oldNote) {
+                this.canvasNotes.remove(oldNote);
+            }
+
             this.canvasNotes.add(text);
             this.notes.set(key, text);
 

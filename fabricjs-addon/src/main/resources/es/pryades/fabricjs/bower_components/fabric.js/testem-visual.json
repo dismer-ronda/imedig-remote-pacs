@@ -2,7 +2,8 @@
   "framework": "qunit",
   "serve_files": [
     "dist/fabric.js",
-    "test/unit/*.js"
+    "test/lib/pixelmatch.js",
+    "test/visual/*.js"
   ],
   "routes": {
     "/fixtures": "test/fixtures"
@@ -24,7 +25,7 @@
   ],
   "launchers": {
     "Node": {
-      "command": "npm run test",
+      "command": "npm run test:visual",
       "protocol": "tap"
     }
   },

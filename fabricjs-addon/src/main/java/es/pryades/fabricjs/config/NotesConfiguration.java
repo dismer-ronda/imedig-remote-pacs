@@ -126,5 +126,10 @@ public class NotesConfiguration extends FontConfiguration implements Serializabl
         this.setTextFontWeight(textFontWeight);
         return this;
     }
+    
+    public NotesConfiguration withTextShadow(String textShadow) {
+        this.setTextShadow(textShadow);
+        return this;
+    }
 
 }

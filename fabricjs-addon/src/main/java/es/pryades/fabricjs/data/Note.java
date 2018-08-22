@@ -36,13 +36,15 @@ public class Note implements Serializable {
     }
 
     public Note(String text, NotesConfiguration notesConfiguration) {
-        this.key = UUID.randomUUID().toString().replaceAll("-", "_");
+
         this.text = text;
         if (Objects.isNull(notesConfiguration)) {
             this.notesConfiguration = new NotesConfiguration();
         } else {
             this.notesConfiguration = notesConfiguration;
         }
+
+        this.key = this.notesConfiguration.getNotesAlignment().getOriginX() + this.notesConfiguration.getNotesAlignment().getOriginY();
     }
 
     public String getText() {
@@ -90,7 +92,5 @@ public class Note implements Serializable {
         }
         return true;
     }
-
-          
 
 }
