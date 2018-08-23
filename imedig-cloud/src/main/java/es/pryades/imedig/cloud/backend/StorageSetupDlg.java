@@ -325,17 +325,16 @@ public class StorageSetupDlg extends Window implements ModalParent
 	
 	private boolean createNASStorage()
 	{
-		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" addRWFileSystem /home/imedig/" 
-				+ storageConfiguration.getExternalStorageDirectory() );
+		String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
+
+		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" addRWFileSystem /home/imedig/" + mountName );
 		
 		String response = Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" listFileSystems" );
 
-		boolean created = response.contains( "/home/imedig/" + storageConfiguration.getExternalStorageDirectory() );
+		boolean created = response.contains( "/home/imedig/" + mountName );
 		
 		if ( created )
 		{
-			String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
-			
 			Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "mkdir /home/imedig/" + mountName );
 			
 			Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "chmod o+w /etc/fstab" );
@@ -346,27 +345,21 @@ public class StorageSetupDlg extends Window implements ModalParent
 		}		
 		
 		return created; 
-		
-		/*el texto de salida debe contener:
-			SourceFileSystemGroupID=ONLINE_STORAGE
-			SourceFileSystemGroupID=NEARLINE_STORAGE
-			MoveStudyIfNotAccessedFor=<move_not_accessed>*/
 	}
 	
 	private void removeNasStorage()
 	{
-		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" removeFileSystem /home/imedig/" 
-				+ storageConfiguration.getExternalStorageDirectory() );
-
 		String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
-		
+
+		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" removeFileSystem /home/imedig/" + mountName );
+
 		String replacement = mountName + " " + storageConfiguration.getExternalStorageFilesystem();
 		
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "umount /home/imedig/" + mountName );
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "sed -n '/" + replacement + "/!p' /etc/fstab > /tmp/fstab &&" + (Settings.EXEC_sudo ? " sudo " : "") + " mv /tmp/fstab /etc/fstab" );
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "rmdir /home/imedig/" + mountName );
 	}
-
+	
 	private void onOk()
 	{
 		boolean created = true;
