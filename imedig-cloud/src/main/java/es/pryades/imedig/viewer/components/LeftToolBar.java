@@ -11,7 +11,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -34,9 +34,9 @@ import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 
-public class LeftToolBar extends VerticalLayout {
+public class LeftToolBar extends HorizontalLayout {
 	
-	private VerticalLayout inside;
+	//private VerticalLayout inside;
 	private Panel panelThumnails;
 	private VerticalLayout thumnails;
 	
@@ -62,7 +62,7 @@ public class LeftToolBar extends VerticalLayout {
 	private Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ListenerAction listenerAction, ImageResource imageResource){
-		setWidth("130px");
+		setWidth("160px");
 		setHeight("100%");
 		this.listenerAction = listenerAction;
 		this.imageResource = imageResource;
@@ -72,41 +72,44 @@ public class LeftToolBar extends VerticalLayout {
 
 
 	private void buidInsideLayout() {
-		inside = new VerticalLayout();
-		inside.setSpacing(true);
-		inside.setHeight("100%");
+//		inside = new VerticalLayout();
+//		inside.setSpacing(true);
+//		inside.setHeight("100%");
 		
-		buildButtons();
 		buildPanel();
-		addComponent(inside);
+		buildButtons();
+//		addComponent(inside);
 	}
 
 	private void buildButtons() {
-		GridLayout grid = new GridLayout(3, 3);
+		VerticalLayout toolbox = new VerticalLayout();
+		toolbox.setSpacing( true );
 		
-		Button invisible = new Button();
-		invisible.addStyleName( ImedigTheme.BUTTON_TOOLBOX );
-		invisible.setVisible( false );
-		grid.addComponent( buttonOpen = getButton( FontAwesome.FOLDER_OPEN, "open", "ViewerWnd.Open" ));
-		grid.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
-		grid.addComponent( buttonNone = getButton( FontAwesome.MOUSE_POINTER, "cursor-green", "ViewerWnd.NoOperation" ));
-		grid.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
-		grid.addComponent( buttonRestore = getButton( FontAwesome.HISTORY, "restore", "ViewerWnd.Restore" ));
-		grid.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
-		grid.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
-		grid.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
-		grid.addComponent( invisible );
-		grid.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
-		grid.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
-		invisible = new Button();
-		invisible.addStyleName( ImedigTheme.BUTTON_TOOLBOX );
-		invisible.setVisible( false );
-		grid.addComponent( invisible );
-		grid.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
+		VerticalLayout group = new VerticalLayout();
+		group.addComponent( buttonOpen = getButton( FontAwesome.FOLDER_OPEN, "open", "ViewerWnd.Open" ));
+		group.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
+		toolbox.addComponent( group );
+		
+		group = new VerticalLayout();
+		group.addComponent( buttonUndo = getButton( FontAwesome.UNDO, "undo", "ViewerWnd.Undo" ));
+		group.addComponent( buttonRestore = getButton( FontAwesome.HISTORY, "restore", "ViewerWnd.Restore" ));
+		group.addComponent( buttonErase = getButton( FontAwesome.ERASER, "eraser", "ViewerWnd.ClearAnnotations" ));
+		toolbox.addComponent( group );
+		
+		group = new VerticalLayout();
+		group.addComponent( buttonNone = getButton( FontAwesome.MOUSE_POINTER, "cursor-green", "ViewerWnd.NoOperation" ));
+		group.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
+		group.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
+		group.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
+		group.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
+		toolbox.addComponent( group );
+		
+		group = new VerticalLayout();
+		group.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
 		
 		if ( context.hasRight( "informes.crear" ) )
 		{
-			grid.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
+			group.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
 			
 			buttonReport.addClickListener( new Button.ClickListener()
 			{
@@ -116,6 +119,7 @@ public class LeftToolBar extends VerticalLayout {
 				}
 			} );
 		}
+		toolbox.addComponent( group );
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
@@ -202,7 +206,10 @@ public class LeftToolBar extends VerticalLayout {
         
 		allButtonsDisable();
 		
-		inside.addComponent(grid);
+		toolbox.setWidth( "46px" );
+		addComponent( toolbox );
+		//setComponentAlignment( toolbox, Alignment.TOP_RIGHT );
+		//inside.addComponent(grid);
 	}
 	
 	private void buildPanel(){
@@ -211,11 +218,13 @@ public class LeftToolBar extends VerticalLayout {
 		thumnails.setSpacing(true);
 		
 		panelThumnails = new Panel(thumnails);
-		panelThumnails.setSizeFull();
+		panelThumnails.setHeight( "100%" );
+		panelThumnails.setWidth( "100%" );
 		panelThumnails.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		
-		inside.addComponent(panelThumnails);
-		inside.setExpandRatio(panelThumnails, 1.0f);
+		addComponent( panelThumnails );
+		setExpandRatio( panelThumnails, 1.0f );
+		panelThumnails.setVisible( false );
 	}
 	
 	private Button getButton(FontIcon font, String name, String keytooltip){
@@ -234,9 +243,12 @@ public class LeftToolBar extends VerticalLayout {
 	public void clearThumnails(){
 		thumnails.removeAllComponents();
 		studyCount = 0;
+		panelThumnails.setVisible( false );
 	}
 	
 	public void addStudyPanel( StudyPanel panel){
+		if (!panelThumnails.isVisible()) panelThumnails.setVisible( true );
+		
 		panel.addStyleName(ImedigTheme.BG_THUMNAIL+ (studyCount % 2));
 		studyCount ++;
 		thumnails.addComponent(panel);

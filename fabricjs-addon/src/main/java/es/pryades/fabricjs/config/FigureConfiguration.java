@@ -45,9 +45,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private String cursor;
     private Integer cancelDrawKeyCode;
     private String hoverColor;
-    private boolean showTooltip;
-
-    private TooltipConfiguration tooltipConfiguration;
+       
 
     public FigureConfiguration() {
         super();
@@ -61,8 +59,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.cursor = "default";
         this.action = CanvasAction.NONE;
         this.cancelDrawKeyCode = 27;
-        this.showTooltip = false;
-        this.tooltipConfiguration = new TooltipConfiguration();
+       
     }
 
     public FigureConfiguration(FigureConfiguration configuration) {
@@ -77,9 +74,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.action = configuration.getAction();
         this.cursor = configuration.getCursor();
         this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
-        this.showTooltip = configuration.isShowTooltip();
         this.hoverColor = configuration.getHoverColor();
-        this.tooltipConfiguration = configuration.getTooltipConfiguration();
     }
 
     public String getStrokeLineCap() {
@@ -90,21 +85,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.strokeLineCap = strokeLineCap;
     }
 
-    public TooltipConfiguration getTooltipConfiguration() {
-        return tooltipConfiguration;
-    }
-
-    public void setTooltipConfiguration(TooltipConfiguration tooltipConfiguration) {
-        this.tooltipConfiguration = tooltipConfiguration;
-    }
-
-    public boolean isShowTooltip() {
-        return showTooltip;
-    }
-
-    public void setShowTooltip(boolean showTooltip) {
-        this.showTooltip = showTooltip;
-    }
+   
 
     public String getHoverColor() {
         return hoverColor;
@@ -286,17 +267,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         return this;
     }
 
-    public FigureConfiguration withShowTooltip(boolean showTooltip) {
-        this.setShowTooltip(showTooltip);
-        return this;
-    }
-
-    public FigureConfiguration withTooltipConfiguration(TooltipConfiguration tooltipConfiguration) {
-        this.setTooltipConfiguration(tooltipConfiguration);
-        return this;
-    }
-
-    public FigureConfiguration clone() {
+     public FigureConfiguration clone() {
         return new FigureConfiguration(this);
     }
 

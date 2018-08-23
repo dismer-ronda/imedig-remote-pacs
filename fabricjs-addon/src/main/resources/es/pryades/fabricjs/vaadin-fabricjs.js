@@ -169,44 +169,6 @@ var Utils = exports.Utils = function () {
             return textObject;
         }
     }, {
-        key: 'createTooltip',
-        value: function createTooltip(text, configuration, center) {
-
-            var textObject = new fabric.Text(text, {
-                backgroundColor: "transparent",
-                fill: configuration.textFillColor,
-                fontWeight: configuration.textFontWeight,
-                fontStyle: configuration.textFontStyle,
-                fontSize: configuration.textFontSize,
-                fontFamily: configuration.textFontFamily,
-                visible: configuration.visible,
-                selectable: false,
-                shadow: configuration.textShadow //,
-                // objectCaching: false
-            });
-
-            var textHeight = textObject.calcTextHeight() + configuration.tooltipConfiguration.margin;
-            var textWidth = textObject.getScaledWidth() + configuration.tooltipConfiguration.margin;
-
-            var rect = new fabric.Rect({
-                width: textWidth,
-                height: textHeight,
-                visible: configuration.visible,
-                fill: configuration.tooltipConfiguration.backgroundColor,
-                backgroundColor: configuration.tooltipConfiguration.backgroundColor,
-                stroke: configuration.tooltipConfiguration.backgroundColor,
-                strokeWidth: configuration.strokeWidth,
-                objectCaching: false
-            });
-
-            var group = new fabric.Group([rect, textObject], {
-                left: center.x,
-                top: center.y
-            });
-
-            return group;
-        }
-    }, {
         key: 'generateUniqueId',
         value: function generateUniqueId() {
             return 'obj_' + Math.random().toString(36).substr(2, 16) + "_" + new Date().getTime();
@@ -1380,8 +1342,10 @@ var FabricJsApp = exports.FabricJsApp = function () {
                     case "rect":
                         objects[o].set('stroke', color);
                         break;
+                    case "text":
+                        objects[o].set('fill', color);
+                        break;
                     case "group":
-                        _this.canvasDraw.remove(_this.tooltip);
                         processGroup(objects[o], color);
                         break;
                 }
@@ -1389,33 +1353,20 @@ var FabricJsApp = exports.FabricJsApp = function () {
         };
 
         this.canvasDraw.on('mouse:over', function (e) {
-            if (_this.configuration.hoverColor && e.target && _this.configuration.tooltipConfiguration && _this.configuration.showTooltip) {
+            if (_this.configuration.hoverColor && e.target) {
                 var target = e.target;
-                
                 if (target.type === "group") {
                     processGroup(target, _this.configuration.hoverColor);
-                    if (_this.tooltip) {
-                        _this.canvasDraw.remove(_this.tooltip);
-                    }
-                    var pointer = _this.canvasDraw.getPointer(e.e);
-                    var center = {
-                        x: pointer.x,
-                        y: pointer.y
-                    };
-                    _this.tooltip = _utils.Utils.createTooltip("", _this.configuration, center);
-                    _this.canvasDraw.add(_this.tooltip);
                 }
                 _this.canvasDraw.renderAll();
             }
         });
 
         this.canvasDraw.on('mouse:out', function (e) {
-            if (_this.configuration.hoverColor && e.target && _this.configuration.tooltipConfiguration && _this.configuration.showTooltip) {
+            if (_this.configuration.hoverColor && e.target) {
                 var target = e.target;
                 if (target.type === "group") {
                     processGroup(target, _this.configuration.fillColor);
-                    _this.canvasDraw.remove(_this.tooltip);
-                    _this.tooltip = null;
                 }
                 _this.canvasDraw.renderAll();
             }

@@ -468,8 +468,7 @@ public class ImageCanvas extends VerticalLayout {
 		defaultConfiguration = new FigureConfiguration()
 				.withStrokeWidth(2.0)
 				.withFillColor("#F0BE20")
-				.withHoverColor( "#F08E20" )
-				.withShowTooltip( true)				
+				.withHoverColor( "#E02525" )
 				.withStrokeColor("#F0BE20")
 				.withBackgroundColor( "transparent" )
 				.withTextFontFamily("Roboto")
@@ -480,8 +479,8 @@ public class ImageCanvas extends VerticalLayout {
 				.withCursor( "default" );
 		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
-		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 2px" ));
-		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ).withTextBackgroundColor( "rgba(80, 90, 93, 0.3)" ) );
+		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 1px" ));
+		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 1px" ) );
 		
 		configurations.put( EnumActions.CONTRAST, defaultConfiguration.clone().withVisible( false ).withAction( CanvasAction.SHOW_RECT ).withCursor( "move" ) );
 		
