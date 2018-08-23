@@ -108,9 +108,11 @@ var Utils = exports.Utils = function () {
                 visible: configuration.visible,
                 originX: 'center',
                 originY: 'center',
+                //shadow: configuration.figureShadow ,
                 objectCaching: false
             });
 
+            line.setShadow(configuration.figureShadow);
             return line;
         }
     }, {
@@ -127,8 +129,10 @@ var Utils = exports.Utils = function () {
                 fill: 'transparent',
                 stroke: configuration.strokeColor,
                 strokeWidth: configuration.strokeWidth,
+                //shadow: configuration.figureShadow,
                 objectCaching: false
             });
+            rect.setShadow(configuration.figureShadow);
             return rect;
         }
     }, {
@@ -441,10 +445,18 @@ var Drawer = exports.Drawer = function () {
             var y1 = line.points[0].y;
             var y2 = line.points[1].y;
 
+            var rect = canvas.calcViewportBoundaries();
+
             var points = [x1, y1, x2, y2];
             var lineDrawer = _utils.Utils.createLine(points, configuration);
             var left = (x1 + x2) / 2;
             var top = (y1 + y2) / 2 + 5;
+
+            if (x1 < 0 || y1 < 0 || x2 > rect.br.x || y2 > rect.br.y) {
+                lineDrawer.clipTo(function (ctx) {
+                    console.log(ctx, arguments);
+                });
+            }
 
             var lineText = _utils.Utils.createTextLabel(line.text, {
                 left: left,
@@ -453,7 +465,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([lineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -481,7 +494,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -509,7 +523,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -535,7 +550,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([rectDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }

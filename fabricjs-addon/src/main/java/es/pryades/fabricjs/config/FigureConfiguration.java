@@ -15,15 +15,14 @@
  */
 package es.pryades.fabricjs.config;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 import es.pryades.fabricjs.enums.CanvasAction;
 import es.pryades.fabricjs.enums.FontStyle;
 import es.pryades.fabricjs.enums.FontWeight;
 import es.pryades.fabricjs.enums.StrokeLineCap;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -45,6 +44,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private String cursor;
     private Integer cancelDrawKeyCode;
     private String hoverColor;
+    private String figureShadow;
        
 
     public FigureConfiguration() {
@@ -58,7 +58,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.visible = true;
         this.cursor = "default";
         this.action = CanvasAction.NONE;
-        this.cancelDrawKeyCode = 27;
+        this.cancelDrawKeyCode = 27;        
        
     }
 
@@ -75,8 +75,20 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.cursor = configuration.getCursor();
         this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
         this.hoverColor = configuration.getHoverColor();
+        this.figureShadow = configuration.getFigureShadow();
+       
     }
 
+    public String getFigureShadow() {
+        return figureShadow;
+    }
+
+    public void setFigureShadow(String figureShadow) {
+        this.figureShadow = figureShadow;
+    }
+
+    
+    
     public String getStrokeLineCap() {
         return strokeLineCap;
     }
@@ -264,6 +276,11 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
 
     public FigureConfiguration withHoverColor(String hoverColor) {
         this.setHoverColor(hoverColor);
+        return this;
+    }
+    
+     public FigureConfiguration withFigureShadow(String figureShadow) {
+        this.setFigureShadow(figureShadow);
         return this;
     }
 

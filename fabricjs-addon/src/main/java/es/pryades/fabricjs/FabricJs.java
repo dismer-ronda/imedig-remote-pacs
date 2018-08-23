@@ -80,10 +80,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public FabricJs(FigureConfiguration generalFigureConfiguration) {
         this.commands = new ArrayList<>();
-        //this.figures = new ArrayList<>();
         this.addStyleName("canvas-wrapper");
 
-        //this.notes = new ArrayList<>();
         this.notesConfiguration = new NotesConfiguration();
         this.images = new ArrayList<>();
         this.figureConfiguration = generalFigureConfiguration;
@@ -92,15 +90,11 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
-        //this.action = defauAction;
-
     }
 
     public void setImageUrl(String url) {
         images = Arrays.asList(url);
         this.getState().imagesUrl = getPayload(this.images);
-        //this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-       // this.getState().commands = getPayload(this.commands);
     }
 
     public void setImageUrl(ExternalResource resource) {
@@ -108,11 +102,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void setImageUrlsAsString(List<String> images) {
-        //backgroundImage = url;
         this.images = images;
         this.getState().imagesUrl = getPayload(this.images);
-        //this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-        //this.getState().commands = getPayload(this.commands);
     }
 
     public void setImageUrlsAsResource(List<ExternalResource> resource) {
@@ -195,9 +186,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void setFigureConfiguration(FigureConfiguration generalFigureConfiguration) {
-        this.figureConfiguration = generalFigureConfiguration;
-        this.commands.add(new Command("SET_CONFIG",getPayload(this.figureConfiguration)));
-        getState().commands = getPayload(this.commands);
+        this.figureConfiguration = generalFigureConfiguration;        
+        getState().figureConfiguration = getPayload(this.figureConfiguration);
     }
 
     public CanvasDimensions getCanvasDimensions() {

@@ -15,10 +15,9 @@
  */
 package es.pryades.fabricjs.config;
 
-import java.io.Serializable;
-
 import es.pryades.fabricjs.enums.FontStyle;
 import es.pryades.fabricjs.enums.FontWeight;
+import java.io.Serializable;
 
 /**
  *
@@ -50,7 +49,6 @@ public class FontConfiguration implements Serializable {
         this.textFontSize = configuration.getTextFontSize();
         this.textFontStyle = configuration.getTextFontStyle().getValue();
         this.textFontWeight = configuration.getTextFontWeight().getValue();
-        this.textShadow = configuration.getTextShadow();
     }
 
     public String getTextShadow() {
