@@ -31,15 +31,14 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-
-        if (JSON.stringify(component.imagesUrls) !== state.imagesUrl) {
-            component.imagesUrls = JSON.parse(state.imagesUrl);
-            fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-            fabricJs.onLoadImage(component.imagesUrls);
+        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+        if (component.imagesUrls !== state.imagesUrl) {
+            component.imagesUrls = state.imagesUrl;          
+            fabricJs.onLoadImage(JSON.parse(component.imagesUrls));
         }
 
-        if (JSON.stringify(component.figureConfiguration) !== state.figureConfiguration) {
-            component.figureConfiguration = JSON.parse(state.figureConfiguration);
+        if (component.figureConfiguration !== state.figureConfiguration) {
+            component.figureConfiguration = state.figureConfiguration;
             fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
         }
 
@@ -103,7 +102,7 @@ var es_pryades_fabricjs_FabricJs = function() {
             }
         }
 
-        if (commands.length && command.canvasAction !== "NONE") {
+        if (commands.length && commands[0].canvasAction !== "NONE") {
             component.clearCommands();
         }
     };

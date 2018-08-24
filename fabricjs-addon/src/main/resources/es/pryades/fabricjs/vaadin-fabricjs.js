@@ -445,19 +445,12 @@ var Drawer = exports.Drawer = function () {
             var y1 = line.points[0].y;
             var y2 = line.points[1].y;
 
-            var rect = canvas.calcViewportBoundaries();
-
             var points = [x1, y1, x2, y2];
             var lineDrawer = _utils.Utils.createLine(points, configuration);
             var left = (x1 + x2) / 2;
             var top = (y1 + y2) / 2 + 5;
 
-            if (x1 < 0 || y1 < 0 || x2 > rect.br.x || y2 > rect.br.y) {
-                lineDrawer.clipTo(function (ctx) {
-                    console.log(ctx, arguments);
-                });
-            }
-
+        
             var lineText = _utils.Utils.createTextLabel(line.text, {
                 left: left,
                 top: top
