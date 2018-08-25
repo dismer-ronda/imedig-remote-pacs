@@ -476,7 +476,8 @@ public class ImageCanvas extends VerticalLayout {
 				.withTextFillColor("#F0BE20")
 				.withTextFontWeight( FontWeight.FW700 )
 				.withAction( CanvasAction.NONE )
-				.withCursor( "default" );
+				.withCursor( "default" )
+				.withCancelDrawKeyCode( 46 );
 		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
 		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 1px" ));

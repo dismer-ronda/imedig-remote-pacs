@@ -108,27 +108,13 @@
 	padding-top: 8px !important; 
 }
 
-.v-button-fullscreen{
+.fullscreen{
 	position: fixed !important;
 	right: 0px !important;
 	top: 0px !important;
 	margin-top: 3px !important;
 	margin-right: 3px !important;
 	z-index: 30;
-	font-size: 22px;
-	&:focus:after{
-  	   -webkit-box-shadow: none !important;
-	   box-shadow: none !important;
-	}
-}
-
-.v-button-restore{
-	position: fixed !important;
-	right: 0px !important;
-	top: 0px !important;
-	margin-top: 3px !important;
-	margin-right: 3px !important;
-	z-index: 20;
 	font-size: 22px;
 	&:focus:after{
   	   -webkit-box-shadow: none !important;

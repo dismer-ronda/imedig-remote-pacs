@@ -36,7 +36,6 @@ import es.pryades.imedig.viewer.actions.ZoomAction;
 
 public class LeftToolBar extends HorizontalLayout {
 	
-	//private VerticalLayout inside;
 	private Panel panelThumnails;
 	private VerticalLayout thumnails;
 	
@@ -62,8 +61,9 @@ public class LeftToolBar extends HorizontalLayout {
 	private Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ListenerAction listenerAction, ImageResource imageResource){
-		setWidth("160px");
+		setWidth("165px");
 		setHeight("100%");
+		setSpacing( true );
 		this.listenerAction = listenerAction;
 		this.imageResource = imageResource;
 		this.context = context;
@@ -76,8 +76,8 @@ public class LeftToolBar extends HorizontalLayout {
 //		inside.setSpacing(true);
 //		inside.setHeight("100%");
 		
-		buildPanel();
 		buildButtons();
+		buildPanel();
 //		addComponent(inside);
 	}
 

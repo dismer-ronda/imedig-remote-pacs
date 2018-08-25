@@ -1,23 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
-  	<modelVersion>4.0.0</modelVersion>
-  
-  	<groupId>es.pryades.imedig</groupId>
-  	<artifactId>imedig-cloud</artifactId>
-  	<version>1.0-SNAPSHOT</version>
-  	<packaging>war</packaging>
-  
-  	<name>imedig-cloud</name>
-  	<description>imedig-cloud</description>
-  	
-  	<properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>es.pryades.imedig</groupId>
+	<artifactId>imedig-cloud</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>imedig-cloud</name>
+	<description>imedig-cloud</description>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>7.7.13</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<dcm4che-version>2.0.26</dcm4che-version>
 	</properties>
 
-  	<build>
+	<build>
 
 		<plugins>
 
@@ -73,14 +74,14 @@
 			<version>1.0.1B-rc4</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Viewer -->
 		<dependency>
 			<groupId>es.pryades</groupId>
 			<artifactId>fabricjs-addon</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
-		
+
 		<!-- vaadin -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -105,16 +106,20 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.alump.gofullscreen</groupId>
+			<artifactId>gofullscreen-addon</artifactId>
+			<version>0.5.3</version>
+		</dependency>
 
-<!-- Esta dependencia se necesita solamente para compilar widgetsets 
--->
+		<!-- Esta dependencia se necesita solamente para compilar widgetsets -->
 
 		<dependency>
 			<groupId>com.vaadin</groupId>
-		    <artifactId>vaadin-client-compiler</artifactId>
-		    <version>${vaadin.version}</version>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>${vaadin.version}</version>
 		</dependency>
-						
+
 		<!-- dcm4che -->
 		<dependency>
 			<groupId>dcm4che</groupId>
@@ -151,6 +156,6 @@
 			<artifactId>jai_imageio</artifactId>
 			<version>1.1</version>
 		</dependency>
- 	</dependencies>
-			
+	</dependencies>
+
 </project>

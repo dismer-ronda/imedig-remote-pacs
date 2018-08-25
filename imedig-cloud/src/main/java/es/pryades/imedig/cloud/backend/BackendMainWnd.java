@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
+import org.vaadin.alump.gofullscreen.FullScreenButton;
+import org.vaadin.alump.gofullscreen.FullScreenEvent;
+import org.vaadin.alump.gofullscreen.FullScreenListener;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
@@ -16,10 +19,9 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -67,7 +69,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private static final String AUTH_ADMINISTRACION = "administracion";
 	
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
-	private static final String ID_EXIT_FULLSCREEN = "btn.exitfullscreen";
 	
 
 	private LoginPanel loginPanel;
@@ -85,8 +86,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private Button buttonManual;
 	protected Button bttnRequest;
 	protected Button bttnReport;
-	protected Button bttnFullScreen;
-	protected Button bttnRestoreScreen;
+	protected FullScreenButton bttnFullScreen;
 
 	private DetallesCentrosManager centrosManager;
 	private AccesosManager accesosManager;
@@ -232,6 +232,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		contents.setImmediate( false );
 		contents.setSizeFull();
 		contents.setMargin( false );
+		contents.setSpacing( false );
 
 		mainLayout.addComponent( contents );
 		mainLayout.setExpandRatio( contents, 1.0f );
@@ -241,18 +242,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 	private Component buildTop()
 	{
-		VerticalLayout topLayout = new VerticalLayout();
-		topLayout.setWidth( "100%" );
-
 		topBar = new HorizontalLayout();
 		topBar.setWidth( "100%" );
 		topBar.setHeight( "-1px" ); //BAR_HEIGHT );
 		topBar.setSpacing( false );
 		topBar.setMargin( true );
 		topBar.addStyleName( "menu-layout" );
-
-		topLayout.addComponent( topBar );
-		topLayout.setComponentAlignment( topBar, Alignment.MIDDLE_CENTER );
 
 		logoBar = new HorizontalLayout();
 		logoBar.setSpacing( false );
@@ -272,7 +267,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		topBar.setComponentAlignment( buttonsBar, Alignment.MIDDLE_RIGHT );
 		topBar.setExpandRatio( buttonsBar, 1.0f );
 
-		return topLayout;
+		return topBar;
 	}
 
 	private void showGlobalButtons()
@@ -397,21 +392,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		buttonsBar.addComponent( btn );
 		
 		buildFullScreenButtons();
-		
-		buttonsBar.addComponent( bttnFullScreen );
-		buttonsBar.addComponent( bttnRestoreScreen );
+		//addComponent( bttnFullScreen );
 	}
-	
-	private void fullScreenListener(){
-	    
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append("document.getElementById('btn.fullscreen').addEventListener('click',function(){screenfull.request();});");
-        builder.append("document.getElementById('btn.exitfullscreen').addEventListener('click',function(){screenfull.exit();});");
-        
-        JavaScript.getCurrent().execute(builder.toString());
-        
-    }
 	
 	private static void setStyleButtonBar(Button button){
 		button.addStyleName( ValoTheme.BUTTON_LARGE );
@@ -421,44 +403,38 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	}
 	
 	private void buildFullScreenButtons(){
-		bttnFullScreen = new Button( FontAwesome.EXPAND );
+		bttnFullScreen = new FullScreenButton( );
+		bttnFullScreen.setIcon( FontAwesome.EXPAND  );
 		bttnFullScreen.setImmediate( true );
 		bttnFullScreen.addStyleName( ImedigTheme.BUTTON_FULLSCREEN );
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		bttnFullScreen.setId( ID_FULLSCREEN );
 		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-		bttnFullScreen.addClickListener( new ClickListener()
+		bttnFullScreen.addFullScreenListener(new FullScreenListener()
 		{
 			
 			@Override
-			public void buttonClick( ClickEvent event )
+			public void onFullScreenEvent( FullScreenEvent event )
 			{
-				bttnRestoreScreen.removeStyleName( ImedigTheme.BUTTON_INVISIBLE );
-				bttnFullScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
+				if (event.isFullScreen()){
+					topBar.setVisible( false );
+					bttnFullScreen.setIcon( FontAwesome.COMPRESS  );
+					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
+				}else{
+					topBar.setVisible( true );
+					bttnFullScreen.setIcon( FontAwesome.EXPAND  );
+					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+				}
+				
 			}
-		} );
+		});
 		
-		bttnRestoreScreen = new Button( FontAwesome.COMPRESS );
-		bttnRestoreScreen.setImmediate( true );
-		bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_RESTORE );
-		bttnRestoreScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		bttnRestoreScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
-		bttnRestoreScreen.setId( ID_EXIT_FULLSCREEN );
-		bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
-		bttnRestoreScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-		bttnRestoreScreen.addClickListener( new ClickListener()
-		{
-			
-			@Override
-			public void buttonClick( ClickEvent event )
-			{
-				bttnRestoreScreen.addStyleName( ImedigTheme.BUTTON_INVISIBLE );
-				bttnFullScreen.removeStyleName( ImedigTheme.BUTTON_INVISIBLE );
-			}
-		} );
-		
-		fullScreenListener();
+		CssLayout hide = new CssLayout( bttnFullScreen );
+		hide.addStyleName( ImedigTheme.BUTTON_FULLSCREEN );
+		hide.setHeight( "0px" );
+		hide.setWidth( "0px" );
+		contents.addComponent( hide );
 	}
 
 	private void showLogoLayout()

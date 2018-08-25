@@ -31,9 +31,9 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-        if (component.imagesUrls !== state.imagesUrl) {
-            component.imagesUrls = state.imagesUrl;          
+         if (component.imagesUrls !== state.imagesUrl) {
+            component.imagesUrls = state.imagesUrl;     
+            fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
             fabricJs.onLoadImage(JSON.parse(component.imagesUrls));
         }
 

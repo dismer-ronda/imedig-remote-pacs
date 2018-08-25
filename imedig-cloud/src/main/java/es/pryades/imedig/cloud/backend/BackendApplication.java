@@ -37,7 +37,6 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
  */
 @Theme("imedig")
 @PreserveOnRefresh
-@com.vaadin.annotations.JavaScript("vaadin://screenfull/screenfull.min.js")
 public class BackendApplication extends UI //implements HttpServletRequestListener
 {
 	private static final long serialVersionUID = 683154667075459739L;
@@ -123,7 +122,6 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	protected void refresh(VaadinRequest request) {
 		super.refresh( request );
 		copyright();
-		fullScreenListener();
     }
 
 	public void messageAndExit( String title, ResourceBundle resources, String message )
@@ -235,17 +233,6 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	private void executeJScripts(){
 		copyright();
 	}
-	
-	private void fullScreenListener(){
-	    
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append("document.getElementById('btn.fullscreen').addEventListener('click',function(){screenfull.request();});");
-        builder.append("document.getElementById('btn.exitfullscreen').addEventListener('click',function(){screenfull.exit();});");
-        
-        JavaScript.getCurrent().execute(builder.toString());
-        
-    }
 	
 	private void copyright() {
         final String jsdivcopyright = 
