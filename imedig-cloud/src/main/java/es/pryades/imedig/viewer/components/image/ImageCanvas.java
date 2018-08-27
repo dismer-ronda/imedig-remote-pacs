@@ -505,6 +505,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		viewRect = getCanvasImage();
 		showImagenFigures();
+		showInformation(imageHeader);
 	}
 	
 	private void showImagenFigures() {

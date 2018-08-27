@@ -61,9 +61,9 @@ public class LeftToolBar extends HorizontalLayout {
 	private Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ListenerAction listenerAction, ImageResource imageResource){
-		setWidth("165px");
+		//setWidth("165px");
 		setHeight("100%");
-		setSpacing( true );
+		//setSpacing( true );
 		this.listenerAction = listenerAction;
 		this.imageResource = imageResource;
 		this.context = context;
@@ -206,8 +206,12 @@ public class LeftToolBar extends HorizontalLayout {
         
 		allButtonsDisable();
 		
-		toolbox.setWidth( "46px" );
-		addComponent( toolbox );
+		//toolbox.setWidth( "50px" );
+		VerticalLayout container = new VerticalLayout(toolbox);
+		container.setHeight( "100%" );
+		container.addStyleName( ImedigTheme.TOOLBOX_CONTENT );
+		
+		addComponent( container );
 		//setComponentAlignment( toolbox, Alignment.TOP_RIGHT );
 		//inside.addComponent(grid);
 	}
@@ -219,7 +223,7 @@ public class LeftToolBar extends HorizontalLayout {
 		
 		panelThumnails = new Panel(thumnails);
 		panelThumnails.setHeight( "100%" );
-		panelThumnails.setWidth( "100%" );
+		panelThumnails.setWidth( "105px" );
 		panelThumnails.addStyleName(ValoTheme.PANEL_BORDERLESS);
 		
 		addComponent( panelThumnails );
@@ -244,10 +248,14 @@ public class LeftToolBar extends HorizontalLayout {
 		thumnails.removeAllComponents();
 		studyCount = 0;
 		panelThumnails.setVisible( false );
+		removeStyleName( ImedigTheme.TOOLBOX_CONTENT );
 	}
 	
 	public void addStudyPanel( StudyPanel panel){
-		if (!panelThumnails.isVisible()) panelThumnails.setVisible( true );
+		if (!panelThumnails.isVisible()) {
+			panelThumnails.setVisible( true );
+			addStyleName( ImedigTheme.TOOLBOX_CONTENT );
+		}
 		
 		panel.addStyleName(ImedigTheme.BG_THUMNAIL+ (studyCount % 2));
 		studyCount ++;

@@ -22,7 +22,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -63,7 +63,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 	private static final long serialVersionUID = 5722841685959892036L;
 
-	private static final String LOGO_WIDTH = "116px";
+	private static final String LOGO_WIDTH = "120px";
 
 	private static final String AUTH_CONFIGURACION = "configuracion";
 	private static final String AUTH_ADMINISTRACION = "administracion";
@@ -80,7 +80,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private HorizontalLayout logoBar;
 	private HorizontalLayout buttonsBar;
 
-	private VerticalLayout contents;
+	private CssLayout contents;
 	
 	private Button buttonReports;
 	private Button buttonManual;
@@ -228,11 +228,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		mainLayout.addComponent( buildTop() );
 
-		contents = new VerticalLayout();
-		contents.setImmediate( false );
+		contents = new CssLayout();
 		contents.setSizeFull();
-		contents.setMargin( false );
-		contents.setSpacing( false );
 
 		mainLayout.addComponent( contents );
 		mainLayout.setExpandRatio( contents, 1.0f );
@@ -406,7 +403,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		bttnFullScreen = new FullScreenButton( );
 		bttnFullScreen.setIcon( FontAwesome.EXPAND  );
 		bttnFullScreen.setImmediate( true );
-		bttnFullScreen.addStyleName( ImedigTheme.BUTTON_FULLSCREEN );
+		bttnFullScreen.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		bttnFullScreen.setId( ID_FULLSCREEN );
@@ -418,11 +415,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			public void onFullScreenEvent( FullScreenEvent event )
 			{
 				if (event.isFullScreen()){
-					topBar.setVisible( false );
+					topBar.addStyleName( "invisible" );
 					bttnFullScreen.setIcon( FontAwesome.COMPRESS  );
 					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
 				}else{
-					topBar.setVisible( true );
+					topBar.removeStyleName( "invisible" );
 					bttnFullScreen.setIcon( FontAwesome.EXPAND  );
 					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
 				}
@@ -431,7 +428,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		});
 		
 		CssLayout hide = new CssLayout( bttnFullScreen );
-		hide.addStyleName( ImedigTheme.BUTTON_FULLSCREEN );
+		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "0px" );
 		hide.setWidth( "0px" );
 		contents.addComponent( hide );
@@ -440,13 +437,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private void showLogoLayout()
 	{
 		this.logoBar.removeAllComponents();
-
-		Label label = new Label();
-		label.setIcon( new ThemeResource( "images/logobanner.png" ) );
-		label.setWidth( LOGO_WIDTH );
-		label.setHeight( "100%" );
-		logoBar.addComponent( label );
-		logoBar.setComponentAlignment( label, Alignment.MIDDLE_LEFT );
+		
+		Image logo = new Image(null, new ThemeResource( "images/logobanner.png" ));
+		logo.setWidth( LOGO_WIDTH );
+		//label.setHeight( "100%" );
+		logoBar.addComponent( logo );
+		logoBar.setComponentAlignment( logo, Alignment.MIDDLE_LEFT );
 	}
 
 	private Usuario getUsuario( ImedigContext ctx )
@@ -550,7 +546,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	{
 		viewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
 		contents.addComponent( viewer );
-		contents.setExpandRatio( viewer, 1.0f );
+		//contents.setExpandRatio( viewer, 1.0f );
 	}
 	
 	private static User getUser(Usuario usuario){

@@ -13075,6 +13075,13 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 26px !important;
 }
 
+.toolbox-content {
+	margin-top: 0px;
+	padding-right: 3px;
+	margin-right: 3px;
+	border-right-style: ridge;
+}
+
 .selected {
 	color: #02925d !important;
 }
@@ -13100,19 +13107,25 @@ div.v-layout.v-horizontal.v-widget {
 	padding-top: 8px !important;
 }
 
+.content {
+	display: contents !important;
+}
+
 .fullscreen {
-	position: fixed !important;
-	right: 0px !important;
-	top: 0px !important;
-	margin-top: 3px !important;
-	margin-right: 3px !important;
 	z-index: 30;
 	font-size: 22px;
+	float: right;
 }
 
 .fullscreen:focus:after {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
+}
+
+.fullscreen .v-button {
+	z-index: 30;
+	margin: 3px;
+	background-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 .copyright {
