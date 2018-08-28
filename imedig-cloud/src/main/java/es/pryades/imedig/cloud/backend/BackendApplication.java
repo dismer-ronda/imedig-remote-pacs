@@ -103,8 +103,8 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 			wnd.removeAllComponents();
     	
 		window = new BackendMainWnd( ctx );
-        
-    	setContent( window );
+		
+		setContent( window );
 
     	ctx.addData( "Application", this );
     	ctx.addData( "Resources", resources );

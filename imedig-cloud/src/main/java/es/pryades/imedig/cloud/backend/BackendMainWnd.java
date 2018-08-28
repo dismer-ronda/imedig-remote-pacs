@@ -28,6 +28,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageDlg;
@@ -401,7 +402,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	private void buildFullScreenButtons(){
 		bttnFullScreen = new FullScreenButton( );
-		bttnFullScreen.setIcon( FontAwesome.EXPAND  );
+		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
 		bttnFullScreen.setImmediate( true );
 		bttnFullScreen.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
@@ -416,11 +417,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			{
 				if (event.isFullScreen()){
 					topBar.addStyleName( "invisible" );
-					bttnFullScreen.setIcon( FontAwesome.COMPRESS  );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
 					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
 				}else{
 					topBar.removeStyleName( "invisible" );
-					bttnFullScreen.setIcon( FontAwesome.EXPAND  );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
 					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
 				}
 				

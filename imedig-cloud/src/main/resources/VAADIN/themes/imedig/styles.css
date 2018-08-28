@@ -13079,7 +13079,8 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 0px;
 	padding-right: 3px;
 	margin-right: 3px;
-	border-right-style: ridge;
+	border-right-style: solid;
+	border-right-color: #303739;
 }
 
 .selected {
@@ -13109,6 +13110,11 @@ div.v-layout.v-horizontal.v-widget {
 
 .content {
 	display: contents !important;
+}
+
+.maincontent {
+	width: 100%;
+	height: 100%;
 }
 
 .fullscreen {

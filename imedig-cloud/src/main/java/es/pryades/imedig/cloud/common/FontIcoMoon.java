@@ -18,15 +18,13 @@ package es.pryades.imedig.cloud.common;
 import com.vaadin.server.FontIcon;
 import com.vaadin.server.GenericFontIcon;
 
-/**
- *
- * @author geanny
- */
 public enum FontIcoMoon implements FontIcon {
 
-    // @formatter:off
-	RULE(0Xe915),
-	PROTRACTOR(0Xe900);
+	// @formatter:off
+    WINDOW_MAXIMIZE(0Xf2d0),
+    WINDOW_RESTORE(0Xf2d2),
+    RULE(0Xe915),
+    PROTRACTOR(0Xe900);
     // @formatter:on
     public static final String FONT_FAMILY = "IcoMoon";
     private final int codepoint;
@@ -55,4 +53,4 @@ public enum FontIcoMoon implements FontIcon {
     public String getHtml() {
         return GenericFontIcon.getHtml(FontIcoMoon.FONT_FAMILY, codepoint);
     }
-}
+ }
