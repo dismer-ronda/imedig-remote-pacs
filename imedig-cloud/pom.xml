@@ -81,6 +81,11 @@
 			<artifactId>fabricjs-addon</artifactId>
 			<version>1.0.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>es.pryades</groupId>
+			<artifactId>fullscreen-addon</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
 
 		<!-- vaadin -->
 		<dependency>
@@ -105,11 +110,6 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin.alump.gofullscreen</groupId>
-			<artifactId>gofullscreen-addon</artifactId>
-			<version>0.5.3</version>
 		</dependency>
 
 		<!-- Esta dependencia se necesita solamente para compilar widgetsets -->

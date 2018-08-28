@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
-import org.vaadin.alump.gofullscreen.FullScreenButton;
-import org.vaadin.alump.gofullscreen.FullScreenEvent;
-import org.vaadin.alump.gofullscreen.FullScreenListener;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
@@ -28,6 +25,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.fullscreen.FullScreenExtension;
+import es.pryades.fullscreen.listeners.FullScreenChangeListener;
 import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
@@ -87,7 +86,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private Button buttonManual;
 	protected Button bttnRequest;
 	protected Button bttnReport;
-	protected FullScreenButton bttnFullScreen;
+	protected Button bttnFullScreen;
 
 	private DetallesCentrosManager centrosManager;
 	private AccesosManager accesosManager;
@@ -401,7 +400,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	}
 	
 	private void buildFullScreenButtons(){
-		bttnFullScreen = new FullScreenButton( );
+		bttnFullScreen = new Button( );
 		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
 		bttnFullScreen.setImmediate( true );
 		bttnFullScreen.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
@@ -409,25 +408,25 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		bttnFullScreen.setId( ID_FULLSCREEN );
 		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-		bttnFullScreen.addFullScreenListener(new FullScreenListener()
-		{
-			
-			@Override
-			public void onFullScreenEvent( FullScreenEvent event )
-			{
-				if (event.isFullScreen()){
-					topBar.addStyleName( "invisible" );
+		
+		FullScreenExtension extension = new FullScreenExtension();
+        extension.trigger(bttnFullScreen);
+        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
+
+            @Override
+            public void onChange(boolean fullscreen) {
+                if (fullscreen) {
+                	topBar.setVisible( false );
 					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
 					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-				}else{
-					topBar.removeStyleName( "invisible" );
+                } else {
+                	topBar.setVisible( true );
 					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
 					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-				}
-				
-			}
-		});
-		
+                }
+            }
+        });
+
 		CssLayout hide = new CssLayout( bttnFullScreen );
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "0px" );
