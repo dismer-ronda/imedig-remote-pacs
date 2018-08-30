@@ -108,7 +108,6 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		this.context = context;
 		this.user = user;
 		setSizeFull();
-		setSpacing(true);
 		buidComponent();
 		
 		init();
