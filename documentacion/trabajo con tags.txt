@@ -1,0 +1,9 @@
+Trabajo con los tags usando git
+
+$ git clone .... #clonar el repositorio localmente
+
+$ git tag -l #lista todos los tags 
+
+$ git checkout tags/<tag_name> #Ir a un tag específico 
+
+$ git checkout tags/<tag_name> -b <branch_name> #Ir a un tag y crear una rama
