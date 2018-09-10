@@ -28,25 +28,6 @@
 		<Vaadin-Addon>${project.artifactId}-${project.version}.jar</Vaadin-Addon>
 	</properties>
 
-    <!--
-	<organization>
-		<name>My Name</name>
-		<url>https://github.com/mygithubaccount/FabricJs/</url>
-	</organization>
-
-	<scm>
-		<url>https://github.com/mygithubaccount/FabricJs</url>
-		<connection>scm:git:git://github.com/mygithubaccount/FabricJs.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:/mygithubaccount/${componentClassName}.git</developerConnection>
-		<tag>FabricJs add-on for Vaadin</tag>
-	</scm>
-
-        <issueManagement>
-                <system>GitHub</system>
-                <url>https://github.com/mygithubaccount/FabricJs/issues</url>
-        </issueManagement>
-    -->
-
     <licenses>
         <license>
             <name>Apache 2</name>
