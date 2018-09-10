@@ -8,47 +8,73 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.cloud.backend.BackendApplication;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.action.ListenerAction;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
+import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.datas.ImageData;
 
-public class StudyPanel extends VerticalLayout {
+public class StudyPanel extends CssLayout {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StudyPanel.class);
 
+	private Button btnClose;
 	private VerticalLayout studyInfo;
 	private VerticalLayout thumnails;
-
-	private ListenerAction listenerAction;
+	private ImedigContext context;
+	private StudyTree study;
+	private StudyPanel instance;
 	
-	public StudyPanel(ListenerAction listenerAction) {
-		addStyleName(ImedigTheme.STUDY_PANEL);
-
-		this.listenerAction = listenerAction;
+	public StudyPanel(ImedigContext context) {
+		addStyleName( "study-thumnails-panel" );
+		instance = this;
+		this.context = context;
 
 		setWidth("100%");
+		buildTop();
+		VerticalLayout content = new VerticalLayout();
+		content.setWidth( "100%" );
 		studyInfo = new VerticalLayout();
 		studyInfo.setWidth("100%");
-		addComponent(studyInfo);
 		thumnails = new VerticalLayout();
 		thumnails.setWidth("100%");
-		thumnails.setSpacing(true);
-		addComponent(thumnails);
+		content.addComponents( studyInfo, thumnails );
+		addComponent(content);
 	}
 
+	private void buildTop(){
+		btnClose = new Button( FontAwesome.CLOSE );
+		btnClose.setDescription( context.getString( "words.close" ) );
+		btnClose.addStyleName( ValoTheme.BUTTON_ICON_ONLY);
+		btnClose.addStyleName( ValoTheme.BUTTON_TINY);
+		btnClose.addClickListener( new Button.ClickListener()
+		{
+			@Override
+			public void buttonClick( com.vaadin.ui.Button.ClickEvent event )
+			{
+				context.sendAction( new CloseStudies( instance, study ) );
+				
+			}
+		});
+		
+		addComponent( btnClose );
+	}
+	
 	public void setStudy(StudyTree study, List<ImageData> datas){
+		this.study = study;
 		addStudyInfo(study);
 		addStudyImages( datas );
 	}
@@ -67,7 +93,7 @@ public class StudyPanel extends VerticalLayout {
 			img.addClickListener(new ClickListener() {
 				@Override
 				public void click(ClickEvent event) {
-					listenerAction.doAction(new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
+					context.sendAction( new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
 				}
 			});
 			thumnails.addComponent(img);
@@ -118,5 +144,4 @@ public class StudyPanel extends VerticalLayout {
 
 		return ret;
 	}
-
 }

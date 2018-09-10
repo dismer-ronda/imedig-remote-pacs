@@ -52,6 +52,7 @@ public class ImageCanvas extends VerticalLayout {
 	private FabricJs canvas;
 	private FigureConfiguration defaultConfiguration;
 	private List<Figure> imagenFigures;
+	@Getter
 	private ImageData imageData = null;
 	@Getter
 	private EnumActions currentAction = EnumActions.NONE; 

@@ -105,16 +105,58 @@
 .v-button-toolbar{
 	font-size: 24px !important;
 	line-height: 0.9;
+	padding: 12px !important;
+	width: 80px;
+	margin-bottom: 1px;
 	& .v-button-caption{
 		font-size: 13px !important;
 		font-weight: normal;
 	}
+	&:focus:after{
+		-webkit-box-shadow: none !important;
+		box-shadow: none !important;
+	}
+	&:hover {
+    	background-color: #1c2123;
+	}
+}
+
+.study-thumnails-panel{
+	& .v-button{
+		font-size: 8px !important;
+		width: 14px !important;
+		height: 15px !important;
+		margin: 2px;
+		float: right;
+		&:focus:after{
+			-webkit-box-shadow: none !important;
+			box-shadow: none !important;
+		}
+		&:hover {
+    		background-color: #1c2123;
+		}
+	}
+	& .v-label{
+		color: #283033;
+		font-size: 11px;
+		font-weight: bold;
+		margin-bottom: 2px;
+		margin-left: 3px;
+	}	
+	& .v-image{
+		margin-bottom: 5px;
+	}
+	
 }
 
 .v-horizontallayout-menu-layout{
 	background-color: #283033;
-	padding-bottom: 8px !important;
-	padding-top: 8px !important; 
+	& .v-button-selected-menu::after{
+    	border-bottom: 2px solid #fff!important;
+    	border-bottom-color: white!important;
+    	//transform: scaleX(0);
+    	transition: transform .2s ease-in-out!important;
+	}
 }
 
 .content{

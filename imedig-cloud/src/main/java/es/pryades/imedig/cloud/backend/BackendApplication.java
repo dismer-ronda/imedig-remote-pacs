@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
@@ -36,6 +37,7 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
  * The Application's "main" class
  */
 @Theme("imedig")
+@Title("Imedig")
 @PreserveOnRefresh
 public class BackendApplication extends UI //implements HttpServletRequestListener
 {

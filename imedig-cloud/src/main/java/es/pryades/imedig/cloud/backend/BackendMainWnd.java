@@ -13,6 +13,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -25,14 +26,13 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.fullscreen.FullScreenExtension;
-import es.pryades.fullscreen.listeners.FullScreenChangeListener;
-import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageDlg;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.AccesosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
@@ -50,14 +50,16 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Administration.AdministrationDlg;
 import es.pryades.imedig.cloud.modules.Configuration.ConfigurationDlg;
 import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
-import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
+import es.pryades.imedig.cloud.modules.Reports.ReportsViewer;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.components.ViewerWnd;
 import lombok.Getter;
 
-public class BackendMainWnd extends VerticalLayout implements ModalParent
+public class BackendMainWnd extends VerticalLayout implements ModalParent,ListenerAction
 {
 	private static final Logger LOG = Logger.getLogger( BackendMainWnd.class );
 
@@ -68,25 +70,23 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private static final String AUTH_CONFIGURACION = "configuracion";
 	private static final String AUTH_ADMINISTRACION = "administracion";
 	
-	private static final String ID_FULLSCREEN = "btn.fullscreen";
-	
-
 	private LoginPanel loginPanel;
 
 	private VerticalLayout mainLayout;
-	//private HorizontalLayout banner;
 
 	private HorizontalLayout topBar;
 	private HorizontalLayout logoBar;
+	private HorizontalLayout selectButtonsBar;
 	private HorizontalLayout buttonsBar;
 
 	private CssLayout contents;
 	
+	private Button btnSelected;
+	private Button buttonImages;
 	private Button buttonReports;
 	private Button buttonManual;
 	protected Button bttnRequest;
 	protected Button bttnReport;
-	protected Button bttnFullScreen;
 
 	private DetallesCentrosManager centrosManager;
 	private AccesosManager accesosManager;
@@ -96,7 +96,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	@Getter
 	private ImedigContext context;
 
-	private ViewerWnd viewer;
+	private ViewerWnd imageViewer;
+	private ReportsViewer reportsViewer;
 	private DetalleCentro detalleCentro;
 	@Getter 
 	private InformeImagen imagen;
@@ -142,6 +143,18 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 		addComponent( center );
 		setExpandRatio( center, 1.0f );
+	}
+	
+	@Override
+	public void attach(){
+		super.attach();
+		context.addListener( this );
+	}
+	
+	@Override
+	public void detach(){
+		super.detach();
+		context.removeListener( this );
 	}
 
 	private void registerAccess()
@@ -241,28 +254,34 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	{
 		topBar = new HorizontalLayout();
 		topBar.setWidth( "100%" );
-		topBar.setHeight( "-1px" ); //BAR_HEIGHT );
+		topBar.setHeight( "-1px" );
 		topBar.setSpacing( false );
-		topBar.setMargin( true );
-		topBar.addStyleName( "menu-layout" );
+		topBar.setMargin( new MarginInfo( false, true ) );
+		topBar.setId( "menu-layout" );
+		topBar.addStyleName( ImedigTheme.MENU_LAYOUT );
 
 		logoBar = new HorizontalLayout();
 		logoBar.setSpacing( false );
 		logoBar.setMargin( false );
-		logoBar.setHeight( "-1px" ); //LOGO_HEIGHT );
+		logoBar.setHeight( "-1px" ); 
 
-		topBar.addComponent( logoBar );
-		topBar.setComponentAlignment( logoBar, Alignment.MIDDLE_LEFT );
-		
+		selectButtonsBar = new HorizontalLayout();
+		selectButtonsBar.setHeight( "-1px" );
+		selectButtonsBar.setMargin( false );
 
 		buttonsBar = new HorizontalLayout();
-		buttonsBar.setHeight( "-1px" ); //BAR_HEIGHT );
+		buttonsBar.setHeight( "-1px" );
 		buttonsBar.setMargin( false );
-		buttonsBar.setSpacing( true );
 
-		topBar.addComponent( buttonsBar );
-		topBar.setComponentAlignment( buttonsBar, Alignment.MIDDLE_RIGHT );
-		topBar.setExpandRatio( buttonsBar, 1.0f );
+		HorizontalLayout btnsLayout = new HorizontalLayout(selectButtonsBar, buttonsBar);
+		btnsLayout.setHeight( "-1px" );
+		btnsLayout.setMargin( false );
+		btnsLayout.setSpacing( true );
+		
+		topBar.addComponents( logoBar, btnsLayout );
+		topBar.setComponentAlignment( logoBar, Alignment.MIDDLE_LEFT );
+		topBar.setComponentAlignment( btnsLayout, Alignment.MIDDLE_RIGHT );
+		topBar.setExpandRatio( btnsLayout, 1.0f );
 
 		return topBar;
 	}
@@ -287,6 +306,24 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		} );
 		buttonsBar.addComponent( buttonManual );
 
+		buttonImages= new Button( context.getString( "words.images" ) , FontAwesome.IMAGE);
+		buttonImages.setDescription( context.getString( "words.image.view" ) );
+		setStyleButtonBar( buttonImages );
+		buttonImages.addClickListener( new Button.ClickListener()
+		{
+			public void buttonClick( ClickEvent event )
+			{
+				if (btnSelected != null){
+					btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+				}
+				btnSelected = buttonImages;
+				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+				showImages();
+			}
+		} );
+		selectButtonsBar.addComponent( buttonImages );
+		
+		
 		buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
 		buttonReports.setDescription( context.getString( "words.reports" ) );
 		setStyleButtonBar( buttonReports );
@@ -296,10 +333,15 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 			public void buttonClick( ClickEvent event )
 			{
+				if (btnSelected != null){
+					btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+				}
+				btnSelected = buttonReports;
+				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
 				showReports();
 			}
 		} );
-		buttonsBar.addComponent( buttonReports );
+		selectButtonsBar.addComponent( buttonReports );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -373,7 +415,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		}
 
 		btn = new Button( context.getString( "words.logout" ), FontAwesome.POWER_OFF);
-		//btn.setIcon( new ThemeResource( "images/logout.png" ) );
 		btn.setDescription( context.getString( "words.logout" ) );
 		setStyleButtonBar( btn );
 
@@ -387,9 +428,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			}
 		} );
 		buttonsBar.addComponent( btn );
-		
-		buildFullScreenButtons();
-		//addComponent( bttnFullScreen );
 	}
 	
 	private static void setStyleButtonBar(Button button){
@@ -399,41 +437,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 		button.addStyleName( ImedigTheme.BUTTON_TOOLBAR );
 	}
 	
-	private void buildFullScreenButtons(){
-		bttnFullScreen = new Button( );
-		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
-		bttnFullScreen.setImmediate( true );
-		bttnFullScreen.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
-		bttnFullScreen.setId( ID_FULLSCREEN );
-		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-		
-		FullScreenExtension extension = new FullScreenExtension();
-        extension.trigger(bttnFullScreen);
-        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
-
-            @Override
-            public void onChange(boolean fullscreen) {
-                if (fullscreen) {
-                	topBar.setVisible( false );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
-					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-                } else {
-                	topBar.setVisible( true );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
-					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-                }
-            }
-        });
-
-		CssLayout hide = new CssLayout( bttnFullScreen );
-		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		hide.setHeight( "0px" );
-		hide.setWidth( "0px" );
-		contents.addComponent( hide );
-	}
-
 	private void showLogoLayout()
 	{
 		this.logoBar.removeAllComponents();
@@ -460,7 +463,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	private void doRequest()
 	{
 		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
-		ReportInfo reportInfo = viewer.getReportInfo();
+		ReportInfo reportInfo = imageViewer.getReportInfo();
 		if ( reportInfo != null )
 		{
 			List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
@@ -507,7 +510,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	
 	private String getCurrentImageUrl()
 	{
-		ReportInfo reportInfo = viewer.getReportInfo();
+		ReportInfo reportInfo = imageViewer.getReportInfo();
 		
 		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
 		
@@ -542,10 +545,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	        Utils.getUUID() + ".png" );
     }
 	
-	public void showViewer()
+	public void showImages()
 	{
-		viewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
-		contents.addComponent( viewer );
+		contents.removeAllComponents();
+		if (imageViewer == null){
+			imageViewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
+		}
+		contents.addComponent( imageViewer );
 		//contents.setExpandRatio( viewer, 1.0f );
 	}
 	
@@ -588,8 +594,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 			showLogoLayout();
 			showGlobalButtons();
 			
-			if ( userHasCenterAccess() )
-				showViewer();
+			if ( userHasCenterAccess() ){
+				btnSelected = buttonImages;
+				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+				showImages();
+			}
 		}
 		catch ( Throwable e )
 		{
@@ -604,11 +613,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 
 	private void showReports()
 	{
-		//instance.getCentersView().notifyShowReports();
+		contents.removeAllComponents();
 		
-		ReportsDlg dlg = new ReportsDlg( getContext() );
-
-		getUI().addWindow( dlg );
+		if (reportsViewer == null){
+			reportsViewer = new ReportsViewer( getContext() );
+		}
+		
+		contents.addComponent( reportsViewer );
 	}
 
 	private void doShowConfiguration()
@@ -692,5 +703,19 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent
 	@Override
 	public void refreshVisibleContent()
 	{
+	}
+
+	@Override
+	public void doAction( Action action )
+	{
+		if (action == null)
+			return;
+
+		if (action instanceof FullScreen) {
+			topBar.setVisible( false );
+		}else if (action instanceof ExitFullScreen) {
+			topBar.setVisible( true );
+		}
+		
 	}
 }

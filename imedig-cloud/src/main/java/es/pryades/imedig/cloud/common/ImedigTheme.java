@@ -26,5 +26,7 @@ public class ImedigTheme {
 	public static final String BUTTON_SELECTED= "selected";
 	public static final String BUTTON_INVISIBLE= "invisible";
 	public static final String BUTTON_RESTORE= "restore";
-	
+
+	public static final String BUTTON_MENU_SELECTED= "selected-menu";
+	public static final String MENU_LAYOUT= "menu-layout";
 }
