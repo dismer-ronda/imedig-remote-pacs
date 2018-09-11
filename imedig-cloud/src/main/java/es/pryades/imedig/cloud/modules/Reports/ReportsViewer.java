@@ -16,16 +16,16 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigException;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -83,6 +83,9 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 
 	private InformesManager informesManager;
 	private InformesImagenesManager imagenesManager;
+	
+	private static final String COMBO_WIDTH = "200px";
+	private static final String TEXT_WIDTH = "200px";
 
 	/**
 	 * 
@@ -559,7 +562,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	public Component getQueryFecha()
 	{
 		ComboBox combo = new ComboBox(getContext().getString( "words.date" ));
-		combo.setWidth( "120px" );
+		combo.setWidth( COMBO_WIDTH );
 		combo.setNullSelectionAllowed( false );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "fecha" ) );
@@ -583,7 +586,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		TextField text = new TextField( getContext().getString( "words.patient" ), bi.getItemProperty( "paciente" ) );
 		text.setNullRepresentation( "" );
-		
+		text.setWidth( TEXT_WIDTH );
 		return getRow( text );
 	}
 
@@ -591,7 +594,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		TextField text = new TextField( getContext().getString( "words.study" ), bi.getItemProperty( "estudio" ) );
 		text.setNullRepresentation( "" );
-		
+		text.setWidth( TEXT_WIDTH );
 		return getRow( text );
 	}
 
@@ -654,7 +657,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "centro" ) );
-		combo.setWidth( "200px" );
+		combo.setWidth( COMBO_WIDTH );
 
 		fillComboCentro( combo );
 		
@@ -664,7 +667,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	public Component getQueryEstado()
 	{
 		ComboBox combo = new ComboBox(getContext().getString( "words.status" )); 
-		combo.setWidth( "120px" );
+		combo.setWidth( COMBO_WIDTH );
 		combo.setNullSelectionAllowed( false );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "estado" ) );
@@ -687,7 +690,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		TextField text = new TextField( getContext().getString( "words.icd10cm" ), bi.getItemProperty( "icd10cm" ) );
 		text.setNullRepresentation( "" );
-		
+		text.setWidth( TEXT_WIDTH );
 		return getRow( text );
 	}
 
@@ -695,7 +698,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		TextField text = new TextField( getContext().getString( "words.keywords" ), bi.getItemProperty( "claves" ) );
 		text.setNullRepresentation( "" );
-		
+		text.setWidth( TEXT_WIDTH );
 		return getRow( text );
 	}
 
@@ -758,7 +761,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "refiere" ) );
-		combo.setWidth( "200px" );
+		combo.setWidth( COMBO_WIDTH );
 		
 		fillComboMedicos( combo );
 		
@@ -771,7 +774,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "informa" ) );
-		combo.setWidth( "200px" );
+		combo.setWidth( COMBO_WIDTH );
 		
 		fillComboMedicos( combo );
 
@@ -781,7 +784,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	public Component getQueryModalidad()
 	{
 		ComboBox combo = new ComboBox(getContext().getString( "words.modality" )); 
-		combo.setWidth( "120px" );
+		combo.setWidth( COMBO_WIDTH );
 		combo.setNullSelectionAllowed( true );
 		combo.setTextInputAllowed( false );
 		combo.setPropertyDataSource( bi.getItemProperty( "modalidad" ) );
@@ -809,7 +812,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		
 		bi = new BeanItem<ReportsViewer>( this );
 		
-		VerticalLayout column = new VerticalLayout();
+		/*VerticalLayout column = new VerticalLayout();
 		column.setMargin( false );
 		column.setSpacing( true );
 		
@@ -839,7 +842,15 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		column.addComponent( row2 );
 		column.addComponent( row3 );
 
-		return column;
+		return column;*/
+		
+		CssLayout query = new CssLayout();
+		query.setWidth( "100%" );
+		query.addComponents( getQueryFecha(), getQueryEstado(), getQueryRefiere(), 
+				getQueryInforma(), getQueryCentro(), getQueryModalidad(),
+				getQueryEstudio(), getQueryPaciente(), getQueryCodigo(), getQueryClaves());
+		return query;
+		
 	}
 
 	@Override
@@ -876,7 +887,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		layout.setMargin( new MarginInfo( false, true, false, false ) );
 		layout.setSpacing( false );
 		layout.setWidthUndefined();
-		
+		layout.addStyleName( ImedigTheme.FILTER_MARGIN );
 		return layout;
 	}
 }

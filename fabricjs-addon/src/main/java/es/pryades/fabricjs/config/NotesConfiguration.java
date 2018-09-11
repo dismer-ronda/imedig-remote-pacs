@@ -17,7 +17,7 @@ package es.pryades.fabricjs.config;
 
 import es.pryades.fabricjs.enums.FontStyle;
 import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.NotesAlignment;
+import es.pryades.fabricjs.enums.FigureAlignment;
 import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import java.io.Serializable;
@@ -37,18 +37,18 @@ public class NotesConfiguration extends FontConfiguration implements Serializabl
 
     public NotesConfiguration() {
         super();
-        this.originX = NotesAlignment.TOP_LEFT.getOriginX();
-        this.originY = NotesAlignment.TOP_LEFT.getOriginY();
+        this.originX = FigureAlignment.TOP_LEFT.getOriginX();
+        this.originY = FigureAlignment.TOP_LEFT.getOriginY();
         this.textLeft = 0;
         this.textTop = 0;
         this.textAlign = TextAlign.LEFT.name().toLowerCase();
     }
 
-    public NotesAlignment getNotesAlignment() {
-        return NotesAlignment.valueOf((originY + "_" + originX).toUpperCase());
+    public FigureAlignment getNotesAlignment() {
+        return FigureAlignment.valueOf((originY + "_" + originX).toUpperCase());
     }
 
-    public void setNotesAlignment(NotesAlignment notesAlignment) {
+    public void setNotesAlignment(FigureAlignment notesAlignment) {
         this.originX = notesAlignment.getOriginX();
         this.originY = notesAlignment.getOriginY();
     }
@@ -77,7 +77,7 @@ public class NotesConfiguration extends FontConfiguration implements Serializabl
         this.textAlign = textAlign.name().toLowerCase().replaceAll("_", "-");
     }
 
-    public NotesConfiguration withNotesAlignment(NotesAlignment notesAlignment) {
+    public NotesConfiguration withNotesAlignment(FigureAlignment notesAlignment) {
         this.setNotesAlignment(notesAlignment);
         return this;
     }

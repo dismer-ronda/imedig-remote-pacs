@@ -16,11 +16,14 @@ import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.fabricjs.FabricJs;
 import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.enums.FigureAlignment;
 import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.NotesAlignment;
+import es.pryades.fabricjs.enums.SpinnerPosition;
+import es.pryades.fabricjs.enums.SpinnerSpeed;
 import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
@@ -73,6 +76,7 @@ public class ImageCanvas extends VerticalLayout {
 	private final ImageSerieNavigator imageDataNavigator;
 	
 	private static Map<EnumActions, FigureConfiguration> configurations;
+	private static LoaderConfiguration loadingConfiguration;
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
 	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
 	
@@ -105,6 +109,7 @@ public class ImageCanvas extends VerticalLayout {
 		buildCanvasConfiguration();
 		defaultConfiguration = configurations.get(EnumActions.NONE);
 		canvas = new FabricJs(defaultConfiguration);
+		canvas.setLoaderConfiguration( loadingConfiguration );
 		canvas.setSizeFull();
 		addComponent(canvas);
 		
@@ -495,6 +500,21 @@ public class ImageCanvas extends VerticalLayout {
 				.withCursor( "crosshair" );
 		
 		configurations.put( EnumActions.ZOOM, temp );
+		
+		loadingConfiguration = new LoaderConfiguration()
+                .withFillColor("transparent")
+                .withStrokeColor("transparent")
+                .withSpinnerColor("#bb910b")                
+                .withLoaderText(context.getString( "ViewerWnd.loading.image" ))
+                .withTextFontSize( 16 )
+                .withTextFontFamily("Roboto")
+                .withTextFillColor("#F0BE20")
+                .withTextFontWeight( FontWeight.BOLDER )
+                .withSpinnerPosition(SpinnerPosition.LEFT)
+                .withShadow("")
+                .withSpinnerRadio(25)
+                .withLoaderAlignment(FigureAlignment.MIDDLE_CENTER)
+                .withSpinnerSpeed( SpinnerSpeed.SLOW );
 	}
 	
 	private void resizeAction(){
@@ -749,7 +769,7 @@ public class ImageCanvas extends VerticalLayout {
         		.withTextFontSize( 17 )
         		.withTextFillColor( "#ecedee" )
         		.withTextBackgroundColor( "transparent" )
-        		.withNotesAlignment(NotesAlignment.TOP_LEFT)
+        		.withNotesAlignment( FigureAlignment.TOP_LEFT)
         		.withTextAlign(TextAlign.LEFT)
         		.withTextFontFamily("Roboto");
         
