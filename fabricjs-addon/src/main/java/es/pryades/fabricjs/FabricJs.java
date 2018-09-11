@@ -1,32 +1,32 @@
 package es.pryades.fabricjs;
 
-import es.pryades.fabricjs.data.Note;
-import es.pryades.fabricjs.listeners.ResizeListener;
-import es.pryades.fabricjs.listeners.MouseWheelListener;
-import es.pryades.fabricjs.listeners.MouseUpListener;
-import es.pryades.fabricjs.listeners.MouseDownListener;
-import es.pryades.fabricjs.listeners.MouseMoveListener;
-import es.pryades.fabricjs.config.CanvasDimensions;
-import es.pryades.fabricjs.enums.CanvasAction;
-import es.pryades.fabricjs.config.NotesConfiguration;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.vaadin.annotations.JavaScript;
-import es.pryades.fabricjs.client.FabricJsState;
-import es.pryades.fabricjs.data.Command;
-
-import es.pryades.fabricjs.geometry.Figure;
-import com.vaadin.server.ExternalResource;
-
-import com.vaadin.ui.AbstractJavaScriptComponent;
-import com.vaadin.ui.JavaScriptFunction;
-import elemental.json.JsonArray;
-import es.pryades.fabricjs.config.FigureConfiguration;
-import es.pryades.fabricjs.listeners.DrawFigureListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.vaadin.annotations.JavaScript;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.AbstractJavaScriptComponent;
+import com.vaadin.ui.JavaScriptFunction;
+
+import elemental.json.JsonArray;
+import es.pryades.fabricjs.client.FabricJsState;
+import es.pryades.fabricjs.config.CanvasDimensions;
+import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
+import es.pryades.fabricjs.config.NotesConfiguration;
+import es.pryades.fabricjs.data.Command;
+import es.pryades.fabricjs.data.Note;
+import es.pryades.fabricjs.geometry.Figure;
+import es.pryades.fabricjs.listeners.DrawFigureListener;
+import es.pryades.fabricjs.listeners.MouseDownListener;
+import es.pryades.fabricjs.listeners.MouseMoveListener;
+import es.pryades.fabricjs.listeners.MouseUpListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
+import es.pryades.fabricjs.listeners.ResizeListener;
 
 // This is the server-side UI component that provides public API 
 // for FabricJs
@@ -35,6 +35,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     private FigureConfiguration figureConfiguration;
     private NotesConfiguration notesConfiguration;
+    private LoaderConfiguration loaderConfiguration;
 
     private double vWidth;
     private double vHeight;
@@ -42,11 +43,10 @@ public class FabricJs extends AbstractJavaScriptComponent {
     private List<String> images;
 
     private CanvasDimensions canvasDimensions;
-    //private final CanvasAction defauAction = CanvasAction.NONE;
-
-    //private CanvasAction action;
 
     private final List<Command> commands;
+
+    private boolean showSpinnerOnImageLoad;
 
     /**
      * Listeners
@@ -68,11 +68,14 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         this.addStyleName("canvas-wrapper");
 
+        this.showSpinnerOnImageLoad = true;
         this.figureConfiguration = new FigureConfiguration();
         this.notesConfiguration = new NotesConfiguration();
+        this.loaderConfiguration = new LoaderConfiguration();
         this.images = new ArrayList<>();
 
         this.createDefaultsDimesions();
+        this.generateLoaderConfiguration();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
@@ -82,11 +85,14 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.commands = new ArrayList<>();
         this.addStyleName("canvas-wrapper");
 
+        this.showSpinnerOnImageLoad = true;
         this.notesConfiguration = new NotesConfiguration();
+        this.loaderConfiguration = new LoaderConfiguration();
         this.images = new ArrayList<>();
         this.figureConfiguration = generalFigureConfiguration;
 
         this.createDefaultsDimesions();
+        this.generateLoaderConfiguration();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
@@ -150,12 +156,35 @@ public class FabricJs extends AbstractJavaScriptComponent {
         getState().commands = getPayload(this.commands);
     }
 
+    public void showLoader() {
+        this.commands.add(new Command("SHOW_LOADER", ""));
+        getState().commands = getPayload(this.commands);
+    }
+
+    public void hideLoader() {
+        this.commands.add(new Command("HIDE_LOADER", ""));
+        getState().commands = getPayload(this.commands);
+    }
+
     public void setNotesConfiguration(NotesConfiguration configuration) {
         this.notesConfiguration = configuration;
     }
 
     public NotesConfiguration getNotesConfiguration() {
         return this.notesConfiguration;
+    }
+
+    public LoaderConfiguration getLoaderConfiguration() {
+        return loaderConfiguration;
+    }
+
+    public void setLoaderConfiguration(LoaderConfiguration loaderConfiguration) {
+        if (Objects.isNull(loaderConfiguration)) {
+            this.loaderConfiguration = new LoaderConfiguration();
+        } else {
+            this.loaderConfiguration = loaderConfiguration;
+        }
+        getState().loaderConfiguration = getPayload(this.loaderConfiguration);
     }
 
     public void addNotes(String text) {
@@ -186,7 +215,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void setFigureConfiguration(FigureConfiguration generalFigureConfiguration) {
-        this.figureConfiguration = generalFigureConfiguration;        
+        this.figureConfiguration = generalFigureConfiguration;
         getState().figureConfiguration = getPayload(this.figureConfiguration);
     }
 
@@ -210,6 +239,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public double getvHeight() {
         return vHeight;
+    }
+
+    public boolean isShowSpinnerOnImageLoad() {
+        return showSpinnerOnImageLoad;
+    }
+
+    public void setShowSpinnerOnImageLoad(boolean showSpinnerOnImageLoad) {
+        this.showSpinnerOnImageLoad = showSpinnerOnImageLoad;
+        getState().showSpinnerOnImageLoad = showSpinnerOnImageLoad;
     }
 
     public MouseMoveListener getMouseMoveListener() {
@@ -267,6 +305,11 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     private void generateConfiguration() {
         getState().figureConfiguration = getPayload(this.figureConfiguration);
+    }
+
+    private void generateLoaderConfiguration() {
+        getState().loaderConfiguration = getPayload(this.loaderConfiguration);
+        getState().showSpinnerOnImageLoad = this.showSpinnerOnImageLoad;
     }
 
     private void generateCanvasDimensions() {

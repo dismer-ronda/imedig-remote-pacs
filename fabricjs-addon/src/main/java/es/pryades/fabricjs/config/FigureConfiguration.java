@@ -45,6 +45,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private Integer cancelDrawKeyCode;
     private String hoverColor;
     private String figureShadow;
+   
        
 
     public FigureConfiguration() {
@@ -58,7 +59,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.visible = true;
         this.cursor = "default";
         this.action = CanvasAction.NONE;
-        this.cancelDrawKeyCode = 27;        
+        this.cancelDrawKeyCode = 27;   
        
     }
 

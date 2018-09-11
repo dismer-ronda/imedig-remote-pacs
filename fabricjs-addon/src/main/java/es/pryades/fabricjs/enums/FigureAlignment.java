@@ -21,7 +21,7 @@ import java.io.Serializable;
  *
  * @author geanny
  */
-public enum NotesAlignment implements Serializable {
+public enum FigureAlignment implements Serializable {
 
     TOP_LEFT("top", "left"),
     TOP_RIGHT("top", "right"),
@@ -36,7 +36,7 @@ public enum NotesAlignment implements Serializable {
     private final String originX;
     private final String originY;
 
-    private NotesAlignment(String originY, String originX) {
+    private FigureAlignment(String originY, String originX) {
         this.originX = originX;
         this.originY = originY;
     }

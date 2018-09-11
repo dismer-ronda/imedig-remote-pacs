@@ -7,6 +7,8 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     var fabricJs = new FabricJs.FabricJsApp({
         configuration: JSON.parse(state.figureConfiguration),
+        loaderConfiguration: JSON.parse(state.loaderConfiguration),
+        showSpinnerOnImageLoad: state.showSpinnerOnImageLoad,
         container: container,
         action: state.action,
         component: component,
@@ -31,8 +33,8 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-         if (component.imagesUrls !== state.imagesUrl) {
-            component.imagesUrls = state.imagesUrl;     
+        if (component.imagesUrls !== state.imagesUrl) {
+            component.imagesUrls = state.imagesUrl;
             fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
             fabricJs.onLoadImage(JSON.parse(component.imagesUrls));
         }
@@ -42,6 +44,15 @@ var es_pryades_fabricjs_FabricJs = function() {
             fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
         }
 
+        if (component.loaderConfiguration !== state.loaderConfiguration) {
+            component.loaderConfiguration = state.loaderConfiguration;
+            fabricJs.setLoaderConfiguration(JSON.parse(state.loaderConfiguration));
+        }
+
+        if (component.showSpinnerOnImageLoad !== state.showSpinnerOnImageLoad) {
+            component.showSpinnerOnImageLoad = state.showSpinnerOnImageLoad;
+            fabricJs.setShowSpinnerOnImageLoad(state.showSpinnerOnImageLoad);
+        }
 
         var commands = JSON.parse(state.commands);
 
@@ -98,6 +109,12 @@ var es_pryades_fabricjs_FabricJs = function() {
                     break;
                 case "CLEAR_DRAW":
                     fabricJs.clearDraw();
+                    break;
+                case "SHOW_LOADER":
+                    fabricJs.showLoader();
+                    break;
+                case "HIDE_LOADER":
+                    fabricJs.hideLoader();
                     break;
             }
         }

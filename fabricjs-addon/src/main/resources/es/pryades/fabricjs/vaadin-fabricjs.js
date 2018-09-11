@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -108,11 +108,9 @@ var Utils = exports.Utils = function () {
                 visible: configuration.visible,
                 originX: 'center',
                 originY: 'center',
-                //shadow: configuration.figureShadow ,
+                shadow: configuration.figureShadow,
                 objectCaching: false
             });
-
-            line.setShadow(configuration.figureShadow);
             return line;
         }
     }, {
@@ -129,10 +127,9 @@ var Utils = exports.Utils = function () {
                 fill: 'transparent',
                 stroke: configuration.strokeColor,
                 strokeWidth: configuration.strokeWidth,
-                //shadow: configuration.figureShadow,
+                shadow: configuration.figureShadow,
                 objectCaching: false
             });
-            rect.setShadow(configuration.figureShadow);
             return rect;
         }
     }, {
@@ -176,6 +173,65 @@ var Utils = exports.Utils = function () {
         key: 'generateUniqueId',
         value: function generateUniqueId() {
             return 'obj_' + Math.random().toString(36).substr(2, 16) + "_" + new Date().getTime();
+        }
+    }, {
+        key: 'calculateOriginX',
+        value: function calculateOriginX(canvas, text, originX, originY) {
+
+            switch (originX) {
+                case "left":
+                    text.set({
+                        left: 0
+                    });
+                    break;
+                case "center":
+                    switch (originY) {
+                        case "top":
+                            text.centerH();
+                            text.set({
+                                top: 0
+                            });
+                            break;
+                        case "bottom":
+                            text.centerH();
+                            var bottom = canvas.getHeight() - text.getScaledHeight();
+                            text.set({
+                                top: bottom
+                            });
+                            break;
+                        default:
+                            text.center();
+                            break;
+                    }
+
+                    break;
+                case "right":
+                    var right = canvas.getWidth() - text.getScaledWidth();
+                    text.set({
+                        left: right
+                    });
+                    break;
+            }
+        }
+    }, {
+        key: 'calculateOriginY',
+        value: function calculateOriginY(canvas, text, originX, originY) {
+            switch (originY) {
+                case "top":
+                    text.set({
+                        top: 0
+                    });
+                    break;
+                case "center":
+                    text.center();
+                    break;
+                case "bottom":
+                    var bottom = canvas.getHeight() - text.getScaledHeight();
+                    text.set({
+                        top: bottom
+                    });
+                    break;
+            }
         }
     }]);
 
@@ -450,7 +506,6 @@ var Drawer = exports.Drawer = function () {
             var left = (x1 + x2) / 2;
             var top = (y1 + y2) / 2 + 5;
 
-        
             var lineText = _utils.Utils.createTextLabel(line.text, {
                 left: left,
                 top: top
@@ -931,6 +986,179 @@ var LineDrawer = exports.LineDrawer = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Loader = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Loader = exports.Loader = function () {
+    function Loader(params) {
+        _classCallCheck(this, Loader);
+
+        this.canvas = params.canvas;
+        this.loaderConfiguration = params.loaderConfiguration;
+        if (this.loaderConfiguration.loaderText) {
+            this.generateLoader(this.loaderConfiguration);
+        }
+    }
+
+    _createClass(Loader, [{
+        key: 'generateLoader',
+        value: function generateLoader(loaderConfiguration) {
+            var text = new fabric.Text(loaderConfiguration.loaderText, {
+                backgroundColor: loaderConfiguration.textBackgroundColor,
+                fill: loaderConfiguration.textFillColor,
+                fontSize: loaderConfiguration.textFontSize,
+                fontFamily: loaderConfiguration.textFontFamily,
+                objectCaching: false
+            });
+
+            var rect = new fabric.Rect({
+                width: text.getScaledWidth() + 40,
+                height: loaderConfiguration.height,
+                stroke: loaderConfiguration.strokeColor,
+                strokeWidth: loaderConfiguration.strokeWidth,
+                fill: loaderConfiguration.fillColor,
+                selectable: false
+            });
+
+            if (loaderConfiguration.shadow) {
+                rect.set("shadow", loaderConfiguration.shadow);
+            }
+
+            this.circle = new fabric.Circle({
+                radius: 8,
+                left: 15,
+                angle: 0,
+                startAngle: 0,
+                endAngle: Math.PI,
+                stroke: loaderConfiguration.spinnerColor,
+                strokeWidth: loaderConfiguration.spinnerWidth,
+                originX: 'center',
+                originY: 'center',
+                fill: 'transparent'
+            });
+
+            switch (loaderConfiguration.spinnerPosition) {
+                case "LEFT":
+                    this.circle.set("left", 2 * this.circle.get("radius"));
+
+                    rect.set("height", this.circle.getScaledHeight() + text.getScaledHeight());
+                    rect.set("width", text.getScaledWidth() + 2 * this.circle.get("radius") + this.circle.get("left") + 20);
+
+                    this.circle.set("top", rect.getScaledHeight() / 2);
+
+                    text.set("top", rect.getScaledHeight() / 2 - text.getScaledHeight() / 2);
+                    text.set("left", 2 * this.circle.get("radius") + this.circle.get("left"));
+
+                    break;
+                case "TOP":
+                    this.circle.set("top", this.circle.get("radius") + 10);
+
+                    rect.set("height", 2 * this.circle.get("radius") + text.getScaledHeight() + this.circle.get("top"));
+
+                    this.circle.set("left", rect.getScaledWidth() / 2);
+
+                    text.set("top", 1.5 * this.circle.get("radius") + this.circle.get("top"));
+                    text.set("left", rect.getScaledWidth() / 2 - text.getScaledWidth() / 2);
+                    break;
+
+                case "RIGHT":
+                    text.set("left", 12);
+
+                    this.circle.set("left", text.getScaledWidth() + 2 * text.get("left") + this.circle.get("radius"));
+
+                    rect.set("height", this.circle.getScaledHeight() + text.getScaledHeight());
+                    rect.set("width", text.getScaledWidth() + 2 * this.circle.get("radius") + text.get("left") + 20);
+
+                    this.circle.set("top", rect.getScaledHeight() / 2);
+
+                    text.set("top", rect.getScaledHeight() / 2 - text.getScaledHeight() / 2);
+                    break;
+
+                case "BOTTOM":
+                    text.set("top", 10);
+                    this.circle.set("top", text.getScaledHeight() + text.get("top") + 1.5 * this.circle.get("radius"));
+
+                    rect.set("height", 2 * this.circle.get("radius") + text.getScaledHeight() + this.circle.get("top") / 2);
+
+                    this.circle.set("left", rect.getScaledWidth() / 2);
+                    text.set("left", rect.getScaledWidth() / 2 - text.getScaledWidth() / 2);
+                    break;
+            }
+
+            var group = new fabric.Group([rect, this.circle, text], {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true
+            });
+
+            this.loader = group;
+        }
+    }, {
+        key: 'showLoader',
+        value: function showLoader() {
+            if (this.loaderConfiguration.loaderText) {
+                var r = 0;
+                var _this = this;
+                this.animateInterval = setInterval(function () {
+                    r += Math.PI / 180 + 90;
+                    if (r >= 999999) {
+                        r = 0;
+                    }
+
+                    _this.circle.animate({
+                        angle: r
+                    }, {
+                        duration: 1000,
+                        onChange: _this.canvas.renderAll.bind(_this.canvas),
+                        easing: fabric.util.ease.easeOutExpo
+                    });
+                }, 200);
+
+                this.canvas.add(_this.loader);
+
+                _utils.Utils.calculateOriginY(this.canvas, _this.loader, _this.loaderConfiguration.originX, _this.loaderConfiguration.originY);
+                _utils.Utils.calculateOriginX(this.canvas, _this.loader, _this.loaderConfiguration.originX, _this.loaderConfiguration.originY);
+
+                this.canvas.lowerCanvasEl.style.zIndex = 10;
+            }
+        }
+    }, {
+        key: 'hideLoader',
+        value: function hideLoader() {
+            if (this.loader) {
+                this.canvas.lowerCanvasEl.style.zIndex = 2;
+                clearInterval(this.animateInterval);
+                this.canvas.remove(this.loader);
+
+                this.circle.animate({
+                    angle: 0
+                }, {
+                    duration: 1000,
+                    onChange: this.canvas.renderAll.bind(this.canvas),
+                    easing: fabric.util.ease.easeOutExpo
+                });
+            }
+        }
+    }]);
+
+    return Loader;
+}();
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.RectDrawer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1094,7 +1322,7 @@ var RectDrawer = exports.RectDrawer = function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1113,11 +1341,13 @@ var _angle = __webpack_require__(2);
 
 var _freeAngle = __webpack_require__(4);
 
-var _rect = __webpack_require__(6);
+var _rect = __webpack_require__(7);
 
 var _drawer = __webpack_require__(3);
 
 var _utils = __webpack_require__(0);
+
+var _loader = __webpack_require__(6);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1168,61 +1398,6 @@ var privateMethods = {
         _div.style.cursor = "none";
         _div.style.outline = "none";
         return _div;
-    },
-    calculateOriginX: function calculateOriginX(canvas, text, originX, originY) {
-
-        switch (originX) {
-            case "left":
-                text.set({
-                    left: 0
-                });
-                break;
-            case "center":
-                switch (originY) {
-                    case "top":
-                        text.centerH();
-                        text.set({
-                            top: 0
-                        });
-                        break;
-                    case "bottom":
-                        text.centerH();
-                        var bottom = canvas.getHeight() - text.getScaledHeight();
-                        text.set({
-                            top: bottom
-                        });
-                        break;
-                    default:
-                        text.center();
-                        break;
-                }
-
-                break;
-            case "right":
-                var right = canvas.getWidth() - text.getScaledWidth();
-                text.set({
-                    left: right
-                });
-                break;
-        }
-    },
-    calculateOriginY: function calculateOriginY(canvas, text, originX, originY) {
-        switch (originY) {
-            case "top":
-                text.set({
-                    top: 0
-                });
-                break;
-            case "center":
-                text.center();
-                break;
-            case "bottom":
-                var bottom = canvas.getHeight() - text.getScaledHeight();
-                text.set({
-                    top: bottom
-                });
-                break;
-        }
     }
 };
 
@@ -1232,8 +1407,10 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         this.options = options;
         this.configuration = this.options.configuration;
+        this.loaderConfiguration = this.options.loaderConfiguration;
         this.figures = new Map();
         this.notes = new Map();
+        this.showSpinnerOnImageLoad = options.showSpinnerOnImageLoad;
 
         this.offCanvas = false;
 
@@ -1243,6 +1420,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         var canvasImageId = privateMethods.generateCanvasIds("canvas_image");
         var canvasNotesId = privateMethods.generateCanvasIds("canvas_notes");
         var canvasDrawId = privateMethods.generateCanvasIds("canvas_draw");
+        var canvasLoaderId = privateMethods.generateCanvasIds("canvas_loader");
 
         var htmlCanvasImage = privateMethods.createCanvas({
             canvasId: canvasImageId
@@ -1252,20 +1430,27 @@ var FabricJsApp = exports.FabricJsApp = function () {
             zindex: 1
         });
 
+        var htmlCanvasLoader = privateMethods.createCanvas({
+            canvasId: canvasLoaderId,
+            zindex: 2
+        });
+
         //ponerlo en un div absolute con tamaño igual que la imagen
         this._div = privateMethods.containerDiv();
         this._divContainer = privateMethods.containerDiv();
         this._divContainer.style.width = "100%";
         this._divContainer.style.height = "100%";
+        this._div.style.zIndex = 4;
 
         var htmlCanvasDraw = privateMethods.createCanvas({
             canvasId: canvasDrawId,
-            zindex: 2,
+            zindex: 3,
             cursor: "pointer"
         });
 
         this._divContainer.appendChild(htmlCanvasImage);
         this._divContainer.appendChild(htmlCanvasNotes);
+        this._divContainer.appendChild(htmlCanvasLoader);
         this._divContainer.appendChild(this._div);
         this._div.appendChild(htmlCanvasDraw);
 
@@ -1277,6 +1462,15 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         this.canvasNotes = new fabric.StaticCanvas(canvasNotesId, {
             backgroundColor: 'transparent'
+        });
+
+        this.canvasLoader = new fabric.StaticCanvas(canvasLoaderId, {
+            backgroundColor: 'transparent'
+        });
+
+        this.loader = new _loader.Loader({
+            canvas: this.canvasLoader,
+            loaderConfiguration: this.loaderConfiguration
         });
 
         this.canvasDraw = new fabric.Canvas(canvasDrawId, {
@@ -1502,6 +1696,11 @@ var FabricJsApp = exports.FabricJsApp = function () {
             }
         }
     }, {
+        key: 'setShowSpinnerOnImageLoad',
+        value: function setShowSpinnerOnImageLoad(showSpinnerOnImageLoad) {
+            this.showSpinnerOnImageLoad = showSpinnerOnImageLoad;
+        }
+    }, {
         key: 'setConfiguration',
         value: function setConfiguration(configuration) {
             this.configuration = configuration;
@@ -1512,11 +1711,17 @@ var FabricJsApp = exports.FabricJsApp = function () {
             }
         }
     }, {
+        key: 'setLoaderConfiguration',
+        value: function setLoaderConfiguration(loaderConfiguration) {
+            this.loaderConfiguration = loaderConfiguration;
+        }
+    }, {
         key: 'setDimensions',
         value: function setDimensions(dimensions) {
             this.canvasNotes.setDimensions(dimensions);
             this.canvasImage.setDimensions(dimensions);
             this.canvasDraw.setDimensions(dimensions);
+            this.canvasLoader.setDimensions(dimensions);
             this._div.style.width = dimensions.width;
             this._div.style.height = dimensions.height;
         }
@@ -1554,6 +1759,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 _this.loadedImage.setCoords();
                 _this.canvasImage.renderAll();
 
+                _this.canvasLoader.setWidth(_widthContainer).setHeight(_heightContainer);
+
                 _this.canvasDraw.setWidth(_width).setHeight(_height);
                 _this._div.style.width = _width + "px";
                 _this._div.style.height = _height + "px";
@@ -1568,12 +1775,19 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
                 _this.canvasNotes.setWidth(_widthContainer).setHeight(_heightContainer);
                 _this.canvasNotes.renderAll();
+
+                if (_this.showSpinnerOnImageLoad) {
+                    _this.hideLoader();
+                }
             });
         }
     }, {
         key: 'onLoadImage',
         value: function onLoadImage(imageUrls) {
             if (imageUrls.length) {
+                if (this.showSpinnerOnImageLoad) {
+                    this.showLoader();
+                }
                 if (imageUrls.length === 1) {
                     this.setBackgroundImage(imageUrls[0]);
                 }
@@ -1592,8 +1806,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
             this.canvasNotes.add(text);
             this.notes.set(key, text);
 
-            privateMethods.calculateOriginY(this.canvasNotes, text, configuration.originX, configuration.originY);
-            privateMethods.calculateOriginX(this.canvasNotes, text, configuration.originX, configuration.originY);
+            _utils.Utils.calculateOriginY(this.canvasNotes, text, configuration.originX, configuration.originY);
+            _utils.Utils.calculateOriginX(this.canvasNotes, text, configuration.originX, configuration.originY);
 
             text.setCoords();
 
@@ -1699,6 +1913,16 @@ var FabricJsApp = exports.FabricJsApp = function () {
             this.canvasDraw.moveCursor = cursor;
             this.canvasDraw.rotationCursor = cursor;
             this.canvasDraw.freeDrawingCursor = cursor;
+        }
+    }, {
+        key: 'showLoader',
+        value: function showLoader() {
+            this.loader.showLoader();
+        }
+    }, {
+        key: 'hideLoader',
+        value: function hideLoader() {
+            this.loader.hideLoader();
         }
     }]);
 

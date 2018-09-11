@@ -6,7 +6,9 @@ public class FabricJsState extends JavaScriptComponentState {
 
     // State can have both public variable and bean properties
     public String figureConfiguration = "{}";
-    public String notesConfiguration = "{}";    
+    public String notesConfiguration = "{}";
+    public String loaderConfiguration = "{}";
+    public boolean showSpinnerOnImageLoad = true;
     public String notes = "[]";
     public String imagesUrl = "[]";
     public String figures = "[]";
