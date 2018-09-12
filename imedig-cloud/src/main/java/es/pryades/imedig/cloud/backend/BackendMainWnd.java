@@ -273,15 +273,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		buttonsBar.setHeight( "-1px" );
 		buttonsBar.setMargin( false );
 
-		HorizontalLayout btnsLayout = new HorizontalLayout(selectButtonsBar, buttonsBar);
-		btnsLayout.setHeight( "-1px" );
-		btnsLayout.setMargin( false );
-		btnsLayout.setSpacing( true );
-		
-		topBar.addComponents( logoBar, btnsLayout );
+		topBar.addComponents( logoBar, selectButtonsBar, buttonsBar );
 		topBar.setComponentAlignment( logoBar, Alignment.MIDDLE_LEFT );
-		topBar.setComponentAlignment( btnsLayout, Alignment.MIDDLE_RIGHT );
-		topBar.setExpandRatio( btnsLayout, 1.0f );
+		topBar.setComponentAlignment( selectButtonsBar, Alignment.MIDDLE_CENTER );
+		topBar.setComponentAlignment( buttonsBar, Alignment.MIDDLE_RIGHT );
+		//topBar.setExpandRatio( btnsLayout, 1.0f );
 
 		return topBar;
 	}
