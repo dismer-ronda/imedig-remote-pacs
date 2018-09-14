@@ -18,7 +18,7 @@ package es.pryades.fabricjs.data;
 import es.pryades.fabricjs.config.NotesConfiguration;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.UUID;
+
 
 /**
  *
@@ -33,6 +33,7 @@ public class Note implements Serializable {
     public Note(String text) {
         this.text = text;
         this.notesConfiguration = new NotesConfiguration();
+        this.key = this.notesConfiguration.getNotesAlignment().getOriginX() + this.notesConfiguration.getNotesAlignment().getOriginY();
     }
 
     public Note(String text, NotesConfiguration notesConfiguration) {

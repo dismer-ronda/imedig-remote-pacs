@@ -1,32 +1,33 @@
 package es.pryades.fabricjs;
 
+import es.pryades.fabricjs.data.Note;
+import es.pryades.fabricjs.listeners.ResizeListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
+import es.pryades.fabricjs.listeners.MouseUpListener;
+import es.pryades.fabricjs.listeners.MouseDownListener;
+import es.pryades.fabricjs.listeners.MouseMoveListener;
+import es.pryades.fabricjs.config.CanvasDimensions;
+import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.config.NotesConfiguration;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.vaadin.annotations.JavaScript;
+import es.pryades.fabricjs.client.FabricJsState;
+import es.pryades.fabricjs.data.Command;
+
+import es.pryades.fabricjs.geometry.Figure;
+import com.vaadin.server.ExternalResource;
+
+import com.vaadin.ui.AbstractJavaScriptComponent;
+import com.vaadin.ui.JavaScriptFunction;
+import elemental.json.JsonArray;
+import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
+import es.pryades.fabricjs.listeners.DrawFigureListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.vaadin.annotations.JavaScript;
-import com.vaadin.server.ExternalResource;
-import com.vaadin.ui.AbstractJavaScriptComponent;
-import com.vaadin.ui.JavaScriptFunction;
-
-import elemental.json.JsonArray;
-import es.pryades.fabricjs.client.FabricJsState;
-import es.pryades.fabricjs.config.CanvasDimensions;
-import es.pryades.fabricjs.config.FigureConfiguration;
-import es.pryades.fabricjs.config.LoaderConfiguration;
-import es.pryades.fabricjs.config.NotesConfiguration;
-import es.pryades.fabricjs.data.Command;
-import es.pryades.fabricjs.data.Note;
-import es.pryades.fabricjs.geometry.Figure;
-import es.pryades.fabricjs.listeners.DrawFigureListener;
-import es.pryades.fabricjs.listeners.MouseDownListener;
-import es.pryades.fabricjs.listeners.MouseMoveListener;
-import es.pryades.fabricjs.listeners.MouseUpListener;
-import es.pryades.fabricjs.listeners.MouseWheelListener;
-import es.pryades.fabricjs.listeners.ResizeListener;
 
 // This is the server-side UI component that provides public API 
 // for FabricJs
@@ -131,6 +132,24 @@ public class FabricJs extends AbstractJavaScriptComponent {
             figure.setConfiguration(figureConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
+        getState().commands = getPayload(this.commands);
+    }
+
+    public void chainOfCommand(ChainOfCommand chainOfCommand) {
+        if (!Objects.isNull(chainOfCommand.getFigureConfiguration())) {
+            this.figureConfiguration = chainOfCommand.getFigureConfiguration();
+        }
+
+        if (!Objects.isNull(chainOfCommand.getLoaderConfiguration())) {
+            this.loaderConfiguration = chainOfCommand.getLoaderConfiguration();
+        }
+
+        if (!Objects.isNull(chainOfCommand.getImagesUrl()) && !chainOfCommand.getImagesUrl().isEmpty()) {
+            this.images = chainOfCommand.getImagesUrl();
+
+        }
+
+        this.commands.add(new Command("CHAIN_COMMAND", getPayload(chainOfCommand)));
         getState().commands = getPayload(this.commands);
     }
 

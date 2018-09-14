@@ -1030,7 +1030,7 @@ var Loader = exports.Loader = function () {
             }
 
             this.circle = new fabric.Circle({
-                radius: 8,
+                radius: loaderConfiguration.spinnerRadio,
                 left: 15,
                 angle: 0,
                 startAngle: 0,
@@ -1675,16 +1675,16 @@ var FabricJsApp = exports.FabricJsApp = function () {
         value: function draw(figure) {
             switch (figure.figureType) {
                 case "LINE":
-                    _drawer.Drawer.drawLine(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawLine(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "ANGLE":
-                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "FREE_ANGLE":
-                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "RECT":
-                    _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
             }
         }
@@ -1732,7 +1732,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         }
     }, {
         key: 'setBackgroundImage',
-        value: function setBackgroundImage(url) {
+        value: function setBackgroundImage(url, afterLoadImage) {
             var _this = this;
             fabric.Image.fromURL(url, function (oImg) {
                 _this.canvasImage.clear();
@@ -1779,18 +1779,65 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 if (_this.showSpinnerOnImageLoad) {
                     _this.hideLoader();
                 }
+                if (afterLoadImage) {
+                    afterLoadImage();
+                }
             });
         }
     }, {
         key: 'onLoadImage',
-        value: function onLoadImage(imageUrls) {
-            if (imageUrls.length) {
+        value: function onLoadImage(imagesUrl, afterLoadImage) {
+            if (imagesUrl.length) {
                 if (this.showSpinnerOnImageLoad) {
                     this.showLoader();
                 }
-                if (imageUrls.length === 1) {
-                    this.setBackgroundImage(imageUrls[0]);
+                if (imagesUrl.length === 1) {
+                    this.setBackgroundImage(imagesUrl[0], afterLoadImage);
                 }
+            }
+        }
+    }, {
+        key: 'executeChainOfCommand',
+        value: function executeChainOfCommand(cc) {
+            var _this = this;
+            if (cc.clearAll) {
+                this.clear();
+            } else {
+                if (cc.clearDraw) {
+                    this.clearDraw();
+                }
+
+                if (cc.clearImage) {
+                    this.clearImage();
+                }
+
+                if (cc.clearNotes) {
+                    this.clearNotes();
+                }
+            }
+
+            if (cc.figureConfiguration) {
+                this.setConfiguration(cc.figureConfiguration);
+            }
+
+            if (cc.loaderConfiguration) {
+                this.setLoaderConfiguration(cc.loaderConfiguration);
+            }
+
+            if (cc.notes) {
+                for (var i = 0; i < cc.notes.length; i++) {
+                    this.addNotes(cc.notes[i].key, cc.notes[i].text, cc.notes[i].notesConfiguration);
+                }
+            }
+
+            if (cc.imagesUrl) {
+                this.onLoadImage(cc.imagesUrl, function () {
+                    if (cc.figures) {
+                        for (var _i = 0; _i < cc.figures.length; _i++) {
+                            this.draw(cc.figures[_i]);
+                        }
+                    }
+                }.bind(this));
             }
         }
     }, {

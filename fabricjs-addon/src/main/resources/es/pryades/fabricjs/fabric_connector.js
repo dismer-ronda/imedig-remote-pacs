@@ -116,6 +116,26 @@ var es_pryades_fabricjs_FabricJs = function() {
                 case "HIDE_LOADER":
                     fabricJs.hideLoader();
                     break;
+                case "CHAIN_COMMAND":
+                    if (command.payload) {
+
+                        var chainCommand = JSON.parse(command.payload);
+
+                        if (chainCommand.imagesUrl) {
+                            component.imagesUrls = chainCommand.imagesUrl;
+                        }
+                        
+                        if (chainCommand.figureConfiguration) {
+                            component.figureConfiguration = chainCommand.figureConfiguration;
+                        }
+                        
+                        if (chainCommand.loaderConfiguration) {
+                            component.loaderConfiguration = chainCommand.loaderConfiguration;
+                        }
+
+                        fabricJs.executeChainOfCommand(chainCommand);
+                    }
+                    break;
             }
         }
 
