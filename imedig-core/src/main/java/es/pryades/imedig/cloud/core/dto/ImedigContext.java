@@ -175,7 +175,8 @@ public class ImedigContext
 	public void sendAction(Action action){
 		if (action == null) return;
 		
-		listeners.forEach( listener -> listener.doAction( action ) );
+		for ( ListenerAction listener : listeners )
+			listener.doAction( action );
 	}
 	
 	
