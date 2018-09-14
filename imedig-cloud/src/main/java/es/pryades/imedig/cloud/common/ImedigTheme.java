@@ -30,4 +30,6 @@ public class ImedigTheme {
 	public static final String BUTTON_MENU_SELECTED= "selected-menu";
 	public static final String MENU_LAYOUT = "menu-layout";
 	public static final String FILTER_MARGIN = "filter-margin";
+	public static final String TO_RIGHT = "to-right";
+	public static final String TO_LEFT = "to-left";
 }

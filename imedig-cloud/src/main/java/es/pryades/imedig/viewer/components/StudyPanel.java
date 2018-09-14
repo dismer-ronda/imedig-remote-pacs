@@ -32,11 +32,20 @@ public class StudyPanel extends CssLayout {
 	private static final Logger LOG = LoggerFactory.getLogger(StudyPanel.class);
 
 	private Button btnClose;
+	private Button btnFooter;
+	private Label labelFooter;
 	private VerticalLayout studyInfo;
 	private VerticalLayout thumnails;
 	private ImedigContext context;
 	private StudyTree study;
 	private StudyPanel instance;
+	private List<ImageData> datas;
+	private Integer index;
+	private int mode = MODE_ALL;
+	
+	private static final int LIMIT_TO_SHOW_ALL = 2;
+	private static final int MODE_ALL = 1;
+	private static final int MODE_ONE = 2;
 	
 	public StudyPanel(ImedigContext context) {
 		addStyleName( "study-thumnails-panel" );
@@ -60,6 +69,7 @@ public class StudyPanel extends CssLayout {
 		btnClose.setDescription( context.getString( "words.close" ) );
 		btnClose.addStyleName( ValoTheme.BUTTON_ICON_ONLY);
 		btnClose.addStyleName( ValoTheme.BUTTON_TINY);
+		btnClose.addStyleName( ImedigTheme.TO_RIGHT);
 		btnClose.addClickListener( new Button.ClickListener()
 		{
 			@Override
@@ -75,32 +85,96 @@ public class StudyPanel extends CssLayout {
 	
 	public void setStudy(StudyTree study, List<ImageData> datas){
 		this.study = study;
-		addStudyInfo(study);
-		addStudyImages( datas );
+		this.datas = datas;
+		addStudyInfo( );
+		
+		addStudyImages( );
 	}
-	private void addStudyInfo(StudyTree study) {
+	private void addStudyInfo( ) {
 		Label label = new Label(getPatientInitials( study.getStudyData().getPatientName() )+"<br/>"+study.getStudyData().getStudyDate()+"<br/>"+study.getStudyData().getPatientID());
 		label.setContentMode(ContentMode.HTML);
 		studyInfo.addComponent(label);
 	}
 
-	private void addStudyImages(List<ImageData> datas) {
-		for (ImageData data : datas){
-			com.vaadin.ui.Image img = getImage(data.getSeries(), data.getImage());
-			img.addStyleName(ImedigTheme.CURSOR_POINTER);
-			img.setData(data);
-			
-			img.addClickListener(new ClickListener() {
-				@Override
-				public void click(ClickEvent event) {
-					context.sendAction( new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
-				}
-			});
-			thumnails.addComponent(img);
-			thumnails.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+	private void addStudyImages( ) {
+		if (datas.size() > LIMIT_TO_SHOW_ALL){
+			showOneImage();
+		}else{
+			showAllImages();
 		}
+		
 	}
 
+	private void showOneImage()	{
+		index = datas.size()/2;
+		
+		addToThumnails( datas.get( index ) );
+		
+		addThumnailsFooter();
+		
+		mode = MODE_ONE;
+	}
+
+	private void addThumnailsFooter(){
+		if (labelFooter != null) return;
+		
+		labelFooter = new Label( String.format( "%d/%d", index+1, datas.size() ) );
+		labelFooter.addStyleName( ImedigTheme.TO_LEFT);
+		btnFooter = new Button( FontAwesome.PLUS );
+		btnFooter.setDescription( context.getString( "words.expand" ) );
+		btnFooter.addStyleName( ValoTheme.BUTTON_ICON_ONLY);
+		btnFooter.addStyleName( ValoTheme.BUTTON_TINY);
+		btnFooter.addStyleName( ImedigTheme.TO_RIGHT);
+		
+		btnFooter.addClickListener( new Button.ClickListener()
+		{
+			@Override
+			public void buttonClick( com.vaadin.ui.Button.ClickEvent event )
+			{
+				if (mode == MODE_ONE){
+					mode = MODE_ALL;
+					labelFooter.setVisible( false );
+					btnFooter.setIcon( FontAwesome.MINUS );
+					thumnails.removeAllComponents();
+					btnFooter.setDescription( context.getString( "words.contract" ) );
+					showAllImages();
+				}else{
+					thumnails.removeAllComponents();
+					mode = MODE_ONE;
+					labelFooter.setVisible( true );
+					btnFooter.setIcon( FontAwesome.PLUS );
+					btnFooter.setDescription( context.getString( "words.expand" ) );
+					showOneImage();
+				}
+			}
+		});
+
+
+		
+		addComponents( labelFooter, btnFooter );
+	}
+
+	private void showAllImages(){
+		for (ImageData data : datas){
+			addToThumnails( data );
+		}
+	}
+	
+	private void addToThumnails(ImageData data){
+		com.vaadin.ui.Image img = getImage(data.getSeries(), data.getImage());
+		img.addStyleName(ImedigTheme.CURSOR_POINTER);
+		img.setData(data);
+			
+		img.addClickListener(new ClickListener() {
+			@Override
+			public void click(ClickEvent event) {
+				context.sendAction( new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
+			}
+		});
+		thumnails.addComponent(img);
+		thumnails.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+	}
+	
 	private com.vaadin.ui.Image getImage(SeriesTree series, Image image) {
 
 		String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl()

@@ -14,10 +14,12 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
+import es.pryades.fabricjs.ChainOfCommand;
 import es.pryades.fabricjs.FabricJs;
 import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.config.LoaderConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
+import es.pryades.fabricjs.data.Note;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
 import es.pryades.fabricjs.enums.FigureAlignment;
@@ -118,6 +120,7 @@ public class ImageCanvas extends VerticalLayout {
 			@Override
 			public void onResize(double width, double height) {
 				resizeAction();
+				//resizeAction2();
 			}
 		});
 		
@@ -160,8 +163,7 @@ public class ImageCanvas extends VerticalLayout {
 			public void onMouseWheel( double weelDelta )
 			{
 				if (imageData == null) return;
-				
-				ImageData data = null;
+
 				if (weelDelta < 0 ){
 					openPreviousImage();
 				}else{
@@ -512,7 +514,7 @@ public class ImageCanvas extends VerticalLayout {
                 .withTextFontWeight( FontWeight.BOLDER )
                 .withSpinnerPosition(SpinnerPosition.LEFT)
                 .withShadow("")
-                .withSpinnerRadio(25)
+                .withSpinnerRadio(15)
                 .withLoaderAlignment(FigureAlignment.MIDDLE_CENTER)
                 .withSpinnerSpeed( SpinnerSpeed.SLOW );
 	}
@@ -527,6 +529,25 @@ public class ImageCanvas extends VerticalLayout {
 		viewRect = getCanvasImage();
 		showImagenFigures();
 		showInformation(imageHeader);
+	}
+	
+	private void resizeAction2(){
+		if (imageData == null) return;
+
+		//canvas.clearDraw();
+		
+		openImage();
+		
+		viewRect = getCanvasImage();
+		List<Figure> figures = imagenFigures2();
+		List<Note> notes = informationNote(imageHeader);
+		
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
 	}
 	
 	private void showImagenFigures() {
@@ -563,6 +584,45 @@ public class ImageCanvas extends VerticalLayout {
 			figure.setConfiguration( fig.getConfiguration() );
 			canvas.draw(figure);
 		}
+	}
+	
+	private List<Figure> imagenFigures2() {
+		
+		Rectangle vrect = viewRect;
+		Rectangle irect = imageRect;
+		
+		int ix1 = (int) irect.getX();
+		int iy1 = (int) irect.getY();
+		int ix2 = (int) ( ix1 + irect.getWidth() - 1 );
+		int iy2 = (int) ( iy1 + irect.getHeight() - 1 );
+		
+		int vx1 = (int) vrect.getX();
+		int vy1 = (int) vrect.getY();
+		int vx2 = (int) ( vx1 + vrect.getWidth() - 1 );
+		int vy2 = (int) ( vy1 + vrect.getHeight() - 1 );
+		
+		double mx = (double) ( vx2 - vx1 ) / ( ix2 - ix1 );
+		double nx = vx1 - mx * ix1;
+		
+		double my = (double) ( vy2 - vy1 ) / ( iy2 - iy1 );
+		double ny = vy1 - my * iy1;
+		
+		List<Figure> result = new ArrayList<>();
+		for (Figure fig : imagenFigures) {
+			
+			List<Point> npoints = new ArrayList<>();
+			for (Point point : fig.getPoints()) {
+				double x = mx * point.getX() + nx;
+				double y = my * point.getY() + ny;
+				
+				npoints.add(new Point(x, y));
+			}
+			Figure figure = new Figure(fig.getFigureType(), npoints, fig.getText());
+			figure.setConfiguration( fig.getConfiguration() );
+			result.add( figure );
+		}
+		
+		return result;
 	}
 	
 	
@@ -724,6 +784,51 @@ public class ImageCanvas extends VerticalLayout {
 			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
 		}
 	}
+	
+	private String imageUrl(){
+		try{
+			double ix1 = imageRect.getX();
+			double iy1 = imageRect.getY();
+			double ix2 = ix1 + imageRect.getWidth() - 1;
+			double iy2 = iy1 + imageRect.getHeight() - 1;
+			
+			int vcols = (int)canvas.getvWidth();
+			int vrows = (int)canvas.getvHeight();
+			
+			String dx1 = Double.toString( (double) ix1 / ( imageHeader.getColumns() - 1 ) );
+			String dy1 = Double.toString( (double) iy1 / ( imageHeader.getRows() - 1 ) );
+			String dx2 = Double.toString( (double) ix2 / ( imageHeader.getColumns() - 1 ) );
+			String dy2 = Double.toString( (double) iy2 / ( imageHeader.getRows() - 1 ) );
+			
+			String region = "region=" + dx1 + "," + dy1 + "," + dx2 + "," + dy2;
+			String zoom = "columns=" + vcols + "&rows=" + vrows;
+			String zoomIcon = "columns=" + 64 + "&rows=" + 64;
+			String content = "contentType=" + user.getCompression();
+			String contentIcon = "contentType=image/jpeg";
+			String bright = currentWidth > 0 ? "windowCenter=" + currentCenter + "&windowWidth=" + currentWidth : "";
+			String frame = "frameNumber=" + currentFrame;
+			
+			String url = imageData.getImage().getWadoUrl() + "&" + zoom + "&" + region + "&" + content + "&" + bright + "&" + frame;
+			String urlIcon = imageData.getImage().getWadoUrl() + "&" + zoomIcon + "&" + region + "&" + contentIcon + "&" + bright + "&" + frame;
+			
+			String urlimage = Utils.getEnviroment( "CLOUD_URL" ) + url;
+			LOG.info(urlimage);
+			
+			ReportInfo info = new ReportInfo();
+			
+			info.setHeader( imageHeader );
+			info.setUrl( url );
+			info.setIcon( urlIcon );
+			
+			reportInfo = info;
+			
+			return urlimage;
+			
+		}catch ( Throwable ex )	{
+			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
+			return "";
+		}
+	}
 
 	private static double getDouble(String value) {
 		double temp = 0;
@@ -764,6 +869,30 @@ public class ImageCanvas extends VerticalLayout {
 		return new Rectangle(0, 0, cols, rows);
 	}
 	
+	private void settingViewRect() {
+
+		int vcols =  (int)canvas.getvWidth();
+		int vrows =  (int)canvas.getvHeight();
+
+		int icols = (int)imageRect.getWidth();
+		int irows = (int)imageRect.getHeight();
+
+		double ar = (double) icols / irows;
+
+		int cols = 0;
+		int rows = 0;
+
+		if (vrows * ar > vcols) {
+			cols = vcols;
+			rows = (int) (vcols / ar + .5f);
+		} else {
+			cols = (int) (vrows * ar + .5f);
+			rows = vrows;
+		}
+
+		viewRect = new Rectangle(0, 0, cols, rows);
+	}
+	
 	private void showInformation(ImageHeader metadata){
         NotesConfiguration configuration = new NotesConfiguration()
         		.withTextFontSize( 17 )
@@ -781,6 +910,25 @@ public class ImageCanvas extends VerticalLayout {
                  append(string( metadata.getInstanceNumber() )).append("\n");
 		canvas.clearNotes();
         canvas.addNotes(sbuilder.toString(), configuration);
+	}
+	
+	private List<Note> informationNote(ImageHeader metadata){
+        NotesConfiguration configuration = new NotesConfiguration()
+        		.withTextFontSize( 17 )
+        		.withTextFillColor( "#ecedee" )
+        		.withTextBackgroundColor( "transparent" )
+        		.withNotesAlignment( FigureAlignment.TOP_LEFT)
+        		.withTextAlign(TextAlign.LEFT)
+        		.withTextFontFamily("Roboto");
+        
+        
+        StringBuilder sbuilder = new StringBuilder();
+        sbuilder.append(string( metadata.getPatientName())).append(" ").append(string( metadata.getPatientSex())).append("\n").
+                 append(string( metadata.getPatientID())).append("\n").
+                 append(string( metadata.getStudyDate())).append("\n").
+                 append(string( metadata.getInstanceNumber() )).append("\n");
+        
+        return Arrays.asList( new Note( sbuilder.toString(), configuration ) );
 	}
 
 	public void clear() {

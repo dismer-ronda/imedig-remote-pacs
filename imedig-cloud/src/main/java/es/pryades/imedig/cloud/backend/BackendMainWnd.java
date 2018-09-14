@@ -26,6 +26,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageDlg;
@@ -302,7 +303,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
 		buttonsBar.addComponent( buttonManual );
 
-		buttonImages= new Button( context.getString( "words.images" ) , FontAwesome.IMAGE);
+		buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
 		buttonImages.setDescription( context.getString( "words.image.view" ) );
 		setStyleButtonBar( buttonImages );
 		buttonImages.addClickListener( new Button.ClickListener()

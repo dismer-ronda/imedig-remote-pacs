@@ -21,10 +21,11 @@ import com.vaadin.server.GenericFontIcon;
 public enum FontIcoMoon implements FontIcon {
 
 	// @formatter:off
-    WINDOW_MAXIMIZE(0Xf2d0),
-    WINDOW_RESTORE(0Xf2d2),
+	ROOT_CATEGORY(0Xe901),
+	PROTRACTOR(0Xe900),
     RULE(0Xe915),
-    PROTRACTOR(0Xe900);
+    WINDOW_MAXIMIZE(0Xf2d0),
+    WINDOW_RESTORE(0Xf2d2);
     // @formatter:on
     public static final String FONT_FAMILY = "IcoMoon";
     private final int codepoint;
