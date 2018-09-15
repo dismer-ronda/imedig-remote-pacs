@@ -19,16 +19,19 @@ import es.pryades.fabricjs.FabricJs;
 import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.config.LoaderConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
+import es.pryades.fabricjs.config.RulerConfiguration;
 import es.pryades.fabricjs.data.Note;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
 import es.pryades.fabricjs.enums.FigureAlignment;
 import es.pryades.fabricjs.enums.FontWeight;
+import es.pryades.fabricjs.enums.RulerPosition;
 import es.pryades.fabricjs.enums.SpinnerPosition;
 import es.pryades.fabricjs.enums.SpinnerSpeed;
 import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
+import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
@@ -79,6 +82,9 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private static Map<EnumActions, FigureConfiguration> configurations;
 	private static LoaderConfiguration loadingConfiguration;
+	
+	private static final Integer REFERENCE_IN_mm = 50;
+	
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
 	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
 	
@@ -120,7 +126,6 @@ public class ImageCanvas extends VerticalLayout {
 			@Override
 			public void onResize(double width, double height) {
 				resizeAction();
-				//resizeAction2();
 			}
 		});
 		
@@ -231,11 +236,7 @@ public class ImageCanvas extends VerticalLayout {
 			return;
 		}
 		
-		String spacing = imageHeader.getPixelSpacing();
-		
-		if (spacing == null) return;
-		
-		String sp[] = spacing.split( "\\\\" );
+		String sp[] = imageHeader.getPixelSpacing().split( "\\\\" );
 		
 		Point p1 = figure.getPoints().get(0);
 		Point p2 = figure.getPoints().get(1);
@@ -361,14 +362,19 @@ public class ImageCanvas extends VerticalLayout {
 			addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
 				
 			imageRect = new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 );
-						
-			viewRect = getCanvasImage();
 			
-			canvas.clearDraw();
+			settingViewRect();
+			
+			//canvas.clearDraw();
 			
 			openImage();
 			
-			showImagenFigures();
+			List<Figure> figures = getImagenFiguresToShow();
+			canvas.chainOfCommand(
+	                new ChainOfCommand()
+	                .withClearDraw( true )
+	                .withFigures( figures ));
+			showRuleReference();
 		}
 	}
 	
@@ -458,11 +464,15 @@ public class ImageCanvas extends VerticalLayout {
 				currentCenter = nc;
 				currentWidth = nw;
 				
-				canvas.clearDraw();
+				//canvas.clearDraw();
 				
 				openImage();
 				
-				showImagenFigures();
+				List<Figure> figures = getImagenFiguresToShow();
+				canvas.chainOfCommand(
+		                new ChainOfCommand()
+		                .withClearDraw( true )
+		                .withFigures( figures ));
 			}
 		}
 	}
@@ -479,7 +489,7 @@ public class ImageCanvas extends VerticalLayout {
 				.withHoverColor( "#E02525" )
 				.withStrokeColor("#F0BE20")
 				.withBackgroundColor( "transparent" )
-				.withTextFontFamily("Roboto")
+				.withTextFontFamily("Roboto,'Open Sans',sans-serif")
 				.withTextFontSize(15)
 				.withTextFillColor("#F0BE20")
 				.withTextFontWeight( FontWeight.FW700 )
@@ -509,7 +519,7 @@ public class ImageCanvas extends VerticalLayout {
                 .withSpinnerColor("#bb910b")                
                 .withLoaderText(context.getString( "ViewerWnd.loading.image" ))
                 .withTextFontSize( 16 )
-                .withTextFontFamily("Roboto")
+                .withTextFontFamily("Roboto,'Open Sans',sans-serif")
                 .withTextFillColor("#F0BE20")
                 .withTextFontWeight( FontWeight.BOLDER )
                 .withSpinnerPosition(SpinnerPosition.LEFT)
@@ -520,26 +530,12 @@ public class ImageCanvas extends VerticalLayout {
 	}
 	
 	private void resizeAction(){
-		canvas.clearDraw();
-		
-		if (imageData == null) return;
-		
-		openImage();
-		
-		viewRect = getCanvasImage();
-		showImagenFigures();
-		showInformation(imageHeader);
-	}
-	
-	private void resizeAction2(){
 		if (imageData == null) return;
 
-		//canvas.clearDraw();
-		
 		openImage();
+		settingViewRect();
 		
-		viewRect = getCanvasImage();
-		List<Figure> figures = imagenFigures2();
+		List<Figure> figures = getImagenFiguresToShow();
 		List<Note> notes = informationNote(imageHeader);
 		
 		canvas.chainOfCommand(
@@ -548,6 +544,7 @@ public class ImageCanvas extends VerticalLayout {
                 .withFigures( figures )
                 .withClearNotes( true )
                 .withNotes(notes));
+		showRuleReference();
 	}
 	
 	private void showImagenFigures() {
@@ -586,7 +583,7 @@ public class ImageCanvas extends VerticalLayout {
 		}
 	}
 	
-	private List<Figure> imagenFigures2() {
+	private List<Figure> getImagenFiguresToShow() {
 		
 		Rectangle vrect = viewRect;
 		Rectangle irect = imageRect;
@@ -719,8 +716,15 @@ public class ImageCanvas extends VerticalLayout {
 			viewRect = getCanvasImage();*/
 			
 			openImage();
-			showInformation(imageHeader);
-			showImagenFigures();
+			List<Figure> figures = getImagenFiguresToShow();
+			List<Note> notes = informationNote(imageHeader);
+			canvas.chainOfCommand(
+	                new ChainOfCommand()
+	                .withClearDraw( true )
+	                .withFigures( figures )
+	                .withClearNotes( true )
+	                .withNotes(notes));
+			showRuleReference();
 			
 		}catch ( Throwable ex )	{
 			reportInfo = null;
@@ -782,51 +786,6 @@ public class ImageCanvas extends VerticalLayout {
 			reportInfo = info;
 		}catch ( Throwable ex )	{
 			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-		}
-	}
-	
-	private String imageUrl(){
-		try{
-			double ix1 = imageRect.getX();
-			double iy1 = imageRect.getY();
-			double ix2 = ix1 + imageRect.getWidth() - 1;
-			double iy2 = iy1 + imageRect.getHeight() - 1;
-			
-			int vcols = (int)canvas.getvWidth();
-			int vrows = (int)canvas.getvHeight();
-			
-			String dx1 = Double.toString( (double) ix1 / ( imageHeader.getColumns() - 1 ) );
-			String dy1 = Double.toString( (double) iy1 / ( imageHeader.getRows() - 1 ) );
-			String dx2 = Double.toString( (double) ix2 / ( imageHeader.getColumns() - 1 ) );
-			String dy2 = Double.toString( (double) iy2 / ( imageHeader.getRows() - 1 ) );
-			
-			String region = "region=" + dx1 + "," + dy1 + "," + dx2 + "," + dy2;
-			String zoom = "columns=" + vcols + "&rows=" + vrows;
-			String zoomIcon = "columns=" + 64 + "&rows=" + 64;
-			String content = "contentType=" + user.getCompression();
-			String contentIcon = "contentType=image/jpeg";
-			String bright = currentWidth > 0 ? "windowCenter=" + currentCenter + "&windowWidth=" + currentWidth : "";
-			String frame = "frameNumber=" + currentFrame;
-			
-			String url = imageData.getImage().getWadoUrl() + "&" + zoom + "&" + region + "&" + content + "&" + bright + "&" + frame;
-			String urlIcon = imageData.getImage().getWadoUrl() + "&" + zoomIcon + "&" + region + "&" + contentIcon + "&" + bright + "&" + frame;
-			
-			String urlimage = Utils.getEnviroment( "CLOUD_URL" ) + url;
-			LOG.info(urlimage);
-			
-			ReportInfo info = new ReportInfo();
-			
-			info.setHeader( imageHeader );
-			info.setUrl( url );
-			info.setIcon( urlIcon );
-			
-			reportInfo = info;
-			
-			return urlimage;
-			
-		}catch ( Throwable ex )	{
-			Notification.show("Error", ex.getMessage(), Notification.Type.ERROR_MESSAGE);
-			return "";
 		}
 	}
 
@@ -900,7 +859,7 @@ public class ImageCanvas extends VerticalLayout {
         		.withTextBackgroundColor( "transparent" )
         		.withNotesAlignment( FigureAlignment.TOP_LEFT)
         		.withTextAlign(TextAlign.LEFT)
-        		.withTextFontFamily("Roboto");
+        		.withTextFontFamily("Roboto,'Open Sans',sans-serif");
         
         
         StringBuilder sbuilder = new StringBuilder();
@@ -912,6 +871,39 @@ public class ImageCanvas extends VerticalLayout {
         canvas.addNotes(sbuilder.toString(), configuration);
 	}
 	
+	private void showRuleReference( ){
+		
+		if (!verifyPixelSpacing()){
+			return;
+		}
+		
+		double iy1 = imageRect.getY();
+		double iy2 = iy1 + imageRect.getHeight() - 1;
+		double vy1 = viewRect.getY();
+		double vy2 = vy1 + viewRect.getHeight() - 1;
+		
+		String sp[] = imageHeader.getPixelSpacing().split( "\\\\" );
+		
+		double my = ( iy2 - iy1 ) / ( vy2 - vy1 );
+		
+		Double pixels = REFERENCE_IN_mm/( my * Double.parseDouble( sp[1] ) );
+		
+		Ruler ruler = new Ruler(String.format( "%d mm", REFERENCE_IN_mm ), new RulerConfiguration()
+                .withPixels(pixels.intValue())
+                .withSplit(5)
+                .withStrokeWidth(2.0)
+                .withStrokeColor("#F0BE20")
+                .withPosition(RulerPosition.LEFT)
+                .withFigureShadow("-1 1 1 #020202")
+                .withTextFontFamily("Roboto,'Open Sans',sans-serif")
+				.withTextFontSize(15)
+				.withTextFillColor("#F0BE20")
+				.withTextFontWeight( FontWeight.FW700 )
+        );
+		
+		canvas.draw(ruler);
+	}
+	
 	private List<Note> informationNote(ImageHeader metadata){
         NotesConfiguration configuration = new NotesConfiguration()
         		.withTextFontSize( 17 )
@@ -919,7 +911,7 @@ public class ImageCanvas extends VerticalLayout {
         		.withTextBackgroundColor( "transparent" )
         		.withNotesAlignment( FigureAlignment.TOP_LEFT)
         		.withTextAlign(TextAlign.LEFT)
-        		.withTextFontFamily("Roboto");
+        		.withTextFontFamily("Roboto,'Open Sans',sans-serif");
         
         
         StringBuilder sbuilder = new StringBuilder();
@@ -932,7 +924,7 @@ public class ImageCanvas extends VerticalLayout {
 	}
 
 	public void clear() {
-		noneAction();
+		settingAction( EnumActions.NONE );
 		imageData = null;
 		imagenFigures = new ArrayList<>();
 		canvas.clear();
@@ -947,41 +939,13 @@ public class ImageCanvas extends VerticalLayout {
 		canvas.clearDraw();
 	}
 	
-	public void noneAction(){
-		currentAction = EnumActions.NONE;
-		canvas.setFigureConfiguration( configurations.get( currentAction ) );
-	}
-
-	public void distanceAction(){
+	public void settingAction(EnumActions action){
 		if (imageData == null) return;
 		
-		currentAction = EnumActions.DISTANCE;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-	public void angleAction(){
-		if (imageData == null) return;
-
-		currentAction = EnumActions.ANGLE;
+		currentAction = action;
 		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 	
-	public void zoomAction(){
-		if (imageData == null) return;
-
-		currentAction = EnumActions.ZOOM;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-	public void contrastAction() {
-		if (imageData == null) return;
-
-		currentAction = EnumActions.CONTRAST;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-
-
 	public boolean undoAction() {
 		if (back.isEmpty()) return false;
 		
@@ -991,12 +955,19 @@ public class ImageCanvas extends VerticalLayout {
 		currentWidth = status.getWindowWidth();
 		currentFrame = status.getFrame();
 		imageRect = status.getIrect();
-					
-		viewRect = getCanvasImage();
-		
-		canvas.clearDraw();
+
 		openImage();
-		showImagenFigures();
+
+		settingViewRect();
+		List<Figure> figures = getImagenFiguresToShow();
+		List<Note> notes = informationNote(imageHeader);
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
+		showRuleReference();
 		
 		if (back.isEmpty()) return false;
 		
@@ -1017,9 +988,17 @@ public class ImageCanvas extends VerticalLayout {
 		back = new Stack<>();
 		serieStatus.remove( currentSerie );
 
-		canvas.clearDraw();
 		openImage();
-		showImagenFigures();
+		settingViewRect();
+		List<Figure> figures = getImagenFiguresToShow();
+		List<Note> notes = informationNote(imageHeader);
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
+		showRuleReference();
 	}
 
 }

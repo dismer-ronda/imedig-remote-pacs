@@ -219,17 +219,17 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}else if (action instanceof OpenImage) {
 			openImage((ImageData)action.getData());
 		}else if (action instanceof AngleAction) {
-			imageCanvas.angleAction();
+			imageCanvas.settingAction( EnumActions.ANGLE );
 		}else if (action instanceof DisableDistanceAction) {
 			if (imageCanvas.getCurrentAction().equals( EnumActions.DISTANCE )){
-				imageCanvas.noneAction();
+				imageCanvas.settingAction( EnumActions.NONE );
 				leftToolBar.selectedAction( leftToolBar.buttonNone );
 			}
 			leftToolBar.buttonDistance.setEnabled( false );
 		}else if (action instanceof DistanceAction) {
-			imageCanvas.distanceAction();
+			imageCanvas.settingAction( EnumActions.DISTANCE );
 		}else if (action instanceof ZoomAction) {
-			imageCanvas.zoomAction();
+			imageCanvas.settingAction( EnumActions.ZOOM );
 		}else if (action instanceof UndoAction) {
 			if (!imageCanvas.undoAction()){
 				leftToolBar.buttonUndo.setEnabled( false );
@@ -240,9 +240,9 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 			leftToolBar.buttonUndo.setEnabled( false );
 			leftToolBar.buttonRestore.setEnabled( false );
 		}else if (action instanceof NoneAction) {
-			imageCanvas.noneAction();
+			imageCanvas.settingAction( EnumActions.NONE );
 		}else if (action instanceof ContrastAction) {
-			imageCanvas.contrastAction();
+			imageCanvas.settingAction( EnumActions.CONTRAST );
 		}else if (action instanceof AddToUndoAction) {
 			leftToolBar.buttonUndo.setEnabled( true );
 			leftToolBar.buttonRestore.setEnabled( true );
