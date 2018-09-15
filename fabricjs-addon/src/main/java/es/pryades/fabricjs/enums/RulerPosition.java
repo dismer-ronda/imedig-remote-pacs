@@ -16,10 +16,12 @@
 
 package es.pryades.fabricjs.enums;
 
+import java.io.Serializable;
+
 /**
  *
  * @author geanny
  */
-public enum FigureType {
-    LINE,ANGLE,FREE_ANGLE,RECT,RULER;
+public enum RulerPosition implements Serializable{
+    LEFT,RIGHT;
 }

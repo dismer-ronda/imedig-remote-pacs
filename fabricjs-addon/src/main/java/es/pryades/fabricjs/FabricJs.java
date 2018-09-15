@@ -23,6 +23,8 @@ import com.vaadin.ui.JavaScriptFunction;
 import elemental.json.JsonArray;
 import es.pryades.fabricjs.config.FigureConfiguration;
 import es.pryades.fabricjs.config.LoaderConfiguration;
+import es.pryades.fabricjs.config.RulerConfiguration;
+import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +37,7 @@ import java.util.Objects;
 public class FabricJs extends AbstractJavaScriptComponent {
 
     private FigureConfiguration figureConfiguration;
+    private RulerConfiguration rulerConfiguration;
     private NotesConfiguration notesConfiguration;
     private LoaderConfiguration loaderConfiguration;
 
@@ -73,6 +76,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.figureConfiguration = new FigureConfiguration();
         this.notesConfiguration = new NotesConfiguration();
         this.loaderConfiguration = new LoaderConfiguration();
+        this.rulerConfiguration = new RulerConfiguration();
         this.images = new ArrayList<>();
 
         this.createDefaultsDimesions();
@@ -89,6 +93,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.showSpinnerOnImageLoad = true;
         this.notesConfiguration = new NotesConfiguration();
         this.loaderConfiguration = new LoaderConfiguration();
+        this.rulerConfiguration = new RulerConfiguration();
         this.images = new ArrayList<>();
         this.figureConfiguration = generalFigureConfiguration;
 
@@ -130,6 +135,14 @@ public class FabricJs extends AbstractJavaScriptComponent {
     public void draw(Figure figure) {
         if (Objects.isNull(figure.getConfiguration())) {
             figure.setConfiguration(figureConfiguration);
+        }
+        this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
+        getState().commands = getPayload(this.commands);
+    }
+    
+    public void draw(Ruler figure) {
+        if (Objects.isNull(figure.getConfiguration())) {
+            figure.setConfiguration(rulerConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
         getState().commands = getPayload(this.commands);
@@ -192,6 +205,22 @@ public class FabricJs extends AbstractJavaScriptComponent {
     public NotesConfiguration getNotesConfiguration() {
         return this.notesConfiguration;
     }
+
+    public FigureConfiguration getRulerConfiguration() {
+        return rulerConfiguration;
+    }
+
+    public void setRulerConfiguration(RulerConfiguration rulerConfiguration) {
+        this.rulerConfiguration = rulerConfiguration;
+        if (Objects.isNull(rulerConfiguration)) {
+            this.rulerConfiguration = new RulerConfiguration();
+        } else {
+            this.rulerConfiguration = rulerConfiguration;
+        }
+        getState().rulerConfiguration = getPayload(this.rulerConfiguration);
+    }
+    
+    
 
     public LoaderConfiguration getLoaderConfiguration() {
         return loaderConfiguration;

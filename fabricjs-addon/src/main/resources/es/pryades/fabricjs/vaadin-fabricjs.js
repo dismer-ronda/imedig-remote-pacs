@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -108,6 +108,21 @@ var Utils = exports.Utils = function () {
                 visible: configuration.visible,
                 originX: 'center',
                 originY: 'center',
+                shadow: configuration.figureShadow,
+                objectCaching: false
+            });
+            return line;
+        }
+    }, {
+        key: 'createRulerLine',
+        value: function createRulerLine(points, configuration) {
+            var line = new fabric.Line(points, {
+                strokeWidth: configuration.strokeWidth,
+                fill: configuration.fillColor,
+                stroke: configuration.strokeColor,
+                strokeDashArray: configuration.strokeDashArray,
+                strokeLineCap: configuration.strokeLineCap,
+                visible: configuration.visible,
                 shadow: configuration.figureShadow,
                 objectCaching: false
             });
@@ -1331,6 +1346,187 @@ var RectDrawer = exports.RectDrawer = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Ruler = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Ruler = exports.Ruler = function () {
+    function Ruler(params) {
+        _classCallCheck(this, Ruler);
+
+        this.canvas = params.canvas;
+        this.text = params.text;
+        this.center = this.canvas.getCenter();
+        this.configuration = params.rulerConfiguration;
+        if (this.configuration && this.configuration.pixels > 0) {
+            this.generateRuler();
+        }
+    }
+
+    _createClass(Ruler, [{
+        key: "generateRuler",
+        value: function generateRuler() {
+            switch (this.configuration.position) {
+                case "LEFT":
+                    this.generateLeftRuler();
+                    break;
+                case "RIGHT":
+                    this.generateRightRuler();
+                    break;
+            }
+        }
+    }, {
+        key: "generateRightRuler",
+        value: function generateRightRuler() {
+
+            var x12 = this.canvas.getWidth() - this.configuration.space;
+            var y2 = this.center.top - this.configuration.pixels / 2;
+            var y3 = this.center.top + this.configuration.pixels / 2;
+
+            /*if (this.configuration.pixels < this.canvas.getHeight()) {
+                y2 = this.center.top - (this.configuration.pixels / 2);
+                y3 = this.center.top + (this.configuration.pixels / 2);
+            }*/
+
+            var line = _utils.Utils.createRulerLine([x12, y2, x12, y3], this.configuration);
+
+            //this.canvas.add(line);
+
+            var topLineCoords = [x12 - this.configuration.segmentSize, y2, x12 + this.configuration.strokeWidth, y2];
+            var topLine = _utils.Utils.createRulerLine(topLineCoords, this.configuration);
+            // this.canvas.add(topLine);
+
+            var bottomLineCoords = [x12 - this.configuration.segmentSize, y3, x12 + this.configuration.strokeWidth, y3];
+            var bottomLine = _utils.Utils.createRulerLine(bottomLineCoords, this.configuration);
+            //this.canvas.add(bottomLine);
+
+            var text = _utils.Utils.createTextLabel(this.text, {
+                top: this.center.top,
+                left: this.canvas.getWidth()
+            }, this.configuration);
+            text.set("objectCaching", false);
+
+            text.set("left", this.canvas.getWidth() - (this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize) - text.getScaledWidth());
+            //this.canvas.add(text);
+
+            var segmentLinesCoords = this.calculateRightPoints(x12, y2);
+            var segmentLines = [];
+            for (var i = 0; i < segmentLinesCoords.length; i++) {
+                var segment = _utils.Utils.createRulerLine(segmentLinesCoords[i], this.configuration);
+                segmentLines.push(segment);
+            }
+
+            this.group = new fabric.Group([line, topLine, bottomLine, text].concat(segmentLines), {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true,
+                shadow: this.configuration.figureShadow
+            });
+
+            this.canvas.add(this.group);
+            this.canvas.renderAll();
+        }
+    }, {
+        key: "calculateRightPoints",
+        value: function calculateRightPoints(x12, y2) {
+            var step = this.configuration.pixels / this.configuration.split;
+            var x1 = x12 - this.configuration.segmentSize / 2;
+
+            var linesCoords = [];
+
+            for (var i = 1; i < this.configuration.split; i++) {
+                var y1 = y2 + i * step;
+                linesCoords.push([x1, y1, x12, y1]);
+            }
+
+            return linesCoords;
+        }
+    }, {
+        key: "generateLeftRuler",
+        value: function generateLeftRuler() {
+
+            var x12 = this.configuration.space;
+
+            var y2 = this.center.top - this.configuration.pixels / 2;
+            var y3 = this.center.top + this.configuration.pixels / 2;
+
+            /*if (this.configuration.pixels < this.canvas.getHeight()) {
+                y2 = this.center.top - (this.configuration.pixels / 2);
+                y3 = this.center.top + (this.configuration.pixels / 2);
+            }*/
+
+            var line = _utils.Utils.createRulerLine([x12, y2, x12, y3], this.configuration);
+
+            //this.canvas.add(line);
+
+            var topLineCoords = [x12 + this.configuration.segmentSize, y2, x12, y2];
+            var topLine = _utils.Utils.createRulerLine(topLineCoords, this.configuration);
+            // this.canvas.add(topLine);
+
+            var bottomLineCoords = [x12 + this.configuration.segmentSize, y3, x12, y3];
+            var bottomLine = _utils.Utils.createRulerLine(bottomLineCoords, this.configuration);
+            //this.canvas.add(bottomLine);
+
+            var text = _utils.Utils.createTextLabel(this.text, {
+                top: this.center.top,
+                left: this.canvas.getWidth()
+            }, this.configuration);
+            text.set("objectCaching", false);
+
+            text.set("left", this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize);
+            //this.canvas.add(text);
+
+            var segmentLinesCoords = this.calculateLeftPoints(x12, y2);
+            var segmentLines = [];
+            for (var i = 0; i < segmentLinesCoords.length; i++) {
+                var segment = _utils.Utils.createRulerLine(segmentLinesCoords[i], this.configuration);
+                segmentLines.push(segment);
+            }
+
+            this.group = new fabric.Group([line, topLine, bottomLine, text].concat(segmentLines), {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true,
+                shadow: this.configuration.figureShadow
+            });
+
+            this.canvas.add(this.group);
+            this.canvas.renderAll();
+        }
+    }, {
+        key: "calculateLeftPoints",
+        value: function calculateLeftPoints(x12, y2) {
+            var step = this.configuration.pixels / this.configuration.split;
+            var x1 = x12 + this.configuration.segmentSize / 2;
+
+            var linesCoords = [];
+
+            for (var i = 1; i < this.configuration.split; i++) {
+                var y1 = y2 + i * step;
+                linesCoords.push([x12, y1, x1, y1]);
+            }
+
+            return linesCoords;
+        }
+    }]);
+
+    return Ruler;
+}();
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.FabricJsApp = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1348,6 +1544,8 @@ var _drawer = __webpack_require__(3);
 var _utils = __webpack_require__(0);
 
 var _loader = __webpack_require__(6);
+
+var _ruler = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1408,6 +1606,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         this.options = options;
         this.configuration = this.options.configuration;
         this.loaderConfiguration = this.options.loaderConfiguration;
+        this.rulerConfiguration = this.rulerConfiguration;
         this.figures = new Map();
         this.notes = new Map();
         this.showSpinnerOnImageLoad = options.showSpinnerOnImageLoad;
@@ -1686,6 +1885,16 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 case "RECT":
                     _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
+                case "RULER":
+                    if (this.ruler && this.ruler.group) {
+                        this.canvasNotes.remove(this.ruler.group);
+                    }
+                    this.ruler = new _ruler.Ruler({
+                        text: figure.text,
+                        rulerConfiguration: figure.configuration ? figure.configuration : this.loaderConfiguration,
+                        canvas: this.canvasNotes
+                    });
+                    break;
             }
         }
     }, {
@@ -1709,6 +1918,11 @@ var FabricJsApp = exports.FabricJsApp = function () {
             if (this.currentDraw) {
                 this.currentDraw.setConfiguration(this.configuration);
             }
+        }
+    }, {
+        key: 'setRulerConfiguration',
+        value: function setRulerConfiguration(rulerConfiguration) {
+            this.rulerConfiguration = rulerConfiguration;
         }
     }, {
         key: 'setLoaderConfiguration',
@@ -1838,6 +2052,12 @@ var FabricJsApp = exports.FabricJsApp = function () {
                         }
                     }
                 }.bind(this));
+            } else {
+                if (cc.figures) {
+                    for (var _i2 = 0; _i2 < cc.figures.length; _i2++) {
+                        this.draw(cc.figures[_i2]);
+                    }
+                }
             }
         }
     }, {

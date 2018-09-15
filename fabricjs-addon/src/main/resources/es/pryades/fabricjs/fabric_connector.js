@@ -8,6 +8,7 @@ var es_pryades_fabricjs_FabricJs = function() {
     var fabricJs = new FabricJs.FabricJsApp({
         configuration: JSON.parse(state.figureConfiguration),
         loaderConfiguration: JSON.parse(state.loaderConfiguration),
+        rulerConfiguration: JSON.parse(state.rulerConfiguration),
         showSpinnerOnImageLoad: state.showSpinnerOnImageLoad,
         container: container,
         action: state.action,
@@ -47,6 +48,11 @@ var es_pryades_fabricjs_FabricJs = function() {
         if (component.loaderConfiguration !== state.loaderConfiguration) {
             component.loaderConfiguration = state.loaderConfiguration;
             fabricJs.setLoaderConfiguration(JSON.parse(state.loaderConfiguration));
+        }
+
+        if (component.rulerConfiguration !== state.rulerConfiguration) {
+            component.rulerConfiguration = state.rulerConfiguration;
+            fabricJs.setRulerConfiguration(JSON.parse(state.rulerConfiguration));
         }
 
         if (component.showSpinnerOnImageLoad !== state.showSpinnerOnImageLoad) {
@@ -124,13 +130,17 @@ var es_pryades_fabricjs_FabricJs = function() {
                         if (chainCommand.imagesUrl) {
                             component.imagesUrls = chainCommand.imagesUrl;
                         }
-                        
+
                         if (chainCommand.figureConfiguration) {
                             component.figureConfiguration = chainCommand.figureConfiguration;
                         }
-                        
+
                         if (chainCommand.loaderConfiguration) {
                             component.loaderConfiguration = chainCommand.loaderConfiguration;
+                        }
+
+                        if (chainCommand.rulerConfiguration) {
+                            component.rulerConfiguration = chainCommand.rulerConfiguration;
                         }
 
                         fabricJs.executeChainOfCommand(chainCommand);

@@ -41,6 +41,7 @@ public class ChainOfCommand implements Serializable {
 
     private LoaderConfiguration loaderConfiguration;
     private FigureConfiguration figureConfiguration;
+    private FigureConfiguration rulerConfiguration;
 
     public List<Figure> getFigures() {
         return figures;
@@ -110,6 +111,14 @@ public class ChainOfCommand implements Serializable {
         this.figureConfiguration = figureConfiguration;
     }
 
+    public FigureConfiguration getRulerConfiguration() {
+        return rulerConfiguration;
+    }
+
+    public void setRulerConfiguration(FigureConfiguration rulerConfiguration) {
+        this.rulerConfiguration = rulerConfiguration;
+    }
+
     public boolean isClearAll() {
         return clearAll;
     }
@@ -160,6 +169,11 @@ public class ChainOfCommand implements Serializable {
 
     public ChainOfCommand withFigureConfiguration(FigureConfiguration figureConfiguration) {
         this.setFigureConfiguration(figureConfiguration);
+        return this;
+    }
+
+    public ChainOfCommand withRulerConfiguration(FigureConfiguration rulerConfiguration) {
+        this.setRulerConfiguration(rulerConfiguration);
         return this;
     }
 

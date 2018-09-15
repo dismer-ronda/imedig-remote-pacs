@@ -8,6 +8,7 @@ public class FabricJsState extends JavaScriptComponentState {
     public String figureConfiguration = "{}";
     public String notesConfiguration = "{}";
     public String loaderConfiguration = "{}";
+    public String rulerConfiguration = "{}";
     public boolean showSpinnerOnImageLoad = true;
     public String notes = "[]";
     public String imagesUrl = "[]";

@@ -45,8 +45,6 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private Integer cancelDrawKeyCode;
     private String hoverColor;
     private String figureShadow;
-   
-       
 
     public FigureConfiguration() {
         super();
@@ -59,8 +57,8 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.visible = true;
         this.cursor = "default";
         this.action = CanvasAction.NONE;
-        this.cancelDrawKeyCode = 27;   
-       
+        this.cancelDrawKeyCode = 27;
+
     }
 
     public FigureConfiguration(FigureConfiguration configuration) {
@@ -77,7 +75,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
         this.hoverColor = configuration.getHoverColor();
         this.figureShadow = configuration.getFigureShadow();
-       
+
     }
 
     public String getFigureShadow() {
@@ -88,8 +86,6 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.figureShadow = figureShadow;
     }
 
-    
-    
     public String getStrokeLineCap() {
         return strokeLineCap;
     }
@@ -97,8 +93,6 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public void setStrokeLineCap(String strokeLineCap) {
         this.strokeLineCap = strokeLineCap;
     }
-
-   
 
     public String getHoverColor() {
         return hoverColor;
@@ -279,13 +273,13 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.setHoverColor(hoverColor);
         return this;
     }
-    
-     public FigureConfiguration withFigureShadow(String figureShadow) {
+
+    public FigureConfiguration withFigureShadow(String figureShadow) {
         this.setFigureShadow(figureShadow);
         return this;
     }
 
-     public FigureConfiguration clone() {
+    public FigureConfiguration clone() {
         return new FigureConfiguration(this);
     }
 
