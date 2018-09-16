@@ -1,8 +1,10 @@
 package es.pryades.imedig.viewer.actions;
 
-public class OpenImage extends AbstractAction{
+import es.pryades.imedig.viewer.datas.ImageData;
 
-	public OpenImage(Object source, Object data) {
+public class OpenImage extends AbstractAction<Object, ImageData>{
+
+	public OpenImage(Object source, ImageData data) {
 		super(source, data);
 	}
 

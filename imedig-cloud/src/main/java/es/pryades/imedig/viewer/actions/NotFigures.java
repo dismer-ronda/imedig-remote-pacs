@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class NotFigures extends AbstractAction {
+public class NotFigures extends SourceAction {
 
-	public NotFigures(Object source, Object data) {
-		super(source, data);
+	public NotFigures(Object source) {
+		super(source);
 	}
 }

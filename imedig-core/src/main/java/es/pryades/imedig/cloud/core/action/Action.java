@@ -1,7 +1,7 @@
 package es.pryades.imedig.cloud.core.action;
 
-public interface Action {
-	Object getSource();
+public interface Action <S, D> {
+	S getSource();
 	
-	Object getData();
+	D getData();
 }

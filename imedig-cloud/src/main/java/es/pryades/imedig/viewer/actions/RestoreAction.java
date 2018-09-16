@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class RestoreAction extends AbstractAction {
+public class RestoreAction extends SourceAction {
 
-	public RestoreAction(Object source, Object data) {
-		super(source, data);
+	public RestoreAction(Object source) {
+		super(source);
 	}
 }

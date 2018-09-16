@@ -1,9 +1,9 @@
 package es.pryades.imedig.viewer.actions;
 
-public class RequestReport extends AbstractAction {
+public class RequestReport extends SourceAction {
 
-	public RequestReport(Object source, Object data) {
-		super(source, data);
+	public RequestReport(Object source) {
+		super(source);
 	}
 
 }

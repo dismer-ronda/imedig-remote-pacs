@@ -164,10 +164,6 @@
 	}
 }
 
-.content{
-	display: contents !important;
-}
-
 .maincontent{
 	width: 100%;
 	height: 100%;
@@ -177,14 +173,16 @@
 	z-index: 30;
 	font-size: 22px;
 	float: right;
-	&:focus:after{
-  	   -webkit-box-shadow: none !important;
-	   box-shadow: none !important;
-	}
 	& .v-button{
 	  z-index: 30;
 	  margin: 3px;
+	  float: right;
 	  background-color: rgba(0, 0, 0, 0.2) !important;
+	}
+	
+	& .v-button :focus:after{
+  	   -webkit-box-shadow: none !important;
+	   box-shadow: none !important;
 	}
 }
 

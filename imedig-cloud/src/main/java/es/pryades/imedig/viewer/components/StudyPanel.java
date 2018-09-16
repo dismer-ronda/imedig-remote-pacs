@@ -27,7 +27,7 @@ import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.datas.ImageData;
 
-public class StudyPanel extends CssLayout {
+public class StudyPanel extends CssLayout{
 
 	private static final Logger LOG = LoggerFactory.getLogger(StudyPanel.class);
 
@@ -168,7 +168,7 @@ public class StudyPanel extends CssLayout {
 		img.addClickListener(new ClickListener() {
 			@Override
 			public void click(ClickEvent event) {
-				context.sendAction( new OpenImage(this, ((com.vaadin.ui.Image)event.getSource()).getData()));
+				context.sendAction( new OpenImage(this, (ImageData)((com.vaadin.ui.Image)event.getSource()).getData()));
 			}
 		});
 		thumnails.addComponent(img);
@@ -217,5 +217,15 @@ public class StudyPanel extends CssLayout {
 		}
 
 		return ret;
+	}
+
+	public void changeImageFrame( ImageData data ){
+		if ( datas.indexOf( data ) < 0 ) return;
+
+		index = datas.indexOf( data );
+		thumnails.removeAllComponents();
+		addToThumnails( datas.get( index ) );
+
+		labelFooter.setValue( String.format( "%d/%d", index+1, datas.size() ) );
 	}
 }

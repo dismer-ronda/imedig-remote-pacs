@@ -11,8 +11,10 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.fabricjs.ChainOfCommand;
 import es.pryades.fabricjs.FabricJs;
@@ -35,6 +37,10 @@ import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
+import es.pryades.fullscreen.FullScreenExtension;
+import es.pryades.fullscreen.listeners.FullScreenChangeListener;
+import es.pryades.imedig.cloud.common.FontIcoMoon;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -44,15 +50,18 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
+import es.pryades.imedig.viewer.actions.ChangeImageFrame;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
 import lombok.Getter;
 
-public class ImageCanvas extends VerticalLayout {
+public class ImageCanvas extends CssLayout {
 	private static final Logger LOG = Logger.getLogger(ImageCanvas.class);
 
 	private User user;
@@ -88,6 +97,10 @@ public class ImageCanvas extends VerticalLayout {
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
 	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
 	
+	private static final String ID_FULLSCREEN = "btn.fullscreen";
+	protected Button bttnFullScreen;
+	
+	
 	@Getter
 	private ReportInfo reportInfo;
 
@@ -98,19 +111,60 @@ public class ImageCanvas extends VerticalLayout {
 		this.imageDataNavigator = navidator;
 		
 		setSizeFull();
-		setMargin(false);
-		setSpacing(false);
 		
 		this.user = user;
 
 		init();
 
+		buildFullScreenButtons();
 		settingCanvas();
 	}
 
 	private void init() {
 		imagenFigures = new ArrayList<Figure>();
 		back = new Stack<>();
+	}
+	
+	private void buildFullScreenButtons(){
+		bttnFullScreen = new Button( );
+		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
+		bttnFullScreen.setImmediate( true );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		bttnFullScreen.setId( ID_FULLSCREEN );
+		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+		
+		FullScreenExtension extension = new FullScreenExtension();
+        extension.trigger(bttnFullScreen);
+        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
+
+            @Override
+            public void onChange(boolean fullscreen) {
+                if (fullscreen) {
+                	context.sendAction( new FullScreen( this ) );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
+					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
+                } else {
+                	context.sendAction( new ExitFullScreen( this ) );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
+					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+                }
+            }
+        });
+
+		CssLayout hide = new CssLayout( bttnFullScreen );
+		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
+		hide.setHeight( "0px" );
+		hide.setWidth( "0px" );
+		addComponent( hide );
+		
+//		Button btn = new Button( );
+//		btn.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
+//		btn.setImmediate( true );
+//		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+//		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+//		btn.setDescription( context.getString( "words.fullscreen" ) );
+//		addComponent( btn );
 	}
 
 	private void settingCanvas() {
@@ -187,7 +241,11 @@ public class ImageCanvas extends VerticalLayout {
 			currentFrame = frame;
 			openImage();
 		}else{
-			openImage( imageDataNavigator.getPreviousImageSerie() );
+			ImageData data = imageDataNavigator.getPreviousImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
 		}
 	}
 
@@ -208,7 +266,11 @@ public class ImageCanvas extends VerticalLayout {
 			
 			openImage();
 		}else{
-			openImage( imageDataNavigator.getNextImageSerie() );
+			ImageData data = imageDataNavigator.getNextImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
 		}
 	}
 
@@ -380,7 +442,7 @@ public class ImageCanvas extends VerticalLayout {
 	
 	private void addToUndo(ImageStatus status){
 		back.push(status);
-		listenerAction.doAction( new AddToUndoAction( this, null ) );
+		listenerAction.doAction( new AddToUndoAction( this) );
 	}
 
 	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
@@ -433,7 +495,7 @@ public class ImageCanvas extends VerticalLayout {
 		fig.setConfiguration( figure.getConfiguration() );
 		
 		imagenFigures.add(fig);
-		listenerAction.doAction( new AddFigure( this, null ) );
+		listenerAction.doAction( new AddFigure( this ) );
 	}
 	
 	private void contrastOperation(Figure figure) {
@@ -644,7 +706,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		if (this.imageData != null && this.imageData.equals( imageData )) {
 			if (!verifyPixelSpacing()){
-				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+				listenerAction.doAction( new DisableDistanceAction( this) );
 			}
 			return;
 		}
@@ -700,13 +762,13 @@ public class ImageCanvas extends VerticalLayout {
 			}*/
 			
 			if (!verifyPixelSpacing()){
-				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+				listenerAction.doAction( new DisableDistanceAction( this ) );
 			}
 			
 			if (!imagenFigures.isEmpty()){
-				listenerAction.doAction( new AddFigure( this, null ) );
+				listenerAction.doAction( new AddFigure( this ) );
 			}else{
-				listenerAction.doAction( new NotFigures( this, null ) );
+				listenerAction.doAction( new NotFigures( this ) );
 			}
 			
 			/*imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
@@ -893,7 +955,7 @@ public class ImageCanvas extends VerticalLayout {
                 .withSplit(5)
                 .withStrokeWidth(2.0)
                 .withStrokeColor("#F0BE20")
-                .withPosition(RulerPosition.LEFT)
+                .withPosition(RulerPosition.RIGHT)
                 .withFigureShadow("-1 1 1 #020202")
                 .withTextFontFamily("Roboto,'Open Sans',sans-serif")
 				.withTextFontSize(15)

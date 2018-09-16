@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class EraseAction extends AbstractAction {
+public class EraseAction extends SourceAction {
 
-	public EraseAction(Object source, Object data) {
-		super(source, data);
+	public EraseAction(Object source) {
+		super(source);
 	}
 }

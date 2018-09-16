@@ -10,18 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.fullscreen.FullScreenExtension;
-import es.pryades.fullscreen.listeners.FullScreenChangeListener;
-import es.pryades.imedig.cloud.common.FontIcoMoon;
-import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.StudyUtils;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.Action;
@@ -44,15 +38,14 @@ import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
+import es.pryades.imedig.viewer.actions.ChangeImageFrame;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.actions.EraseAction;
-import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FontAction;
-import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
@@ -83,8 +76,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	public static final Integer OPERATION_WINDOW = 6;
 
 	public static final int OPEN_STUDIES = 100;
-	private static final String ID_FULLSCREEN = "btn.fullscreen";
-
+	
 	protected ResourceBundle resourceBundle;
 
 	boolean replicate = false;
@@ -94,7 +86,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
-	protected Button bttnFullScreen;
 	private HorizontalLayout content;
 	
 	private final ImedigContext context;
@@ -149,8 +140,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	}
 
 	private void buidComponent() {
-		
-		buildFullScreenButtons();
 		addComponent( content = new HorizontalLayout() );
 		content.setSizeFull();
 		
@@ -162,41 +151,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		content.setExpandRatio(imageCanvas, 1.0f);
 	}
 	
-	private void buildFullScreenButtons(){
-		bttnFullScreen = new Button( );
-		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
-		bttnFullScreen.setImmediate( true );
-		bttnFullScreen.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
-		bttnFullScreen.setId( ID_FULLSCREEN );
-		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-		
-		FullScreenExtension extension = new FullScreenExtension();
-        extension.trigger(bttnFullScreen);
-        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
-
-            @Override
-            public void onChange(boolean fullscreen) {
-                if (fullscreen) {
-                	context.sendAction( new FullScreen( this ) );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
-					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-                } else {
-                	context.sendAction( new ExitFullScreen( this ) );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
-					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-                }
-            }
-        });
-
-		CssLayout hide = new CssLayout( bttnFullScreen );
-		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		hide.setHeight( "0px" );
-		hide.setWidth( "0px" );
-		addComponent( hide );
-	}
-
 	@Override
 	public void doAction(Action action) {
 		if (action == null)
@@ -207,7 +161,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}else if (action instanceof FontAction) {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {
-			if (openStudies((List<String>)action.getData())){
+			if (openStudies(((OpenStudies)action).getData())){
 				if (modeReport){
 					leftToolBar.buttonClose.setEnabled( false );
 				}else{
@@ -217,7 +171,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}else if (action instanceof CloseStudies) {
 			closeStudies((CloseStudies)action);
 		}else if (action instanceof OpenImage) {
-			openImage((ImageData)action.getData());
+			openImage(((OpenImage)action).getData());
 		}else if (action instanceof AngleAction) {
 			imageCanvas.settingAction( EnumActions.ANGLE );
 		}else if (action instanceof DisableDistanceAction) {
@@ -254,6 +208,8 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 			leftToolBar.buttonErase.setEnabled( false );
 		}else if (action instanceof RequestReport) {
 			requestReport();
+		}else if (action instanceof ChangeImageFrame) {
+			leftToolBar.changeImageFrame( ((ChangeImageFrame)action).getData());
 		}
 		
 	}
@@ -305,7 +261,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}
 		
 		leftToolBar.removeStudyPanel( (StudyPanel)closeStudies.getSource() );
-		StudyTree study = (StudyTree)closeStudies.getData();
+		StudyTree study = closeStudies.getData();
 		studies.remove( study );
 		if (imageCanvas.getImageData()!= null && study == imageCanvas.getImageData().getStudy()){
 			imageCanvas.clear();

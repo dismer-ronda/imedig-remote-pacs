@@ -3,6 +3,7 @@ package es.pryades.imedig.viewer.components;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Iterator;
 
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.FontAwesome;
@@ -11,6 +12,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
@@ -32,6 +34,7 @@ import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
+import es.pryades.imedig.viewer.datas.ImageData;
 
 public class LeftToolBar extends HorizontalLayout {
 	
@@ -112,7 +115,7 @@ public class LeftToolBar extends HorizontalLayout {
 			{
 				public void buttonClick( ClickEvent event )
 				{
-					context.sendAction(new RequestReport(this, null));
+					context.sendAction(new RequestReport(this));
 				}
 			} );
 		}
@@ -121,7 +124,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonOpen.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction( new QueryStudies(this, null));
+				context.sendAction( new QueryStudies(this));
 				selectedAction(buttonOpen);
 			}
 		});
@@ -129,7 +132,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonClose.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new CloseStudies(this, null));
+				context.sendAction(new CloseStudies(this));
 				selectedAction(buttonClose);
 			}
 		});
@@ -137,7 +140,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonDistance.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new DistanceAction(this, null));
+				context.sendAction(new DistanceAction(this));
 				selectedAction(buttonDistance);
 			}
 		});
@@ -145,7 +148,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonAngle.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new AngleAction(this, null));
+				context.sendAction(new AngleAction(this));
 				selectedAction(buttonAngle);
 			}
 		});
@@ -153,7 +156,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonNone.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new NoneAction(this, null));
+				context.sendAction(new NoneAction(this));
 				selectedAction(buttonNone);
 			}
 		});
@@ -161,7 +164,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonZoom.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new ZoomAction(this, null));
+				context.sendAction(new ZoomAction(this));
 				selectedAction(buttonZoom);
 			}
 		});
@@ -170,21 +173,21 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonRestore.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new RestoreAction(this, null));
+				context.sendAction(new RestoreAction(this));
 			}
 		});
 
 		buttonUndo.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new UndoAction(this, null));
+				context.sendAction(new UndoAction(this));
 			}
 		});
 		
 		buttonContrast.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new ContrastAction(this, null));
+				context.sendAction(new ContrastAction(this));
 				selectedAction(buttonContrast);
 			}
 		});
@@ -192,7 +195,7 @@ public class LeftToolBar extends HorizontalLayout {
 		buttonErase.addClickListener(new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				context.sendAction(new EraseAction(this, null));
+				context.sendAction(new EraseAction(this));
 				buttonErase.setEnabled( false );
 				//selectedAction(buttonErase);
 			}
@@ -267,6 +270,16 @@ public class LeftToolBar extends HorizontalLayout {
 			panelThumnails.setVisible( false );
 			allButtonsDisable();
 			removeStyleName( ImedigTheme.TOOLBOX_CONTENT );
+		}
+	}
+	
+	public void changeImageFrame( ImageData data){
+		
+		Iterator<Component> it = thumnails.iterator();
+		
+		while ( it.hasNext() ){
+			StudyPanel panel = (StudyPanel)it.next();
+			panel.changeImageFrame( data );
 		}
 	}
 	

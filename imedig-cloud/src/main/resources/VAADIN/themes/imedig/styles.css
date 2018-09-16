@@ -13165,10 +13165,6 @@ div.v-layout.v-horizontal.v-widget {
 	transition: transform 0.2s ease-in-out !important;
 }
 
-.content {
-	display: contents !important;
-}
-
 .maincontent {
 	width: 100%;
 	height: 100%;
@@ -13180,15 +13176,16 @@ div.v-layout.v-horizontal.v-widget {
 	float: right;
 }
 
-.fullscreen:focus:after {
-	-webkit-box-shadow: none !important;
-	box-shadow: none !important;
-}
-
 .fullscreen .v-button {
 	z-index: 30;
 	margin: 3px;
+	float: right;
 	background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.fullscreen .v-button:focus:after {
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
 }
 
 .copyright {

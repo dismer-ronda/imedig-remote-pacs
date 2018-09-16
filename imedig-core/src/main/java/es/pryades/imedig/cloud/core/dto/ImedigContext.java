@@ -175,21 +175,30 @@ public class ImedigContext
 	public void sendAction(Action action){
 		if (action == null) return;
 		
-		for ( ListenerAction listener : listeners )
-			listener.doAction( action );
+		synchronized (listeners) {
+			for ( ListenerAction listener : listeners )
+				listener.doAction( action );
+		}
 	}
 	
 	
 	public void addListener(ListenerAction listener){
+		
 		if (listener == null) return;
 		
-		listeners.add( listener );
+		synchronized (listeners) {
+			listeners.add( listener );
+		}
+		
 	}
 
 	public void removeListener(ListenerAction listener){
 		if (listener == null) return;
 		
-		listeners.remove( listener );
+		synchronized (listeners) {
+			listeners.remove( listener );
+		}
+		
 	}
 
 }
