@@ -180,7 +180,24 @@
 	  background-color: rgba(0, 0, 0, 0.2) !important;
 	}
 	
-	& .v-button :focus:after{
+	& .v-button:focus:after{
+  	   -webkit-box-shadow: none !important;
+	   box-shadow: none !important;
+	}
+}
+
+.changeframe{
+	z-index: 35;
+	font-size: 22px;
+	float: left;
+	position: relative;
+	left: 5px;
+	top: 45%;
+	& .v-button{
+	  margin: 3px;
+	  background-color: rgba(0, 0, 0, 0.2) !important;
+	}
+	& .v-button:focus:after{
   	   -webkit-box-shadow: none !important;
 	   box-shadow: none !important;
 	}

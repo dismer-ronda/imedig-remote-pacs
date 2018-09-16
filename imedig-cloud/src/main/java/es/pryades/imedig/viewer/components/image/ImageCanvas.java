@@ -11,7 +11,9 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
@@ -99,6 +101,9 @@ public class ImageCanvas extends CssLayout {
 	
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
 	protected Button bttnFullScreen;
+	private CssLayout changeFrame;
+	private Button btnFramePrior;
+	private Button btnFrameNext;
 	
 	
 	@Getter
@@ -117,6 +122,7 @@ public class ImageCanvas extends CssLayout {
 		init();
 
 		buildFullScreenButtons();
+		buildImageFrameChangeButtons();
 		settingCanvas();
 	}
 
@@ -154,18 +160,45 @@ public class ImageCanvas extends CssLayout {
 
 		CssLayout hide = new CssLayout( bttnFullScreen );
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		hide.setHeight( "0px" );
+		hide.setHeight( "-1px" );
 		hide.setWidth( "0px" );
 		addComponent( hide );
-		
-//		Button btn = new Button( );
-//		btn.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
-//		btn.setImmediate( true );
-//		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-//		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
-//		btn.setDescription( context.getString( "words.fullscreen" ) );
-//		addComponent( btn );
+
 	}
+	
+	private void buildImageFrameChangeButtons(){
+		btnFramePrior = new Button( );
+		btnFramePrior.setIcon( FontAwesome.ANGLE_UP  );
+		btnFramePrior.setImmediate( true );
+		btnFramePrior.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFramePrior.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFramePrior.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openPreviousImage();
+			}
+		} );
+
+		btnFrameNext = new Button( );
+		btnFrameNext.setIcon( FontAwesome.ANGLE_DOWN  );
+		btnFrameNext.setImmediate( true );
+		btnFrameNext.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameNext.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameNext.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openNextImage();
+			}
+		} );
+
+		changeFrame = new CssLayout( btnFramePrior, btnFrameNext );
+		changeFrame.addStyleName( ImedigTheme.CHANGE_FRAME );
+		changeFrame.setHeight( "-1px" );
+		changeFrame.setWidth( "0px" );
+		changeFrame.setVisible( false );
+		addComponent( changeFrame );
+	}
+
 
 	private void settingCanvas() {
 		buildCanvasConfiguration();
@@ -771,12 +804,6 @@ public class ImageCanvas extends CssLayout {
 				listenerAction.doAction( new NotFigures( this ) );
 			}
 			
-			/*imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
-			currentCenter = getDouble(imageHeader.getWindowCenter()); 
-			currentWidth = getDouble(imageHeader.getWindowWidth());
-			currentFrame = new Integer(0);
-			viewRect = getCanvasImage();*/
-			
 			openImage();
 			List<Figure> figures = getImagenFiguresToShow();
 			List<Note> notes = informationNote(imageHeader);
@@ -788,6 +815,7 @@ public class ImageCanvas extends CssLayout {
 	                .withNotes(notes));
 			showRuleReference();
 			
+			changeFrame.setVisible( imageDataNavigator.containFrames() );
 		}catch ( Throwable ex )	{
 			reportInfo = null;
 		}

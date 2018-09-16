@@ -13188,6 +13188,25 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: none !important;
 }
 
+.changeframe {
+	z-index: 35;
+	font-size: 22px;
+	float: left;
+	position: relative;
+	left: 5px;
+	top: 45%;
+}
+
+.changeframe .v-button {
+	margin: 3px;
+	background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.changeframe .v-button:focus:after {
+	-webkit-box-shadow: none !important;
+	box-shadow: none !important;
+}
+
 .copyright {
 	font-family: Roboto, sans-serif;
 	font-size: 13px;

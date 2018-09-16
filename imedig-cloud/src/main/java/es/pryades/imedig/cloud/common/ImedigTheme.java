@@ -4,6 +4,7 @@ public class ImedigTheme {
 	public static final String STUDY_PANEL	= "studypanel";
 	public static final String CURSOR_POINTER	= "cursor_pointer";
 	public static final String FULLSCREEN_INDICATOR= "fullscreen";
+	public static final String CHANGE_FRAME= "changeframe";
 	public static final String TOOLBOX_CONTENT= "toolbox-content";
 	
 	
