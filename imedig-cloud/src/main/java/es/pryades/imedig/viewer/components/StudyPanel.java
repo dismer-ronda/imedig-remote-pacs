@@ -12,6 +12,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -43,7 +44,7 @@ public class StudyPanel extends CssLayout{
 	private Integer index;
 	private int mode = MODE_ALL;
 	
-	private static final int LIMIT_TO_SHOW_ALL = 2;
+	private static final int LIMIT_TO_SHOW_ALL = 1;
 	private static final int MODE_ALL = 1;
 	private static final int MODE_ONE = 2;
 	
@@ -86,8 +87,10 @@ public class StudyPanel extends CssLayout{
 	public void setStudy(StudyTree study, List<ImageData> datas){
 		this.study = study;
 		this.datas = datas;
-		addStudyInfo( );
 		
+		index = datas.size()/2;
+
+		addStudyInfo( );
 		addStudyImages( );
 	}
 	private void addStudyInfo( ) {
@@ -106,8 +109,6 @@ public class StudyPanel extends CssLayout{
 	}
 
 	private void showOneImage()	{
-		index = datas.size()/2;
-		
 		addToThumnails( datas.get( index ) );
 		
 		addThumnailsFooter();
@@ -223,9 +224,18 @@ public class StudyPanel extends CssLayout{
 		if ( datas.indexOf( data ) < 0 ) return;
 
 		index = datas.indexOf( data );
-		thumnails.removeAllComponents();
+		
+		updateLabelValue();
+		
+		if (mode == MODE_ALL) return;
+		
+		index = datas.indexOf( data );
+		Component component = thumnails.getComponent( 0 );
 		addToThumnails( datas.get( index ) );
-
+		thumnails.removeComponent( component );
+	}
+	
+	private void updateLabelValue(){
 		labelFooter.setValue( String.format( "%d/%d", index+1, datas.size() ) );
 	}
 }
