@@ -6,7 +6,11 @@ public interface ImageSerieNavigator
 {
 	boolean containFrames(); 
 	
+	ImageData getFirstImageSerie();
+	
 	ImageData getPreviousImageSerie();
 	
 	ImageData getNextImageSerie();
+	
+	ImageData getLastImageSerie();
 }

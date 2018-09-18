@@ -1410,6 +1410,7 @@ var Ruler = exports.Ruler = function () {
             }, this.configuration);
             text.set("objectCaching", false);
 
+            text.set("top", this.center.top - text.getScaledHeight() / 2);
             text.set("left", this.canvas.getWidth() - (this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize) - text.getScaledWidth());
             //this.canvas.add(text);
 
@@ -1477,6 +1478,7 @@ var Ruler = exports.Ruler = function () {
             }, this.configuration);
             text.set("objectCaching", false);
 
+            text.set("top", this.center.top - text.getScaledHeight() / 2);
             text.set("left", this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize);
             //this.canvas.add(text);
 

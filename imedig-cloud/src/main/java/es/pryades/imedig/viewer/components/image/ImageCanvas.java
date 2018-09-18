@@ -102,8 +102,8 @@ public class ImageCanvas extends CssLayout {
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
 	protected Button bttnFullScreen;
 	private CssLayout changeFrame;
-	private Button btnFramePrior;
-	private Button btnFrameNext;
+	//private Button btnFramePrior;
+	//private Button btnFrameNext;
 	
 	
 	@Getter
@@ -167,11 +167,25 @@ public class ImageCanvas extends CssLayout {
 	}
 	
 	private void buildImageFrameChangeButtons(){
-		btnFramePrior = new Button( );
+		Button btnFrameFirst = new Button( );
+		btnFrameFirst.setIcon( FontAwesome.ANGLE_DOUBLE_UP  );
+		btnFrameFirst.setImmediate( true );
+		btnFrameFirst.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameFirst.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameFirst.setDescription( context.getString( "ViewerWnd.first.image.serie" ) );
+		btnFrameFirst.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openFirstImage();
+			}
+		} );
+		
+		Button btnFramePrior = new Button( );
 		btnFramePrior.setIcon( FontAwesome.ANGLE_UP  );
 		btnFramePrior.setImmediate( true );
 		btnFramePrior.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		btnFramePrior.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFramePrior.setDescription( context.getString( "ViewerWnd.prior.image.serie" ) );
 		btnFramePrior.addClickListener( new Button.ClickListener(){
 			@Override
 			public void buttonClick( ClickEvent event ){
@@ -179,19 +193,33 @@ public class ImageCanvas extends CssLayout {
 			}
 		} );
 
-		btnFrameNext = new Button( );
+		Button btnFrameNext = new Button( );
 		btnFrameNext.setIcon( FontAwesome.ANGLE_DOWN  );
 		btnFrameNext.setImmediate( true );
 		btnFrameNext.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		btnFrameNext.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameNext.setDescription( context.getString( "ViewerWnd.next.image.serie" ) );
 		btnFrameNext.addClickListener( new Button.ClickListener(){
 			@Override
 			public void buttonClick( ClickEvent event ){
 				openNextImage();
 			}
 		} );
+		
+		Button btnFrameLast = new Button( );
+		btnFrameLast.setIcon( FontAwesome.ANGLE_DOUBLE_DOWN  );
+		btnFrameLast.setImmediate( true );
+		btnFrameLast.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameLast.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameLast.setDescription( context.getString( "ViewerWnd.last.image.serie" ) );
+		btnFrameLast.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openLastImage();
+			}
+		} );
 
-		changeFrame = new CssLayout( btnFramePrior, btnFrameNext );
+		changeFrame = new CssLayout( btnFrameFirst, btnFramePrior, btnFrameNext, btnFrameLast );
 		changeFrame.addStyleName( ImedigTheme.CHANGE_FRAME );
 		changeFrame.setHeight( "-1px" );
 		changeFrame.setWidth( "0px" );
@@ -265,6 +293,23 @@ public class ImageCanvas extends CssLayout {
 		} );
 	}
 	
+	private void openFirstImage(){
+		if (numberOfFrames >1){
+			Integer frame = getFirstFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			openImage();
+		}else{
+			ImageData data = imageDataNavigator.getFirstImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
+		}
+	}
+
 	private void openPreviousImage(){
 		if (numberOfFrames >1){
 			Integer frame = getPreviousFrame();
@@ -280,6 +325,10 @@ public class ImageCanvas extends CssLayout {
 				context.sendAction( new ChangeImageFrame( this, data ) );
 			}
 		}
+	}
+
+	private Integer getFirstFrame(){
+		return 0;
 	}
 
 	private Integer getPreviousFrame(){
@@ -307,12 +356,35 @@ public class ImageCanvas extends CssLayout {
 		}
 	}
 
+	private void openLastImage(){
+		if (numberOfFrames >1){
+			Integer frame = getLastFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			
+			openImage();
+		}else{
+			ImageData data = imageDataNavigator.getLastImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
+		}
+	}
+
 	private Integer getNextFrame(){
 		if (currentFrame.equals( numberOfFrames - 1 )) return currentFrame;
 		
 		return currentFrame + 1;
 
 	}
+
+	private Integer getLastFrame(){
+		return numberOfFrames - 1;
+	}
+
 
 	private void calculateDistance(Figure figure) {
 

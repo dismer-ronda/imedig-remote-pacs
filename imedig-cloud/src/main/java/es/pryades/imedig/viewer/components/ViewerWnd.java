@@ -402,10 +402,16 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public ImageData getFirstImageSerie(){
+		currentIndex = 0;
+		
+		return seriesImages.get( currentSerie ).get( currentIndex );
+	}
 
 	@Override
-	public ImageData getPreviousImageSerie()
-	{
+	public ImageData getPreviousImageSerie(){
 		if (currentIndex == -1) return null;
 		
 		if (currentIndex == 0) return null;
@@ -416,8 +422,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	}
 
 	@Override
-	public ImageData getNextImageSerie()
-	{
+	public ImageData getNextImageSerie(){
 		if (currentIndex == -1) return null;
 
 		if (currentIndex == (seriesImages.get( currentSerie ).size()-1)) return null;
@@ -429,13 +434,18 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 
 
 	@Override
+	public ImageData getLastImageSerie(){
+		currentIndex = seriesImages.get( currentSerie ).size()-1;
+		
+		return seriesImages.get( currentSerie ).get( currentIndex );
+	}
+
+	@Override
 	public boolean containFrames()
 	{
 		if (currentIndex == -1) return false;
 		
 		return !((currentIndex == 0) && (currentIndex == seriesImages.get( currentSerie ).size()-1));
 	}
-	
-	
 
 }

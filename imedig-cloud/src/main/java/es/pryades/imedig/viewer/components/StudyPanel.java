@@ -10,9 +10,9 @@ import com.vaadin.event.MouseEvents.ClickListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
@@ -149,8 +149,6 @@ public class StudyPanel extends CssLayout{
 				}
 			}
 		});
-
-
 		
 		addComponents( labelFooter, btnFooter );
 	}
@@ -169,20 +167,26 @@ public class StudyPanel extends CssLayout{
 		img.addClickListener(new ClickListener() {
 			@Override
 			public void click(ClickEvent event) {
-				context.sendAction( new OpenImage(this, (ImageData)((com.vaadin.ui.Image)event.getSource()).getData()));
+				ImageData idata = (ImageData)((com.vaadin.ui.Image)event.getSource()).getData();
+				index = datas.indexOf( idata );
+				updateLabelValue();
+				context.sendAction( new OpenImage(this, idata));
 			}
 		});
-		thumnails.addComponent(img);
-		thumnails.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+		VerticalLayout inside = new VerticalLayout( img );
+		inside.setWidth( "64px" );
+		inside.setHeight( "64px" );
+		inside.setMargin( false );
+		inside.setSpacing( false );
+		inside.setComponentAlignment(img, Alignment.MIDDLE_CENTER);
+		thumnails.addComponent(inside);
+		thumnails.setComponentAlignment(inside, Alignment.MIDDLE_CENTER);
 	}
 	
 	private com.vaadin.ui.Image getImage(SeriesTree series, Image image) {
 
-		String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl()
-				+ "&contentType=image/jpeg&columns=64&rows=64";
+		String imageUrl = imageUrl( image );
 		
-		LOG.info("imageUrl " + imageUrl);
-
 		String modality = series.getSeriesData().getModality();
 		String hint = " ";
 		if (!modality.isEmpty())
@@ -190,7 +194,7 @@ public class StudyPanel extends CssLayout{
 
 		com.vaadin.ui.Image result = new com.vaadin.ui.Image(null, new ExternalResource(imageUrl));
 		result.setDescription(hint);
-		result.setWidth("64px");
+		//result.setHeight( "64px");
 
 		return result;
 	}
@@ -230,12 +234,29 @@ public class StudyPanel extends CssLayout{
 		if (mode == MODE_ALL) return;
 		
 		index = datas.indexOf( data );
-		Component component = thumnails.getComponent( 0 );
-		addToThumnails( datas.get( index ) );
-		thumnails.removeComponent( component );
+		updateImage( datas.get( index ) );
+	}
+	
+	private void updateImage( ImageData data ){
+		
+		String imageUrl = imageUrl( data.getImage() );
+		
+		com.vaadin.ui.Image image = (com.vaadin.ui.Image)((AbstractOrderedLayout)thumnails.getComponent( 0 )).getComponent( 0 );
+		image.setData( data );
+		image.setSource( new ExternalResource(imageUrl) );
+	}
+	
+	private String imageUrl(Image image){
+		String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
+
+		LOG.info("imageUrl " + imageUrl);
+		
+		return imageUrl;
 	}
 	
 	private void updateLabelValue(){
+		if (labelFooter == null) return;
+		
 		labelFooter.setValue( String.format( "%d/%d", index+1, datas.size() ) );
 	}
 }
