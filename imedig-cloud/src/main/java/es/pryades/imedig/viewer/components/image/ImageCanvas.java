@@ -102,10 +102,7 @@ public class ImageCanvas extends CssLayout {
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
 	protected Button bttnFullScreen;
 	private CssLayout changeFrame;
-	//private Button btnFramePrior;
-	//private Button btnFrameNext;
-	
-	
+
 	@Getter
 	private ReportInfo reportInfo;
 
@@ -276,12 +273,9 @@ public class ImageCanvas extends CssLayout {
 			}
 		});
 		
-		canvas.setMouseWheelListener( new MouseWheelListener()
-		{
-			
+		canvas.setMouseWheelListener( new MouseWheelListener(){
 			@Override
-			public void onMouseWheel( double weelDelta )
-			{
+			public void onMouseWheel( double weelDelta ){
 				if (imageData == null) return;
 
 				if (weelDelta < 0 ){
