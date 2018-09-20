@@ -1,5 +1,6 @@
 package es.pryades.imedig.viewer.components;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -47,6 +48,7 @@ public class StudyPanel extends CssLayout{
 	private static final int LIMIT_TO_SHOW_ALL = 1;
 	private static final int MODE_ALL = 1;
 	private static final int MODE_ONE = 2;
+	private static final List<String> MODALITIES_SERIES2 = Arrays.asList( "CT", "MR" ); 
 	
 	public StudyPanel(ImedigContext context) {
 		addStyleName( "study-thumnails-panel" );
@@ -87,8 +89,11 @@ public class StudyPanel extends CssLayout{
 	public void setStudy(StudyTree study, List<ImageData> datas){
 		this.study = study;
 		this.datas = datas;
+		index = 0;
 		
-		index = datas.size()/2;
+		if (MODALITIES_SERIES2.contains( study.getSeriesList().get( 0 ).getSeriesData().getModality() )){
+			index = datas.size()/2;
+		}
 
 		addStudyInfo( );
 		addStudyImages( );

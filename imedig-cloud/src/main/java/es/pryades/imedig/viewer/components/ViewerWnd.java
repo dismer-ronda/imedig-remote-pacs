@@ -441,11 +441,24 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	}
 
 	@Override
-	public boolean containFrames()
+	public boolean containImagesSeries()
 	{
 		if (currentIndex == -1) return false;
 		
 		return !((currentIndex == 0) && (currentIndex == seriesImages.get( currentSerie ).size()-1));
+	}
+
+
+	@Override
+	public boolean hasPriorImageSerie()
+	{
+		return currentIndex != 0;
+	}
+
+
+	@Override
+	public boolean hasNextImageSerie(){
+		return currentIndex != seriesImages.get( currentSerie ).size()-1;
 	}
 
 }

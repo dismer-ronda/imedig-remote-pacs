@@ -101,7 +101,12 @@ public class ImageCanvas extends CssLayout {
 	
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
 	protected Button bttnFullScreen;
+	
 	private CssLayout changeFrame;
+	private Button btnFrameFirst;
+	private Button btnFramePrior;
+	private Button btnFrameNext;
+	private Button btnFrameLast;
 
 	@Getter
 	private ReportInfo reportInfo;
@@ -164,7 +169,7 @@ public class ImageCanvas extends CssLayout {
 	}
 	
 	private void buildImageFrameChangeButtons(){
-		Button btnFrameFirst = new Button( );
+		btnFrameFirst = new Button( );
 		btnFrameFirst.setIcon( FontAwesome.ANGLE_DOUBLE_UP  );
 		btnFrameFirst.setImmediate( true );
 		btnFrameFirst.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
@@ -173,11 +178,15 @@ public class ImageCanvas extends CssLayout {
 		btnFrameFirst.addClickListener( new Button.ClickListener(){
 			@Override
 			public void buttonClick( ClickEvent event ){
+				btnFrameFirst.setEnabled( false );
+				btnFramePrior.setEnabled( false );
+				btnFrameNext.setEnabled( true );
+				btnFrameLast.setEnabled( true );
 				openFirstImage();
 			}
 		} );
 		
-		Button btnFramePrior = new Button( );
+		btnFramePrior = new Button( );
 		btnFramePrior.setIcon( FontAwesome.ANGLE_UP  );
 		btnFramePrior.setImmediate( true );
 		btnFramePrior.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
@@ -187,10 +196,16 @@ public class ImageCanvas extends CssLayout {
 			@Override
 			public void buttonClick( ClickEvent event ){
 				openPreviousImage();
+				if (!imageDataNavigator.hasPriorImageSerie()){
+					btnFrameFirst.setEnabled( false );
+					btnFramePrior.setEnabled( false );
+				}
+				btnFrameNext.setEnabled( true );
+				btnFrameLast.setEnabled( true );
 			}
 		} );
 
-		Button btnFrameNext = new Button( );
+		btnFrameNext = new Button( );
 		btnFrameNext.setIcon( FontAwesome.ANGLE_DOWN  );
 		btnFrameNext.setImmediate( true );
 		btnFrameNext.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
@@ -200,10 +215,16 @@ public class ImageCanvas extends CssLayout {
 			@Override
 			public void buttonClick( ClickEvent event ){
 				openNextImage();
+				if (!imageDataNavigator.hasNextImageSerie()){
+					btnFrameNext.setEnabled( false );
+					btnFrameLast.setEnabled( false );
+				}
+				btnFrameFirst.setEnabled( true );
+				btnFramePrior.setEnabled( true );
 			}
 		} );
 		
-		Button btnFrameLast = new Button( );
+		btnFrameLast = new Button( );
 		btnFrameLast.setIcon( FontAwesome.ANGLE_DOUBLE_DOWN  );
 		btnFrameLast.setImmediate( true );
 		btnFrameLast.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
@@ -212,6 +233,10 @@ public class ImageCanvas extends CssLayout {
 		btnFrameLast.addClickListener( new Button.ClickListener(){
 			@Override
 			public void buttonClick( ClickEvent event ){
+				btnFrameFirst.setEnabled( true );
+				btnFramePrior.setEnabled( true );
+				btnFrameNext.setEnabled( false );
+				btnFrameLast.setEnabled( false );
 				openLastImage();
 			}
 		} );
@@ -881,7 +906,16 @@ public class ImageCanvas extends CssLayout {
 	                .withNotes(notes));
 			showRuleReference();
 			
-			changeFrame.setVisible( imageDataNavigator.containFrames() );
+			if (imageDataNavigator.containImagesSeries()){
+				changeFrame.setVisible( true );
+				
+				btnFrameFirst.setEnabled( imageDataNavigator.hasPriorImageSerie() );
+				btnFramePrior.setEnabled( imageDataNavigator.hasPriorImageSerie() );
+				btnFrameNext.setEnabled( imageDataNavigator.hasNextImageSerie() );
+				btnFrameLast.setEnabled( imageDataNavigator.hasNextImageSerie() );
+			}else{
+				changeFrame.setVisible( false );
+			}
 		}catch ( Throwable ex )	{
 			reportInfo = null;
 		}
@@ -1088,6 +1122,7 @@ public class ImageCanvas extends CssLayout {
 		currentSerie = "";
 		serieStatus = new HashMap<>();
 		imageDataFigures = new HashMap<>();
+		changeFrame.setVisible( false );
 	}
 	
 	public void clearFigures() {

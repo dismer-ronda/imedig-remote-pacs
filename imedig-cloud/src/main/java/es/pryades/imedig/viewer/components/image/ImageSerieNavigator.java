@@ -4,11 +4,15 @@ import es.pryades.imedig.viewer.datas.ImageData;
 
 public interface ImageSerieNavigator
 {
-	boolean containFrames(); 
-	
+	boolean containImagesSeries(); 
+
+	boolean hasPriorImageSerie();  
+
 	ImageData getFirstImageSerie();
 	
 	ImageData getPreviousImageSerie();
+	
+	boolean hasNextImageSerie();  
 	
 	ImageData getNextImageSerie();
 	
