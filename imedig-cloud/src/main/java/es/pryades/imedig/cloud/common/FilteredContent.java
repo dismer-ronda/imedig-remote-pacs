@@ -240,7 +240,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 				cellOppLayoutRight.addComponent( tableRows.getTablePageOppContainer() );
 
 				oppLayout.addComponent( cellOppLayoutRight );
-				oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_RIGHT );
+				oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_CENTER );
 				oppLayout.setExpandRatio( cellOppLayoutRight, 1.0f );
 
 				mainLayout.addComponent( tableRows );

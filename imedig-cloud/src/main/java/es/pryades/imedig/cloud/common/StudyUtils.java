@@ -59,4 +59,13 @@ public class StudyUtils
 		
 		return result;
 	}
+	
+	public static SeriesTree getSerie(String serieUID, StudyTree study){
+		for (SeriesTree serie : study.getSeriesList()) {
+			if (serieUID.equals( serie.getSeriesData().getSeriesInstanceUID() )) 
+				return serie;
+		}
+		
+		return null;
+	}
 }

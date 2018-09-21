@@ -103,7 +103,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		this( context, user, false );
 	}
 	
-	
 	public ViewerWnd(ImedigContext context, User user, boolean modeReport) {
 		super();
 		this.modeReport = modeReport;
@@ -308,10 +307,10 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		
 		for ( StudyTree study : studies ){
 			StudyPanel panel = new StudyPanel(context);
-			List<ImageData> datas = new ArrayList<>();
+			Map<String, List<ImageData>> datas = new HashMap<>();
 			for ( String serieUID : StudyUtils.getSeriesUID( study ) )
 			{
-				datas.addAll( seriesImages.get( serieUID ) );
+				datas.put( serieUID, seriesImages.get( serieUID ) );
 			}
 			
 			panel.setStudy( study, datas );
