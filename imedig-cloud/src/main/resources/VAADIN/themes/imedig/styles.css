@@ -13141,7 +13141,7 @@ div.v-layout.v-horizontal.v-widget {
 	line-height: 1.2;
 }
 
-.study-thumnails-panel .v-image {
+.study-thumnails-panel .v-verticallayout-margin-bottom {
 	margin-bottom: 5px;
 }
 
@@ -13194,7 +13194,7 @@ div.v-layout.v-horizontal.v-widget {
 	float: left;
 	position: relative;
 	left: 5px;
-	top: 45%;
+	top: 40%;
 }
 
 .changeframe .v-button {

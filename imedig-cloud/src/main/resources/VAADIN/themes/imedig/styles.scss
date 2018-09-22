@@ -138,10 +138,9 @@
 		font-size: 11px;
 		font-weight: bold;
 		line-height: 1.2;
-	} & .v-image{
+	} & .v-verticallayout-margin-bottom {
 		margin-bottom: 5px;
 	}
-	
 }
 
 .to-right{
@@ -192,7 +191,7 @@
 	float: left;
 	position: relative;
 	left: 5px;
-	top: 45%;
+	top: 40%;
 	& .v-button{
 	  margin: 3px;
 	  background-color: rgba(0, 0, 0, 0.2) !important;

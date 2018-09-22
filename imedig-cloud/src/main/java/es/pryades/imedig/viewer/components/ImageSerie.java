@@ -130,8 +130,13 @@ public class ImageSerie extends CssLayout{
 	}
 
 	private void showAllImages(){
+		int count = 0;
 		for ( ImageData data : datas ){
 			addToThumnails( data );
+//			count++;
+//			if (count < datas.size()){
+//				thumnails.addComponent( new Label( "<hr/>", ContentMode.HTML ) );
+//			}
 		}
 	}
 
@@ -156,6 +161,7 @@ public class ImageSerie extends CssLayout{
 		inside.setHeight( "64px" );
 		inside.setMargin( false );
 		inside.setSpacing( false );
+		inside.addStyleName( "margin-bottom" );
 		inside.setComponentAlignment( img, Alignment.MIDDLE_CENTER );
 		thumnails.addComponent( inside );
 		thumnails.setComponentAlignment( inside, Alignment.MIDDLE_CENTER );

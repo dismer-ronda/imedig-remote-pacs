@@ -85,8 +85,9 @@ public class StudyPanel extends CssLayout{
 		this.study = study;
 		seriesPanels = new HashMap<>();
 		addStudyInfo( );
-		
-		for ( String serieUID : StudyUtils.getSeriesUID( study ) ){
+		List<String> uids = StudyUtils.getSeriesUID( study );
+		int count = 0;
+		for ( String serieUID : uids ){
 			
 			if (datas.get( serieUID ) == null || datas.get( serieUID ).isEmpty()) continue;
 			
@@ -114,9 +115,9 @@ public class StudyPanel extends CssLayout{
 	}
 	
 	private void addStudyInfo( ) {
-		Label label = new Label(getPatientInitials( study.getStudyData().getPatientName() )+"<br/>"+study.getStudyData().getStudyDate()+"<br/>"+study.getStudyData().getPatientID());
-		label.setContentMode(ContentMode.HTML);
-		studyInfo.addComponent(label);
+		studyInfo.addComponent(new Label(
+				getPatientInitials( study.getStudyData().getPatientName() )+"<br/>"+study.getStudyData().getStudyDate()+"<br/>"+study.getStudyData().getPatientID(), 
+				ContentMode.HTML));
 	}
 	
 //	private void addStudySeriesImages( ) {
