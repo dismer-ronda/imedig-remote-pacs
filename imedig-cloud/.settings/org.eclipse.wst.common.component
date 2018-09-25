@@ -10,6 +10,12 @@
         <dependent-module archiveName="imedig-common-1.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/imedig-common/imedig-common">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="fabricjs-addon-2.1.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/fabricjs-addon/fabricjs-addon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="fullscreen-addon-1.0.0.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/fullscreen-addon/fullscreen-addon">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="imedig-cloud"/>
         <property name="java-output-path" value="/imedig-cloud/target/classes"/>
     </wb-module>
