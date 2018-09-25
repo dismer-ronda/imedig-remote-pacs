@@ -402,7 +402,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (resizeListener==null) {
+                if (resizeListener!=null) {
                     double width = arguments.getNumber(0);
                     double height = arguments.getNumber(1);
                     resizeListener.onResize(width, height);

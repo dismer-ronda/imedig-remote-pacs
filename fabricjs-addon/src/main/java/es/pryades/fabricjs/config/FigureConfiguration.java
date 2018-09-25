@@ -179,7 +179,7 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     }
 
     public void clearStrokeDashArray() {
-        if (!(this.strokeDashArray == null)) {
+        if (this.strokeDashArray != null) {
             this.strokeDashArray = new ArrayList<>();
         }
     }
