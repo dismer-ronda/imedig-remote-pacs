@@ -39,7 +39,7 @@ public class Note implements Serializable {
     public Note(String text, NotesConfiguration notesConfiguration) {
 
         this.text = text;
-        if (Objects.isNull(notesConfiguration)) {
+        if (notesConfiguration==null) {
             this.notesConfiguration = new NotesConfiguration();
         } else {
             this.notesConfiguration = notesConfiguration;

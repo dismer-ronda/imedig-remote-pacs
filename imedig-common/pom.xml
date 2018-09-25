@@ -18,6 +18,7 @@
 		<confirm.version>2.1.1</confirm.version>
 		<refresher.version>1.2.3.7</refresher.version>
 		<ckeditor.version>7.11.1</ckeditor.version>
+		<java.version>1.7</java.version>
 	</properties>
 
 	<build>
@@ -35,8 +36,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<encoding>UTF-8</encoding>
 					<debug>true</debug>
 				</configuration>

@@ -18,7 +18,7 @@
 		<dcm4che-version>2.0.26</dcm4che-version>
 		<fullscreen.addon.version>1.0.0</fullscreen.addon.version>
 		<fabricjs.addon.version>1.0.2-SNAPSHOT</fabricjs.addon.version>
-		<java.version>1.8</java.version>
+		<java.version>1.7</java.version>
 	</properties>
 
 	<build>
