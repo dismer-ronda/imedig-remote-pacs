@@ -133,7 +133,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void draw(Figure figure) {
-        if (Objects.isNull(figure.getConfiguration())) {
+        if (figure.getConfiguration()==null) {
             figure.setConfiguration(figureConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
@@ -141,7 +141,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
     
     public void draw(Ruler figure) {
-        if (Objects.isNull(figure.getConfiguration())) {
+        if (figure.getConfiguration()==null) {
             figure.setConfiguration(rulerConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
@@ -149,15 +149,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void chainOfCommand(ChainOfCommand chainOfCommand) {
-        if (!Objects.isNull(chainOfCommand.getFigureConfiguration())) {
+        if (chainOfCommand.getFigureConfiguration()!=null) {
             this.figureConfiguration = chainOfCommand.getFigureConfiguration();
         }
 
-        if (!Objects.isNull(chainOfCommand.getLoaderConfiguration())) {
+        if (chainOfCommand.getLoaderConfiguration()!=null) {
             this.loaderConfiguration = chainOfCommand.getLoaderConfiguration();
         }
 
-        if (!Objects.isNull(chainOfCommand.getImagesUrl()) && !chainOfCommand.getImagesUrl().isEmpty()) {
+        if (chainOfCommand.getImagesUrl()!=null && !chainOfCommand.getImagesUrl().isEmpty()) {
             this.images = chainOfCommand.getImagesUrl();
 
         }
@@ -212,7 +212,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void setRulerConfiguration(RulerConfiguration rulerConfiguration) {
         this.rulerConfiguration = rulerConfiguration;
-        if (Objects.isNull(rulerConfiguration)) {
+        if (rulerConfiguration==null) {
             this.rulerConfiguration = new RulerConfiguration();
         } else {
             this.rulerConfiguration = rulerConfiguration;
@@ -227,7 +227,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void setLoaderConfiguration(LoaderConfiguration loaderConfiguration) {
-        if (Objects.isNull(loaderConfiguration)) {
+        if (loaderConfiguration==null) {
             this.loaderConfiguration = new LoaderConfiguration();
         } else {
             this.loaderConfiguration = loaderConfiguration;
@@ -236,7 +236,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void addNotes(String text) {
-        if (Objects.isNull(this.notesConfiguration)) {
+        if (this.notesConfiguration==null) {
             this.notesConfiguration = new NotesConfiguration();
         }
         addNotes(text, this.notesConfiguration);
@@ -392,7 +392,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(mouseWheelListener)) {
+                if (mouseWheelListener!=null) {
                     mouseWheelListener.onMouseWheel(arguments.getNumber(0));
                 }
             }
@@ -402,7 +402,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(resizeListener)) {
+                if (resizeListener!=null) {
                     double width = arguments.getNumber(0);
                     double height = arguments.getNumber(1);
                     resizeListener.onResize(width, height);
@@ -414,7 +414,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(drawFigureListener)) {
+                if (drawFigureListener!=null) {
                     Gson gson = new GsonBuilder().create();
                     Figure figure = gson.fromJson(arguments.getString(0), Figure.class);
                     figure.setConfiguration(figureConfiguration.clone());

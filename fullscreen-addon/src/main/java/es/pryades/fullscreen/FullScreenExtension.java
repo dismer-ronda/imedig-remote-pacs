@@ -33,7 +33,7 @@ public class FullScreenExtension extends AbstractJavaScriptExtension {
             @Override
             public void call(JsonArray arguments) {
                boolean isFullScreen = arguments.getBoolean(0);
-               if(!Objects.isNull(fullScreenChangeListener)){
+               if(fullScreenChangeListener!=null){
                    fullScreenChangeListener.onChange(isFullScreen);
                }
             }
