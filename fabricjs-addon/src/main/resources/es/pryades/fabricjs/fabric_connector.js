@@ -19,12 +19,14 @@ var es_pryades_fabricjs_FabricJs = function() {
     fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
 
     this.addResizeListener(container, function() {
-        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-        component.setDimensions(container.offsetWidth, container.offsetHeight);
-        if (component.imageUrl) {
-            fabricJs.onLoadImage(component.imageUrl);
+        if(component.timeOut){
+            clearTimeout(component.timeOut);
         }
-        component.onResize(container.offsetWidth, container.offsetHeight);
+        component.timeOut = setTimeout(function(){
+             //fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+            component.setDimensions(container.offsetWidth, container.offsetHeight);        
+            component.onResize(container.offsetWidth, container.offsetHeight); 
+        },state.resizeTimeout);               
     });
 
 

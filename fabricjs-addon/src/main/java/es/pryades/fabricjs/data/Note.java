@@ -19,7 +19,6 @@ import es.pryades.fabricjs.config.NotesConfiguration;
 import java.io.Serializable;
 import java.util.Objects;
 
-
 /**
  *
  * @author geanny
@@ -39,7 +38,7 @@ public class Note implements Serializable {
     public Note(String text, NotesConfiguration notesConfiguration) {
 
         this.text = text;
-        if (notesConfiguration==null) {
+        if (notesConfiguration == null) {
             this.notesConfiguration = new NotesConfiguration();
         } else {
             this.notesConfiguration = notesConfiguration;

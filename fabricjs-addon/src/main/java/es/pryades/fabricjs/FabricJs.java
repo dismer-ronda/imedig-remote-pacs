@@ -103,6 +103,11 @@ public class FabricJs extends AbstractJavaScriptComponent {
         this.setJavascriptFunctions();
 
     }
+    
+    
+    public void setResizeTimeout(int timeout){
+         getState().resizeTimeout = timeout;
+    }
 
     public void setImageUrl(String url) {
         images = Arrays.asList(url);
@@ -133,15 +138,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void draw(Figure figure) {
-        if (figure.getConfiguration()==null) {
+        if (figure.getConfiguration() == null) {
             figure.setConfiguration(figureConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
         getState().commands = getPayload(this.commands);
     }
-    
+
     public void draw(Ruler figure) {
-        if (figure.getConfiguration()==null) {
+        if (figure.getConfiguration() == null) {
             figure.setConfiguration(rulerConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
@@ -149,15 +154,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void chainOfCommand(ChainOfCommand chainOfCommand) {
-        if (chainOfCommand.getFigureConfiguration()!=null) {
+        if (chainOfCommand.getFigureConfiguration() != null) {
             this.figureConfiguration = chainOfCommand.getFigureConfiguration();
         }
 
-        if (chainOfCommand.getLoaderConfiguration()!=null) {
+        if (chainOfCommand.getLoaderConfiguration() != null) {
             this.loaderConfiguration = chainOfCommand.getLoaderConfiguration();
         }
 
-        if (chainOfCommand.getImagesUrl()!=null && !chainOfCommand.getImagesUrl().isEmpty()) {
+        if (chainOfCommand.getImagesUrl() != null && !chainOfCommand.getImagesUrl().isEmpty()) {
             this.images = chainOfCommand.getImagesUrl();
 
         }
@@ -212,22 +217,20 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void setRulerConfiguration(RulerConfiguration rulerConfiguration) {
         this.rulerConfiguration = rulerConfiguration;
-        if (rulerConfiguration==null) {
+        if (rulerConfiguration == null) {
             this.rulerConfiguration = new RulerConfiguration();
         } else {
             this.rulerConfiguration = rulerConfiguration;
         }
         getState().rulerConfiguration = getPayload(this.rulerConfiguration);
     }
-    
-    
 
     public LoaderConfiguration getLoaderConfiguration() {
         return loaderConfiguration;
     }
 
     public void setLoaderConfiguration(LoaderConfiguration loaderConfiguration) {
-        if (loaderConfiguration==null) {
+        if (loaderConfiguration == null) {
             this.loaderConfiguration = new LoaderConfiguration();
         } else {
             this.loaderConfiguration = loaderConfiguration;
@@ -236,7 +239,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void addNotes(String text) {
-        if (this.notesConfiguration==null) {
+        if (this.notesConfiguration == null) {
             this.notesConfiguration = new NotesConfiguration();
         }
         addNotes(text, this.notesConfiguration);
@@ -392,7 +395,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (mouseWheelListener!=null) {
+                if (mouseWheelListener != null) {
                     mouseWheelListener.onMouseWheel(arguments.getNumber(0));
                 }
             }
@@ -402,7 +405,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (resizeListener!=null) {
+                if (resizeListener != null) {
                     double width = arguments.getNumber(0);
                     double height = arguments.getNumber(1);
                     resizeListener.onResize(width, height);
@@ -414,7 +417,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (drawFigureListener!=null) {
+                if (drawFigureListener != null) {
                     Gson gson = new GsonBuilder().create();
                     Figure figure = gson.fromJson(arguments.getString(0), Figure.class);
                     figure.setConfiguration(figureConfiguration.clone());

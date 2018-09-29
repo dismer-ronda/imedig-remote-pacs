@@ -18,5 +18,6 @@ public class FabricJsState extends JavaScriptComponentState {
     public String cursor = "default";
     public String commands = "[{\"canvasAction\":\"NONE\"}]";
     public String drawMode;
+    public int resizeTimeout = 300;
 
 }
