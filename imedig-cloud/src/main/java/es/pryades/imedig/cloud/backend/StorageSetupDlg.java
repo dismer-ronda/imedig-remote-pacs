@@ -136,8 +136,12 @@ public class StorageSetupDlg extends Window implements ModalParent
 		editMinimumFreeDiskSpace.setWidth( "100%" );
 		editMinimumFreeDiskSpace.setDescription( getContext().getString( "StorageSetupDlg.labelMinimumFreeDiskSpace.description" ) );
 		editMinimumFreeDiskSpace.setNullRepresentation( "" );
-		//editMinimumFreeDiskSpace.setValue( storageConfiguration.getMinimunFreeDiskSpace() );
 
+		editKeepStudyMax = new TextField( getContext().getString( "StorageSetupDlg.labelKeepStudyMax" ), bi.getItemProperty( "keepStudyMax" ) );
+		editKeepStudyMax.setWidth( "100%" );
+		editKeepStudyMax.setDescription( getContext().getString( "StorageSetupDlg.labelKeepStudyMax.description" ) );
+		editKeepStudyMax.setNullRepresentation( "" );
+		
 		boolean visible = storageConfiguration.getEnableExternalStorage();
 		
 		checkEnableExternalStorage = new CheckBox( getContext().getString( "StorageSetupDlg.checkExternalStorage" ), bi.getItemProperty( "enableExternalStorage" ) );
@@ -154,7 +158,6 @@ public class StorageSetupDlg extends Window implements ModalParent
 				editExternalStorageDirectory.setVisible( visible );
 				editExternalStorageFilesystem.setVisible( visible );
 				editMoveStudyIfNotAccessedFor.setVisible( visible );
-				editKeepStudyMax.setVisible( visible );
 				
 				row3.setVisible( visible );
 				row5.setVisible( visible );
@@ -184,18 +187,11 @@ public class StorageSetupDlg extends Window implements ModalParent
 		//editMoveStudyIfNotAccessedFor.setValue( storageConfiguration.getMoveStudyIfNotAccessedFor() );
 		editMoveStudyIfNotAccessedFor.setVisible( visible );
 
-		editKeepStudyMax = new TextField( getContext().getString( "StorageSetupDlg.labelKeepStudyMax" ), bi.getItemProperty( "keepStudyMax" ) );
-		editKeepStudyMax.setWidth( "100%" );
-		editKeepStudyMax.setDescription( getContext().getString( "StorageSetupDlg.labelKeepStudyMax.description" ) );
-		editKeepStudyMax.setNullRepresentation( "" );
-		//editKeepStudyMax.setValue( storageConfiguration.getKeepStudyMax().toString() );
-		editKeepStudyMax.setVisible( visible );
-		
 		HorizontalLayout row1 = new HorizontalLayout();
 		row1.setWidth( "100%" );
 		row1.setSpacing( true );
 		row1.addComponent( editMinimumFreeDiskSpace );
-		row1.addComponent( new HorizontalLayout() );
+		row1.addComponent( editKeepStudyMax );
 
 		HorizontalLayout row2 = new HorizontalLayout();
 		row2.setWidth( "100%" );
@@ -213,7 +209,7 @@ public class StorageSetupDlg extends Window implements ModalParent
 		row5.setWidth( "100%" );
 		row5.setSpacing( true );
 		row5.addComponent( editMoveStudyIfNotAccessedFor );
-		row5.addComponent( editKeepStudyMax );
+		row5.addComponent( new HorizontalLayout() );
 		row5.setVisible( visible );
 		
 		HorizontalLayout rowButtons = new HorizontalLayout();
