@@ -1677,15 +1677,6 @@ var FabricJsApp = exports.FabricJsApp = function () {
             loaderConfiguration: this.loaderConfiguration
         });
 
-        this.canvasLoader = new fabric.StaticCanvas(canvasLoaderId, {
-            backgroundColor: 'transparent'
-        });
-
-        this.loader = new _loader.Loader({
-            canvas: this.canvasLoader,
-            loaderConfiguration: this.loaderConfiguration
-        });
-
         this.canvasDraw = new fabric.Canvas(canvasDrawId, {
             selection: false,
             backgroundColor: 'transparent',
@@ -1799,21 +1790,15 @@ var FabricJsApp = exports.FabricJsApp = function () {
             _this.options.component.onMouseWheel(delta);
         };
 
-        var canvasContainer = document.getElementById(canvasDrawId).parentElement;
-        canvasContainer.addEventListener('DOMMouseScroll', handleScroll, false); // For Firefox
-        canvasContainer.addEventListener('mousewheel', handleScroll, false);
+        this.canvasContainer = document.getElementById(canvasDrawId).parentElement;
 
-        var wrapper = this.canvasDraw.wrapperEl;
-        wrapper.tabIndex = 1000;
+        this.canvasContainer.addEventListener('DOMMouseScroll', handleScroll, false); // For Firefox
+        this.canvasContainer.addEventListener('mousewheel', handleScroll, false);
 
-        wrapper.childNodes.item(0).style.touchAction = "auto";
-        wrapper.childNodes.item(1).style.touchAction = "auto";
+        this.wrapper = this.canvasDraw.wrapperEl;
+        this.wrapper.tabIndex = 1000;
 
-        wrapper.addEventListener('touchmove', function (evt) {
-            evt.preventDefault();
-        });
-
-        wrapper.addEventListener("keyup", function (event) {
+        this.wrapper.addEventListener("keyup", function (event) {
             if (event.which === _this.configuration.cancelDrawKeyCode) {
                 if (_this.currentDraw) {
                     _this.currentDraw.cancelDraw(_this.canvasDraw);
@@ -1823,9 +1808,28 @@ var FabricJsApp = exports.FabricJsApp = function () {
     }
 
     _createClass(FabricJsApp, [{
+        key: 'activeTouchActions',
+        value: function activeTouchActions() {
+            this._div.style.touchAction = "auto";
+            this.canvasContainer.style.touchAction = "auto";
+            this.wrapper.style.touchAction = "auto";
+            this.wrapper.childNodes.item(0).style.touchAction = "auto";
+            this.wrapper.childNodes.item(1).style.touchAction = "auto";
+        }
+    }, {
+        key: 'disableTouchActions',
+        value: function disableTouchActions() {
+            this._div.style.touchAction = "none";
+            this.canvasContainer.style.touchAction = "none";
+            this.wrapper.style.touchAction = "none";
+            this.wrapper.childNodes.item(0).style.touchAction = "none";
+            this.wrapper.childNodes.item(1).style.touchAction = "none";
+        }
+    }, {
         key: 'setAction',
         value: function setAction(action) {
             this._currentAction = action;
+            this.disableTouchActions();
             if (this.currentDraw) {
                 this.currentDraw.cancelDraw(this.canvasDraw);
             }
@@ -1885,6 +1889,9 @@ var FabricJsApp = exports.FabricJsApp = function () {
                         drawMode: "SHOW",
                         parent: this
                     });
+                    break;
+                case "NONE":
+                    this.activeTouchActions();
                     break;
                 default:
                     this.currentDraw = null;
