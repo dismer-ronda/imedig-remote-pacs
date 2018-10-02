@@ -137,7 +137,7 @@ public class Settings
 		LANGUAGES = getSetting( "LANGUAGES", "es,en" );
 
 		EXEC_sudo = "true".equals( getSetting( "EXEC_sudo", "false" ) );
-		LOCAL_server = "true".equals( getSetting( "LOCAL_server", "false" ) );
+		LOCAL_server = "true".equals( getSetting( "LOCAL_server", "true" ) );
 		IMAGE_directory = getSetting( "IMAGE_directory", "/" );
 		TRUST_KEY = getSetting( "trust_key", "s3cr3t0" );
 	}

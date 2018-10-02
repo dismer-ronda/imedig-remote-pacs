@@ -9,7 +9,7 @@ $v-bevel: false;
 $v-gradient: false;
 $v-shadow: false;
 $v-border-radius: 0px;
-$v-font-family: Roboto,'Open Sans',Lato;
+$v-font-family: Roboto,'Open Sans',sans-serif;
 $v-font-weight: 400;
 $v-font-weight--header: 600;
 $v-unit-size: 35px;
@@ -25,6 +25,8 @@ $v-component-group-spacing: 6px;
 
 @include v-font(IcoMoon,
               '../../../../imedig/fonts/icomoon');
+@include v-font(Roboto,
+              '../../../../imedig/fonts/Roboto-Regular');              
 
 /* This contains all of your theme.*/
 /* If somebody wants to extend the theme she will include this mixin. */

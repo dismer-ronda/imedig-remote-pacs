@@ -7,6 +7,9 @@ var es_pryades_fabricjs_FabricJs = function() {
 
     var fabricJs = new FabricJs.FabricJsApp({
         configuration: JSON.parse(state.figureConfiguration),
+        loaderConfiguration: JSON.parse(state.loaderConfiguration),
+        rulerConfiguration: JSON.parse(state.rulerConfiguration),
+        showSpinnerOnImageLoad: state.showSpinnerOnImageLoad,
         container: container,
         action: state.action,
         component: component,
@@ -16,18 +19,48 @@ var es_pryades_fabricjs_FabricJs = function() {
     fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
 
     this.addResizeListener(container, function() {
-        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-        component.setDimensions(container.offsetWidth, container.offsetHeight);
-        if (component.imageUrl) {
-            fabricJs.onLoadImage(component.imageUrl);
+        if(component.timeOut){
+            clearTimeout(component.timeOut);
         }
-        component.onResize(container.offsetWidth, container.offsetHeight);
+        component.timeOut = setTimeout(function(){
+             //fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+            component.setDimensions(container.offsetWidth, container.offsetHeight);        
+            component.onResize(container.offsetWidth, container.offsetHeight); 
+        },state.resizeTimeout);               
     });
+
+
+    component.imagesUrls = JSON.parse(state.imagesUrl);
+    fabricJs.onLoadImage(component.imagesUrls);
 
 
     this.onStateChange = function() {
         component.setDimensions(container.offsetWidth, container.offsetHeight);
-        //fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
+        if (component.imagesUrls !== state.imagesUrl) {
+            component.imagesUrls = state.imagesUrl;
+            fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
+            fabricJs.onLoadImage(JSON.parse(component.imagesUrls));
+        }
+
+        if (component.figureConfiguration !== state.figureConfiguration) {
+            component.figureConfiguration = state.figureConfiguration;
+            fabricJs.setConfiguration(JSON.parse(state.figureConfiguration));
+        }
+
+        if (component.loaderConfiguration !== state.loaderConfiguration) {
+            component.loaderConfiguration = state.loaderConfiguration;
+            fabricJs.setLoaderConfiguration(JSON.parse(state.loaderConfiguration));
+        }
+
+        if (component.rulerConfiguration !== state.rulerConfiguration) {
+            component.rulerConfiguration = state.rulerConfiguration;
+            fabricJs.setRulerConfiguration(JSON.parse(state.rulerConfiguration));
+        }
+
+        if (component.showSpinnerOnImageLoad !== state.showSpinnerOnImageLoad) {
+            component.showSpinnerOnImageLoad = state.showSpinnerOnImageLoad;
+            fabricJs.setShowSpinnerOnImageLoad(state.showSpinnerOnImageLoad);
+        }
 
         var commands = JSON.parse(state.commands);
 
@@ -36,17 +69,6 @@ var es_pryades_fabricjs_FabricJs = function() {
             var command = commands[i];
 
             switch (command.canvasAction) {
-                case "SET_CONFIG":
-                    var configuration = JSON.parse(command.payload);
-                    fabricJs.setConfiguration(configuration);
-                break;
-                case "SET_IMAGE":
-                    if (command.payload) {
-                        component.imagesUrls = JSON.parse(command.payload);
-                        fabricJs.setDimensions({width: container.offsetWidth, height: container.offsetHeight});
-                        fabricJs.onLoadImage(component.imagesUrls);
-                    }
-                    break;
                 case "ADD_NOTE":
                     if (command.payload) {
                         var note = JSON.parse(command.payload);
@@ -96,10 +118,40 @@ var es_pryades_fabricjs_FabricJs = function() {
                 case "CLEAR_DRAW":
                     fabricJs.clearDraw();
                     break;
+                case "SHOW_LOADER":
+                    fabricJs.showLoader();
+                    break;
+                case "HIDE_LOADER":
+                    fabricJs.hideLoader();
+                    break;
+                case "CHAIN_COMMAND":
+                    if (command.payload) {
+
+                        var chainCommand = JSON.parse(command.payload);
+
+                        if (chainCommand.imagesUrl) {
+                            component.imagesUrls = chainCommand.imagesUrl;
+                        }
+
+                        if (chainCommand.figureConfiguration) {
+                            component.figureConfiguration = chainCommand.figureConfiguration;
+                        }
+
+                        if (chainCommand.loaderConfiguration) {
+                            component.loaderConfiguration = chainCommand.loaderConfiguration;
+                        }
+
+                        if (chainCommand.rulerConfiguration) {
+                            component.rulerConfiguration = chainCommand.rulerConfiguration;
+                        }
+
+                        fabricJs.executeChainOfCommand(chainCommand);
+                    }
+                    break;
             }
         }
 
-        if (commands.length && command.canvasAction !== "NONE") {
+        if (commands.length && commands[0].canvasAction !== "NONE") {
             component.clearCommands();
         }
     };

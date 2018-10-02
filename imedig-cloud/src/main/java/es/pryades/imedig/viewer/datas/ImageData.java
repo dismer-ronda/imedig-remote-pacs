@@ -14,11 +14,11 @@ public class ImageData{
 	private Image image;
 	
 	public String studyId(){
-		return study.getStudyData().getStudyID();
+		return image.getStudyInstanceUID();
 	}
 	
 	public String serieId(){
-		return series.getSeriesData().getSeriesInstanceUID();
+		return image.getSeriesInstanceUID();
 	}
 
 	public String imagenId(){
@@ -30,20 +30,11 @@ public class ImageData{
 		if (obj == null) return false;
 		if (!(obj instanceof ImageData)) return false;
 
-		ImageData data = (ImageData)obj;
-		
-		String stId = studyId();
-		if ( stId == null )
-			return false;
-		
-		String seId = serieId();
-		if ( seId == null )
-			return false;
-		
 		String imId = imagenId();
-		if ( imId == null )
-			return false;
 		
-		return stId.equals( data.studyId() ) && seId.equals( data.serieId() ) && imId.equals( data.imagenId() );
+		if ( imId == null ) return false;
+		
+		ImageData data = (ImageData)obj;
+		return imId.equals( data.imagenId() );
 	}
 }

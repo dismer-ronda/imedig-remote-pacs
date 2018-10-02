@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
@@ -37,17 +38,21 @@ import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.AngleAction;
+import es.pryades.imedig.viewer.actions.ChangeImageFrame;
 import es.pryades.imedig.viewer.actions.CloseStudies;
 import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
+import es.pryades.imedig.viewer.actions.EnumActions;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.FontAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
+import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
+import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
@@ -57,7 +62,7 @@ import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
-public class ViewerWnd extends HorizontalLayout implements ListenerAction, ImageResource, ModalParent, ImageSerieNavigator {
+public class ViewerWnd extends CssLayout implements ListenerAction, ImageResource, ModalParent, ImageSerieNavigator {
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();
@@ -71,7 +76,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	public static final Integer OPERATION_WINDOW = 6;
 
 	public static final int OPEN_STUDIES = 100;
-
+	
 	protected ResourceBundle resourceBundle;
 
 	boolean replicate = false;
@@ -81,14 +86,13 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 
 	private LeftToolBar leftToolBar;
 	private ImageCanvas imageCanvas;
+	private HorizontalLayout content;
 	
 	private final ImedigContext context;
 	
 	private QueryDlg queryDlg;
 	
 	private final boolean modeReport;
-	
-	//private ImageData lastImageData;
 	
 	private String currentSerie;
 	private Integer currentIndex;
@@ -105,10 +109,21 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		this.context = context;
 		this.user = user;
 		setSizeFull();
-		setSpacing(true);
 		buidComponent();
 		
 		init();
+	}
+	
+	@Override
+	public void attach(){
+		super.attach();
+		context.addListener( this );
+	}
+	
+	@Override
+	public void detach(){
+		super.detach();
+		context.removeListener( this );
 	}
 	
 	private void init(){
@@ -124,14 +139,17 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	}
 
 	private void buidComponent() {
-		leftToolBar = new LeftToolBar(context, this, this);
-		addComponent(leftToolBar);
-		setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
+		addComponent( content = new HorizontalLayout() );
+		content.setSizeFull();
+		
+		leftToolBar = new LeftToolBar(context, this);
+		content.addComponent(leftToolBar);
+		content.setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
 		imageCanvas = new ImageCanvas( context, user, this, this );
-		addComponent(imageCanvas);
-		setExpandRatio(imageCanvas, 1.0f);
+		content.addComponent(imageCanvas);
+		content.setExpandRatio(imageCanvas, 1.0f);
 	}
-
+	
 	@Override
 	public void doAction(Action action) {
 		if (action == null)
@@ -142,7 +160,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		}else if (action instanceof FontAction) {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {
-			if (openStudies((List<String>)action.getData())){
+			if (openStudies(((OpenStudies)action).getData())){
 				if (modeReport){
 					leftToolBar.buttonClose.setEnabled( false );
 				}else{
@@ -150,34 +168,47 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 				}
 			}
 		}else if (action instanceof CloseStudies) {
-			closeStudies();
-			leftToolBar.allButtonsDisable();
+			closeStudies((CloseStudies)action);
 		}else if (action instanceof OpenImage) {
-			openImage((ImageData)action.getData());
+			openImage(((OpenImage)action).getData());
 		}else if (action instanceof AngleAction) {
-			imageCanvas.angleAction();
+			imageCanvas.settingAction( EnumActions.ANGLE );
 		}else if (action instanceof DisableDistanceAction) {
+			if (imageCanvas.getCurrentAction().equals( EnumActions.DISTANCE )){
+				imageCanvas.settingAction( EnumActions.NONE );
+				leftToolBar.selectedAction( leftToolBar.buttonNone );
+			}
 			leftToolBar.buttonDistance.setEnabled( false );
 		}else if (action instanceof DistanceAction) {
-			imageCanvas.distanceAction();
+			imageCanvas.settingAction( EnumActions.DISTANCE );
 		}else if (action instanceof ZoomAction) {
-			imageCanvas.zoomAction();
+			imageCanvas.settingAction( EnumActions.ZOOM );
 		}else if (action instanceof UndoAction) {
 			if (!imageCanvas.undoAction()){
 				leftToolBar.buttonUndo.setEnabled( false );
+				leftToolBar.buttonRestore.setEnabled( false );
 			}
+		}else if (action instanceof RestoreAction) {
+			imageCanvas.restoreAction();
+			leftToolBar.buttonUndo.setEnabled( false );
+			leftToolBar.buttonRestore.setEnabled( false );
 		}else if (action instanceof NoneAction) {
-			imageCanvas.noneAction();
+			imageCanvas.settingAction( EnumActions.NONE );
 		}else if (action instanceof ContrastAction) {
-			imageCanvas.contrastAction();
+			imageCanvas.settingAction( EnumActions.CONTRAST );
 		}else if (action instanceof AddToUndoAction) {
 			leftToolBar.buttonUndo.setEnabled( true );
+			leftToolBar.buttonRestore.setEnabled( true );
 		}else if (action instanceof EraseAction) {
 			imageCanvas.clearFigures();
 		}else if (action instanceof AddFigure) {
 			leftToolBar.buttonErase.setEnabled( true );
+		}else if (action instanceof NotFigures) {
+			leftToolBar.buttonErase.setEnabled( false );
 		}else if (action instanceof RequestReport) {
 			requestReport();
+		}else if (action instanceof ChangeImageFrame) {
+			leftToolBar.changeImageFrame( ((ChangeImageFrame)action).getData());
 		}
 		
 	}
@@ -199,6 +230,7 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		boolean enabled = leftToolBar.buttonUndo.isEnabled();
 		enabledButtons();
 		leftToolBar.buttonUndo.setEnabled( enabled );
+		leftToolBar.buttonRestore.setEnabled( enabled );
 		
 		currentSerie = data.getSeries().getSeriesData().getSeriesInstanceUID();
 		currentIndex = seriesImages.get( currentSerie ).indexOf( data );
@@ -221,9 +253,28 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		UI.getCurrent().addWindow(dlg);
 	}
 	
-	private void closeStudies()	{
-		leftToolBar.clearThumnails();
+	private void closeStudies(CloseStudies closeStudies)	{
+		if (closeStudies.getData() == null){
+			closeAllStydies();
+			return;
+		}
 		
+		leftToolBar.removeStudyPanel( (StudyPanel)closeStudies.getSource() );
+		StudyTree study = closeStudies.getData();
+		studies.remove( study );
+		if (imageCanvas.getImageData()!= null && study == imageCanvas.getImageData().getStudy()){
+			imageCanvas.clear();
+			leftToolBar.allButtonsDisable();
+			
+			if (leftToolBar.studyCount > 0){
+				leftToolBar.studiesOpen();
+			}
+		}
+	}
+	
+	private void closeAllStydies(){
+		leftToolBar.clearThumnails();
+		leftToolBar.allButtonsDisable();
 		studies.clear();
 		imageCanvas.clear();
 	}
@@ -255,11 +306,11 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		leftToolBar.clearThumnails();
 		
 		for ( StudyTree study : studies ){
-			StudyPanel panel = new StudyPanel(this);
-			List<ImageData> datas = new ArrayList<>();
+			StudyPanel panel = new StudyPanel(context);
+			Map<String, List<ImageData>> datas = new HashMap<>();
 			for ( String serieUID : StudyUtils.getSeriesUID( study ) )
 			{
-				datas.addAll( seriesImages.get( serieUID ) );
+				datas.put( serieUID, seriesImages.get( serieUID ) );
 			}
 			
 			panel.setStudy( study, datas );
@@ -350,10 +401,18 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 		// TODO Auto-generated method stub
 		
 	}
+	
+	@Override
+	public ImageData getFirstImageSerie(){
+		currentIndex = 0;
+		
+		return seriesImages.get( currentSerie ).get( currentIndex );
+	}
 
 	@Override
-	public ImageData getPreviousImageSerie()
-	{
+	public ImageData getPreviousImageSerie(){
+		if (currentIndex == -1) return null;
+		
 		if (currentIndex == 0) return null;
 		
 		--currentIndex;
@@ -362,13 +421,43 @@ public class ViewerWnd extends HorizontalLayout implements ListenerAction, Image
 	}
 
 	@Override
-	public ImageData getNextImageSerie()
-	{
+	public ImageData getNextImageSerie(){
+		if (currentIndex == -1) return null;
+
 		if (currentIndex == (seriesImages.get( currentSerie ).size()-1)) return null;
 		
 		++currentIndex;
 		
 		return seriesImages.get( currentSerie ).get( currentIndex );
+	}
+
+
+	@Override
+	public ImageData getLastImageSerie(){
+		currentIndex = seriesImages.get( currentSerie ).size()-1;
+		
+		return seriesImages.get( currentSerie ).get( currentIndex );
+	}
+
+	@Override
+	public boolean containImagesSeries()
+	{
+		if (currentIndex == -1) return false;
+		
+		return !((currentIndex == 0) && (currentIndex == seriesImages.get( currentSerie ).size()-1));
+	}
+
+
+	@Override
+	public boolean hasPriorImageSerie()
+	{
+		return currentIndex != 0;
+	}
+
+
+	@Override
+	public boolean hasNextImageSerie(){
+		return currentIndex != seriesImages.get( currentSerie ).size()-1;
 	}
 
 }

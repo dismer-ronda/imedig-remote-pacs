@@ -136,8 +136,12 @@ public class StorageSetupDlg extends Window implements ModalParent
 		editMinimumFreeDiskSpace.setWidth( "100%" );
 		editMinimumFreeDiskSpace.setDescription( getContext().getString( "StorageSetupDlg.labelMinimumFreeDiskSpace.description" ) );
 		editMinimumFreeDiskSpace.setNullRepresentation( "" );
-		//editMinimumFreeDiskSpace.setValue( storageConfiguration.getMinimunFreeDiskSpace() );
 
+		editKeepStudyMax = new TextField( getContext().getString( "StorageSetupDlg.labelKeepStudyMax" ), bi.getItemProperty( "keepStudyMax" ) );
+		editKeepStudyMax.setWidth( "100%" );
+		editKeepStudyMax.setDescription( getContext().getString( "StorageSetupDlg.labelKeepStudyMax.description" ) );
+		editKeepStudyMax.setNullRepresentation( "" );
+		
 		boolean visible = storageConfiguration.getEnableExternalStorage();
 		
 		checkEnableExternalStorage = new CheckBox( getContext().getString( "StorageSetupDlg.checkExternalStorage" ), bi.getItemProperty( "enableExternalStorage" ) );
@@ -154,7 +158,6 @@ public class StorageSetupDlg extends Window implements ModalParent
 				editExternalStorageDirectory.setVisible( visible );
 				editExternalStorageFilesystem.setVisible( visible );
 				editMoveStudyIfNotAccessedFor.setVisible( visible );
-				editKeepStudyMax.setVisible( visible );
 				
 				row3.setVisible( visible );
 				row5.setVisible( visible );
@@ -184,18 +187,11 @@ public class StorageSetupDlg extends Window implements ModalParent
 		//editMoveStudyIfNotAccessedFor.setValue( storageConfiguration.getMoveStudyIfNotAccessedFor() );
 		editMoveStudyIfNotAccessedFor.setVisible( visible );
 
-		editKeepStudyMax = new TextField( getContext().getString( "StorageSetupDlg.labelKeepStudyMax" ), bi.getItemProperty( "keepStudyMax" ) );
-		editKeepStudyMax.setWidth( "100%" );
-		editKeepStudyMax.setDescription( getContext().getString( "StorageSetupDlg.labelKeepStudyMax.description" ) );
-		editKeepStudyMax.setNullRepresentation( "" );
-		//editKeepStudyMax.setValue( storageConfiguration.getKeepStudyMax().toString() );
-		editKeepStudyMax.setVisible( visible );
-		
 		HorizontalLayout row1 = new HorizontalLayout();
 		row1.setWidth( "100%" );
 		row1.setSpacing( true );
 		row1.addComponent( editMinimumFreeDiskSpace );
-		row1.addComponent( new HorizontalLayout() );
+		row1.addComponent( editKeepStudyMax );
 
 		HorizontalLayout row2 = new HorizontalLayout();
 		row2.setWidth( "100%" );
@@ -213,7 +209,7 @@ public class StorageSetupDlg extends Window implements ModalParent
 		row5.setWidth( "100%" );
 		row5.setSpacing( true );
 		row5.addComponent( editMoveStudyIfNotAccessedFor );
-		row5.addComponent( editKeepStudyMax );
+		row5.addComponent( new HorizontalLayout() );
 		row5.setVisible( visible );
 		
 		HorizontalLayout rowButtons = new HorizontalLayout();
@@ -325,17 +321,16 @@ public class StorageSetupDlg extends Window implements ModalParent
 	
 	private boolean createNASStorage()
 	{
-		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" addRWFileSystem /home/imedig/" 
-				+ storageConfiguration.getExternalStorageDirectory() );
+		String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
+
+		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" addRWFileSystem /home/imedig/" + mountName );
 		
 		String response = Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" listFileSystems" );
 
-		boolean created = response.contains( "/home/imedig/" + storageConfiguration.getExternalStorageDirectory() );
+		boolean created = response.contains( "/home/imedig/" + mountName );
 		
 		if ( created )
 		{
-			String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
-			
 			Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "mkdir /home/imedig/" + mountName );
 			
 			Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "chmod o+w /etc/fstab" );
@@ -346,27 +341,21 @@ public class StorageSetupDlg extends Window implements ModalParent
 		}		
 		
 		return created; 
-		
-		/*el texto de salida debe contener:
-			SourceFileSystemGroupID=ONLINE_STORAGE
-			SourceFileSystemGroupID=NEARLINE_STORAGE
-			MoveStudyIfNotAccessedFor=<move_not_accessed>*/
 	}
 	
 	private void removeNasStorage()
 	{
-		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" removeFileSystem /home/imedig/" 
-				+ storageConfiguration.getExternalStorageDirectory() );
-
 		String mountName = Utils.extractLastDir( storageConfiguration.getExternalStorageDirectory() );
-		
+
+		Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=FileSystemMgt,group=NEARLINE_STORAGE\" removeFileSystem /home/imedig/" + mountName );
+
 		String replacement = mountName + " " + storageConfiguration.getExternalStorageFilesystem();
 		
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "umount /home/imedig/" + mountName );
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "sed -n '/" + replacement + "/!p' /etc/fstab > /tmp/fstab &&" + (Settings.EXEC_sudo ? " sudo " : "") + " mv /tmp/fstab /etc/fstab" );
 		Utils.cmdExec( (Settings.EXEC_sudo ? "sudo " : "") + "rmdir /home/imedig/" + mountName );
 	}
-
+	
 	private void onOk()
 	{
 		boolean created = true;

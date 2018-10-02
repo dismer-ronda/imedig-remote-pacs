@@ -26,4 +26,6 @@
 
     <inherits name="com.vaadin.addon.timeline.gwt.TimelineWidgetSet" />
     <inherits name="es.pryades.fabricjs.WidgetSet" />
+
+    <inherits name="es.pryades.fullscreen.WidgetSet" />
 </module>

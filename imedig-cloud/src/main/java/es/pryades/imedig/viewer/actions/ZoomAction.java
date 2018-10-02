@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class ZoomAction extends AbstractAction {
+public class ZoomAction extends SourceAction {
 
-	public ZoomAction(Object source, Object data) {
-		super(source, data);
+	public ZoomAction(Object source) {
+		super(source);
 	}
 }

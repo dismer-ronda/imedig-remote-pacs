@@ -2,11 +2,13 @@ package es.pryades.imedig.core.common;
 
 import java.util.List;
 
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.ImedigDto;
@@ -34,9 +36,9 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 	protected Button pageButtonEnd;
 	protected Button pageButtonNext;
 
-	protected HorizontalLayout tablePageOppContainerBack;
-	protected HorizontalLayout tablePageOppContainerNext;
-	protected HorizontalLayout tablePageOppContainerInfo;
+//	protected HorizontalLayout tablePageOppContainerBack;
+//	protected HorizontalLayout tablePageOppContainerNext;
+//	protected HorizontalLayout tablePageOppContainerInfo;
 	protected HorizontalLayout tablePageOppContainer;
 	// FIN -- Vaading Components
 	
@@ -182,60 +184,57 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
     	lbCurrPage =  new Label();
     	lbCurrPage.setValue(" ");
 
-    	lbPageCantOf = new Label(getContext().getString( "tableImedig.lbPageCantOf"));
+    	lbPageCantOf = new Label(getContext().getString( "/"));
     	
     	lbTotalPage =  new Label();
     	lbTotalPage.setValue(" ");
     	
-    	pageButtonIni = new Button();
-		pageButtonIni.setStyleName( "borderless icon-on-top" );
-		pageButtonIni.setDescription(getContext().getString( "tableImedig.pageButtonIni"));
-		pageButtonIni.setIcon( new ThemeResource( "images/first.png" ) );
+    	pageButtonIni = getButton("tableImedig.pageButtonIni", FontAwesome.ANGLE_DOUBLE_LEFT);
 		pageButtonIni.setEnabled(false);
 		addButtnIniListener();
 		
-    	pageButtonPrevious = new Button();
-		pageButtonPrevious.setStyleName( "borderless icon-on-top" );
-		pageButtonPrevious.setDescription(getContext().getString( "tableImedig.pageButtonPrevious"));
-		pageButtonPrevious.setIcon( new ThemeResource( "images/left.png" ) );
+    	pageButtonPrevious = getButton("tableImedig.pageButtonPrevious", FontAwesome.ANGLE_LEFT);
 		pageButtonPrevious.setEnabled(false);
 		addButtnPreviousListener();
 		
-    	pageButtonNext = new Button();
-		pageButtonNext.setStyleName( "borderless icon-on-top" );
-		pageButtonNext.setDescription(getContext().getString( "tableImedig.pageButtonNext"));
-		pageButtonNext.setIcon( new ThemeResource( "images/right.png" ) );
+    	pageButtonNext = getButton("tableImedig.pageButtonNext", FontAwesome.ANGLE_RIGHT);
 		pageButtonNext.setEnabled(false);
 		addButtnNextListener();
 		
-		pageButtonEnd = new Button();
-		pageButtonEnd.setStyleName( "borderless icon-on-top" );
-		pageButtonEnd.setDescription(getContext().getString( "tableImedig.pageButtonEnd"));
-		pageButtonEnd.setIcon( new ThemeResource( "images/last.png" ) );
+		pageButtonEnd = getButton("tableImedig.pageButtonEnd", FontAwesome.ANGLE_DOUBLE_RIGHT);
 		pageButtonEnd.setEnabled(false);
 		addButtnEndListener();
 		
-		tablePageOppContainerBack = new HorizontalLayout();
-    	tablePageOppContainerBack.addComponent(pageButtonIni);
-    	tablePageOppContainerBack.addComponent(pageButtonPrevious);
-    	tablePageOppContainerBack.setVisible(false);
+//		tablePageOppContainerBack = new HorizontalLayout();
+//		tablePageOppContainerBack.setDefaultComponentAlignment( Alignment.MIDDLE_CENTER );
+//		tablePageOppContainerBack.addComponents( pageButtonIni, pageButtonPrevious );
+//    	tablePageOppContainerBack.setVisible(false);
     	
-		tablePageOppContainerInfo = new HorizontalLayout();
-    	tablePageOppContainerInfo.setSpacing( true );
-    	tablePageOppContainerInfo.addComponent(lbCurrPage);
-    	tablePageOppContainerInfo.addComponent(lbPageCantOf);
-    	tablePageOppContainerInfo.addComponent(lbTotalPage);
+//		tablePageOppContainerInfo = new HorizontalLayout();
+//		tablePageOppContainerInfo.setDefaultComponentAlignment( Alignment.MIDDLE_CENTER );
+//		tablePageOppContainerInfo.addComponents( lbCurrPage, lbPageCantOf, lbTotalPage );
+    	//tablePageOppContainerInfo.setSpacing( true );
     	
-		tablePageOppContainerNext = new HorizontalLayout();
-    	tablePageOppContainerNext.addComponent(pageButtonNext);
-    	tablePageOppContainerNext.addComponent(pageButtonEnd);
-    	tablePageOppContainerNext.setVisible(false);
+//		tablePageOppContainerNext = new HorizontalLayout();
+//		tablePageOppContainerNext.setDefaultComponentAlignment( Alignment.MIDDLE_CENTER );
+//		tablePageOppContainerNext.addComponents( pageButtonNext, pageButtonEnd );
+//    	tablePageOppContainerNext.setVisible(false);
     	
     	tablePageOppContainer = new HorizontalLayout();
-    	tablePageOppContainer.setSpacing( true );
-    	tablePageOppContainer.addComponent(tablePageOppContainerBack);
-    	tablePageOppContainer.addComponent(tablePageOppContainerInfo);
-    	tablePageOppContainer.addComponent(tablePageOppContainerNext);	
+    	tablePageOppContainer.setWidthUndefined();
+    	tablePageOppContainer.setDefaultComponentAlignment( Alignment.MIDDLE_CENTER );
+    	tablePageOppContainer.addComponents( pageButtonIni, pageButtonPrevious, lbCurrPage, lbPageCantOf, lbTotalPage, pageButtonNext, pageButtonEnd );
+    	tablePageOppContainer.setVisible(false);
+	}
+	
+	private Button getButton(String tooltip, FontAwesome icon) {
+
+		Button btn = new Button(icon);
+		btn.setDescription(context.getString(tooltip));
+		btn.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+		btn.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+
+		return btn;
 	}
 	
 //------------------------------------------------------------------------------------------------------------
@@ -264,15 +263,17 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 		
 		if(this.getTotalPag() > 1)
 		{
-			this.tablePageOppContainerBack.setVisible(true);
-			this.tablePageOppContainerInfo.setVisible(true);
-			this.tablePageOppContainerNext.setVisible(true);
+//			this.tablePageOppContainerBack.setVisible(true);
+//			this.tablePageOppContainerInfo.setVisible(true);
+//			this.tablePageOppContainerNext.setVisible(true);
+			tablePageOppContainer.setVisible( true );
 		}
 		else
 		{
-			this.tablePageOppContainerBack.setVisible(false);
-			this.tablePageOppContainerInfo.setVisible(false);
-			this.tablePageOppContainerNext.setVisible(false);
+//			this.tablePageOppContainerBack.setVisible(false);
+//			this.tablePageOppContainerInfo.setVisible(false);
+//			this.tablePageOppContainerNext.setVisible(false);
+			tablePageOppContainer.setVisible( false );
 		}
 	}
 	

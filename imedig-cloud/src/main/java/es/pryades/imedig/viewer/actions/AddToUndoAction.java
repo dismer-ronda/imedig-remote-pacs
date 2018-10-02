@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class AddToUndoAction extends AbstractAction {
+public class AddToUndoAction extends SourceAction {
 
-	public AddToUndoAction(Object source, Object data) {
-		super(source, data);
+	public AddToUndoAction(Object source) {
+		super(source);
 	}
 }

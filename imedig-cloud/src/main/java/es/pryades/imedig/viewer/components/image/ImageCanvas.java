@@ -11,24 +11,38 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.fabricjs.ChainOfCommand;
 import es.pryades.fabricjs.FabricJs;
 import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
 import es.pryades.fabricjs.config.NotesConfiguration;
+import es.pryades.fabricjs.config.RulerConfiguration;
+import es.pryades.fabricjs.data.Note;
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.CanvasAction;
+import es.pryades.fabricjs.enums.FigureAlignment;
 import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.NotesAlignment;
+import es.pryades.fabricjs.enums.RulerPosition;
+import es.pryades.fabricjs.enums.SpinnerPosition;
+import es.pryades.fabricjs.enums.SpinnerSpeed;
 import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
 import es.pryades.fabricjs.geometry.Figure;
+import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
-import es.pryades.imedig.cloud.backend.BackendApplication;
+import es.pryades.fullscreen.FullScreenExtension;
+import es.pryades.fullscreen.listeners.FullScreenChangeListener;
+import es.pryades.imedig.cloud.common.FontIcoMoon;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -38,14 +52,18 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.viewer.actions.AddFigure;
 import es.pryades.imedig.viewer.actions.AddToUndoAction;
+import es.pryades.imedig.viewer.actions.ChangeImageFrame;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
+import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
 import lombok.Getter;
 
-public class ImageCanvas extends VerticalLayout {
+public class ImageCanvas extends CssLayout {
 	private static final Logger LOG = Logger.getLogger(ImageCanvas.class);
 
 	private User user;
@@ -53,7 +71,9 @@ public class ImageCanvas extends VerticalLayout {
 	private FabricJs canvas;
 	private FigureConfiguration defaultConfiguration;
 	private List<Figure> imagenFigures;
+	@Getter
 	private ImageData imageData = null;
+	@Getter
 	private EnumActions currentAction = EnumActions.NONE; 
 	private Rectangle imageRect;
 	private Rectangle viewRect;
@@ -72,8 +92,22 @@ public class ImageCanvas extends VerticalLayout {
 	private final ImageSerieNavigator imageDataNavigator;
 	
 	private static Map<EnumActions, FigureConfiguration> configurations;
-	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
+	private static LoaderConfiguration loadingConfiguration;
 	
+	private static final Integer REFERENCE_IN_mm = 50;
+	
+	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
+	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
+	
+	private static final String ID_FULLSCREEN = "btn.fullscreen";
+	protected Button bttnFullScreen;
+	
+	private CssLayout changeFrame;
+	private Button btnFrameFirst;
+	private Button btnFramePrior;
+	private Button btnFrameNext;
+	private Button btnFrameLast;
+
 	@Getter
 	private ReportInfo reportInfo;
 
@@ -84,13 +118,13 @@ public class ImageCanvas extends VerticalLayout {
 		this.imageDataNavigator = navidator;
 		
 		setSizeFull();
-		setMargin(false);
-		setSpacing(false);
 		
 		this.user = user;
 
 		init();
 
+		buildFullScreenButtons();
+		buildImageFrameChangeButtons();
 		settingCanvas();
 	}
 
@@ -98,11 +132,129 @@ public class ImageCanvas extends VerticalLayout {
 		imagenFigures = new ArrayList<Figure>();
 		back = new Stack<>();
 	}
+	
+	private void buildFullScreenButtons(){
+		bttnFullScreen = new Button( );
+		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
+		bttnFullScreen.setImmediate( true );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		bttnFullScreen.setId( ID_FULLSCREEN );
+		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+		
+		FullScreenExtension extension = new FullScreenExtension();
+        extension.trigger(bttnFullScreen);
+        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
+
+            @Override
+            public void onChange(boolean fullscreen) {
+                if (fullscreen) {
+                	context.sendAction( new FullScreen( this ) );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
+					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
+                } else {
+                	context.sendAction( new ExitFullScreen( this ) );
+					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
+					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+                }
+            }
+        });
+
+		CssLayout hide = new CssLayout( bttnFullScreen );
+		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
+		hide.setHeight( "-1px" );
+		hide.setWidth( "0px" );
+		addComponent( hide );
+
+	}
+	
+	private void buildImageFrameChangeButtons(){
+		btnFrameFirst = new Button( );
+		btnFrameFirst.setIcon( FontAwesome.ANGLE_DOUBLE_UP  );
+		btnFrameFirst.setImmediate( true );
+		btnFrameFirst.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameFirst.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameFirst.setDescription( context.getString( "ViewerWnd.first.image.serie" ) );
+		btnFrameFirst.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				btnFrameFirst.setEnabled( false );
+				btnFramePrior.setEnabled( false );
+				btnFrameNext.setEnabled( true );
+				btnFrameLast.setEnabled( true );
+				openFirstImage();
+			}
+		} );
+		
+		btnFramePrior = new Button( );
+		btnFramePrior.setIcon( FontAwesome.ANGLE_UP  );
+		btnFramePrior.setImmediate( true );
+		btnFramePrior.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFramePrior.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFramePrior.setDescription( context.getString( "ViewerWnd.prior.image.serie" ) );
+		btnFramePrior.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openPreviousImage();
+				if (!imageDataNavigator.hasPriorImageSerie()){
+					btnFrameFirst.setEnabled( false );
+					btnFramePrior.setEnabled( false );
+				}
+				btnFrameNext.setEnabled( true );
+				btnFrameLast.setEnabled( true );
+			}
+		} );
+
+		btnFrameNext = new Button( );
+		btnFrameNext.setIcon( FontAwesome.ANGLE_DOWN  );
+		btnFrameNext.setImmediate( true );
+		btnFrameNext.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameNext.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameNext.setDescription( context.getString( "ViewerWnd.next.image.serie" ) );
+		btnFrameNext.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				openNextImage();
+				if (!imageDataNavigator.hasNextImageSerie()){
+					btnFrameNext.setEnabled( false );
+					btnFrameLast.setEnabled( false );
+				}
+				btnFrameFirst.setEnabled( true );
+				btnFramePrior.setEnabled( true );
+			}
+		} );
+		
+		btnFrameLast = new Button( );
+		btnFrameLast.setIcon( FontAwesome.ANGLE_DOUBLE_DOWN  );
+		btnFrameLast.setImmediate( true );
+		btnFrameLast.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btnFrameLast.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btnFrameLast.setDescription( context.getString( "ViewerWnd.last.image.serie" ) );
+		btnFrameLast.addClickListener( new Button.ClickListener(){
+			@Override
+			public void buttonClick( ClickEvent event ){
+				btnFrameFirst.setEnabled( true );
+				btnFramePrior.setEnabled( true );
+				btnFrameNext.setEnabled( false );
+				btnFrameLast.setEnabled( false );
+				openLastImage();
+			}
+		} );
+
+		changeFrame = new CssLayout( btnFrameFirst, btnFramePrior, btnFrameNext, btnFrameLast );
+		changeFrame.addStyleName( ImedigTheme.CHANGE_FRAME );
+		changeFrame.setHeight( "-1px" );
+		changeFrame.setWidth( "0px" );
+		changeFrame.setVisible( false );
+		addComponent( changeFrame );
+	}
+
 
 	private void settingCanvas() {
 		buildCanvasConfiguration();
 		defaultConfiguration = configurations.get(EnumActions.NONE);
 		canvas = new FabricJs(defaultConfiguration);
+		canvas.setLoaderConfiguration( loadingConfiguration );
 		canvas.setSizeFull();
 		addComponent(canvas);
 		
@@ -146,15 +298,11 @@ public class ImageCanvas extends VerticalLayout {
 			}
 		});
 		
-		canvas.setMouseWheelListener( new MouseWheelListener()
-		{
-			
+		canvas.setMouseWheelListener( new MouseWheelListener(){
 			@Override
-			public void onMouseWheel( double weelDelta )
-			{
+			public void onMouseWheel( double weelDelta ){
 				if (imageData == null) return;
-				
-				ImageData data = null;
+
 				if (weelDelta < 0 ){
 					openPreviousImage();
 				}else{
@@ -164,6 +312,23 @@ public class ImageCanvas extends VerticalLayout {
 		} );
 	}
 	
+	private void openFirstImage(){
+		if (numberOfFrames >1){
+			Integer frame = getFirstFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			openImage();
+		}else{
+			ImageData data = imageDataNavigator.getFirstImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
+		}
+	}
+
 	private void openPreviousImage(){
 		if (numberOfFrames >1){
 			Integer frame = getPreviousFrame();
@@ -173,8 +338,16 @@ public class ImageCanvas extends VerticalLayout {
 			currentFrame = frame;
 			openImage();
 		}else{
-			openImage( imageDataNavigator.getPreviousImageSerie() );
+			ImageData data = imageDataNavigator.getPreviousImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
 		}
+	}
+
+	private Integer getFirstFrame(){
+		return 0;
 	}
 
 	private Integer getPreviousFrame(){
@@ -194,7 +367,29 @@ public class ImageCanvas extends VerticalLayout {
 			
 			openImage();
 		}else{
-			openImage( imageDataNavigator.getNextImageSerie() );
+			ImageData data = imageDataNavigator.getNextImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
+		}
+	}
+
+	private void openLastImage(){
+		if (numberOfFrames >1){
+			Integer frame = getLastFrame();
+			
+			if (frame.equals( currentFrame )) return;
+			
+			currentFrame = frame;
+			
+			openImage();
+		}else{
+			ImageData data = imageDataNavigator.getLastImageSerie();
+			if (data != null){
+				openImage( data );
+				context.sendAction( new ChangeImageFrame( this, data ) );
+			}
 		}
 	}
 
@@ -204,6 +399,11 @@ public class ImageCanvas extends VerticalLayout {
 		return currentFrame + 1;
 
 	}
+
+	private Integer getLastFrame(){
+		return numberOfFrames - 1;
+	}
+
 
 	private void calculateDistance(Figure figure) {
 
@@ -222,11 +422,7 @@ public class ImageCanvas extends VerticalLayout {
 			return;
 		}
 		
-		String spacing = imageHeader.getPixelSpacing();
-		
-		if (spacing == null) return;
-		
-		String sp[] = spacing.split( "\\\\" );
+		String sp[] = imageHeader.getPixelSpacing().split( "\\\\" );
 		
 		Point p1 = figure.getPoints().get(0);
 		Point p2 = figure.getPoints().get(1);
@@ -352,22 +548,26 @@ public class ImageCanvas extends VerticalLayout {
 			addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
 				
 			imageRect = new Rectangle( nix1, niy1, nix2 - nix1 + 1, niy2 - niy1 + 1 );
-						
-			viewRect = getCanvasImage();
 			
-			canvas.clearDraw();
+			settingViewRect();
+			
+			//canvas.clearDraw();
 			
 			openImage();
 			
-			showImagenFigures();
+			List<Figure> figures = getImagenFiguresToShow();
+			canvas.chainOfCommand(
+	                new ChainOfCommand()
+	                .withClearDraw( true )
+	                .withFigures( figures ));
+			showRuleReference();
 		}
 	}
 	
 	private void addToUndo(ImageStatus status){
 		back.push(status);
-		listenerAction.doAction( new AddToUndoAction( this, null ) );
+		listenerAction.doAction( new AddToUndoAction( this) );
 	}
-	
 
 	private double getAngle( double x1, double y1, double x2, double y2, double xp1, double yp1, double xp2, double yp2 ){
 		double angle = Math.toDegrees( Math.abs( getAngle( x1, y1, x2, y2 ) - getAngle( xp1, yp1, xp2, yp2 ) ) );
@@ -419,7 +619,7 @@ public class ImageCanvas extends VerticalLayout {
 		fig.setConfiguration( figure.getConfiguration() );
 		
 		imagenFigures.add(fig);
-		listenerAction.doAction( new AddFigure( this, null ) );
+		listenerAction.doAction( new AddFigure( this ) );
 	}
 	
 	private void contrastOperation(Figure figure) {
@@ -450,11 +650,15 @@ public class ImageCanvas extends VerticalLayout {
 				currentCenter = nc;
 				currentWidth = nw;
 				
-				canvas.clearDraw();
+				//canvas.clearDraw();
 				
 				openImage();
 				
-				showImagenFigures();
+				List<Figure> figures = getImagenFiguresToShow();
+				canvas.chainOfCommand(
+		                new ChainOfCommand()
+		                .withClearDraw( true )
+		                .withFigures( figures ));
 			}
 		}
 	}
@@ -468,18 +672,20 @@ public class ImageCanvas extends VerticalLayout {
 		defaultConfiguration = new FigureConfiguration()
 				.withStrokeWidth(2.0)
 				.withFillColor("#F0BE20")
+				.withHoverColor( "#E02525" )
 				.withStrokeColor("#F0BE20")
 				.withBackgroundColor( "transparent" )
-				.withTextFontFamily("Roboto")
+				.withTextFontFamily("Roboto,'Open Sans',sans-serif")
 				.withTextFontSize(15)
 				.withTextFillColor("#F0BE20")
 				.withTextFontWeight( FontWeight.FW700 )
 				.withAction( CanvasAction.NONE )
-				.withCursor( "default" );
+				.withCursor( "default" )
+				.withCancelDrawKeyCode( 46 );
 		
 		configurations.put( EnumActions.NONE, defaultConfiguration );
-		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ) );
-		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ) );
+		configurations.put( EnumActions.ANGLE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_FREE_ANGLE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 1px" ));
+		configurations.put( EnumActions.DISTANCE, defaultConfiguration.clone().withAction( CanvasAction.DRAW_LINE ).withCursor( "crosshair" ).withTextShadow( "#020202 -1px 1px 1px" ) );
 		
 		configurations.put( EnumActions.CONTRAST, defaultConfiguration.clone().withVisible( false ).withAction( CanvasAction.SHOW_RECT ).withCursor( "move" ) );
 		
@@ -492,17 +698,39 @@ public class ImageCanvas extends VerticalLayout {
 				.withCursor( "crosshair" );
 		
 		configurations.put( EnumActions.ZOOM, temp );
+		
+		loadingConfiguration = new LoaderConfiguration()
+                .withFillColor("transparent")
+                .withStrokeColor("transparent")
+                .withSpinnerColor("#bb910b")                
+                .withLoaderText(context.getString( "ViewerWnd.loading.image" ))
+                .withTextFontSize( 16 )
+                .withTextFontFamily("Roboto,'Open Sans',sans-serif")
+                .withTextFillColor("#F0BE20")
+                .withTextFontWeight( FontWeight.BOLDER )
+                .withSpinnerPosition(SpinnerPosition.LEFT)
+                .withShadow("")
+                .withSpinnerRadio(15)
+                .withLoaderAlignment(FigureAlignment.MIDDLE_CENTER)
+                .withSpinnerSpeed( SpinnerSpeed.SLOW );
 	}
 	
 	private void resizeAction(){
-		canvas.clearDraw();
-		
 		if (imageData == null) return;
-		
+
 		openImage();
+		settingViewRect();
 		
-		viewRect = getCanvasImage();
-		showImagenFigures();
+		List<Figure> figures = getImagenFiguresToShow();
+		List<Note> notes = informationNote(imageHeader);
+		
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
+		showRuleReference();
 	}
 	
 	private void showImagenFigures() {
@@ -541,6 +769,45 @@ public class ImageCanvas extends VerticalLayout {
 		}
 	}
 	
+	private List<Figure> getImagenFiguresToShow() {
+		
+		Rectangle vrect = viewRect;
+		Rectangle irect = imageRect;
+		
+		int ix1 = (int) irect.getX();
+		int iy1 = (int) irect.getY();
+		int ix2 = (int) ( ix1 + irect.getWidth() - 1 );
+		int iy2 = (int) ( iy1 + irect.getHeight() - 1 );
+		
+		int vx1 = (int) vrect.getX();
+		int vy1 = (int) vrect.getY();
+		int vx2 = (int) ( vx1 + vrect.getWidth() - 1 );
+		int vy2 = (int) ( vy1 + vrect.getHeight() - 1 );
+		
+		double mx = (double) ( vx2 - vx1 ) / ( ix2 - ix1 );
+		double nx = vx1 - mx * ix1;
+		
+		double my = (double) ( vy2 - vy1 ) / ( iy2 - iy1 );
+		double ny = vy1 - my * iy1;
+		
+		List<Figure> result = new ArrayList<>();
+		for (Figure fig : imagenFigures) {
+			
+			List<Point> npoints = new ArrayList<>();
+			for (Point point : fig.getPoints()) {
+				double x = mx * point.getX() + nx;
+				double y = my * point.getY() + ny;
+				
+				npoints.add(new Point(x, y));
+			}
+			Figure figure = new Figure(fig.getFigureType(), npoints, fig.getText());
+			figure.setConfiguration( fig.getConfiguration() );
+			result.add( figure );
+		}
+		
+		return result;
+	}
+	
 	
 	private void verifyImagenOperation(Rectangle irect) throws OperationException{
 		int ix1 = (int) irect.getX();
@@ -563,7 +830,7 @@ public class ImageCanvas extends VerticalLayout {
 		
 		if (this.imageData != null && this.imageData.equals( imageData )) {
 			if (!verifyPixelSpacing()){
-				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+				listenerAction.doAction( new DisableDistanceAction( this) );
 			}
 			return;
 		}
@@ -589,30 +856,66 @@ public class ImageCanvas extends VerticalLayout {
 			imageHeader = RetrieveManager.getInstance().getMetaData( Settings.PACS_AETitle, Settings.PACS_Host, Settings.PACS_Port, Settings.IMEDIG_AETitle, Settings.Cache_Dir, params );
 			numberOfFrames = imageHeader.getNumberOfFrames();
 			
-			if (!currentSerie.equals( imageData.serieId())){
+			if (imageDataFigures.get( this.imageData ) != null){
+				imagenFigures = imageDataFigures.get( this.imageData );
+			}
+			
+			if (currentSerie.isEmpty()){
 				currentSerie = imageData.serieId();
 				back = new Stack<>();
 				newImageData();
-			}else{
+			}else if (!currentSerie.equals( imageData.serieId())){
+				//Guardar el estado actual
+				addToUndo( new ImageStatus((Rectangle) imageRect.clone(), currentCenter, currentWidth, currentFrame) );
+				serieStatus.put( currentSerie, back );
+				
+				//Obtener la nueva serie
+				currentSerie = imageData.serieId();
+				//Verificar si ya se tiene el estado almacenado
+				if (serieStatus.get( currentSerie ) != null){
+					back = serieStatus.get( currentSerie );
+					newImageDataFromStatus( back.pop() );
+				}else{
+					back = new Stack<>();
+					newImageData();
+				}
+			}/*else{
 				if (imageDataFigures.get( this.imageData ) != null){
 					imagenFigures = imageDataFigures.get( this.imageData );
 				}
-			}
+			}*/
 			
 			if (!verifyPixelSpacing()){
-				listenerAction.doAction( new DisableDistanceAction( this, null ) );
+				listenerAction.doAction( new DisableDistanceAction( this ) );
 			}
 			
-			/*imageRect = new Rectangle(0,  0, imageHeader.getColumns(), imageHeader.getRows());
-			currentCenter = getDouble(imageHeader.getWindowCenter()); 
-			currentWidth = getDouble(imageHeader.getWindowWidth());
-			currentFrame = new Integer(0);
-			viewRect = getCanvasImage();*/
+			if (!imagenFigures.isEmpty()){
+				listenerAction.doAction( new AddFigure( this ) );
+			}else{
+				listenerAction.doAction( new NotFigures( this ) );
+			}
 			
 			openImage();
-			showInformation(imageHeader);
-			showImagenFigures();
+			List<Figure> figures = getImagenFiguresToShow();
+			List<Note> notes = informationNote(imageHeader);
+			canvas.chainOfCommand(
+	                new ChainOfCommand()
+	                .withClearDraw( true )
+	                .withFigures( figures )
+	                .withClearNotes( true )
+	                .withNotes(notes));
+			showRuleReference();
 			
+			if (imageDataNavigator.containImagesSeries()){
+				changeFrame.setVisible( true );
+				
+				btnFrameFirst.setEnabled( imageDataNavigator.hasPriorImageSerie() );
+				btnFramePrior.setEnabled( imageDataNavigator.hasPriorImageSerie() );
+				btnFrameNext.setEnabled( imageDataNavigator.hasNextImageSerie() );
+				btnFrameLast.setEnabled( imageDataNavigator.hasNextImageSerie() );
+			}else{
+				changeFrame.setVisible( false );
+			}
 		}catch ( Throwable ex )	{
 			reportInfo = null;
 		}
@@ -623,6 +926,14 @@ public class ImageCanvas extends VerticalLayout {
 		currentCenter = getDouble(imageHeader.getWindowCenter()); 
 		currentWidth = getDouble(imageHeader.getWindowWidth());
 		currentFrame = 0;
+		viewRect = getCanvasImage();
+	}
+	
+	private void newImageDataFromStatus(ImageStatus status){
+		imageRect = status.getIrect();
+		currentCenter = status.getWindowCenter(); 
+		currentWidth = status.getWindowWidth();
+		currentFrame = status.getFrame();
 		viewRect = getCanvasImage();
 	}
 
@@ -707,14 +1018,38 @@ public class ImageCanvas extends VerticalLayout {
 		return new Rectangle(0, 0, cols, rows);
 	}
 	
+	private void settingViewRect() {
+
+		int vcols =  (int)canvas.getvWidth();
+		int vrows =  (int)canvas.getvHeight();
+
+		int icols = (int)imageRect.getWidth();
+		int irows = (int)imageRect.getHeight();
+
+		double ar = (double) icols / irows;
+
+		int cols = 0;
+		int rows = 0;
+
+		if (vrows * ar > vcols) {
+			cols = vcols;
+			rows = (int) (vcols / ar + .5f);
+		} else {
+			cols = (int) (vrows * ar + .5f);
+			rows = vrows;
+		}
+
+		viewRect = new Rectangle(0, 0, cols, rows);
+	}
+	
 	private void showInformation(ImageHeader metadata){
         NotesConfiguration configuration = new NotesConfiguration()
         		.withTextFontSize( 17 )
         		.withTextFillColor( "#ecedee" )
         		.withTextBackgroundColor( "transparent" )
-        		.withNotesAlignment(NotesAlignment.TOP_LEFT)
+        		.withNotesAlignment( FigureAlignment.TOP_LEFT)
         		.withTextAlign(TextAlign.LEFT)
-        		.withTextFontFamily("Roboto");
+        		.withTextFontFamily("Roboto,'Open Sans',sans-serif");
         
         
         StringBuilder sbuilder = new StringBuilder();
@@ -725,14 +1060,69 @@ public class ImageCanvas extends VerticalLayout {
 		canvas.clearNotes();
         canvas.addNotes(sbuilder.toString(), configuration);
 	}
+	
+	private void showRuleReference( ){
+		
+		if (!verifyPixelSpacing()){
+			return;
+		}
+		
+		double iy1 = imageRect.getY();
+		double iy2 = iy1 + imageRect.getHeight() - 1;
+		double vy1 = viewRect.getY();
+		double vy2 = vy1 + viewRect.getHeight() - 1;
+		
+		String sp[] = imageHeader.getPixelSpacing().split( "\\\\" );
+		
+		double my = ( iy2 - iy1 ) / ( vy2 - vy1 );
+		
+		Double pixels = REFERENCE_IN_mm/( my * Double.parseDouble( sp[1] ) );
+		
+		Ruler ruler = new Ruler(String.format( "%d mm", REFERENCE_IN_mm ), new RulerConfiguration()
+                .withPixels(pixels.intValue())
+                .withSplit(5)
+                .withStrokeWidth(2.0)
+                .withStrokeColor("#F0BE20")
+                .withPosition(RulerPosition.RIGHT)
+                .withFigureShadow("-1 1 1 #020202")
+                .withTextFontFamily("Roboto,'Open Sans',sans-serif")
+				.withTextFontSize(15)
+				.withTextFillColor("#F0BE20")
+				.withTextFontWeight( FontWeight.FW700 )
+        );
+		
+		canvas.draw(ruler);
+	}
+	
+	private List<Note> informationNote(ImageHeader metadata){
+        NotesConfiguration configuration = new NotesConfiguration()
+        		.withTextFontSize( 17 )
+        		.withTextFillColor( "#ecedee" )
+        		.withTextBackgroundColor( "transparent" )
+        		.withNotesAlignment( FigureAlignment.TOP_LEFT)
+        		.withTextAlign(TextAlign.LEFT)
+        		.withTextFontFamily("Roboto,'Open Sans',sans-serif");
+        
+        
+        StringBuilder sbuilder = new StringBuilder();
+        sbuilder.append(string( metadata.getPatientName())).append(" ").append(string( metadata.getPatientSex())).append("\n").
+                 append(string( metadata.getPatientID())).append("\n").
+                 append(string( metadata.getStudyDate())).append("\n").
+                 append(string( metadata.getInstanceNumber() )).append("\n");
+        
+        return Arrays.asList( new Note( sbuilder.toString(), configuration ) );
+	}
 
 	public void clear() {
-		noneAction();
+		settingAction( EnumActions.NONE );
 		imageData = null;
-		imagenFigures.clear();
+		imagenFigures = new ArrayList<>();
 		canvas.clear();
 		back = new Stack<>();
 		currentSerie = "";
+		serieStatus = new HashMap<>();
+		imageDataFigures = new HashMap<>();
+		changeFrame.setVisible( false );
 	}
 	
 	public void clearFigures() {
@@ -740,41 +1130,13 @@ public class ImageCanvas extends VerticalLayout {
 		canvas.clearDraw();
 	}
 	
-	public void noneAction(){
-		currentAction = EnumActions.NONE;
-		canvas.setFigureConfiguration( configurations.get( currentAction ) );
-	}
-
-	public void distanceAction(){
+	public void settingAction(EnumActions action){
 		if (imageData == null) return;
 		
-		currentAction = EnumActions.DISTANCE;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-	public void angleAction(){
-		if (imageData == null) return;
-
-		currentAction = EnumActions.ANGLE;
+		currentAction = action;
 		canvas.setFigureConfiguration( configurations.get( currentAction ));
 	}
 	
-	public void zoomAction(){
-		if (imageData == null) return;
-
-		currentAction = EnumActions.ZOOM;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-	public void contrastAction() {
-		if (imageData == null) return;
-
-		currentAction = EnumActions.CONTRAST;
-		canvas.setFigureConfiguration( configurations.get( currentAction ));
-	}
-
-
-
 	public boolean undoAction() {
 		if (back.isEmpty()) return false;
 		
@@ -784,16 +1146,50 @@ public class ImageCanvas extends VerticalLayout {
 		currentWidth = status.getWindowWidth();
 		currentFrame = status.getFrame();
 		imageRect = status.getIrect();
-					
-		viewRect = getCanvasImage();
-		
-		canvas.clearDraw();
+
 		openImage();
-		showImagenFigures();
+
+		settingViewRect();
+		List<Figure> figures = getImagenFiguresToShow();
+		List<Note> notes = informationNote(imageHeader);
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
+		showRuleReference();
 		
 		if (back.isEmpty()) return false;
 		
 		return true;
+	}
+
+	public void restoreAction()	{
+		if (back.isEmpty()) return;
+
+		ImageStatus status = back.get( 0 );
+		currentCenter = status.getWindowCenter();
+		currentWidth = status.getWindowWidth();
+		currentFrame = status.getFrame();
+		imageRect = status.getIrect();
+		
+		viewRect = getCanvasImage();
+
+		back = new Stack<>();
+		serieStatus.remove( currentSerie );
+
+		openImage();
+		settingViewRect();
+		List<Figure> figures = getImagenFiguresToShow();
+		List<Note> notes = informationNote(imageHeader);
+		canvas.chainOfCommand(
+                new ChainOfCommand()
+                .withClearDraw( true )
+                .withFigures( figures )
+                .withClearNotes( true )
+                .withNotes(notes));
+		showRuleReference();
 	}
 
 }

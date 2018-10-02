@@ -1,7 +1,9 @@
 package es.pryades.imedig.viewer.actions;
 
-public class OpenStudies extends AbstractAction{
-	public OpenStudies(Object source, Object data) {
+import java.util.List;
+
+public class OpenStudies extends AbstractAction<Object, List<String>>{
+	public OpenStudies(Object source, List<String> data) {
 		super(source, data);
 	}
 }

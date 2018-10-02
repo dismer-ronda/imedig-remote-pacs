@@ -1,8 +1,14 @@
 package es.pryades.imedig.viewer.actions;
 
-public class CloseStudies extends AbstractAction {
+import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 
-	public CloseStudies(Object source, Object data) {
+public class CloseStudies extends AbstractAction<Object, StudyTree> {
+
+	public CloseStudies(Object source) {
+		this(source, null);
+	}
+	
+	public CloseStudies(Object source, StudyTree data) {
 		super(source, data);
 	}
 

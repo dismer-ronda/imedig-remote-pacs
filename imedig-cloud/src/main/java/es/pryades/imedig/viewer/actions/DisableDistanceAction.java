@@ -1,8 +1,8 @@
 package es.pryades.imedig.viewer.actions;
 
-public class DisableDistanceAction extends AbstractAction {
+public class DisableDistanceAction extends SourceAction {
 
-	public DisableDistanceAction(Object source, Object data) {
-		super(source, data);
+	public DisableDistanceAction(Object source) {
+		super(source);
 	}
 }

@@ -1677,6 +1677,15 @@ var FabricJsApp = exports.FabricJsApp = function () {
             loaderConfiguration: this.loaderConfiguration
         });
 
+        this.canvasLoader = new fabric.StaticCanvas(canvasLoaderId, {
+            backgroundColor: 'transparent'
+        });
+
+        this.loader = new _loader.Loader({
+            canvas: this.canvasLoader,
+            loaderConfiguration: this.loaderConfiguration
+        });
+
         this.canvasDraw = new fabric.Canvas(canvasDrawId, {
             selection: false,
             backgroundColor: 'transparent',

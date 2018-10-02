@@ -22,6 +22,9 @@ import com.vaadin.ui.AbstractJavaScriptComponent;
 import com.vaadin.ui.JavaScriptFunction;
 import elemental.json.JsonArray;
 import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
+import es.pryades.fabricjs.config.RulerConfiguration;
+import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +37,9 @@ import java.util.Objects;
 public class FabricJs extends AbstractJavaScriptComponent {
 
     private FigureConfiguration figureConfiguration;
+    private RulerConfiguration rulerConfiguration;
     private NotesConfiguration notesConfiguration;
+    private LoaderConfiguration loaderConfiguration;
 
     private double vWidth;
     private double vHeight;
@@ -42,11 +47,10 @@ public class FabricJs extends AbstractJavaScriptComponent {
     private List<String> images;
 
     private CanvasDimensions canvasDimensions;
-    //private final CanvasAction defauAction = CanvasAction.NONE;
-
-    //private CanvasAction action;
 
     private final List<Command> commands;
+
+    private boolean showSpinnerOnImageLoad;
 
     /**
      * Listeners
@@ -68,11 +72,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         this.addStyleName("canvas-wrapper");
 
+        this.showSpinnerOnImageLoad = true;
         this.figureConfiguration = new FigureConfiguration();
         this.notesConfiguration = new NotesConfiguration();
+        this.loaderConfiguration = new LoaderConfiguration();
+        this.rulerConfiguration = new RulerConfiguration();
         this.images = new ArrayList<>();
 
         this.createDefaultsDimesions();
+        this.generateLoaderConfiguration();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
@@ -80,26 +88,30 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public FabricJs(FigureConfiguration generalFigureConfiguration) {
         this.commands = new ArrayList<>();
-        //this.figures = new ArrayList<>();
         this.addStyleName("canvas-wrapper");
 
-        //this.notes = new ArrayList<>();
+        this.showSpinnerOnImageLoad = true;
         this.notesConfiguration = new NotesConfiguration();
+        this.loaderConfiguration = new LoaderConfiguration();
+        this.rulerConfiguration = new RulerConfiguration();
         this.images = new ArrayList<>();
         this.figureConfiguration = generalFigureConfiguration;
 
         this.createDefaultsDimesions();
+        this.generateLoaderConfiguration();
         this.generateConfiguration();
         this.setJavascriptFunctions();
 
-        //this.action = defauAction;
-
+    }
+    
+    
+    public void setResizeTimeout(int timeout){
+         getState().resizeTimeout = timeout;
     }
 
     public void setImageUrl(String url) {
         images = Arrays.asList(url);
-        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-        this.getState().commands = getPayload(this.commands);
+        this.getState().imagesUrl = getPayload(this.images);
     }
 
     public void setImageUrl(ExternalResource resource) {
@@ -107,10 +119,8 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void setImageUrlsAsString(List<String> images) {
-        //backgroundImage = url;
         this.images = images;
-        this.commands.add(new Command("SET_IMAGE", getPayload(this.images)));
-        this.getState().commands = getPayload(this.commands);
+        this.getState().imagesUrl = getPayload(this.images);
     }
 
     public void setImageUrlsAsResource(List<ExternalResource> resource) {
@@ -128,20 +138,48 @@ public class FabricJs extends AbstractJavaScriptComponent {
     }
 
     public void draw(Figure figure) {
-        if (Objects.isNull(figure.getConfiguration())) {
+        if (figure.getConfiguration() == null) {
             figure.setConfiguration(figureConfiguration);
         }
         this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
         getState().commands = getPayload(this.commands);
     }
 
+    public void draw(Ruler figure) {
+        if (figure.getConfiguration() == null) {
+            figure.setConfiguration(rulerConfiguration);
+        }
+        this.commands.add(new Command("DRAW_FIGURE", getPayload(figure)));
+        getState().commands = getPayload(this.commands);
+    }
+
+    public void chainOfCommand(ChainOfCommand chainOfCommand) {
+        if (chainOfCommand.getFigureConfiguration() != null) {
+            this.figureConfiguration = chainOfCommand.getFigureConfiguration();
+        }
+
+        if (chainOfCommand.getLoaderConfiguration() != null) {
+            this.loaderConfiguration = chainOfCommand.getLoaderConfiguration();
+        }
+
+        if (chainOfCommand.getImagesUrl() != null && !chainOfCommand.getImagesUrl().isEmpty()) {
+            this.images = chainOfCommand.getImagesUrl();
+
+        }
+
+        this.commands.add(new Command("CHAIN_COMMAND", getPayload(chainOfCommand)));
+        getState().commands = getPayload(this.commands);
+    }
+
     public void clear() {
         this.commands.add(new Command("CLEAR_ALL", ""));
+        getState().imagesUrl = "[]";
         getState().commands = getPayload(this.commands);
     }
 
     public void clearImage() {
         this.commands.add(new Command("CLEAR_IMAGE", ""));
+        getState().imagesUrl = "[]";
         getState().commands = getPayload(this.commands);
     }
 
@@ -155,6 +193,16 @@ public class FabricJs extends AbstractJavaScriptComponent {
         getState().commands = getPayload(this.commands);
     }
 
+    public void showLoader() {
+        this.commands.add(new Command("SHOW_LOADER", ""));
+        getState().commands = getPayload(this.commands);
+    }
+
+    public void hideLoader() {
+        this.commands.add(new Command("HIDE_LOADER", ""));
+        getState().commands = getPayload(this.commands);
+    }
+
     public void setNotesConfiguration(NotesConfiguration configuration) {
         this.notesConfiguration = configuration;
     }
@@ -163,8 +211,35 @@ public class FabricJs extends AbstractJavaScriptComponent {
         return this.notesConfiguration;
     }
 
+    public FigureConfiguration getRulerConfiguration() {
+        return rulerConfiguration;
+    }
+
+    public void setRulerConfiguration(RulerConfiguration rulerConfiguration) {
+        this.rulerConfiguration = rulerConfiguration;
+        if (rulerConfiguration == null) {
+            this.rulerConfiguration = new RulerConfiguration();
+        } else {
+            this.rulerConfiguration = rulerConfiguration;
+        }
+        getState().rulerConfiguration = getPayload(this.rulerConfiguration);
+    }
+
+    public LoaderConfiguration getLoaderConfiguration() {
+        return loaderConfiguration;
+    }
+
+    public void setLoaderConfiguration(LoaderConfiguration loaderConfiguration) {
+        if (loaderConfiguration == null) {
+            this.loaderConfiguration = new LoaderConfiguration();
+        } else {
+            this.loaderConfiguration = loaderConfiguration;
+        }
+        getState().loaderConfiguration = getPayload(this.loaderConfiguration);
+    }
+
     public void addNotes(String text) {
-        if (Objects.isNull(this.notesConfiguration)) {
+        if (this.notesConfiguration == null) {
             this.notesConfiguration = new NotesConfiguration();
         }
         addNotes(text, this.notesConfiguration);
@@ -192,8 +267,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public void setFigureConfiguration(FigureConfiguration generalFigureConfiguration) {
         this.figureConfiguration = generalFigureConfiguration;
-        this.commands.add(new Command("SET_CONFIG",getPayload(this.figureConfiguration)));
-        getState().commands = getPayload(this.commands);
+        getState().figureConfiguration = getPayload(this.figureConfiguration);
     }
 
     public CanvasDimensions getCanvasDimensions() {
@@ -216,6 +290,15 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
     public double getvHeight() {
         return vHeight;
+    }
+
+    public boolean isShowSpinnerOnImageLoad() {
+        return showSpinnerOnImageLoad;
+    }
+
+    public void setShowSpinnerOnImageLoad(boolean showSpinnerOnImageLoad) {
+        this.showSpinnerOnImageLoad = showSpinnerOnImageLoad;
+        getState().showSpinnerOnImageLoad = showSpinnerOnImageLoad;
     }
 
     public MouseMoveListener getMouseMoveListener() {
@@ -275,6 +358,11 @@ public class FabricJs extends AbstractJavaScriptComponent {
         getState().figureConfiguration = getPayload(this.figureConfiguration);
     }
 
+    private void generateLoaderConfiguration() {
+        getState().loaderConfiguration = getPayload(this.loaderConfiguration);
+        getState().showSpinnerOnImageLoad = this.showSpinnerOnImageLoad;
+    }
+
     private void generateCanvasDimensions() {
         this.getState().dimensions = getPayload(this.canvasDimensions);
     }
@@ -307,7 +395,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(mouseWheelListener)) {
+                if (mouseWheelListener != null) {
                     mouseWheelListener.onMouseWheel(arguments.getNumber(0));
                 }
             }
@@ -317,7 +405,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(resizeListener)) {
+                if (resizeListener != null) {
                     double width = arguments.getNumber(0);
                     double height = arguments.getNumber(1);
                     resizeListener.onResize(width, height);
@@ -329,7 +417,7 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
             @Override
             public void call(JsonArray arguments) {
-                if (!Objects.isNull(drawFigureListener)) {
+                if (drawFigureListener != null) {
                     Gson gson = new GsonBuilder().create();
                     Figure figure = gson.fromJson(arguments.getString(0), Figure.class);
                     figure.setConfiguration(figureConfiguration.clone());

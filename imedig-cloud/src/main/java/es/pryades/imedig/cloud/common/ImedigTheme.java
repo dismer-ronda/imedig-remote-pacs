@@ -3,6 +3,10 @@ package es.pryades.imedig.cloud.common;
 public class ImedigTheme {
 	public static final String STUDY_PANEL	= "studypanel";
 	public static final String CURSOR_POINTER	= "cursor_pointer";
+	public static final String FULLSCREEN_INDICATOR= "fullscreen";
+	public static final String CHANGE_FRAME= "changeframe";
+	public static final String TOOLBOX_CONTENT= "toolbox-content";
+	
 	
 	public static final String BG_BLUE		= "bg_blue";
 	public static final String BG_GREEN		= "bg_green";
@@ -22,7 +26,11 @@ public class ImedigTheme {
 	public static final String BUTTON_TOOLBAR= "toolbar";
 	public static final String BUTTON_SELECTED= "selected";
 	public static final String BUTTON_INVISIBLE= "invisible";
-	public static final String BUTTON_FULLSCREEN= "fullscreen";
 	public static final String BUTTON_RESTORE= "restore";
-	
+
+	public static final String BUTTON_MENU_SELECTED= "selected-menu";
+	public static final String MENU_LAYOUT = "menu-layout";
+	public static final String FILTER_MARGIN = "filter-margin";
+	public static final String TO_RIGHT = "to-right";
+	public static final String TO_LEFT = "to-left";
 }

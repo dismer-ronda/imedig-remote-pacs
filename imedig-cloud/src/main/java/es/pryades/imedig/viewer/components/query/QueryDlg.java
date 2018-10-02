@@ -1,9 +1,12 @@
 package es.pryades.imedig.viewer.components.query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
@@ -49,6 +52,8 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	private Button btnQuery;
 	
 	private final ImedigContext context;
+	
+	public static final Integer PAGE_SIZE = 7;
 
 	public QueryDlg(ImedigContext context, User user) {
 		super(context.getString("QueryForm.Title"));
@@ -153,8 +158,9 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 	public void onQuery() {
 		paginator.setPage(0);
+		paginator.setSize( PAGE_SIZE );
 
-		model = new QueryTableModel(7);
+		model = new QueryTableModel(PAGE_SIZE);
 
 		model.setPatientName("*" + fieldName.getValue() + "*");
 		model.setPatientId(filedId.getValue());
@@ -209,6 +215,25 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		tableEstudies.setSelectable(true);
 		tableEstudies.setMultiSelect(false);
 		tableEstudies.setSortEnabled(false);
+		tableEstudies.addItemClickListener( new ItemClickListener()
+		{
+			
+			@Override
+			public void itemClick( ItemClickEvent event )
+			{
+				if (event.isDoubleClick()){
+					close();
+					if (listener == null) return;
+					
+					QueryTableItem item = (QueryTableItem)event.getItemId();
+					
+					if (item != null){
+						listener.doAction(new OpenStudies(this, Arrays.asList(item.getStudy().getStudyInstanceUID())));
+					}
+				}
+				
+			}
+		} );
 
 		content.addComponent(tableEstudies);
 		content.setExpandRatio(tableEstudies, 1.0f);

@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
@@ -31,22 +32,20 @@ import es.pryades.imedig.cloud.core.dal.ImagenesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Imagen;
 import es.pryades.imedig.cloud.ioc.IOCManager;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * The Application's "main" class
  */
 @Theme("imedig")
+@Title("Imedig")
 @PreserveOnRefresh
-@com.vaadin.annotations.JavaScript("vaadin://screenfull/screenfull.min.js")
 public class BackendApplication extends UI //implements HttpServletRequestListener
 {
 	private static final long serialVersionUID = 683154667075459739L;
 
 	private static final Logger LOG = Logger.getLogger( BackendApplication.class );
 	
-	private static final String VERSION = "2.0.1";
+	private static final String VERSION = "2.1.1";
 	
 	private BackendMainWnd window;
 
@@ -106,8 +105,8 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 			wnd.removeAllComponents();
     	
 		window = new BackendMainWnd( ctx );
-        
-    	setContent( window );
+		
+		setContent( window );
 
     	ctx.addData( "Application", this );
     	ctx.addData( "Resources", resources );
@@ -125,7 +124,6 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	protected void refresh(VaadinRequest request) {
 		super.refresh( request );
 		copyright();
-		fullScreenListener();
     }
 
 	public void messageAndExit( String title, ResourceBundle resources, String message )
@@ -237,17 +235,6 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	private void executeJScripts(){
 		copyright();
 	}
-	
-	private void fullScreenListener(){
-	    
-        StringBuilder builder = new StringBuilder();
-        
-        builder.append("document.getElementById('btn.fullscreen').addEventListener('click',function(){screenfull.request();});");
-        builder.append("document.getElementById('btn.exitfullscreen').addEventListener('click',function(){screenfull.exit();});");
-        
-        JavaScript.getCurrent().execute(builder.toString());
-        
-    }
 	
 	private void copyright() {
         final String jsdivcopyright = 

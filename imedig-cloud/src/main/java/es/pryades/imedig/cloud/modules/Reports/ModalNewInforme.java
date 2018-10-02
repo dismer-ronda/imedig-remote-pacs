@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.vaadin.openesignforms.ckeditor.CKEditorConfig;
 import org.vaadin.openesignforms.ckeditor.CKEditorTextField;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.FontAwesome;
@@ -49,6 +50,7 @@ import lombok.Setter;
  * 
  */
 @SuppressWarnings("serial")
+@StyleSheet("vaadin://ckeditor/ckeditorimedig.css")
 public final class ModalNewInforme extends ModalWindowsCRUD
 {
 	private static final Logger LOG = Logger.getLogger( ModalNewInforme.class );
@@ -158,6 +160,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		CKEditorConfig config = new CKEditorConfig();
         config.disableElementsPath();
         config.setResizeEnabled( false );
+        config.setContentsCss( "VAADIN/ckeditor/ckeditorimedig.css" );
         config.addCustomToolbarLine("{ items : ['Bold', 'Italic', 'Underline', '-', " +
         		"'NumberedList','BulletedList', '-', " +
         		"'Indent', 'Outdent', '-', " +

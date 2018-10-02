@@ -96,8 +96,10 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			rowQuery = new HorizontalLayout();
 			rowQuery.setSpacing( true );
 			rowQuery.setMargin( new MarginInfo( true, false, false, false ) );
+			rowQuery.setWidth( "100%" );
 			rowQuery.addComponent( component );
 			rowQuery.addComponent( btnApply );
+			rowQuery.setExpandRatio( component, 1.0f );
 		}
 	}
 	
@@ -143,8 +145,10 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 	
 			initQueryComponents();
 			
-			if ( rowQuery != null )
+			if ( rowQuery != null ){
 				addComponent( rowQuery );
+			}
+			
 			addComponent( mainLayout );
 			setExpandRatio( mainLayout, 1.0f );
 			
@@ -236,7 +240,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 				cellOppLayoutRight.addComponent( tableRows.getTablePageOppContainer() );
 
 				oppLayout.addComponent( cellOppLayoutRight );
-				oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_RIGHT );
+				oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_CENTER );
 				oppLayout.setExpandRatio( cellOppLayoutRight, 1.0f );
 
 				mainLayout.addComponent( tableRows );

@@ -1,23 +1,27 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  
-  	<modelVersion>4.0.0</modelVersion>
-  
-  	<groupId>es.pryades.imedig</groupId>
-  	<artifactId>imedig-cloud</artifactId>
-  	<version>1.0-SNAPSHOT</version>
-  	<packaging>war</packaging>
-  
-  	<name>imedig-cloud</name>
-  	<description>imedig-cloud</description>
-  	
-  	<properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>es.pryades.imedig</groupId>
+	<artifactId>imedig-cloud</artifactId>
+	<version>2.1.1</version>
+	<packaging>war</packaging>
+
+	<name>imedig-cloud</name>
+	<description>imedig-cloud</description>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>7.7.13</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<dcm4che-version>2.0.26</dcm4che-version>
+		<fullscreen.addon.version>1.0.0</fullscreen.addon.version>
+		<fabricjs.addon.version>2.1.0</fabricjs.addon.version>
+		<java.version>1.7</java.version>
 	</properties>
 
-  	<build>
+	<build>
 
 		<plugins>
 
@@ -26,8 +30,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -73,14 +77,19 @@
 			<version>1.0.1B-rc4</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Viewer -->
 		<dependency>
 			<groupId>es.pryades</groupId>
 			<artifactId>fabricjs-addon</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
+			<version>${fabricjs.addon.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>es.pryades</groupId>
+			<artifactId>fullscreen-addon</artifactId>
+			<version>${fullscreen.addon.version}</version>
+		</dependency>
+
 		<!-- vaadin -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -106,15 +115,14 @@
 			<version>${vaadin.version}</version>
 		</dependency>
 
-<!-- Esta dependencia se necesita solamente para compilar widgetsets 
--->
+		<!-- Esta dependencia se necesita solamente para compilar widgetsets -->
 
 		<dependency>
 			<groupId>com.vaadin</groupId>
-		    <artifactId>vaadin-client-compiler</artifactId>
-		    <version>${vaadin.version}</version>
+			<artifactId>vaadin-client-compiler</artifactId>
+			<version>${vaadin.version}</version>
 		</dependency>
-						
+
 		<!-- dcm4che -->
 		<dependency>
 			<groupId>dcm4che</groupId>
@@ -151,6 +159,6 @@
 			<artifactId>jai_imageio</artifactId>
 			<version>1.1</version>
 		</dependency>
- 	</dependencies>
-			
+	</dependencies>
+
 </project>

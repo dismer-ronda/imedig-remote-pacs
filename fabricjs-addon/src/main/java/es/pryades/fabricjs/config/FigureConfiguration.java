@@ -42,6 +42,9 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     private boolean visible;
     private CanvasAction action;
     private String cursor;
+    private Integer cancelDrawKeyCode;
+    private String hoverColor;
+    private String figureShadow;
 
     public FigureConfiguration() {
         super();
@@ -54,6 +57,8 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.visible = true;
         this.cursor = "default";
         this.action = CanvasAction.NONE;
+        this.cancelDrawKeyCode = 27;
+
     }
 
     public FigureConfiguration(FigureConfiguration configuration) {
@@ -63,11 +68,38 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.fillColor = configuration.getFillColor();
         this.strokeColor = configuration.getStrokeColor();
         this.strokeDashArray = configuration.getStrokeDashArray();
-        this.strokeLineCap = configuration.getStrokeLineCap().name().toLowerCase();
-        this.visible = configuration.isVisible();  
+        this.strokeLineCap = configuration.getStrokeLineCap().toLowerCase();
+        this.visible = configuration.isVisible();
         this.action = configuration.getAction();
         this.cursor = configuration.getCursor();
+        this.cancelDrawKeyCode = configuration.getCancelDrawKeyCode();
+        this.hoverColor = configuration.getHoverColor();
+        this.figureShadow = configuration.getFigureShadow();
 
+    }
+
+    public String getFigureShadow() {
+        return figureShadow;
+    }
+
+    public void setFigureShadow(String figureShadow) {
+        this.figureShadow = figureShadow;
+    }
+
+    public String getStrokeLineCap() {
+        return strokeLineCap;
+    }
+
+    public void setStrokeLineCap(String strokeLineCap) {
+        this.strokeLineCap = strokeLineCap;
+    }
+
+    public String getHoverColor() {
+        return hoverColor;
+    }
+
+    public void setHoverColor(String hoverColor) {
+        this.hoverColor = hoverColor;
     }
 
     public String getBackgroundColor() {
@@ -110,10 +142,6 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.strokeDashArray = strokeDashArray;
     }
 
-    public StrokeLineCap getStrokeLineCap() {
-        return StrokeLineCap.valueOf(strokeLineCap.toUpperCase());
-    }
-
     public void setStrokeLineCap(StrokeLineCap strokeLineCap) {
         this.strokeLineCap = strokeLineCap.name().toLowerCase();
     }
@@ -141,10 +169,18 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public void setCursor(String cursor) {
         this.cursor = cursor;
     }
-        
+
+    public Integer getCancelDrawKeyCode() {
+        return cancelDrawKeyCode;
+    }
+
+    public void setCancelDrawKeyCode(Integer cancelDrawKeyCode) {
+        this.cancelDrawKeyCode = cancelDrawKeyCode;
+    }
+
     public void clearStrokeDashArray() {
-        if (!Objects.isNull(this.strokeDashArray)) {
-            this.strokeDashArray.clear();
+        if (this.strokeDashArray != null) {
+            this.strokeDashArray = new ArrayList<>();
         }
     }
 
@@ -211,8 +247,8 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
     public FigureConfiguration withTextFontWeight(FontWeight textFontWeight) {
         this.setTextFontWeight(textFontWeight);
         return this;
-        }
-    
+    }
+
     public FigureConfiguration withAction(CanvasAction action) {
         this.setAction(action);
         return this;
@@ -222,8 +258,28 @@ public class FigureConfiguration extends FontConfiguration implements Serializab
         this.setCursor(cursor);
         return this;
     }
-       
-    public FigureConfiguration clone(){        
+
+    public FigureConfiguration withCancelDrawKeyCode(Integer cancelDrawKeyCode) {
+        this.setCancelDrawKeyCode(cancelDrawKeyCode);
+        return this;
+    }
+
+    public FigureConfiguration withTextShadow(String textShadow) {
+        this.setTextShadow(textShadow);
+        return this;
+    }
+
+    public FigureConfiguration withHoverColor(String hoverColor) {
+        this.setHoverColor(hoverColor);
+        return this;
+    }
+
+    public FigureConfiguration withFigureShadow(String figureShadow) {
+        this.setFigureShadow(figureShadow);
+        return this;
+    }
+
+    public FigureConfiguration clone() {
         return new FigureConfiguration(this);
     }
 
