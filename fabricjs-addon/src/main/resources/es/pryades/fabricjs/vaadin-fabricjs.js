@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -108,9 +108,24 @@ var Utils = exports.Utils = function () {
                 visible: configuration.visible,
                 originX: 'center',
                 originY: 'center',
+                shadow: configuration.figureShadow,
                 objectCaching: false
             });
-
+            return line;
+        }
+    }, {
+        key: 'createRulerLine',
+        value: function createRulerLine(points, configuration) {
+            var line = new fabric.Line(points, {
+                strokeWidth: configuration.strokeWidth,
+                fill: configuration.fillColor,
+                stroke: configuration.strokeColor,
+                strokeDashArray: configuration.strokeDashArray,
+                strokeLineCap: configuration.strokeLineCap,
+                visible: configuration.visible,
+                shadow: configuration.figureShadow,
+                objectCaching: false
+            });
             return line;
         }
     }, {
@@ -127,6 +142,7 @@ var Utils = exports.Utils = function () {
                 fill: 'transparent',
                 stroke: configuration.strokeColor,
                 strokeWidth: configuration.strokeWidth,
+                shadow: configuration.figureShadow,
                 objectCaching: false
             });
             return rect;
@@ -135,7 +151,7 @@ var Utils = exports.Utils = function () {
         key: 'createTextLabel',
         value: function createTextLabel(text, options, configuration) {
             var textObject = new fabric.Text(text, {
-                backgroundColor: 'transparent',
+                backgroundColor: configuration.textBackgroundColor,
                 fill: configuration.textFillColor,
                 fontWeight: configuration.textFontWeight,
                 fontStyle: configuration.textFontStyle,
@@ -145,7 +161,8 @@ var Utils = exports.Utils = function () {
                 top: options.top,
                 visible: configuration.visible,
                 selectable: false,
-                objectCaching: false
+                shadow: configuration.textShadow //,
+                // objectCaching: false
             });
             return textObject;
         }
@@ -162,7 +179,8 @@ var Utils = exports.Utils = function () {
                 left: configuration.textLeft,
                 top: configuration.textTop,
                 textAlign: configuration.textAlign,
-                objectCaching: false
+                shadow: configuration.textShadow //,
+                //objectCaching: false
             });
             return textObject;
         }
@@ -170,6 +188,65 @@ var Utils = exports.Utils = function () {
         key: 'generateUniqueId',
         value: function generateUniqueId() {
             return 'obj_' + Math.random().toString(36).substr(2, 16) + "_" + new Date().getTime();
+        }
+    }, {
+        key: 'calculateOriginX',
+        value: function calculateOriginX(canvas, text, originX, originY) {
+
+            switch (originX) {
+                case "left":
+                    text.set({
+                        left: 0
+                    });
+                    break;
+                case "center":
+                    switch (originY) {
+                        case "top":
+                            text.centerH();
+                            text.set({
+                                top: 0
+                            });
+                            break;
+                        case "bottom":
+                            text.centerH();
+                            var bottom = canvas.getHeight() - text.getScaledHeight();
+                            text.set({
+                                top: bottom
+                            });
+                            break;
+                        default:
+                            text.center();
+                            break;
+                    }
+
+                    break;
+                case "right":
+                    var right = canvas.getWidth() - text.getScaledWidth();
+                    text.set({
+                        left: right
+                    });
+                    break;
+            }
+        }
+    }, {
+        key: 'calculateOriginY',
+        value: function calculateOriginY(canvas, text, originX, originY) {
+            switch (originY) {
+                case "top":
+                    text.set({
+                        top: 0
+                    });
+                    break;
+                case "center":
+                    text.center();
+                    break;
+                case "bottom":
+                    var bottom = canvas.getHeight() - text.getScaledHeight();
+                    text.set({
+                        top: bottom
+                    });
+                    break;
+            }
         }
     }]);
 
@@ -230,6 +307,7 @@ var AngleDrawer = exports.AngleDrawer = function () {
         this.movePointer = null;
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.offCanvas = false;
         this.parent = options.parent;
     }
 
@@ -248,10 +326,6 @@ var AngleDrawer = exports.AngleDrawer = function () {
         value: function onMouseMove(event, canvas) {
             if (this.currentDraw) {
                 var pointer = canvas.getPointer(event.e);
-
-                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
-                    return;
-                }
 
                 this.movePointer = pointer;
 
@@ -300,7 +374,9 @@ var AngleDrawer = exports.AngleDrawer = function () {
                     canvas.remove(this.currentDraw);
                     canvas.renderAll();
                 } else {
-                    this.angle = new fabric.Group([this.firstLine, this.secondLine]);
+                    this.angle = new fabric.Group([this.firstLine, this.secondLine], {
+                        perPixelTargetFind: true
+                    });
                     canvas.add(this.angle);
                     this.parent.setFigure(this.figure.key, this.angle);
                 }
@@ -377,7 +453,8 @@ var AngleDrawer = exports.AngleDrawer = function () {
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -451,7 +528,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([lineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -479,7 +557,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -507,7 +586,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([firstLineDrawer, secondLineDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -533,7 +613,8 @@ var Drawer = exports.Drawer = function () {
 
             var group = new fabric.Group([rectDrawer, lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
         }
@@ -724,7 +805,8 @@ var FreeAngleDrawer = exports.FreeAngleDrawer = function () {
             }, this.configuration);
             var group = new fabric.Group([this.angle, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -783,6 +865,7 @@ var LineDrawer = exports.LineDrawer = function () {
         this.points = [];
         this.drawMode = options.drawMode;
         this.preventUp = false;
+        this.offCanvas = false;
         this.parent = options.parent;
     }
 
@@ -802,10 +885,6 @@ var LineDrawer = exports.LineDrawer = function () {
             if (this.currentDraw) {
                 var pointer = canvas.getPointer(event.e);
 
-                if (pointer.x < 0 || pointer.y < 0 || pointer.x > this.rect.br.x || pointer.y > this.rect.br.y) {
-                    return;
-                }
-
                 this.currentDraw.set({
                     x2: pointer.x,
                     y2: pointer.y
@@ -819,6 +898,7 @@ var LineDrawer = exports.LineDrawer = function () {
             if (this.preventUp) {
                 return;
             }
+
             var pointer = canvas.getPointer(event.e);
 
             if (pointer.eq(this.points[0])) {
@@ -844,7 +924,6 @@ var LineDrawer = exports.LineDrawer = function () {
             this.points = [];
             this.preventUp = false;
             var pointer = canvas.getPointer(event.e);
-            this.rect = canvas.calcViewportBoundaries();
             this.points.push(pointer);
             var pointsToDraw = [pointer.x, pointer.y, pointer.x, pointer.y];
             this.currentDraw = _utils.Utils.createLine(pointsToDraw, this.configuration);
@@ -892,7 +971,8 @@ var LineDrawer = exports.LineDrawer = function () {
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -913,6 +993,179 @@ var LineDrawer = exports.LineDrawer = function () {
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Loader = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Loader = exports.Loader = function () {
+    function Loader(params) {
+        _classCallCheck(this, Loader);
+
+        this.canvas = params.canvas;
+        this.loaderConfiguration = params.loaderConfiguration;
+        if (this.loaderConfiguration.loaderText) {
+            this.generateLoader(this.loaderConfiguration);
+        }
+    }
+
+    _createClass(Loader, [{
+        key: 'generateLoader',
+        value: function generateLoader(loaderConfiguration) {
+            var text = new fabric.Text(loaderConfiguration.loaderText, {
+                backgroundColor: loaderConfiguration.textBackgroundColor,
+                fill: loaderConfiguration.textFillColor,
+                fontSize: loaderConfiguration.textFontSize,
+                fontFamily: loaderConfiguration.textFontFamily,
+                objectCaching: false
+            });
+
+            var rect = new fabric.Rect({
+                width: text.getScaledWidth() + 40,
+                height: loaderConfiguration.height,
+                stroke: loaderConfiguration.strokeColor,
+                strokeWidth: loaderConfiguration.strokeWidth,
+                fill: loaderConfiguration.fillColor,
+                selectable: false
+            });
+
+            if (loaderConfiguration.shadow) {
+                rect.set("shadow", loaderConfiguration.shadow);
+            }
+
+            this.circle = new fabric.Circle({
+                radius: loaderConfiguration.spinnerRadio,
+                left: 15,
+                angle: 0,
+                startAngle: 0,
+                endAngle: Math.PI,
+                stroke: loaderConfiguration.spinnerColor,
+                strokeWidth: loaderConfiguration.spinnerWidth,
+                originX: 'center',
+                originY: 'center',
+                fill: 'transparent'
+            });
+
+            switch (loaderConfiguration.spinnerPosition) {
+                case "LEFT":
+                    this.circle.set("left", 2 * this.circle.get("radius"));
+
+                    rect.set("height", this.circle.getScaledHeight() + text.getScaledHeight());
+                    rect.set("width", text.getScaledWidth() + 2 * this.circle.get("radius") + this.circle.get("left") + 20);
+
+                    this.circle.set("top", rect.getScaledHeight() / 2);
+
+                    text.set("top", rect.getScaledHeight() / 2 - text.getScaledHeight() / 2);
+                    text.set("left", 2 * this.circle.get("radius") + this.circle.get("left"));
+
+                    break;
+                case "TOP":
+                    this.circle.set("top", this.circle.get("radius") + 10);
+
+                    rect.set("height", 2 * this.circle.get("radius") + text.getScaledHeight() + this.circle.get("top"));
+
+                    this.circle.set("left", rect.getScaledWidth() / 2);
+
+                    text.set("top", 1.5 * this.circle.get("radius") + this.circle.get("top"));
+                    text.set("left", rect.getScaledWidth() / 2 - text.getScaledWidth() / 2);
+                    break;
+
+                case "RIGHT":
+                    text.set("left", 12);
+
+                    this.circle.set("left", text.getScaledWidth() + 2 * text.get("left") + this.circle.get("radius"));
+
+                    rect.set("height", this.circle.getScaledHeight() + text.getScaledHeight());
+                    rect.set("width", text.getScaledWidth() + 2 * this.circle.get("radius") + text.get("left") + 20);
+
+                    this.circle.set("top", rect.getScaledHeight() / 2);
+
+                    text.set("top", rect.getScaledHeight() / 2 - text.getScaledHeight() / 2);
+                    break;
+
+                case "BOTTOM":
+                    text.set("top", 10);
+                    this.circle.set("top", text.getScaledHeight() + text.get("top") + 1.5 * this.circle.get("radius"));
+
+                    rect.set("height", 2 * this.circle.get("radius") + text.getScaledHeight() + this.circle.get("top") / 2);
+
+                    this.circle.set("left", rect.getScaledWidth() / 2);
+                    text.set("left", rect.getScaledWidth() / 2 - text.getScaledWidth() / 2);
+                    break;
+            }
+
+            var group = new fabric.Group([rect, this.circle, text], {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true
+            });
+
+            this.loader = group;
+        }
+    }, {
+        key: 'showLoader',
+        value: function showLoader() {
+            if (this.loaderConfiguration.loaderText) {
+                var r = 0;
+                var _this = this;
+                this.animateInterval = setInterval(function () {
+                    r += Math.PI / 180 + 90;
+                    if (r >= 999999) {
+                        r = 0;
+                    }
+
+                    _this.circle.animate({
+                        angle: r
+                    }, {
+                        duration: 1000,
+                        onChange: _this.canvas.renderAll.bind(_this.canvas),
+                        easing: fabric.util.ease.easeOutExpo
+                    });
+                }, 200);
+
+                this.canvas.add(_this.loader);
+
+                _utils.Utils.calculateOriginY(this.canvas, _this.loader, _this.loaderConfiguration.originX, _this.loaderConfiguration.originY);
+                _utils.Utils.calculateOriginX(this.canvas, _this.loader, _this.loaderConfiguration.originX, _this.loaderConfiguration.originY);
+
+                this.canvas.lowerCanvasEl.style.zIndex = 10;
+            }
+        }
+    }, {
+        key: 'hideLoader',
+        value: function hideLoader() {
+            if (this.loader) {
+                this.canvas.lowerCanvasEl.style.zIndex = 2;
+                clearInterval(this.animateInterval);
+                this.canvas.remove(this.loader);
+
+                this.circle.animate({
+                    angle: 0
+                }, {
+                    duration: 1000,
+                    onChange: this.canvas.renderAll.bind(this.canvas),
+                    easing: fabric.util.ease.easeOutExpo
+                });
+            }
+        }
+    }]);
+
+    return Loader;
+}();
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1063,7 +1316,8 @@ var RectDrawer = exports.RectDrawer = function () {
 
             var group = new fabric.Group([this.currentDraw, this.lineText], {
                 selectable: false,
-                objectCaching: false
+                objectCaching: false,
+                perPixelTargetFind: true
             });
             canvas.add(group);
             this.parent.setFigure(this.figure.key, group);
@@ -1083,7 +1337,190 @@ var RectDrawer = exports.RectDrawer = function () {
 }();
 
 /***/ }),
-/* 7 */
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Ruler = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _utils = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Ruler = exports.Ruler = function () {
+    function Ruler(params) {
+        _classCallCheck(this, Ruler);
+
+        this.canvas = params.canvas;
+        this.text = params.text;
+        this.center = this.canvas.getCenter();
+        this.configuration = params.rulerConfiguration;
+        if (this.configuration && this.configuration.pixels > 0) {
+            this.generateRuler();
+        }
+    }
+
+    _createClass(Ruler, [{
+        key: "generateRuler",
+        value: function generateRuler() {
+            switch (this.configuration.position) {
+                case "LEFT":
+                    this.generateLeftRuler();
+                    break;
+                case "RIGHT":
+                    this.generateRightRuler();
+                    break;
+            }
+        }
+    }, {
+        key: "generateRightRuler",
+        value: function generateRightRuler() {
+
+            var x12 = this.canvas.getWidth() - this.configuration.space;
+            var y2 = this.center.top - this.configuration.pixels / 2;
+            var y3 = this.center.top + this.configuration.pixels / 2;
+
+            /*if (this.configuration.pixels < this.canvas.getHeight()) {
+                y2 = this.center.top - (this.configuration.pixels / 2);
+                y3 = this.center.top + (this.configuration.pixels / 2);
+            }*/
+
+            var line = _utils.Utils.createRulerLine([x12, y2, x12, y3], this.configuration);
+
+            //this.canvas.add(line);
+
+            var topLineCoords = [x12 - this.configuration.segmentSize, y2, x12 + this.configuration.strokeWidth, y2];
+            var topLine = _utils.Utils.createRulerLine(topLineCoords, this.configuration);
+            // this.canvas.add(topLine);
+
+            var bottomLineCoords = [x12 - this.configuration.segmentSize, y3, x12 + this.configuration.strokeWidth, y3];
+            var bottomLine = _utils.Utils.createRulerLine(bottomLineCoords, this.configuration);
+            //this.canvas.add(bottomLine);
+
+            var text = _utils.Utils.createTextLabel(this.text, {
+                top: this.center.top,
+                left: this.canvas.getWidth()
+            }, this.configuration);
+            text.set("objectCaching", false);
+
+            text.set("top", this.center.top - text.getScaledHeight() / 2);
+            text.set("left", this.canvas.getWidth() - (this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize) - text.getScaledWidth());
+            //this.canvas.add(text);
+
+            var segmentLinesCoords = this.calculateRightPoints(x12, y2);
+            var segmentLines = [];
+            for (var i = 0; i < segmentLinesCoords.length; i++) {
+                var segment = _utils.Utils.createRulerLine(segmentLinesCoords[i], this.configuration);
+                segmentLines.push(segment);
+            }
+
+            this.group = new fabric.Group([line, topLine, bottomLine, text].concat(segmentLines), {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true,
+                shadow: this.configuration.figureShadow
+            });
+
+            this.canvas.add(this.group);
+            this.canvas.renderAll();
+        }
+    }, {
+        key: "calculateRightPoints",
+        value: function calculateRightPoints(x12, y2) {
+            var step = this.configuration.pixels / this.configuration.split;
+            var x1 = x12 - this.configuration.segmentSize / 2;
+
+            var linesCoords = [];
+
+            for (var i = 1; i < this.configuration.split; i++) {
+                var y1 = y2 + i * step;
+                linesCoords.push([x1, y1, x12, y1]);
+            }
+
+            return linesCoords;
+        }
+    }, {
+        key: "generateLeftRuler",
+        value: function generateLeftRuler() {
+
+            var x12 = this.configuration.space;
+
+            var y2 = this.center.top - this.configuration.pixels / 2;
+            var y3 = this.center.top + this.configuration.pixels / 2;
+
+            /*if (this.configuration.pixels < this.canvas.getHeight()) {
+                y2 = this.center.top - (this.configuration.pixels / 2);
+                y3 = this.center.top + (this.configuration.pixels / 2);
+            }*/
+
+            var line = _utils.Utils.createRulerLine([x12, y2, x12, y3], this.configuration);
+
+            //this.canvas.add(line);
+
+            var topLineCoords = [x12 + this.configuration.segmentSize, y2, x12, y2];
+            var topLine = _utils.Utils.createRulerLine(topLineCoords, this.configuration);
+            // this.canvas.add(topLine);
+
+            var bottomLineCoords = [x12 + this.configuration.segmentSize, y3, x12, y3];
+            var bottomLine = _utils.Utils.createRulerLine(bottomLineCoords, this.configuration);
+            //this.canvas.add(bottomLine);
+
+            var text = _utils.Utils.createTextLabel(this.text, {
+                top: this.center.top,
+                left: this.canvas.getWidth()
+            }, this.configuration);
+            text.set("objectCaching", false);
+
+            text.set("top", this.center.top - text.getScaledHeight() / 2);
+            text.set("left", this.configuration.strokeWidth + 1.5 * this.configuration.segmentSize);
+            //this.canvas.add(text);
+
+            var segmentLinesCoords = this.calculateLeftPoints(x12, y2);
+            var segmentLines = [];
+            for (var i = 0; i < segmentLinesCoords.length; i++) {
+                var segment = _utils.Utils.createRulerLine(segmentLinesCoords[i], this.configuration);
+                segmentLines.push(segment);
+            }
+
+            this.group = new fabric.Group([line, topLine, bottomLine, text].concat(segmentLines), {
+                selectable: false,
+                objectCaching: false,
+                perPixelTargetFind: true,
+                shadow: this.configuration.figureShadow
+            });
+
+            this.canvas.add(this.group);
+            this.canvas.renderAll();
+        }
+    }, {
+        key: "calculateLeftPoints",
+        value: function calculateLeftPoints(x12, y2) {
+            var step = this.configuration.pixels / this.configuration.split;
+            var x1 = x12 + this.configuration.segmentSize / 2;
+
+            var linesCoords = [];
+
+            for (var i = 1; i < this.configuration.split; i++) {
+                var y1 = y2 + i * step;
+                linesCoords.push([x12, y1, x1, y1]);
+            }
+
+            return linesCoords;
+        }
+    }]);
+
+    return Ruler;
+}();
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1102,11 +1539,15 @@ var _angle = __webpack_require__(2);
 
 var _freeAngle = __webpack_require__(4);
 
-var _rect = __webpack_require__(6);
+var _rect = __webpack_require__(7);
 
 var _drawer = __webpack_require__(3);
 
 var _utils = __webpack_require__(0);
+
+var _loader = __webpack_require__(6);
+
+var _ruler = __webpack_require__(8);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1157,61 +1598,6 @@ var privateMethods = {
         _div.style.cursor = "none";
         _div.style.outline = "none";
         return _div;
-    },
-    calculateOriginX: function calculateOriginX(canvas, text, originX, originY) {
-
-        switch (originX) {
-            case "left":
-                text.set({
-                    left: 0
-                });
-                break;
-            case "center":
-                switch (originY) {
-                    case "top":
-                        text.centerH();
-                        text.set({
-                            top: 0
-                        });
-                        break;
-                    case "bottom":
-                        text.centerH();
-                        var bottom = canvas.getHeight() - text.getScaledHeight();
-                        text.set({
-                            top: bottom
-                        });
-                        break;
-                    default:
-                        text.center();
-                        break;
-                }
-
-                break;
-            case "right":
-                var right = canvas.getWidth() - text.getScaledWidth();
-                text.set({
-                    left: right
-                });
-                break;
-        }
-    },
-    calculateOriginY: function calculateOriginY(canvas, text, originX, originY) {
-        switch (originY) {
-            case "top":
-                text.set({
-                    top: 0
-                });
-                break;
-            case "center":
-                text.center();
-                break;
-            case "bottom":
-                var bottom = canvas.getHeight() - text.getScaledHeight();
-                text.set({
-                    top: bottom
-                });
-                break;
-        }
     }
 };
 
@@ -1221,8 +1607,13 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
         this.options = options;
         this.configuration = this.options.configuration;
+        this.loaderConfiguration = this.options.loaderConfiguration;
+        this.rulerConfiguration = this.rulerConfiguration;
         this.figures = new Map();
         this.notes = new Map();
+        this.showSpinnerOnImageLoad = options.showSpinnerOnImageLoad;
+
+        this.offCanvas = false;
 
         this._currentAction = this.options.action;
         this.options.container.style.backgroundColor = this.configuration.backgroundColor;
@@ -1230,6 +1621,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         var canvasImageId = privateMethods.generateCanvasIds("canvas_image");
         var canvasNotesId = privateMethods.generateCanvasIds("canvas_notes");
         var canvasDrawId = privateMethods.generateCanvasIds("canvas_draw");
+        var canvasLoaderId = privateMethods.generateCanvasIds("canvas_loader");
 
         var htmlCanvasImage = privateMethods.createCanvas({
             canvasId: canvasImageId
@@ -1239,89 +1631,154 @@ var FabricJsApp = exports.FabricJsApp = function () {
             zindex: 1
         });
 
+        var htmlCanvasLoader = privateMethods.createCanvas({
+            canvasId: canvasLoaderId,
+            zindex: 2
+        });
+
         //ponerlo en un div absolute con tamaño igual que la imagen
         this._div = privateMethods.containerDiv();
         this._divContainer = privateMethods.containerDiv();
         this._divContainer.style.width = "100%";
         this._divContainer.style.height = "100%";
+        this._div.style.zIndex = 4;
 
         var htmlCanvasDraw = privateMethods.createCanvas({
             canvasId: canvasDrawId,
-            zindex: 2,
+            zindex: 3,
             cursor: "pointer"
         });
 
         this._divContainer.appendChild(htmlCanvasImage);
         this._divContainer.appendChild(htmlCanvasNotes);
+        this._divContainer.appendChild(htmlCanvasLoader);
         this._divContainer.appendChild(this._div);
         this._div.appendChild(htmlCanvasDraw);
 
         this.options.container.appendChild(this._divContainer);
 
         this.canvasImage = new fabric.StaticCanvas(canvasImageId, {
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            allowTouchScrolling: true
         });
 
         this.canvasNotes = new fabric.StaticCanvas(canvasNotesId, {
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            allowTouchScrolling: true
+        });
+
+        this.canvasLoader = new fabric.StaticCanvas(canvasLoaderId, {
+            backgroundColor: 'transparent',
+            allowTouchScrolling: true
+        });
+
+        this.loader = new _loader.Loader({
+            canvas: this.canvasLoader,
+            loaderConfiguration: this.loaderConfiguration
         });
 
         this.canvasDraw = new fabric.Canvas(canvasDrawId, {
             selection: false,
-            backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+            allowTouchScrolling: true
         });
 
         var _this = this;
         this.canvasDraw.on("mouse:down", function (o) {
-            _this.isMouseDown = true;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+                _this.isMouseDown = true;
+                _this.rect = _this.canvasDraw.calcViewportBoundaries();
+
+                if (_this.offCanvas) {
+                    _this.offCanvas = false;
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
                 _this.currentDraw.onMouseDown(o, _this.canvasDraw);
             }
         });
 
         this.canvasDraw.on('mouse:move', function (o) {
-            if (!_this.isMouseDown) return;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+
+                var pointer = _this.canvasDraw.getPointer(o.e);
+
+                if (!_this.isMouseDown && !_this.offCanvas) {
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
+
+                if (pointer.x < 0 || pointer.y < 0 || pointer.x > _this.rect.br.x || pointer.y > _this.rect.br.y) {
+                    _this.offCanvas = true;
+                    return;
+                }
+
                 _this.currentDraw.onMouseMove(o, _this.canvasDraw);
             }
         });
 
         this.canvasDraw.on("mouse:up", function (o) {
-            _this.isMouseDown = false;
-
-            if (!_this.loadedImage) {
-                return;
-            }
-
             if (_this.currentDraw) {
+                _this.isMouseDown = false;
+
+                if (_this.offCanvas) {
+                    return;
+                }
+
+                if (!_this.loadedImage) {
+                    return;
+                }
+
                 _this.currentDraw.onMouseUp(o, _this.canvasDraw);
             }
         });
 
-        /*this.canvasDraw.on("mouse:wheel", function (o) {
-            var e = o.e;
-            var delta = 0;
-             if (e.wheelDelta) {
-                if (e.wheelDelta < 0)
-                    delta = 1;
-                else
-                    delta = -1;
-            } else if (e.deltaY < 0)
-                delta = -1;
-            else
-                delta = 1;
-             _this.options.component.onMouseWheel(delta);
-        });*/
+        var processGroup = function processGroup(target, color) {
+
+            var objects = target.getObjects();
+            for (var o in objects) {
+                switch (objects[o].type) {
+                    case "line":
+                        objects[o].set('stroke', color);
+                        break;
+                    case "rect":
+                        objects[o].set('stroke', color);
+                        break;
+                    case "text":
+                        objects[o].set('fill', color);
+                        break;
+                    case "group":
+                        processGroup(objects[o], color);
+                        break;
+                }
+            }
+        };
+
+        this.canvasDraw.on('mouse:over', function (e) {
+            if (_this.configuration.hoverColor && e.target) {
+                var target = e.target;
+                if (target.type === "group") {
+                    processGroup(target, _this.configuration.hoverColor);
+                }
+                _this.canvasDraw.renderAll();
+            }
+        });
+
+        this.canvasDraw.on('mouse:out', function (e) {
+            if (_this.configuration.hoverColor && e.target) {
+                var target = e.target;
+                if (target.type === "group") {
+                    processGroup(target, _this.configuration.fillColor);
+                }
+                _this.canvasDraw.renderAll();
+            }
+        });
 
         var handleScroll = function handleScroll(e) {
             var delta = 0;
@@ -1333,15 +1790,22 @@ var FabricJsApp = exports.FabricJsApp = function () {
             _this.options.component.onMouseWheel(delta);
         };
 
-        var canvasContainer = document.getElementsByClassName("canvas-container")[0];
+        var canvasContainer = document.getElementById(canvasDrawId).parentElement;
         canvasContainer.addEventListener('DOMMouseScroll', handleScroll, false); // For Firefox
         canvasContainer.addEventListener('mousewheel', handleScroll, false);
 
         var wrapper = this.canvasDraw.wrapperEl;
         wrapper.tabIndex = 1000;
 
+        wrapper.childNodes.item(0).style.touchAction = "auto";
+        wrapper.childNodes.item(1).style.touchAction = "auto";
+
+        wrapper.addEventListener('touchmove', function (evt) {
+            evt.preventDefault();
+        });
+
         wrapper.addEventListener("keyup", function (event) {
-            if (event.which === 27) {
+            if (event.which === _this.configuration.cancelDrawKeyCode) {
                 if (_this.currentDraw) {
                     _this.currentDraw.cancelDraw(_this.canvasDraw);
                 }
@@ -1423,16 +1887,26 @@ var FabricJsApp = exports.FabricJsApp = function () {
         value: function draw(figure) {
             switch (figure.figureType) {
                 case "LINE":
-                    _drawer.Drawer.drawLine(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawLine(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "ANGLE":
-                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawAngle(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "FREE_ANGLE":
-                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawFreeAngle(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
                     break;
                 case "RECT":
-                    _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration);
+                    _drawer.Drawer.drawRect(figure, this.canvasDraw, figure.configuration ? figure.configuration : this.configuration);
+                    break;
+                case "RULER":
+                    if (this.ruler && this.ruler.group) {
+                        this.canvasNotes.remove(this.ruler.group);
+                    }
+                    this.ruler = new _ruler.Ruler({
+                        text: figure.text,
+                        rulerConfiguration: figure.configuration ? figure.configuration : this.loaderConfiguration,
+                        canvas: this.canvasNotes
+                    });
                     break;
             }
         }
@@ -1442,6 +1916,11 @@ var FabricJsApp = exports.FabricJsApp = function () {
             if (this.currentDraw) {
                 this.currentDraw.setText(figure.text, this.canvasDraw);
             }
+        }
+    }, {
+        key: 'setShowSpinnerOnImageLoad',
+        value: function setShowSpinnerOnImageLoad(showSpinnerOnImageLoad) {
+            this.showSpinnerOnImageLoad = showSpinnerOnImageLoad;
         }
     }, {
         key: 'setConfiguration',
@@ -1454,11 +1933,22 @@ var FabricJsApp = exports.FabricJsApp = function () {
             }
         }
     }, {
+        key: 'setRulerConfiguration',
+        value: function setRulerConfiguration(rulerConfiguration) {
+            this.rulerConfiguration = rulerConfiguration;
+        }
+    }, {
+        key: 'setLoaderConfiguration',
+        value: function setLoaderConfiguration(loaderConfiguration) {
+            this.loaderConfiguration = loaderConfiguration;
+        }
+    }, {
         key: 'setDimensions',
         value: function setDimensions(dimensions) {
             this.canvasNotes.setDimensions(dimensions);
             this.canvasImage.setDimensions(dimensions);
             this.canvasDraw.setDimensions(dimensions);
+            this.canvasLoader.setDimensions(dimensions);
             this._div.style.width = dimensions.width;
             this._div.style.height = dimensions.height;
         }
@@ -1469,7 +1959,7 @@ var FabricJsApp = exports.FabricJsApp = function () {
         }
     }, {
         key: 'setBackgroundImage',
-        value: function setBackgroundImage(url) {
+        value: function setBackgroundImage(url, afterLoadImage) {
             var _this = this;
             fabric.Image.fromURL(url, function (oImg) {
                 _this.canvasImage.clear();
@@ -1496,6 +1986,8 @@ var FabricJsApp = exports.FabricJsApp = function () {
                 _this.loadedImage.setCoords();
                 _this.canvasImage.renderAll();
 
+                _this.canvasLoader.setWidth(_widthContainer).setHeight(_heightContainer);
+
                 _this.canvasDraw.setWidth(_width).setHeight(_height);
                 _this._div.style.width = _width + "px";
                 _this._div.style.height = _height + "px";
@@ -1510,14 +2002,74 @@ var FabricJsApp = exports.FabricJsApp = function () {
 
                 _this.canvasNotes.setWidth(_widthContainer).setHeight(_heightContainer);
                 _this.canvasNotes.renderAll();
+
+                if (_this.showSpinnerOnImageLoad) {
+                    _this.hideLoader();
+                }
+                if (afterLoadImage) {
+                    afterLoadImage();
+                }
             });
         }
     }, {
         key: 'onLoadImage',
-        value: function onLoadImage(imageUrls) {
-            if (imageUrls.length) {
-                if (imageUrls.length === 1) {
-                    this.setBackgroundImage(imageUrls[0]);
+        value: function onLoadImage(imagesUrl, afterLoadImage) {
+            if (imagesUrl.length) {
+                if (this.showSpinnerOnImageLoad) {
+                    this.showLoader();
+                }
+                if (imagesUrl.length === 1) {
+                    this.setBackgroundImage(imagesUrl[0], afterLoadImage);
+                }
+            }
+        }
+    }, {
+        key: 'executeChainOfCommand',
+        value: function executeChainOfCommand(cc) {
+            var _this = this;
+            if (cc.clearAll) {
+                this.clear();
+            } else {
+                if (cc.clearDraw) {
+                    this.clearDraw();
+                }
+
+                if (cc.clearImage) {
+                    this.clearImage();
+                }
+
+                if (cc.clearNotes) {
+                    this.clearNotes();
+                }
+            }
+
+            if (cc.figureConfiguration) {
+                this.setConfiguration(cc.figureConfiguration);
+            }
+
+            if (cc.loaderConfiguration) {
+                this.setLoaderConfiguration(cc.loaderConfiguration);
+            }
+
+            if (cc.notes) {
+                for (var i = 0; i < cc.notes.length; i++) {
+                    this.addNotes(cc.notes[i].key, cc.notes[i].text, cc.notes[i].notesConfiguration);
+                }
+            }
+
+            if (cc.imagesUrl) {
+                this.onLoadImage(cc.imagesUrl, function () {
+                    if (cc.figures) {
+                        for (var _i = 0; _i < cc.figures.length; _i++) {
+                            this.draw(cc.figures[_i]);
+                        }
+                    }
+                }.bind(this));
+            } else {
+                if (cc.figures) {
+                    for (var _i2 = 0; _i2 < cc.figures.length; _i2++) {
+                        this.draw(cc.figures[_i2]);
+                    }
                 }
             }
         }
@@ -1525,11 +2077,17 @@ var FabricJsApp = exports.FabricJsApp = function () {
         key: 'addNotes',
         value: function addNotes(key, note, configuration) {
             var text = _utils.Utils.createTextNotes(note, configuration);
+            var oldNote = this.notes.get(key);
+
+            if (oldNote) {
+                this.canvasNotes.remove(oldNote);
+            }
+
             this.canvasNotes.add(text);
             this.notes.set(key, text);
 
-            privateMethods.calculateOriginY(this.canvasNotes, text, configuration.originX, configuration.originY);
-            privateMethods.calculateOriginX(this.canvasNotes, text, configuration.originX, configuration.originY);
+            _utils.Utils.calculateOriginY(this.canvasNotes, text, configuration.originX, configuration.originY);
+            _utils.Utils.calculateOriginX(this.canvasNotes, text, configuration.originX, configuration.originY);
 
             text.setCoords();
 
@@ -1635,6 +2193,16 @@ var FabricJsApp = exports.FabricJsApp = function () {
             this.canvasDraw.moveCursor = cursor;
             this.canvasDraw.rotationCursor = cursor;
             this.canvasDraw.freeDrawingCursor = cursor;
+        }
+    }, {
+        key: 'showLoader',
+        value: function showLoader() {
+            this.loader.showLoader();
+        }
+    }, {
+        key: 'hideLoader',
+        value: function hideLoader() {
+            this.loader.hideLoader();
         }
     }]);
 
