@@ -34,6 +34,8 @@ import lombok.Setter;
 
 public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
+	private static final long serialVersionUID = 8853270015399380693L;
+
 	private VerticalLayout content;
 
 	private TextField fieldName;
@@ -130,6 +132,11 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnQuery.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		//btnQuery.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnQuery.addClickListener(new ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4888989195136715235L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				onQuery();
@@ -143,6 +150,11 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
 		//btnOpen.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnOpen.addClickListener(new ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -585302886377865803L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				close();
@@ -218,6 +230,11 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		tableEstudies.addItemClickListener( new ItemClickListener()
 		{
 			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2433489309411823424L;
+
 			@Override
 			public void itemClick( ItemClickEvent event )
 			{

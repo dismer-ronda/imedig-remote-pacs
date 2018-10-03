@@ -2,6 +2,8 @@ package es.pryades.imedig.cloud.core.reports;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
+
 import lombok.Data;
 
 import org.apache.velocity.VelocityContext;
@@ -18,8 +20,11 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
  */
 
 @Data
-public abstract class ExportBase 
+public abstract class ExportBase implements Serializable 
 {
+	private static final long serialVersionUID = -1258192200831149270L;
+
+	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( ExportBase.class );
 	
 	private static InformesPlantillasManager plantillasManager = null;

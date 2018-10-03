@@ -17,9 +17,11 @@ import org.apache.commons.lang.StringEscapeUtils;
 @Data
 public class InformeImagen extends ImedigDto 
 {
-	Integer informe;
-	String url;
-	String icon;
+	private static final long serialVersionUID = -3242856491950080582L;
+	
+	private Integer informe;
+	private String url;
+	private String icon;
 	
 	public String getEscapedUrl() throws UnsupportedEncodingException
 	{

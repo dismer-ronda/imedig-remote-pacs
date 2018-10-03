@@ -1,5 +1,6 @@
 package es.pryades.imedig.viewer.components.query;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,11 +14,11 @@ import es.pryades.imedig.wado.query.QueryManager;
 import lombok.Getter;
 import lombok.Setter;
 
-public class QueryTableModel
+public class QueryTableModel implements Serializable
 {
+	private static final long serialVersionUID = -1958881715934013874L;
+
 	private static final Logger LOG = LoggerFactory.getLogger( QueryTableModel.class );
-	
-	private static final long serialVersionUID = 1L;
 	
 	private List<Study> studies;
 	

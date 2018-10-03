@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.dto.viewer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import lombok.Data;
  */
  
 @Data 
-public class Series 
+public class Series implements Serializable 
 {
+	private static final long serialVersionUID = -3278877518031756517L;
+	
 	private String StudyInstanceUID;
 	private String SeriesInstanceUID; 
 	private String Modality;

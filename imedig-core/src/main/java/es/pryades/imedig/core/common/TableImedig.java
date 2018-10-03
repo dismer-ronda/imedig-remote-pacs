@@ -1,5 +1,6 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,9 +27,10 @@ import lombok.Getter;
  * @author Dismer Ronda
  *
  */
-@SuppressWarnings({ "rawtypes", "serial" })
-public class TableImedig extends VerticalLayout
+@SuppressWarnings({ "rawtypes" })
+public class TableImedig extends VerticalLayout implements Serializable
 {
+	private static final long serialVersionUID = -5683102670824724530L;
 
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//

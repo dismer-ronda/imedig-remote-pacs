@@ -26,7 +26,9 @@ import java.util.List;
  */
 public class Angle extends Figure implements Serializable {
 
-    public Angle(List<Point> points) {
+	private static final long serialVersionUID = -3749001276095133222L;
+
+	public Angle(List<Point> points) {
         super(FigureType.ANGLE, points);
     }
 

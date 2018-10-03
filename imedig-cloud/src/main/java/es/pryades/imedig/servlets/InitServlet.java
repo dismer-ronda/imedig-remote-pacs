@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 
 public class InitServlet extends HttpServlet
 {
-    private static final Logger LOG = Logger.getLogger( InitServlet.class );
-
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -7500581934341077564L;
+	
+	private static final Logger LOG = Logger.getLogger( InitServlet.class );
 
 	@Override
 	public void init(ServletConfig config) throws ServletException 

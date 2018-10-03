@@ -1,5 +1,7 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -7,8 +9,10 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class ExcelTableUtils 
+public class ExcelTableUtils implements Serializable 
 {
+	private static final long serialVersionUID = -7291752911700823148L;
+	
 	public static final String stringFormat = "";
 	public static final String moneyFormat = "0.00 [$€-C0A];[RED]-0.00 [$€-C0A]";
 

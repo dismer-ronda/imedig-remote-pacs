@@ -1,5 +1,6 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,10 @@ import es.pryades.imedig.cloud.dto.Query;
 */
 @SuppressWarnings( {"unchecked","rawtypes", "unused"} )
 @Data
-public abstract class ImedigManagerImpl implements ImedigManager
+public abstract class ImedigManagerImpl implements ImedigManager, Serializable
 {
+	private static final long serialVersionUID = 8326330871587642443L;
+	
 	Class mapperClass;
 	Class dtoClass;
 	Logger logger;

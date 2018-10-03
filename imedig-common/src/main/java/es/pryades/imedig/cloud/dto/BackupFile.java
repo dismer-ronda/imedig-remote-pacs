@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -11,9 +13,11 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BackupFile
+public class BackupFile implements Serializable
 {
-    private String fileName;
+	private static final long serialVersionUID = 8631675119774120013L;
+	
+	private String fileName;
     private Long size;
     private Long modified;
 }

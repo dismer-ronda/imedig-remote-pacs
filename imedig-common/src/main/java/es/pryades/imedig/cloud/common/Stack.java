@@ -1,12 +1,15 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class Stack
+public class Stack implements Serializable 
 {
-	List stack;
+	private static final long serialVersionUID = -3022494350874794130L;
+	
+	private List stack;
 
 	public Stack()
 	{

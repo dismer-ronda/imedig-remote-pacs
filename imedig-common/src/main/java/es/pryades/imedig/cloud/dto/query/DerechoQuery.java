@@ -13,6 +13,8 @@ import es.pryades.imedig.cloud.dto.ImedigDto;
 @Data 
 public class DerechoQuery extends ImedigDto
 {
+	private static final long serialVersionUID = -1449932850626811661L;
+	
 	Integer autorizacion;
     String derecho;
 }

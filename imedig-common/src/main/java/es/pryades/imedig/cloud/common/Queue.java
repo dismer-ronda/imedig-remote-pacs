@@ -1,12 +1,15 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class Queue
+public class Queue implements Serializable 
 {
-	List queue;
+	private static final long serialVersionUID = -7454014601584118844L;
+	
+	private List queue;
 
 	public Queue()
 	{

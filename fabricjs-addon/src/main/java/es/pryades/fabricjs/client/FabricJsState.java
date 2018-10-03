@@ -4,7 +4,9 @@ import com.vaadin.shared.ui.JavaScriptComponentState;
 
 public class FabricJsState extends JavaScriptComponentState {
 
-    // State can have both public variable and bean properties
+	private static final long serialVersionUID = 5586383559984342119L;
+	
+	// State can have both public variable and bean properties
     public String figureConfiguration = "{}";
     public String notesConfiguration = "{}";
     public String loaderConfiguration = "{}";

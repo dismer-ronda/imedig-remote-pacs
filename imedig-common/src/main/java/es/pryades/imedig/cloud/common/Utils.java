@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -52,6 +53,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import es.pryades.imedig.cloud.dto.Usuario;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -62,8 +64,10 @@ import org.apache.log4j.Logger;
 
 @SuppressWarnings(
 { "unchecked", "rawtypes" })
-public class Utils
+public class Utils implements Serializable
 {
+	private static final long serialVersionUID = 98385869705172646L;
+
 	private static final Logger LOG = Logger.getLogger( Utils.class );
 
 	public static final long ONE_MB = 1024 * 1024;

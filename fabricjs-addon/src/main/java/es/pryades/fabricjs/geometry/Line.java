@@ -18,6 +18,7 @@ package es.pryades.fabricjs.geometry;
 
 import es.pryades.fabricjs.data.Point;
 import es.pryades.fabricjs.enums.FigureType;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -27,7 +28,9 @@ import java.util.List;
  */
 public class Line extends Figure implements Serializable{
 
-    public Line(List<Point> points) {
+	private static final long serialVersionUID = -2943342223515659395L;
+
+	public Line(List<Point> points) {
         super(FigureType.LINE, points);        
     }
 

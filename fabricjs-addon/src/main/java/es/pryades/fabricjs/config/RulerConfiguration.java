@@ -28,7 +28,9 @@ import java.util.List;
  */
 public class RulerConfiguration extends FigureConfiguration {
 
-    private double pixels;
+	private static final long serialVersionUID = 5796343191530836819L;
+	
+	private double pixels;
     private Integer space;
     private Integer segmentSize;
     private Integer split;

@@ -26,7 +26,9 @@ import es.pryades.fabricjs.enums.FontWeight;
  */
 public class FontConfiguration implements Serializable {
 
-    private String textBackgroundColor;
+	private static final long serialVersionUID = 816568389315579419L;
+	
+	private String textBackgroundColor;
     private String textFillColor;
     private String textFontFamily;
     private double textFontSize;

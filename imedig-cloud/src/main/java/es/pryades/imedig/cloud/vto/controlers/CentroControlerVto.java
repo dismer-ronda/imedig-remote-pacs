@@ -19,6 +19,8 @@ import es.pryades.imedig.core.common.VtoFieldRef;
 @SuppressWarnings("rawtypes")
 public class CentroControlerVto extends GenericControlerVto
 {
+	private static final long serialVersionUID = 3295415699699647927L;
+	
 	private static final String[] visibleCols =
 	{ "id", "nombre", "descripcion" };
 

@@ -23,6 +23,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Centro extends ImedigDto 
 {
+	private static final long serialVersionUID = -43846107733811466L;
+	
 	Integer orden;
 	String descripcion;
 	String direccion;

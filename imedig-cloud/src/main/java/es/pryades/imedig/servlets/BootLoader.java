@@ -1,5 +1,7 @@
 package es.pryades.imedig.servlets;
 
+import java.io.Serializable;
+
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.ImedigException;
@@ -10,9 +12,11 @@ import es.pryades.imedig.wado.query.QueryManager;
 import es.pryades.imedig.wado.resources.CacheManager;
 import es.pryades.imedig.wado.retrieve.RetrieveManager;
 
-public class BootLoader extends Thread
+public class BootLoader extends Thread implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( BootLoader.class );
+	private static final long serialVersionUID = 9174562826193056615L;
+
+	private static final Logger LOG = Logger.getLogger( BootLoader.class );
 
     static BootLoader instance;
     

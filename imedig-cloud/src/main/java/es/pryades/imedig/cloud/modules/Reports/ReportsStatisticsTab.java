@@ -62,9 +62,11 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings({"serial","unchecked"})
+@SuppressWarnings({"unchecked"})
 public class ReportsStatisticsTab extends FilteredContent implements ModalParent
 {
+	private static final long serialVersionUID = -4719685159789784309L;
+
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( ReportsStatisticsTab.class );
 

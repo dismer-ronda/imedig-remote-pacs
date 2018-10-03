@@ -1,11 +1,11 @@
 package es.pryades.imedig.cloud.core.dal.ibatis;
 
+import java.io.Serializable;
 import java.io.StringReader;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.ImedigException;
@@ -16,9 +16,11 @@ import es.pryades.imedig.cloud.common.ImedigException;
 * @since 1.0.0.0
 */
 
-public class ClientDalManager  
+public class ClientDalManager implements Serializable 
 {
-    private static final Logger LOG = Logger.getLogger( ClientDalManager.class );
+	private static final long serialVersionUID = -4683969245615613143L;
+
+	private static final Logger LOG = Logger.getLogger( ClientDalManager.class );
 
     static ClientDalManager instance = null;
 

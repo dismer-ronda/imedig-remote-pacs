@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.services;
 
+import java.io.Serializable;
+
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.Settings;
@@ -7,9 +9,11 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.ibatis.ClientDalManager;
 import es.pryades.imedig.pacs.dal.ibatis.PacsDalManager;
 
-public class BootLoader extends Thread
+public class BootLoader extends Thread implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( BootLoader.class );
+	private static final long serialVersionUID = -4178807468072266471L;
+
+	private static final Logger LOG = Logger.getLogger( BootLoader.class );
 
     static BootLoader instance;
     

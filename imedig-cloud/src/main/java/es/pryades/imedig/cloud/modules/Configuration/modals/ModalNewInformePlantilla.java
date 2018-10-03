@@ -15,9 +15,10 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
 
-@SuppressWarnings("serial")
 public class ModalNewInformePlantilla extends ModalWindowsCRUD 
 {
+	private static final long serialVersionUID = -6952452326962959375L;
+
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( ModalNewInformePlantilla.class );
 

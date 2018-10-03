@@ -25,7 +25,9 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class ReportsResource extends ImedigResource 
 {
-    private static final Logger LOG = Logger.getLogger( ReportsResource.class );
+	private static final long serialVersionUID = -4008856641247465659L;
+	
+	private static final Logger LOG = Logger.getLogger( ReportsResource.class );
 
 	public ReportsResource() 
 	{

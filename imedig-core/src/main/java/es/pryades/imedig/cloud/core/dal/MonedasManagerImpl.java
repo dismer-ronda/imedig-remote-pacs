@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class MonedasManagerImpl extends ImedigManagerImpl implements MonedasManager
 {
-    private static final Logger LOG = Logger.getLogger( MonedasManagerImpl.class );
+	private static final long serialVersionUID = -1454410029256433564L;
+	
+	private static final Logger LOG = Logger.getLogger( MonedasManagerImpl.class );
 
 	public static ImedigManager build()
 	{

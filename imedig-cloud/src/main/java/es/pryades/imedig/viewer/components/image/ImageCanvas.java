@@ -64,6 +64,8 @@ import es.pryades.imedig.wado.retrieve.RetrieveManager;
 import lombok.Getter;
 
 public class ImageCanvas extends CssLayout {
+	private static final long serialVersionUID = 1646462855404317204L;
+
 	private static final Logger LOG = Logger.getLogger(ImageCanvas.class);
 
 	private User user;
@@ -176,6 +178,11 @@ public class ImageCanvas extends CssLayout {
 		btnFrameFirst.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		btnFrameFirst.setDescription( context.getString( "ViewerWnd.first.image.serie" ) );
 		btnFrameFirst.addClickListener( new Button.ClickListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7515427205675270359L;
+
 			@Override
 			public void buttonClick( ClickEvent event ){
 				btnFrameFirst.setEnabled( false );
@@ -193,6 +200,11 @@ public class ImageCanvas extends CssLayout {
 		btnFramePrior.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		btnFramePrior.setDescription( context.getString( "ViewerWnd.prior.image.serie" ) );
 		btnFramePrior.addClickListener( new Button.ClickListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -8368839172588393747L;
+
 			@Override
 			public void buttonClick( ClickEvent event ){
 				openPreviousImage();
@@ -212,6 +224,11 @@ public class ImageCanvas extends CssLayout {
 		btnFrameNext.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		btnFrameNext.setDescription( context.getString( "ViewerWnd.next.image.serie" ) );
 		btnFrameNext.addClickListener( new Button.ClickListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -951616351416582941L;
+
 			@Override
 			public void buttonClick( ClickEvent event ){
 				openNextImage();
@@ -231,6 +248,11 @@ public class ImageCanvas extends CssLayout {
 		btnFrameLast.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		btnFrameLast.setDescription( context.getString( "ViewerWnd.last.image.serie" ) );
 		btnFrameLast.addClickListener( new Button.ClickListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -211457028026544883L;
+
 			@Override
 			public void buttonClick( ClickEvent event ){
 				btnFrameFirst.setEnabled( true );
@@ -260,6 +282,11 @@ public class ImageCanvas extends CssLayout {
 		
 		//Inicializar listeners
 		canvas.setResizeListener(new ResizeListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2705147359658817842L;
+
 			@Override
 			public void onResize(double width, double height) {
 				resizeAction();
@@ -299,6 +326,11 @@ public class ImageCanvas extends CssLayout {
 		});
 		
 		canvas.setMouseWheelListener( new MouseWheelListener(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 828514638200548092L;
+
 			@Override
 			public void onMouseWheel( double weelDelta ){
 				if (imageData == null) return;

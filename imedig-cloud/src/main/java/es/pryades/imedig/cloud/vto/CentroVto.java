@@ -18,6 +18,8 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper=false)
 public class CentroVto extends GenericVto
 {
+	private static final long serialVersionUID = -505006810018139831L;
+	
 	private String  nombre;
 	private Integer orden;
 	private String  descripcion;

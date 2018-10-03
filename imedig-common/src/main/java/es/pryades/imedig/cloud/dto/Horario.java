@@ -13,5 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Horario extends ImedigDto
 {
-    String nombre; 
+	private static final long serialVersionUID = -8934916622145518787L;
+	
+	String nombre; 
 }

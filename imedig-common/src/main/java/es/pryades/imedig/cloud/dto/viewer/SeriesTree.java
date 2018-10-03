@@ -1,9 +1,9 @@
 package es.pryades.imedig.cloud.dto.viewer;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
-
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 
@@ -15,8 +15,10 @@ import es.pryades.imedig.cloud.dto.viewer.Image;
  */
  
 @Data 
-public class SeriesTree 
+public class SeriesTree implements Serializable 
 {
+	private static final long serialVersionUID = 7597628042917812899L;
+	
 	private Series SeriesData;
 	private List<Image> ImageList;
 

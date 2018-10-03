@@ -13,7 +13,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Moneda extends ImedigDto
 {
-    String nombre; 
+	private static final long serialVersionUID = -250950910417065536L;
+	
+	String nombre; 
     String codigo;
     String simbolo;
 }

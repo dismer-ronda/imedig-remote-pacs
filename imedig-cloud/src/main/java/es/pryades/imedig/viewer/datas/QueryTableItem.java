@@ -1,5 +1,6 @@
 package es.pryades.imedig.viewer.datas;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -14,7 +15,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QueryTableItem {
+public class QueryTableItem implements Serializable {
+
+	private static final long serialVersionUID = 2449295980450125857L;
+	
 	private CheckBox selected;
 	private String studyDate;
 	private String modality;

@@ -26,7 +26,9 @@ import java.util.List;
  */
 public class FreeAngle extends Figure implements Serializable {
 
-    public FreeAngle(List<Point> points) {
+	private static final long serialVersionUID = 1434827926744016166L;
+
+	public FreeAngle(List<Point> points) {
         super(FigureType.FREE_ANGLE, points);
     }
 

@@ -22,11 +22,12 @@ import es.pryades.imedig.cloud.modules.Administration.tabs.AdminContent;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 @Setter
 @Getter
 public class ImedigTabbedContainerAdmin implements TabSheet.SelectedTabChangeListener
 {
+	private static final long serialVersionUID = 1911437015531766225L;
+
 	private static final Logger LOG = Logger.getLogger( ImedigTabbedContainerAdmin.class );
 	
 	private ImedigContext context;

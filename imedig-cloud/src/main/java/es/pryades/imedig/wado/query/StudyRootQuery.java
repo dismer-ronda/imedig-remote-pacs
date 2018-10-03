@@ -1,7 +1,7 @@
 package es.pryades.imedig.wado.query;
 
 import java.io.IOException;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,6 @@ import org.dcm4che2.data.Tag;
 import org.dcm4che2.data.UID;
 import org.dcm4che2.data.UIDDictionary;
 import org.dcm4che2.data.VR;
-
 import org.dcm4che2.net.Association;
 import org.dcm4che2.net.CommandUtils;
 import org.dcm4che2.net.ConfigurationException;
@@ -25,7 +24,6 @@ import org.dcm4che2.net.NetworkConnection;
 import org.dcm4che2.net.NewThreadExecutor;
 import org.dcm4che2.net.TransferCapability;
 import org.dcm4che2.net.UserIdentity;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -34,9 +32,11 @@ import org.apache.log4j.Logger;
  * @since Jul, 2010
  */
 
-public class StudyRootQuery 
+public class StudyRootQuery implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( StudyRootQuery.class );
+	private static final long serialVersionUID = 9173399551550783507L;
+
+	private static final Logger LOG = Logger.getLogger( StudyRootQuery.class );
 
     private static final String[] NATIVE_LE_TS = 
     {

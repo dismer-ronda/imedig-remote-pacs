@@ -19,6 +19,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DetalleInforme extends Informe
 {
+	private static final long serialVersionUID = -756553748795190490L;
+	
 	String centro_nombre;
 	String centro_direccion;
 	String centro_contactos;

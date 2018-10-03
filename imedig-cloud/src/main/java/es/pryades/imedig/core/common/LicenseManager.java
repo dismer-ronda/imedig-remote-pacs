@@ -6,6 +6,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -28,9 +29,11 @@ import es.pryades.imedig.cloud.dto.viewer.LicenseDetails;
  * @since Jul, 2010
  */
 
-public class LicenseManager
+public class LicenseManager implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( LicenseManager.class );
+	private static final long serialVersionUID = -4381813041140479179L;
+
+	private static final Logger LOG = Logger.getLogger( LicenseManager.class );
 	
 	public static final boolean LICENSE_ENABLED = false;
 

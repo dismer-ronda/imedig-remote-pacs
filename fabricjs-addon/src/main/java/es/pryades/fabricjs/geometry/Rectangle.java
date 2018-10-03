@@ -25,7 +25,10 @@ import java.util.List;
  * @author geanny
  */
 public class Rectangle extends Figure{
-    public Rectangle(List<Point> points) {
+
+	private static final long serialVersionUID = -4606580808416542755L;
+
+	public Rectangle(List<Point> points) {
         super(FigureType.RECT, points);        
     }
 

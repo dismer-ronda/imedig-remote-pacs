@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.services;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,9 +22,11 @@ import es.pryades.imedig.cloud.common.Utils;
  * @since Jul, 2010
  */
 
-public class RemoveStudiesProcessor extends TimerTask
+public class RemoveStudiesProcessor extends TimerTask implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( RemoveStudiesProcessor.class );
+	private static final long serialVersionUID = -2941701131908630979L;
+
+	private static final Logger LOG = Logger.getLogger( RemoveStudiesProcessor.class );
     
     private static RemoveStudiesProcessor processor = null;
 

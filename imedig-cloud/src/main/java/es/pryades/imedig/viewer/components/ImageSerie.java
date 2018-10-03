@@ -28,6 +28,8 @@ import es.pryades.imedig.viewer.datas.ImageData;
 
 public class ImageSerie extends CssLayout{
 
+	private static final long serialVersionUID = -9051282826500875115L;
+
 	private static final Logger LOG = LoggerFactory.getLogger( ImageSerie.class );
 
 	private Button btnFooter;
@@ -102,6 +104,11 @@ public class ImageSerie extends CssLayout{
 
 		btnFooter.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 267868740813696905L;
+
 			@Override
 			public void buttonClick( com.vaadin.ui.Button.ClickEvent event )
 			{
@@ -147,6 +154,11 @@ public class ImageSerie extends CssLayout{
 
 		img.addClickListener( new ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -9069741717469561802L;
+
 			@Override
 			public void click( ClickEvent event )
 			{

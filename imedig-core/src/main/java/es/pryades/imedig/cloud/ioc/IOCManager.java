@@ -1,6 +1,8 @@
 package es.pryades.imedig.cloud.ioc;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import org.apache.tapestry5.ioc.Registry;
 import org.apache.tapestry5.ioc.RegistryBuilder;
 
@@ -11,8 +13,10 @@ import org.apache.tapestry5.ioc.RegistryBuilder;
 */
 
 @SuppressWarnings( {"unchecked","rawtypes"}) 
-public class IOCManager  
+public class IOCManager implements Serializable  
 {
+	private static final long serialVersionUID = -4942667550568739689L;
+
 	static IOCManager instance = null;
 	
 	private RegistryBuilder builder;

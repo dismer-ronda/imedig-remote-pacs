@@ -15,7 +15,6 @@
  */
 package es.pryades.fabricjs.data;
 
-import es.pryades.fabricjs.enums.CanvasAction;
 import java.io.Serializable;
 
 /**
@@ -24,7 +23,9 @@ import java.io.Serializable;
  */
 public class Command implements Serializable {
 
-    private String canvasAction;
+	private static final long serialVersionUID = -6148502873284399177L;
+	
+	private String canvasAction;
     private String payload;
 
     public Command(String canvasAction, String payload) {

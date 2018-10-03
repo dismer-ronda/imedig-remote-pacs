@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -9,9 +11,11 @@ import lombok.Data;
 */
 
 @Data
-public class ImedigStatus
+public class ImedigStatus implements Serializable
 {
-    private Integer numberStudies; 
+ 	private static final long serialVersionUID = -40688294152828212L;
+ 	
+	private Integer numberStudies; 
     private Integer numberReports;
     private Integer numberImages;
     

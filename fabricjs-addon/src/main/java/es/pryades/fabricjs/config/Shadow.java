@@ -15,13 +15,17 @@
  */
 package es.pryades.fabricjs.config;
 
+import java.io.Serializable;
+
 /**
  *
  * @author geanny
  */
-public class Shadow {
+public class Shadow implements Serializable {
 
-    private Integer blur;
+	private static final long serialVersionUID = 6289818299755535546L;
+	
+	private Integer blur;
     private String color;
     private Integer offsetX;
     private Integer offsetY;

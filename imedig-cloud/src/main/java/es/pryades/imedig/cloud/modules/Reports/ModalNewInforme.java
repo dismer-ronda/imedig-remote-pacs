@@ -49,10 +49,11 @@ import lombok.Setter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 @StyleSheet("vaadin://ckeditor/ckeditorimedig.css")
 public final class ModalNewInforme extends ModalWindowsCRUD
 {
+	private static final long serialVersionUID = 5693714653200382499L;
+
 	private static final Logger LOG = Logger.getLogger( ModalNewInforme.class );
 
 	protected DetalleInforme newInforme;
@@ -420,6 +421,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 				( 
 					new Window.CloseListener() 
 					{
+						private static final long serialVersionUID = 5917860775724425802L;
+
 						@Override
 					    public void windowClose( CloseEvent e ) 
 					    {
@@ -459,6 +462,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		btn.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 4665290613093636125L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				showImageDlg( (InformeImagen)event.getButton().getData() );
@@ -494,6 +499,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 	{
 		bttnIcd10cm.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 4649761757677966429L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				onIcd10cm();

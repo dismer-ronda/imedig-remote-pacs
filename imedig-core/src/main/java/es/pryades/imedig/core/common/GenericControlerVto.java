@@ -1,9 +1,9 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import lombok.Getter;
-import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 
 /**
@@ -13,8 +13,10 @@ import es.pryades.imedig.cloud.core.dto.ImedigContext;
  *
  */
 @SuppressWarnings("rawtypes")
-public abstract class GenericControlerVto implements VtoControler
+public abstract class GenericControlerVto implements VtoControler, Serializable
 {	
+	private static final long serialVersionUID = -4772066040180968742L;
+
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//
 	//###########################################################################################//

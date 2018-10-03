@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -23,8 +24,10 @@ import org.apache.commons.codec.binary.Base64;
 * @since 1.0.0.0
 */
 
-public class Cryptor
+public class Cryptor  implements Serializable
 {
+	private static final long serialVersionUID = 4761359473199525885L;
+	
 	private static final String algorithm = "DESede";
 
 	

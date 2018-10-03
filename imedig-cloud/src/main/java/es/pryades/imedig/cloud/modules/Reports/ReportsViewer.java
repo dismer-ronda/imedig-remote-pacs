@@ -59,9 +59,11 @@ import lombok.Setter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings({"serial","unchecked"})
+@SuppressWarnings({"unchecked"})
 public class ReportsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener
 {
+	private static final long serialVersionUID = -3588907063210926036L;
+
 	private static final Logger LOG = Logger.getLogger( ReportsViewer.class );
 
 	@Setter @Getter private Integer fecha;
@@ -256,6 +258,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		btnView.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5008648404760810318L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				DetalleInforme informe = (DetalleInforme)getSelectedRow();
@@ -349,6 +356,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 			( 
 				new Window.CloseListener() 
 				{
+					/**
+					 * 
+					 */
+					private static final long serialVersionUID = 5694973426557182244L;
+
 					@Override
 				    public void windowClose( CloseEvent e ) 
 				    {
@@ -419,6 +431,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		btnApprove.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7204444384289336421L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				final DetalleInforme informe = (DetalleInforme)getSelectedRow();
@@ -429,6 +446,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 				( 
 					new Window.CloseListener() 
 					{
+						/**
+						 * 
+						 */
+						private static final long serialVersionUID = -6381257314235637218L;
+
 						@Override
 					    public void windowClose( CloseEvent e ) 
 					    {
@@ -471,6 +493,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		btnFinish.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6691221645866218646L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				try

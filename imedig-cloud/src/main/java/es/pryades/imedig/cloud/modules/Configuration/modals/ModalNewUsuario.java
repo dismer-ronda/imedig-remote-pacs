@@ -39,9 +39,11 @@ import es.pryades.imedig.core.common.ModalParent;
  */
 
 @SuppressWarnings(
-{ "serial", "rawtypes" })
+{ "rawtypes" })
 public class ModalNewUsuario extends ModalWindowsCRUD
 {
+	private static final long serialVersionUID = -7353739499761869546L;
+
 	private static final Logger LOG = Logger.getLogger( ModalNewUsuario.class );
 
 	protected Usuario newUsuario;

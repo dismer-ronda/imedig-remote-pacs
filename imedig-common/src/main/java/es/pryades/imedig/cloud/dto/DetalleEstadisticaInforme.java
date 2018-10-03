@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=true)
 public class DetalleEstadisticaInforme extends ImedigDto 
 {
+	private static final long serialVersionUID = 750574224412079498L;
+	
 	Integer fecha;
 	Integer centro;
 	String centro_nombre;

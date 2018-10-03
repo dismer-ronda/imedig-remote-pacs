@@ -1,13 +1,17 @@
 package es.pryades.imedig.cloud.services;
 
+import java.io.Serializable;
+
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 import org.apache.log4j.Logger;
 
 
-public class ServicesServlet extends Application
+public class ServicesServlet extends Application implements Serializable
 {
+	private static final long serialVersionUID = -1534290900556902982L;
+	
 	private static final Logger LOG = Logger.getLogger( ServicesServlet.class );
 	
     public ServicesServlet() 

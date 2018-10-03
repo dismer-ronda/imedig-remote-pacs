@@ -37,9 +37,10 @@ import lombok.Getter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public final class ShowExternalViewerDlg extends Window implements ModalParent
 {
+	private static final long serialVersionUID = -3831929311908868860L;
+
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( ShowExternalViewerDlg.class );
 	
@@ -175,6 +176,11 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		if ( bttnRequest != null )
 			bttnRequest.addClickListener( new Button.ClickListener()
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = -8040619369403188214L;
+
 				public void buttonClick( ClickEvent event )
 				{
 					doRequest();
@@ -186,6 +192,11 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		if ( bttnReport != null )
 			bttnReport.addClickListener( new Button.ClickListener()
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1006493553258693136L;
+
 				public void buttonClick( ClickEvent event )
 				{
 					doReport();
@@ -197,6 +208,11 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 	{
 		bttnClose.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 9148014978517101317L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				getUI().removeWindow( ShowExternalViewerDlg.this );

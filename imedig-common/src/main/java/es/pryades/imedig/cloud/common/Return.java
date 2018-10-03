@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -8,9 +10,11 @@ import lombok.Data;
  * @since Jul, 2010
  */
 @Data 
-public class Return 
+public class Return implements Serializable 
 {
-    private int Code;
+	private static final long serialVersionUID = 6888024927362522271L;
+	
+	private int Code;
     private String Desc;
 	
 	public Return()

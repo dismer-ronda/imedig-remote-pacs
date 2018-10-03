@@ -15,13 +15,12 @@
  */
 package es.pryades.fabricjs.config;
 
+import java.io.Serializable;
+
+import es.pryades.fabricjs.enums.FigureAlignment;
 import es.pryades.fabricjs.enums.FontStyle;
 import es.pryades.fabricjs.enums.FontWeight;
-import es.pryades.fabricjs.enums.FigureAlignment;
-import es.pryades.fabricjs.enums.StrokeLineCap;
 import es.pryades.fabricjs.enums.TextAlign;
-import java.io.Serializable;
-import java.util.List;
 
 /**
  *
@@ -29,7 +28,9 @@ import java.util.List;
  */
 public class NotesConfiguration extends FontConfiguration implements Serializable {
 
-    private double textLeft;
+	private static final long serialVersionUID = -2005032715452624529L;
+	
+	private double textLeft;
     private double textTop;
     private String originX;
     private String originY;

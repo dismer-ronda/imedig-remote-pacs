@@ -28,7 +28,9 @@ import java.util.Objects;
  */
 public class Figure implements Serializable {
 
-    private FigureType figureType;
+	private static final long serialVersionUID = 8730518690759122835L;
+	
+	private FigureType figureType;
     private List<Point> points;
     private String text;
     private boolean Drawed;

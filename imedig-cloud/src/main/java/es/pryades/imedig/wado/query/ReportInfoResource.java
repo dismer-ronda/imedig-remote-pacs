@@ -1,5 +1,6 @@
 package es.pryades.imedig.wado.query;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -21,9 +22,11 @@ import es.pryades.imedig.wado.resources.ImedigResource;
  * @since Jul, 2010
  */
 
-public class ReportInfoResource extends ImedigResource 
+public class ReportInfoResource extends ImedigResource implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( ReportInfoResource.class );
+	private static final long serialVersionUID = 2587506574872774281L;
+
+	private static final Logger LOG = Logger.getLogger( ReportInfoResource.class );
 
     String user;
     

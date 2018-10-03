@@ -28,7 +28,9 @@ import java.io.Serializable;
  */
 public class LoaderConfiguration extends FontConfiguration implements Serializable {
 
-    private String fillColor;
+	private static final long serialVersionUID = 8516380043113793634L;
+	
+	private String fillColor;
     private String shadow;
     private String spinnerColor;
     private Integer spinnerWidth;

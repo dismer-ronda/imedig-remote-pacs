@@ -25,7 +25,9 @@ import java.io.Serializable;
  */
 public class Ruler implements Serializable {
 
-    private FigureType figureType;
+	private static final long serialVersionUID = 6463884414975471030L;
+	
+	private FigureType figureType;
     private String text;
     private boolean Drawed;
     private String key;

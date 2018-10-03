@@ -14,5 +14,7 @@ import es.pryades.imedig.cloud.dto.Imagen;
 @Data
 public class ImagenQuery extends Imagen 
 {
+	private static final long serialVersionUID = 1768458130421025748L;
+	
 	Integer usuario;
 }

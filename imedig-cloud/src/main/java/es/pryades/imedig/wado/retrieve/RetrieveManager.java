@@ -2,6 +2,7 @@ package es.pryades.imedig.wado.retrieve;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -27,9 +28,11 @@ import es.pryades.imedig.wado.resources.CacheManager;
  * @since Jul, 2010
  */
 
-public class RetrieveManager 
+public class RetrieveManager implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( RetrieveManager.class );
+	private static final long serialVersionUID = 358145933114745944L;
+
+	private static final Logger LOG = Logger.getLogger( RetrieveManager.class );
 
     static RetrieveManager instance = null;
 

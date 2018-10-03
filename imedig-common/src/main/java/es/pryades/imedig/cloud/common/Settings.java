@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Properties;
 
@@ -15,9 +16,11 @@ import org.apache.log4j.Logger;
 * @since 1.0.0.0
 */
 
-public class Settings 
+public class Settings implements Serializable 
 {
-    private static final Logger LOG = Logger.getLogger( Settings.class );
+	private static final long serialVersionUID = -5824239624420979059L;
+
+	private static final Logger LOG = Logger.getLogger( Settings.class );
 
 	//public static String CLOUD_Url;
 	

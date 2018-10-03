@@ -30,7 +30,9 @@ import java.util.List;
  */
 public class ChainOfCommand implements Serializable {
 
-    private List<Figure> figures;
+	private static final long serialVersionUID = -7140579747613399296L;
+	
+	private List<Figure> figures;
     private List<Note> notes;
     private List<String> imagesUrl;
 

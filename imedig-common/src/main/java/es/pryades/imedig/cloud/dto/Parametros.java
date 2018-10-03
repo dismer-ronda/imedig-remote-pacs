@@ -1,11 +1,11 @@
 package es.pryades.imedig.cloud.dto;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.ImedigException;
-
 import lombok.Data;
 
 /**
@@ -16,9 +16,11 @@ import lombok.Data;
 
 @Data
 @SuppressWarnings({ "rawtypes" })
-public class Parametros
+public class Parametros implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( Parametros.class );
+	private static final long serialVersionUID = 1975619327306590701L;
+
+	private static final Logger LOG = Logger.getLogger( Parametros.class );
 
     Map parametros;
 

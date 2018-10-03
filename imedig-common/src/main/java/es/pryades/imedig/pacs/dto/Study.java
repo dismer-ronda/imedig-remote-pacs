@@ -16,6 +16,8 @@ import es.pryades.imedig.cloud.dto.ImedigDto;
 @Data
 public class Study extends ImedigDto 
 {
+	private static final long serialVersionUID = -4895937618873092201L;
+	
 	Timestamp study_datetime;
 	String study_iuid;
 	String study_desc;

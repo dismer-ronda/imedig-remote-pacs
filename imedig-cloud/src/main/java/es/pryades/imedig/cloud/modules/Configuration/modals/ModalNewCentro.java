@@ -34,9 +34,10 @@ import es.pryades.imedig.core.common.ModalParent;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public final class ModalNewCentro extends ModalWindowsCRUD
 {
+	private static final long serialVersionUID = 7002630431065173059L;
+
 	private static final Logger LOG = Logger.getLogger( ModalNewCentro.class );
 
 	protected DetalleCentro newCentro;

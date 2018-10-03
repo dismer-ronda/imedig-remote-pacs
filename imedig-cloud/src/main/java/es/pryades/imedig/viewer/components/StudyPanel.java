@@ -25,6 +25,8 @@ import es.pryades.imedig.viewer.datas.ImageData;
 
 public class StudyPanel extends CssLayout{
 
+	private static final long serialVersionUID = -6519983438766898895L;
+
 	private static final Logger LOG = LoggerFactory.getLogger(StudyPanel.class);
 
 	private Button btnClose;
@@ -70,6 +72,11 @@ public class StudyPanel extends CssLayout{
 		btnClose.addStyleName( ImedigTheme.TO_RIGHT);
 		btnClose.addClickListener( new Button.ClickListener()
 		{
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 5710565535626308353L;
+
 			@Override
 			public void buttonClick( com.vaadin.ui.Button.ClickEvent event )
 			{

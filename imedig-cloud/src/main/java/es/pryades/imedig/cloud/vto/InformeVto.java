@@ -17,6 +17,8 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper=false)
 public class InformeVto extends GenericVto
 {
+	private static final long serialVersionUID = 1614728255098525760L;
+	
 	private String fecha;
 	private String estado;
 	private String paciente_id;

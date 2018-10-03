@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.core.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,8 +28,10 @@ import lombok.Data;
  */
 @Data
 @SuppressWarnings({"rawtypes"})
-public class ImedigContext  
+public class ImedigContext implements Serializable  
 {
+	private static final long serialVersionUID = 56996704384120017L;
+
 	static final Logger LOG = Logger.getLogger( ImedigContext.class );
 	
 	String instanceName;

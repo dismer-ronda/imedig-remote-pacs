@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.services;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,9 +18,11 @@ import es.pryades.imedig.cloud.common.Utils;
  * @since Jul, 2010
  */
 
-public class BackupProcessor extends TimerTask
+public class BackupProcessor extends TimerTask implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( BackupProcessor.class );
+	private static final long serialVersionUID = -544381427911316970L;
+
+	private static final Logger LOG = Logger.getLogger( BackupProcessor.class );
     
     private static BackupProcessor processor = null;
 

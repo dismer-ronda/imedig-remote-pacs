@@ -22,7 +22,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 @SuppressWarnings("rawtypes")
 public class ParametrosManagerImpl extends ImedigManagerImpl implements ParametrosManager
 {
-    private static final Logger LOG = Logger.getLogger( ParametrosManagerImpl.class );
+	private static final long serialVersionUID = 7509270678007774658L;
+	
+	private static final Logger LOG = Logger.getLogger( ParametrosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

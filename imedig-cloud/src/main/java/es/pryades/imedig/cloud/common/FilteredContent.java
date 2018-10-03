@@ -34,9 +34,10 @@ import lombok.Setter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public abstract class FilteredContent extends VerticalLayout implements Property.ValueChangeListener
 {
+	private static final long serialVersionUID = -7355442891546060426L;
+
 	private static final Logger LOG = Logger.getLogger( FilteredContent.class );
 
 	@Setter @Getter protected ImedigContext context;
@@ -269,6 +270,8 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 	{
 		btnApply.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = -1024068691968782009L;
+
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
@@ -296,6 +299,8 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		{
 			btnAdd.addClickListener( new Button.ClickListener()
 			{
+				private static final long serialVersionUID = -4845780258823572542L;
+
 				public void buttonClick( ClickEvent event )
 				{
 					onAddRow();
@@ -310,6 +315,8 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		{
 			btnModify.addClickListener( new Button.ClickListener()
 			{
+				private static final long serialVersionUID = 2064750895174837758L;
+
 				public void buttonClick( ClickEvent event )
 				{
 					Integer rowId = (Integer)tableRows.getTable().getValue();
@@ -338,6 +345,8 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 	{
 		btnDelete.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 410917858047113542L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				Integer rowId = (Integer)tableRows.getTable().getValue();

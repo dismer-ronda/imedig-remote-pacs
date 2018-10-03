@@ -1,11 +1,15 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
+
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 
-public final class ReturnFactory 
+public final class ReturnFactory implements Serializable 
 {
+	private static final long serialVersionUID = -591880201276192845L;
+	
 	public static final int STATUS_2XX_OK 								= 200;
 	public static final int STATUS_2XX_CREATED 							= 201;
 	public static final int STATUS_2XX_ACCEPTED 						= 202;

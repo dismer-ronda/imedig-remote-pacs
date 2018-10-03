@@ -9,9 +9,10 @@ import com.vaadin.ui.Window;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 
-@SuppressWarnings("serial")
 public class AdministrationDlg extends Window 
 {
+	private static final long serialVersionUID = -7930120929949164496L;
+	
 	private ImedigContext ctx;
 	private ResourceBundle resource;
 

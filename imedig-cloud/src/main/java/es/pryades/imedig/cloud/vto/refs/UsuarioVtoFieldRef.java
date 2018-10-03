@@ -15,6 +15,8 @@ import es.pryades.imedig.core.common.VtoFieldRef;
 @SuppressWarnings("rawtypes")
 public class UsuarioVtoFieldRef extends VtoFieldRef 
 {
+	private static final long serialVersionUID = -1499885043915649203L;
+	
 	public UsuarioVtoFieldRef()
 	{
 		super();

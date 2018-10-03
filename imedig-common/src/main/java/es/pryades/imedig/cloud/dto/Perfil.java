@@ -13,5 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Perfil extends ImedigDto
 {
+	private static final long serialVersionUID = 8009827146244178086L;
+	
 	String descripcion;
 }

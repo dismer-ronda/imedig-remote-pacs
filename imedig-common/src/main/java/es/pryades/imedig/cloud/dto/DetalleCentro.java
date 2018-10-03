@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DetalleCentro extends Centro 
 {
+	private static final long serialVersionUID = 5462232357269493432L;
+	
 	String horario_nombre;
 	String moneda_nombre;
 	String moneda_codigo;

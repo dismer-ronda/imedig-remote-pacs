@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Derecho extends ImedigDto
 {
+	private static final long serialVersionUID = -1290947278785330962L;
+	
 	String codigo;
 	String descripcion;
 }

@@ -15,6 +15,8 @@ import lombok.Setter;
 
 public class PageTable extends HorizontalLayout {
 
+	private static final long serialVersionUID = 2878544569442999143L;
+	
 	private HorizontalLayout inside;
 	private Label label;
 	private Button first;
@@ -61,6 +63,11 @@ public class PageTable extends HorizontalLayout {
 		updateLabel();
 		first = getButton("QueryForm.FirstPage", FontAwesome.ANGLE_DOUBLE_LEFT);
 		first.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -2724489013156272421L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page = 0;
@@ -71,6 +78,11 @@ public class PageTable extends HorizontalLayout {
 		});
 		previous = getButton("QueryForm.PreviousPage", FontAwesome.ANGLE_LEFT);
 		previous.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3073450886669441955L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page--;
@@ -81,6 +93,11 @@ public class PageTable extends HorizontalLayout {
 		});
 		next = getButton("QueryForm.NextPage", FontAwesome.ANGLE_RIGHT);
 		next.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6518234856305384110L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page++;
@@ -91,6 +108,11 @@ public class PageTable extends HorizontalLayout {
 		});
 		last = getButton("QueryForm.LastPage", FontAwesome.ANGLE_DOUBLE_RIGHT);
 		last.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -7675882757270379759L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page = pages - 1;

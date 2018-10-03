@@ -23,7 +23,10 @@ import java.io.Serializable;
  * @author geanny
  */
 public class Point implements Serializable{
-    private double x;
+
+	private static final long serialVersionUID = -3443858488001830295L;
+	
+	private double x;
     private double y;
 
     public Point() {

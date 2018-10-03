@@ -23,7 +23,9 @@ import java.io.Serializable;
  */
 public class CanvasDimensions implements Serializable {
 
-    private int height;
+	private static final long serialVersionUID = -3519772686937233656L;
+	
+	private int height;
     private int width;
 
     public CanvasDimensions(int width, int height) {

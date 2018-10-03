@@ -30,6 +30,8 @@ import es.pryades.imedig.cloud.dto.InformeImagen;
 @Data
 public class PdfExport extends ExportBase
 {
+	private static final long serialVersionUID = -1132757592931917018L;
+
 	private static final Logger LOG = Logger.getLogger( PdfExport.class );
 	
 	private DetalleInforme informe;

@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -9,8 +11,10 @@ import lombok.Data;
 */
 
 @Data
-public class Query
+public class Query implements Serializable
 {
+	private static final long serialVersionUID = -2479919425411331061L;
+	
 	Integer pageSize;
 	Integer pageNumber;
 }

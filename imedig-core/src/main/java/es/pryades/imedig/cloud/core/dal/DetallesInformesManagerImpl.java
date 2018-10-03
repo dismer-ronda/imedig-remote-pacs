@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class DetallesInformesManagerImpl extends ImedigManagerImpl implements DetallesInformesManager
 {
-    private static final Logger LOG = Logger.getLogger( DetallesInformesManagerImpl.class );
+	private static final long serialVersionUID = -8420472541267349154L;
+	
+	private static final Logger LOG = Logger.getLogger( DetallesInformesManagerImpl.class );
 
 	public static ImedigManager build()
 	{

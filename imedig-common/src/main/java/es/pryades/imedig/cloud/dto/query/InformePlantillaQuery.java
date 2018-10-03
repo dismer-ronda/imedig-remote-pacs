@@ -14,5 +14,7 @@ import es.pryades.imedig.cloud.dto.InformePlantilla;
 @Data
 public class InformePlantillaQuery extends InformePlantilla 
 {
+	private static final long serialVersionUID = -1619619064635517799L;
+	
 	Integer usuario;
 }

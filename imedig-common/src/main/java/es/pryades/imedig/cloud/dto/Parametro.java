@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Parametro extends ImedigDto
 {
+	private static final long serialVersionUID = -3476776246001659465L;
+	
 	Integer centro;
 	String codigo;
 	String valor;

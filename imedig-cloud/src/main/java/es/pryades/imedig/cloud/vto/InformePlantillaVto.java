@@ -16,6 +16,8 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper = false)
 public class InformePlantillaVto extends GenericVto
 {
+	private static final long serialVersionUID = 4769976256232568890L;
+	
 	private String datos;
 	private String nombre;
 

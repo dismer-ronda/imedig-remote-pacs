@@ -1,12 +1,15 @@
 package es.pryades.imedig.cloud.dto.viewer;
 
-import lombok.Data;
+import java.io.Serializable;
 
+import lombok.Data;
 import es.pryades.imedig.cloud.common.Utils;
 
 @Data 
-public class ImageHeader 
+public class ImageHeader implements Serializable 
 {
+	private static final long serialVersionUID = 2674722341053829457L;
+	
 	private String StudyDate;
 	private String StudyTime;
 	private String AccessionNumber;

@@ -18,6 +18,7 @@
 
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.security.SecureRandom;
 import java.util.Vector;
 
@@ -41,7 +42,9 @@ import java.util.Vector;
  * @author Stephen Ostermiller http://ostermiller.org/contact.pl?regarding=Java+Utilities
  * @since ostermillerutils 1.00.00
  */
-public class RandPass {
+public class RandPass implements Serializable 
+{
+	private static final long serialVersionUID = 4927053622951503331L;
 
 	/**
 	 * Default length for passwords

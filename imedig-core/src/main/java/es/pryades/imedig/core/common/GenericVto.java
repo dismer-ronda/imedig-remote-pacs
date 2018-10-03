@@ -1,5 +1,7 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -11,8 +13,10 @@ import es.pryades.imedig.cloud.core.dto.ImedigContext;
  */
 @Data
 @EqualsAndHashCode(callSuper=false)
-public abstract class GenericVto 
+public abstract class GenericVto implements Serializable  
 {
+	private static final long serialVersionUID = -1906698955582393058L;
+	
 	protected Integer id;
 	
 	//###########################################################################################//

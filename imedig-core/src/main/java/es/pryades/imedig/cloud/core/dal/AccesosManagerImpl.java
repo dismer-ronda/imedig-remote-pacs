@@ -18,7 +18,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class AccesosManagerImpl extends ImedigManagerImpl implements AccesosManager
 {
-    private static final Logger LOG = Logger.getLogger( AccesosManagerImpl.class );
+	private static final long serialVersionUID = -2096425479868799335L;
+	
+	private static final Logger LOG = Logger.getLogger( AccesosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

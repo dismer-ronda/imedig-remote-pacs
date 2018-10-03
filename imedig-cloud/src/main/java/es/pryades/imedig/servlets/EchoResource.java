@@ -18,7 +18,9 @@ import es.pryades.imedig.core.common.Settings;
 
 public class EchoResource extends ImedigResource 
 {
-    private static final Logger LOG = Logger.getLogger( EchoResource.class );
+	private static final long serialVersionUID = 4494977086580620462L;
+	
+	private static final Logger LOG = Logger.getLogger( EchoResource.class );
 
 	public EchoResource() 
 	{

@@ -25,7 +25,9 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class ImageResource extends ImedigResource 
 {
-    private static final Logger LOG = Logger.getLogger( ImageResource.class );
+	private static final long serialVersionUID = -7668122117624382686L;
+
+	private static final Logger LOG = Logger.getLogger( ImageResource.class );
 
     String id;
 

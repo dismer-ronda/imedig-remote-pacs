@@ -18,7 +18,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class HorariosManagerImpl extends ImedigManagerImpl implements HorariosManager
 {
-    private static final Logger LOG = Logger.getLogger( HorariosManagerImpl.class );
+	private static final long serialVersionUID = 8336417013940177972L;
+	
+	private static final Logger LOG = Logger.getLogger( HorariosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

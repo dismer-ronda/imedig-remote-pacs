@@ -22,6 +22,8 @@ import lombok.EqualsAndHashCode;
 @Data 
 public class Usuario extends ImedigDto 
 {
+	private static final long serialVersionUID = 3377219589058864361L;
+	
 	public static final int PASS_OK			= 0;
 	public static final int PASS_NEW 		= 1;
 	public static final int PASS_FORGET 	= 2;

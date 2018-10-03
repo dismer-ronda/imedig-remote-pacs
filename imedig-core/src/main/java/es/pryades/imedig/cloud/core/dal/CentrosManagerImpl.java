@@ -18,7 +18,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class CentrosManagerImpl extends ImedigManagerImpl implements CentrosManager
 {
-    private static final Logger LOG = Logger.getLogger( CentrosManagerImpl.class );
+	private static final long serialVersionUID = -4960454412875591797L;
+	
+	private static final Logger LOG = Logger.getLogger( CentrosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

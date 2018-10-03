@@ -20,6 +20,8 @@ import es.pryades.imedig.cloud.submodules.AbstractCentersSubModule;
 
 public class CentersSubModule extends AbstractCentersSubModule implements ListenerCenterSelect
 {
+	private static final long serialVersionUID = 64871981232494197L;
+
 	private static final Logger LOG = Logger.getLogger( CentersSubModule.class );
 	
 	private VerticalLayout mainColumn;

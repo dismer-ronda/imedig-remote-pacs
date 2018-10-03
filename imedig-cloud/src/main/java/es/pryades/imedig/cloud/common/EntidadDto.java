@@ -1,11 +1,15 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
+
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import lombok.Data;
 
 @Data
-public class EntidadDto
+public class EntidadDto implements Serializable 
 {
+	private static final long serialVersionUID = -6631796927708768251L;
+	
 	private DetalleCentro centro = null;
 
 	public EntidadDto()

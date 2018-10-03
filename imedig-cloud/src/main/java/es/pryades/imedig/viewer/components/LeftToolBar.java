@@ -38,6 +38,8 @@ import es.pryades.imedig.viewer.datas.ImageData;
 
 public class LeftToolBar extends HorizontalLayout {
 	
+	private static final long serialVersionUID = 2868485281494302893L;
+	
 	private Panel panelThumnails;
 	private VerticalLayout thumnails;
 	
@@ -113,6 +115,11 @@ public class LeftToolBar extends HorizontalLayout {
 			
 			buttonReport.addClickListener( new Button.ClickListener()
 			{
+				/**
+				 * 
+				 */
+				private static final long serialVersionUID = 2246918318846892542L;
+
 				public void buttonClick( ClickEvent event )
 				{
 					context.sendAction(new RequestReport(this));
@@ -122,6 +129,11 @@ public class LeftToolBar extends HorizontalLayout {
 		toolbox.addComponent( group );
 		
 		buttonOpen.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -3957936980477046114L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction( new QueryStudies(this));
@@ -130,6 +142,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonClose.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 3120316840820293620L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new CloseStudies(this));
@@ -138,6 +155,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonDistance.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 275966713474694589L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new DistanceAction(this));
@@ -146,6 +168,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 
 		buttonAngle.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 827423384174902965L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new AngleAction(this));
@@ -154,6 +181,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonNone.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 8852589294839504630L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new NoneAction(this));
@@ -162,6 +194,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonZoom.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 126137635161307671L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new ZoomAction(this));
@@ -171,6 +208,11 @@ public class LeftToolBar extends HorizontalLayout {
 		
 		
 		buttonRestore.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 7513102943320764605L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new RestoreAction(this));
@@ -178,6 +220,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 
 		buttonUndo.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -6569945444218724024L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new UndoAction(this));
@@ -185,6 +232,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonContrast.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 37524764587510210L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new ContrastAction(this));
@@ -193,6 +245,11 @@ public class LeftToolBar extends HorizontalLayout {
 		});
 		
 		buttonErase.addClickListener(new Button.ClickListener() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 6892451358186939618L;
+
 			@Override
 			public void buttonClick(ClickEvent event) {
 				context.sendAction(new EraseAction(this));

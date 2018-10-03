@@ -25,7 +25,9 @@ import java.util.Objects;
  */
 public class Note implements Serializable {
 
-    private String text;
+	private static final long serialVersionUID = -9081680055142615149L;
+	
+	private String text;
     private String key;
     private NotesConfiguration notesConfiguration;
 

@@ -17,6 +17,8 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper=false)
 public class StudyVto extends GenericVto
 {
+	private static final long serialVersionUID = -4650083998482101174L;
+	
 	private String study_datetime;
 	private String study_iuid;
 	private String study_desc;

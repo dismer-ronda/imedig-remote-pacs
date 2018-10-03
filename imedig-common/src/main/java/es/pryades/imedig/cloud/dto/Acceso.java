@@ -13,6 +13,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Acceso extends ImedigDto
 {
-    Integer usuario; 
+	private static final long serialVersionUID = 3376951520064497465L;
+	
+	Integer usuario; 
 	Long cuando;
 }

@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +9,10 @@ import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.viewer.datas.ImageData;
 
-public class StudyUtils
+public class StudyUtils implements Serializable
 {
+	private static final long serialVersionUID = -8538117679737742604L;
+
 	public static List<ImageData> readStudyImagesData(StudyTree study){
 		List<ImageData> result = new ArrayList<ImageData>();
 		

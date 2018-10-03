@@ -12,9 +12,6 @@ import com.vaadin.ui.Button.ClickEvent;
 
 public class MessageDlg extends BaseWindow 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5722841682959892036L;
 
 	private VerticalLayout layout;
@@ -62,10 +59,7 @@ public class MessageDlg extends BaseWindow
 		button1 = AppUtils.createButton( getString( "words.close" ), getString( "words.close" ), "MessageDlg.close", layout );
 		button1.setIcon( new ThemeResource( "images/cancel.png" ) );
         button1.addClickListener(new Button.ClickListener() {
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = 3827413316030851767L;
+			private static final long serialVersionUID = 686502924606758039L;
 
 			public void buttonClick(ClickEvent event) 
             {

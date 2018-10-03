@@ -30,7 +30,9 @@ import es.pryades.imedig.wado.resources.CacheManager;
 
 public class ImageStandardResource extends ImageResource 
 {
-    private static final Logger LOG = Logger.getLogger( ImageStandardResource.class );
+	private static final long serialVersionUID = -5822591203359750845L;
+	
+	private static final Logger LOG = Logger.getLogger( ImageStandardResource.class );
     
     public ImageStandardResource() 
 	{

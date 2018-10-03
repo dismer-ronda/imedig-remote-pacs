@@ -17,8 +17,8 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class InitServlet extends HttpServlet
 {
-	private static final long serialVersionUID = 1L;
-
+	private static final long serialVersionUID = -6426944451748597108L;
+	
 	private static final Logger LOG = Logger.getLogger( InitServlet.class );
 
 	public void init() 

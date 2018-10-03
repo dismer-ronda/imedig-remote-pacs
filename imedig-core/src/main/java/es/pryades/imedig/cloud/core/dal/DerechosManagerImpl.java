@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class DerechosManagerImpl extends ImedigManagerImpl implements DerechosManager
 {
-    private static final Logger LOG = Logger.getLogger( DerechosManagerImpl.class );
+	private static final long serialVersionUID = 7611181764339733443L;
+	
+	private static final Logger LOG = Logger.getLogger( DerechosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

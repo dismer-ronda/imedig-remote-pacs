@@ -15,14 +15,14 @@
  */
 package es.pryades.fabricjs.config;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import es.pryades.fabricjs.enums.CanvasAction;
 import es.pryades.fabricjs.enums.FontStyle;
 import es.pryades.fabricjs.enums.FontWeight;
 import es.pryades.fabricjs.enums.StrokeLineCap;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -30,7 +30,9 @@ import java.util.Objects;
  */
 public class FigureConfiguration extends FontConfiguration implements Serializable {
 
-    private String backgroundColor;
+	private static final long serialVersionUID = 7600445325994923866L;
+
+	private String backgroundColor;
 
     private double strokeWidth;
     private String fillColor;

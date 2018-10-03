@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto.viewer;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -10,8 +12,10 @@ import lombok.Data;
  */
  
 @Data 
-public class LicenseDetails 
+public class LicenseDetails implements Serializable 
 {
+	private static final long serialVersionUID = -3980657846133583248L;
+	
 	private long id;
 	private long rights;
 	private long expiration;

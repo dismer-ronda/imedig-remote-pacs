@@ -1,6 +1,7 @@
 package es.pryades.imedig.wado.resources;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,9 +21,11 @@ import es.pryades.imedig.core.common.Settings;
  * @since Jul, 2010
  */
 
-public class CacheManager extends Thread
+public class CacheManager extends Thread implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( CacheManager.class );
+	private static final long serialVersionUID = 1010382607607287265L;
+
+	private static final Logger LOG = Logger.getLogger( CacheManager.class );
     
     static CacheManager instance = null;
     HashMap<String,CacheElement> cache = new HashMap<String,CacheElement>();

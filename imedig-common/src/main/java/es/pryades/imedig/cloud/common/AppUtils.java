@@ -2,6 +2,7 @@ package es.pryades.imedig.cloud.common;
 
 import java.awt.Dimension;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,8 +32,10 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class AppUtils  
+public class AppUtils implements Serializable 
 {
+	private static final long serialVersionUID = -4138928948020179063L;
+	
 	private static final Logger LOG = Logger.getLogger( AppUtils.class );
 
 	public AppUtils()

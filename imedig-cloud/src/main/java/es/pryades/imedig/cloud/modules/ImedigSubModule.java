@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.modules;
 
+import java.io.Serializable;
 import java.util.List;
 
 import lombok.Data;
@@ -13,8 +14,10 @@ import es.pryades.imedig.cloud.core.dto.ImedigContext;
 
 @SuppressWarnings("rawtypes")
 @Data
-public abstract class ImedigSubModule 
+public abstract class ImedigSubModule implements Serializable 
 {
+	private static final long serialVersionUID = -125180260778343915L;
+	
 	private ImedigContext context;
 	private Layout mainLayout;
 	private List<OptionData> options;

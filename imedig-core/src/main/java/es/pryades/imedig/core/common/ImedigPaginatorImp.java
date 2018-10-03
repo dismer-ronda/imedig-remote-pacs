@@ -1,5 +1,6 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
  * @author Dismer Ronda
  *
  */
-public class ImedigPaginatorImp implements ImedigPaginatorFilter
+public class ImedigPaginatorImp implements ImedigPaginatorFilter, Serializable
 {
+	private static final long serialVersionUID = -8786807407586446065L;
+
 	private static final Logger LOG = Logger.getLogger( ImedigPaginatorImp.class ); 
 	
 	//###########################################################################################//

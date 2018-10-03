@@ -1,7 +1,11 @@
 package es.pryades.imedig.cloud.common;
 
-public class Constants 
+import java.io.Serializable;
+
+public class Constants implements Serializable 
 {
+	private static final long serialVersionUID = 8273713292118118400L;
+	
 	public static final String COLOR_NAME_RED 		= "red";
 	public static final String COLOR_NAME_BLUE 		= "blue";
 	public static final String COLOR_NAME_GREEN		= "green";

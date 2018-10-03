@@ -23,9 +23,10 @@ import es.pryades.imedig.core.common.TableImedig;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public abstract class AdminContent extends VerticalLayout
 {
+	private static final long serialVersionUID = -7310141893069908359L;
+
 	@Getter protected ImedigContext context;
 
 	protected Label lbDateSelected;

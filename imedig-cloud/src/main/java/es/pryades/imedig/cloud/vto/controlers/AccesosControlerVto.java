@@ -24,6 +24,8 @@ import es.pryades.imedig.core.common.VtoFieldRef;
 @SuppressWarnings("rawtypes")
 public class AccesosControlerVto extends GenericControlerVto
 {
+	private static final long serialVersionUID = -2693585449604061093L;
+	
 	private static final String[] visibleCols = {"id","nombreRefUsuario","cuando"};
 	
 	public AccesosControlerVto(VtoFieldRef usuarioVtoFieldRef, ImedigContext ctx)

@@ -26,6 +26,8 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 @SuppressWarnings("rawtypes")
 public class UsuariosManagerImpl extends ImedigManagerImpl implements UsuariosManager
 {
+	private static final long serialVersionUID = -2930737246566970181L;
+
 	private static final Logger LOG = Logger.getLogger( UsuariosManagerImpl.class );
 
 	@Inject

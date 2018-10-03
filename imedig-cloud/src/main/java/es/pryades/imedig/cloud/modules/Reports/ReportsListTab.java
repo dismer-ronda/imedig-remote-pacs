@@ -59,9 +59,11 @@ import lombok.Setter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings({"serial","unchecked"})
+@SuppressWarnings({"unchecked"})
 public class ReportsListTab extends FilteredContent implements ModalParent, Property.ValueChangeListener
 {
+	private static final long serialVersionUID = 2805578820949325928L;
+
 	private static final Logger LOG = Logger.getLogger( ReportsListTab.class );
 
 	@Setter @Getter private Integer fecha;
@@ -249,6 +251,8 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	{
 		btnView.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 8040258555422952017L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				DetalleInforme informe = (DetalleInforme)getSelectedRow();
@@ -342,6 +346,8 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 			( 
 				new Window.CloseListener() 
 				{
+					private static final long serialVersionUID = 7034119231886612890L;
+
 					@Override
 				    public void windowClose( CloseEvent e ) 
 				    {
@@ -412,6 +418,8 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	{
 		btnApprove.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = -7360350330969730033L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				final DetalleInforme informe = (DetalleInforme)getSelectedRow();
@@ -422,6 +430,8 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 				( 
 					new Window.CloseListener() 
 					{
+						private static final long serialVersionUID = 6652654604936976157L;
+
 						@Override
 					    public void windowClose( CloseEvent e ) 
 					    {
@@ -464,6 +474,8 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	{
 		btnFinish.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 8109392326210947719L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				try

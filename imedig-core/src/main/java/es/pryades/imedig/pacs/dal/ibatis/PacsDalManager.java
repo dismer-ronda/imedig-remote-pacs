@@ -1,11 +1,11 @@
 package es.pryades.imedig.pacs.dal.ibatis;
 
+import java.io.Serializable;
 import java.io.StringReader;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.ImedigException;
@@ -16,9 +16,11 @@ import es.pryades.imedig.cloud.common.ImedigException;
 * @since 1.0.0.0
 */
 
-public class PacsDalManager  
+public class PacsDalManager implements Serializable  
 {
-    private static final Logger LOG = Logger.getLogger( PacsDalManager.class );
+	private static final long serialVersionUID = 5772027264652829438L;
+
+	private static final Logger LOG = Logger.getLogger( PacsDalManager.class );
 
     static PacsDalManager instance = null;
 

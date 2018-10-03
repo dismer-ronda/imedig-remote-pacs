@@ -34,9 +34,10 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public final class ReportConfigDlg extends Window
 {
+	private static final long serialVersionUID = -8298106169212775934L;
+
 	private static final Logger LOG = Logger.getLogger( ReportConfigDlg.class );
 
 	@Setter @Getter private String orientation;

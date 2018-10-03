@@ -16,6 +16,8 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper=false)
 public class ImagenVto extends GenericVto
 {
+	private static final long serialVersionUID = 6731592344050580428L;
+	
 	private String nombre;
 	
 	public ImagenVto()

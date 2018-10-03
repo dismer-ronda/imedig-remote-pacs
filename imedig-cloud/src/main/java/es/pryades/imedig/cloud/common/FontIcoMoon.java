@@ -15,10 +15,12 @@
  */
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
+
 import com.vaadin.server.FontIcon;
 import com.vaadin.server.GenericFontIcon;
 
-public enum FontIcoMoon implements FontIcon {
+public enum FontIcoMoon implements FontIcon, Serializable {
 
 	// @formatter:off
 	ROOT_CATEGORY(0Xe901),

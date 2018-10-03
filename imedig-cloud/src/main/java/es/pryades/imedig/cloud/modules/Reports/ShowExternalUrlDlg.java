@@ -22,9 +22,10 @@ import com.vaadin.ui.UI;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public final class ShowExternalUrlDlg extends Window
 {
+	private static final long serialVersionUID = 7927312120567260994L;
+
 	private static final Logger LOG = Logger.getLogger( ShowExternalUrlDlg.class );
 	
 	private String url;

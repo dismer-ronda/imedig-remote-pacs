@@ -26,7 +26,9 @@ import java.util.List;
  */
 public class FabricCanvasConfiguration extends FontConfiguration implements Serializable {
 
-    private String backgroundColor;
+	private static final long serialVersionUID = -8577134544848613276L;
+
+	private String backgroundColor;
 
     private double strokeWidth;
     private String fillColor;

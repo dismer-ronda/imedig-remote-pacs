@@ -15,6 +15,8 @@ import es.pryades.imedig.pacs.dto.query.StudyQuery;
 @SuppressWarnings("rawtypes")
 public class StudyVtoFieldRef extends VtoFieldRef 
 {
+	private static final long serialVersionUID = -4318052862343770891L;
+	
 	public StudyVtoFieldRef()
 	{
 		super();

@@ -18,7 +18,9 @@ import es.pryades.imedig.pacs.dto.Study;
 */
 public class StudiesManagerImpl extends ImedigManagerImpl implements StudiesManager
 {
-    private static final Logger LOG = Logger.getLogger( StudiesManagerImpl.class );
+	private static final long serialVersionUID = 4264000490880357403L;
+	
+	private static final Logger LOG = Logger.getLogger( StudiesManagerImpl.class );
 
 	public static ImedigManager build()
 	{

@@ -1,6 +1,7 @@
 package es.pryades.imedig.servlets;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -10,9 +11,11 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.common.WebServiceRequest;
 import es.pryades.imedig.core.common.Settings;
 
-public class NotifierProcessor extends Thread
+public class NotifierProcessor extends Thread implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( NotifierProcessor.class );
+	private static final long serialVersionUID = -1061258604726776654L;
+
+	private static final Logger LOG = Logger.getLogger( NotifierProcessor.class );
     
 	Integer waiting;
     volatile boolean ended;

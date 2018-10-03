@@ -18,12 +18,13 @@ import es.pryades.imedig.core.common.GenericVto;
 @EqualsAndHashCode(callSuper=false)
 public class AccesosVto extends GenericVto
 {
+	private static final long serialVersionUID = 3580881408259258361L;
 
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//
 	//###########################################################################################//
 		
-    Integer usuario; 
+	Integer usuario; 
 	String cuando;
 	String nombreRefUsuario;	
 		

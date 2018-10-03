@@ -1,42 +1,42 @@
 package es.pryades.fabricjs;
 
-import es.pryades.fabricjs.data.Note;
-import es.pryades.fabricjs.listeners.ResizeListener;
-import es.pryades.fabricjs.listeners.MouseWheelListener;
-import es.pryades.fabricjs.listeners.MouseUpListener;
-import es.pryades.fabricjs.listeners.MouseDownListener;
-import es.pryades.fabricjs.listeners.MouseMoveListener;
-import es.pryades.fabricjs.config.CanvasDimensions;
-import es.pryades.fabricjs.enums.CanvasAction;
-import es.pryades.fabricjs.config.NotesConfiguration;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.vaadin.annotations.JavaScript;
-import es.pryades.fabricjs.client.FabricJsState;
-import es.pryades.fabricjs.data.Command;
-
-import es.pryades.fabricjs.geometry.Figure;
-import com.vaadin.server.ExternalResource;
-
-import com.vaadin.ui.AbstractJavaScriptComponent;
-import com.vaadin.ui.JavaScriptFunction;
-import elemental.json.JsonArray;
-import es.pryades.fabricjs.config.FigureConfiguration;
-import es.pryades.fabricjs.config.LoaderConfiguration;
-import es.pryades.fabricjs.config.RulerConfiguration;
-import es.pryades.fabricjs.geometry.Ruler;
-import es.pryades.fabricjs.listeners.DrawFigureListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.vaadin.annotations.JavaScript;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.ui.AbstractJavaScriptComponent;
+import com.vaadin.ui.JavaScriptFunction;
+
+import elemental.json.JsonArray;
+import es.pryades.fabricjs.client.FabricJsState;
+import es.pryades.fabricjs.config.CanvasDimensions;
+import es.pryades.fabricjs.config.FigureConfiguration;
+import es.pryades.fabricjs.config.LoaderConfiguration;
+import es.pryades.fabricjs.config.NotesConfiguration;
+import es.pryades.fabricjs.config.RulerConfiguration;
+import es.pryades.fabricjs.data.Command;
+import es.pryades.fabricjs.data.Note;
+import es.pryades.fabricjs.geometry.Figure;
+import es.pryades.fabricjs.geometry.Ruler;
+import es.pryades.fabricjs.listeners.DrawFigureListener;
+import es.pryades.fabricjs.listeners.MouseDownListener;
+import es.pryades.fabricjs.listeners.MouseMoveListener;
+import es.pryades.fabricjs.listeners.MouseUpListener;
+import es.pryades.fabricjs.listeners.MouseWheelListener;
+import es.pryades.fabricjs.listeners.ResizeListener;
 
 // This is the server-side UI component that provides public API 
 // for FabricJs
 @JavaScript({"bower_components/fabric.js/dist/fabric.min.js", "vaadin-fabricjs.js", "fabric_connector.js"})
 public class FabricJs extends AbstractJavaScriptComponent {
 
-    private FigureConfiguration figureConfiguration;
+	private static final long serialVersionUID = -4884966484710909023L;
+	
+	private FigureConfiguration figureConfiguration;
     private RulerConfiguration rulerConfiguration;
     private NotesConfiguration notesConfiguration;
     private LoaderConfiguration loaderConfiguration;
@@ -375,7 +375,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
     private void setJavascriptFunctions() {
         addFunction("setDimensions", new JavaScriptFunction() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 3603996072647674905L;
+
+			@Override
             public void call(JsonArray arguments) {
                 vWidth = arguments.getNumber(0);
                 vHeight = arguments.getNumber(1);
@@ -384,7 +389,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         addFunction("clearCommands", new JavaScriptFunction() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -4203087922122039253L;
+
+			@Override
             public void call(JsonArray arguments) {
                 commands.clear();
                 getState().commands = "[{\"canvasAction\":\"NONE\"}]";
@@ -393,7 +403,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         addFunction("onMouseWheel", new JavaScriptFunction() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 580109407840824996L;
+
+			@Override
             public void call(JsonArray arguments) {
                 if (mouseWheelListener != null) {
                     mouseWheelListener.onMouseWheel(arguments.getNumber(0));
@@ -403,7 +418,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         addFunction("onResize", new JavaScriptFunction() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -6267480532731331906L;
+
+			@Override
             public void call(JsonArray arguments) {
                 if (resizeListener != null) {
                     double width = arguments.getNumber(0);
@@ -415,7 +435,12 @@ public class FabricJs extends AbstractJavaScriptComponent {
 
         addFunction("onDrawFigure", new JavaScriptFunction() {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -6382091591518824590L;
+
+			@Override
             public void call(JsonArray arguments) {
                 if (drawFigureListener != null) {
                     Gson gson = new GsonBuilder().create();

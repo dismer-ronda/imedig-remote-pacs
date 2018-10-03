@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -17,8 +18,10 @@ import org.apache.log4j.Logger;
  * @author Dismer Ronda
  *
  */
-public class ObjectMetaInfo 
+public class ObjectMetaInfo implements Serializable
 {
+	private static final long serialVersionUID = -2356144973959726700L;
+
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//
 	//###########################################################################################//

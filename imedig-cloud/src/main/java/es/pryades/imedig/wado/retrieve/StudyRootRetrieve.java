@@ -4,7 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +18,6 @@ import org.dcm4che2.data.UID;
 import org.dcm4che2.data.UIDDictionary;
 import org.dcm4che2.data.VR;
 import org.dcm4che2.io.DicomOutputStream;
-
 import org.dcm4che2.net.Association;
 import org.dcm4che2.net.CommandUtils;
 import org.dcm4che2.net.ConfigurationException;
@@ -35,7 +34,6 @@ import org.dcm4che2.net.UserIdentity;
 import org.dcm4che2.net.service.DicomService;
 import org.dcm4che2.net.service.StorageService;
 import org.dcm4che2.net.PDVInputStream;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +43,11 @@ import org.slf4j.LoggerFactory;
  * @since Jul, 2010
  */
 
-public class StudyRootRetrieve
+public class StudyRootRetrieve implements Serializable
 {
-    private static final Logger LOG = LoggerFactory.getLogger( StudyRootRetrieve.class );
+	private static final long serialVersionUID = -2601411878887064316L;
+
+	private static final Logger LOG = LoggerFactory.getLogger( StudyRootRetrieve.class );
 
     private static final String[] NATIVE_LE_TS = 
     {

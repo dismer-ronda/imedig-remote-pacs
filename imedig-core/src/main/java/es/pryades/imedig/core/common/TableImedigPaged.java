@@ -18,9 +18,10 @@ import es.pryades.imedig.cloud.dto.ImedigDto;
  * @author Dismer Ronda
  *
  */
-@SuppressWarnings("serial")
 public class TableImedigPaged extends TableImedig implements ImedigPaginator
 {
+	private static final long serialVersionUID = 499034172926866445L;
+
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//
 	//###########################################################################################//
@@ -81,6 +82,8 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 	{
 		this.pageButtonIni.addClickListener(new Button.ClickListener() 
 		{
+			private static final long serialVersionUID = 5352879870171194031L;
+
 			@Override
 			public void buttonClick(ClickEvent event) 
 			{
@@ -100,6 +103,8 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 	{
 		this.pageButtonNext.addClickListener(new Button.ClickListener() 
 		{
+			private static final long serialVersionUID = 4359193104762728586L;
+
 			@Override
 			public void buttonClick(ClickEvent event) 
 			{
@@ -119,6 +124,8 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 	{
 		this.pageButtonPrevious.addClickListener(new Button.ClickListener() 
 		{
+			private static final long serialVersionUID = 8126241051042111504L;
+
 			@Override
 			public void buttonClick(ClickEvent event)
 			{
@@ -138,6 +145,8 @@ public class TableImedigPaged extends TableImedig implements ImedigPaginator
 	{
 		this.pageButtonEnd.addClickListener(new Button.ClickListener() 
 		{
+			private static final long serialVersionUID = -8041453546296309988L;
+
 			@Override
 			public void buttonClick(ClickEvent event) 
 			{

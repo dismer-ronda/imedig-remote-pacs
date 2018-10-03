@@ -15,7 +15,7 @@ public class FooterComponent extends HorizontalLayout
 {
 	private static final long serialVersionUID = 4609154621782766530L;
 	
-	private static final String  URL = "http://www.lomisa.com";
+	private static final String  URL = "http://www.pryades.com";
 	
 	private ImedigContext ctx;
 	

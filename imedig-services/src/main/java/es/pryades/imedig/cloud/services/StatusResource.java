@@ -26,6 +26,8 @@ import es.pryades.imedig.pacs.dto.query.StudyQuery;
 
 public class StatusResource extends ImedigResource 
 {
+	private static final long serialVersionUID = 1004820386029507404L;
+
 	private static final Logger LOG = Logger.getLogger( StatusResource.class );
 
 	private DetallesInformesManager informesManager;

@@ -31,9 +31,10 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
 
-@SuppressWarnings("serial")
 public class ModalNewImage extends ModalWindowsCRUD implements Upload.SucceededListener, Upload.FailedListener, Upload.Receiver, Upload.StartedListener
 {
+	private static final long serialVersionUID = -725959430974010244L;
+
 	private static final Logger LOG = Logger.getLogger( ModalNewImage.class );
 
 	protected Imagen newImagen;

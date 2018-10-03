@@ -8,9 +8,6 @@ import es.pryades.imedig.cloud.common.AppUtils;
 
 public class BaseModule extends CustomComponent
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5305330866624717747L;
 	
 	private ResourceBundle resources;

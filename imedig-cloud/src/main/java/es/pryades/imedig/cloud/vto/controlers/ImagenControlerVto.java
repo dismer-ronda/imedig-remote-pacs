@@ -19,6 +19,8 @@ import es.pryades.imedig.core.common.VtoFieldRef;
 @SuppressWarnings("rawtypes")
 public class ImagenControlerVto extends GenericControlerVto
 {
+	private static final long serialVersionUID = 5156050306067184410L;
+	
 	private static final String[] visibleCols = { "id", "nombre" };
 
 	public ImagenControlerVto( ImedigContext ctx )

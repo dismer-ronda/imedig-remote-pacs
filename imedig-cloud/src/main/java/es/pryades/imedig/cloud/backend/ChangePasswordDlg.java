@@ -19,9 +19,6 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class ChangePasswordDlg extends BaseDesktopWindow 
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5722841682959892036L;
 
 	private VerticalLayout layout;
@@ -68,7 +65,6 @@ public class ChangePasswordDlg extends BaseDesktopWindow
 		setClosable( true );
 	}
 
-	@SuppressWarnings("serial")
 	private void addComponents() 
 	{
 		AppUtils.createLabel( getString( "ChangePasswordDlg.new" ), grid );		
@@ -79,6 +75,8 @@ public class ChangePasswordDlg extends BaseDesktopWindow
 		
 		Button button1 = AppUtils.createButton( getString( "words.change" ), getString( "words.change" ), "ChangePasswordDlg.change", layout );
 		button1.addClickListener(new Button.ClickListener() {
+			private static final long serialVersionUID = -2573770785321014844L;
+
 			public void buttonClick(ClickEvent event) 
             {
 				onChangePassword();

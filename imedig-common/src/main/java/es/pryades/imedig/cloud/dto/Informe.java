@@ -18,6 +18,8 @@ import org.htmlcleaner.TagNode;
 @Data
 public class Informe extends ImedigDto 
 {
+	private static final long serialVersionUID = -3665486029886807515L;
+	
 	static public final int STATUS_REQUESTED 	= 0;
 	static public final int STATUS_INFORMED 	= 1;
 	static public final int STATUS_APROVED 		= 2;

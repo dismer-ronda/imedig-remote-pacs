@@ -18,6 +18,8 @@ import com.vaadin.ui.VerticalLayout;
 
 public class StatisticsComponent extends VerticalLayout {
 	
+	private static final long serialVersionUID = -6491945184152451784L;
+	
 	private List<Object> rows = new ArrayList<Object>();
 	private Map<Object, String> rowCaptions = new HashMap<Object, String>();
 

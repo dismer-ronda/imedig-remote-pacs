@@ -35,7 +35,9 @@ import es.pryades.imedig.wado.resources.ImedigResource;
 
 public abstract class ImageResource extends ImedigResource 
 {
-    private static final Logger LOG = Logger.getLogger( ImageResource.class );
+	private static final long serialVersionUID = 4741487391264620673L;
+	
+	private static final Logger LOG = Logger.getLogger( ImageResource.class );
     
 	public ImageResource() 
 	{

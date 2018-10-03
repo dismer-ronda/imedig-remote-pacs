@@ -1,5 +1,6 @@
 package es.pryades.imedig.wado.resources;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
@@ -17,9 +18,11 @@ import org.apache.log4j.Logger;
  * @since Jul, 2010
  */
 
-public abstract class ImedigResource extends ServerResource 
+public abstract class ImedigResource extends ServerResource implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( ImedigResource.class );
+	private static final long serialVersionUID = -902475493112818070L;
+	
+	private static final Logger LOG = Logger.getLogger( ImedigResource.class );
 
 	public ImedigResource() 
 	{

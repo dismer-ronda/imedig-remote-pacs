@@ -32,7 +32,7 @@ import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 
 @SuppressWarnings(
-{ "serial", "unchecked", "unused" })
+{ "unchecked", "unused" })
 public class LoginPanel extends VerticalLayout
 {
 	private static final Logger LOG = Logger.getLogger( LoginPanel.class );

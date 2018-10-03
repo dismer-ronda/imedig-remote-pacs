@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.ioc;
 
+import java.io.Serializable;
+
 import org.apache.tapestry5.ioc.ServiceBinder;
 
 import es.pryades.imedig.cloud.core.bll.*;
@@ -13,8 +15,10 @@ import es.pryades.imedig.pacs.dal.StudiesManagerImpl;
 * @since 1.0.0.0
 */
 
-public class StandaloneModule 
+public class StandaloneModule implements Serializable 
 {
+	private static final long serialVersionUID = -5481071877954040643L;
+
 	/**
 	 * Registra los servicios soportados mediante IOC
 	 * 

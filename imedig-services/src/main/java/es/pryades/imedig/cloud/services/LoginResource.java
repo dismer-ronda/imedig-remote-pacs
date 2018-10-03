@@ -22,7 +22,9 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class LoginResource extends ImedigResource 
 {
-    private static final Logger LOG = Logger.getLogger( LoginResource.class );
+	private static final long serialVersionUID = 6049285688332966529L;
+	
+	private static final Logger LOG = Logger.getLogger( LoginResource.class );
 
 	public LoginResource() 
 	{

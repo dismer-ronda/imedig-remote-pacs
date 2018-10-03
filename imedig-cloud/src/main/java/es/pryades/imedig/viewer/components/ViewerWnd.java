@@ -63,6 +63,8 @@ import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
 public class ViewerWnd extends CssLayout implements ListenerAction, ImageResource, ModalParent, ImageSerieNavigator {
+	private static final long serialVersionUID = 9064212477269947546L;
+
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
 
 	public static HashMap<String, ReportInfo> imagesInfo = new HashMap<String, ReportInfo>();

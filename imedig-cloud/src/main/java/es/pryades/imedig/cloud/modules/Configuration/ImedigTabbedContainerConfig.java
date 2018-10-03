@@ -26,11 +26,12 @@ import lombok.Setter;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 @Setter
 @Getter
 public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeListener
 {
+	private static final long serialVersionUID = -4520860282820394060L;
+
 	private static final Logger LOG = Logger.getLogger( ImedigTabbedContainerConfig.class );
 
 	private ImedigContext context;

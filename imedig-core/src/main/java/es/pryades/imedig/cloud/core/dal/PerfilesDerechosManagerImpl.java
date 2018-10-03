@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class PerfilesDerechosManagerImpl extends ImedigManagerImpl implements PerfilesDerechosManager
 {
-    private static final Logger LOG = Logger.getLogger( PerfilesDerechosManagerImpl.class );
+	private static final long serialVersionUID = -9134846592267801597L;
+	
+	private static final Logger LOG = Logger.getLogger( PerfilesDerechosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

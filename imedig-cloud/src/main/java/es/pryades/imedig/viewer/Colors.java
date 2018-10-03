@@ -1,7 +1,11 @@
 package es.pryades.imedig.viewer;
 
-public class Colors 
+import java.io.Serializable;
+
+public class Colors implements Serializable
 {
+	private static final long serialVersionUID = 2793573854738534827L;
+	
 	public static final int INT_METRO_BLUE			= 0x1BA1E2;
 	public static final int INT_METRO_GREEN			= 0x339933;
 	public static final int INT_METRO_BROWN			= 0xA05000;

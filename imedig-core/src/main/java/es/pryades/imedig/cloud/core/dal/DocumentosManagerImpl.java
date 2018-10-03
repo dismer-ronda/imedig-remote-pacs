@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class DocumentosManagerImpl extends ImedigManagerImpl implements DocumentosManager
 {
-    private static final Logger LOG = Logger.getLogger( DocumentosManagerImpl.class );
+	private static final long serialVersionUID = -4475911105694937987L;
+	
+	private static final Logger LOG = Logger.getLogger( DocumentosManagerImpl.class );
 
 	public static ImedigManager build()
 	{

@@ -8,6 +8,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class FontsDlg extends Window {
 
+	private static final long serialVersionUID = -2546379251017421011L;
+	
 	private CssLayout content;
 
 	public FontsDlg() {

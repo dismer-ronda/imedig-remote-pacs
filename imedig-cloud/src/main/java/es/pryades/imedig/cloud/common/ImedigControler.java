@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -11,7 +12,9 @@ import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class ImedigControler {
+public abstract class ImedigControler implements Serializable {
+	private static final long serialVersionUID = 1110340840487978516L;
+
 	@Getter @Setter
 	private ImedigContext context;
 	

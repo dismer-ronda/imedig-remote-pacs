@@ -1,11 +1,15 @@
 package es.pryades.imedig.viewer.components.image;
 
 import java.awt.Rectangle;
+import java.io.Serializable;
 
 import lombok.Getter;
 
 @Getter
-public class ImageStatus {
+public class ImageStatus implements Serializable {
+
+	private static final long serialVersionUID = -9046172999734385982L;
+	
 	private Rectangle irect;
 	private double windowWidth;
 	private double windowCenter;

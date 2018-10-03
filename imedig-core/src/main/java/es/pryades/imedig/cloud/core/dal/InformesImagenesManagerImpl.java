@@ -17,7 +17,9 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public class InformesImagenesManagerImpl extends ImedigManagerImpl implements InformesImagenesManager
 {
-    private static final Logger LOG = Logger.getLogger( InformesImagenesManagerImpl.class );
+	private static final long serialVersionUID = 6229246994970492334L;
+	
+	private static final Logger LOG = Logger.getLogger( InformesImagenesManagerImpl.class );
 
 	public static ImedigManager build()
 	{

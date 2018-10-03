@@ -1,5 +1,6 @@
 package es.pryades.imedig.wado.query;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +29,11 @@ import es.pryades.imedig.cloud.dto.viewer.StudyTree;
  * @since Jul, 2010
  */
 
-public class QueryManager 
+public class QueryManager implements Serializable 
 {
-    private static final Logger LOG = Logger.getLogger( QueryManager.class );
+	private static final long serialVersionUID = 6078039563734637138L;
+
+	private static final Logger LOG = Logger.getLogger( QueryManager.class );
 
     static QueryManager instance = null;
     

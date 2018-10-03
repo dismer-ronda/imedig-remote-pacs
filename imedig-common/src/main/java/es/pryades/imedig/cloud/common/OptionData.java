@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import com.vaadin.server.ThemeResource;
@@ -14,8 +15,10 @@ import lombok.Data;
 */
 @Data 
 @SuppressWarnings("rawtypes")
-public class OptionData 
+public class OptionData implements Serializable
 {
+	private static final long serialVersionUID = 2618444301059312760L;
+	
 	private String id;
 	private String caption;
 	private String toolTip;

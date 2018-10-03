@@ -1,5 +1,7 @@
 package es.pryades.imedig.core.common;
 
+import java.io.Serializable;
+
 import es.pryades.imedig.cloud.dto.Query;
 
 /**
@@ -7,8 +9,10 @@ import es.pryades.imedig.cloud.dto.Query;
  * @author Dismer Ronda
  *
  */
-public class QueryFilterRef 
+public class QueryFilterRef implements Serializable 
 {
+	private static final long serialVersionUID = -6348718307689901304L;
+	
 	//###########################################################################################//
 	//#										PROPERTIES										   	#//
 	//###########################################################################################//

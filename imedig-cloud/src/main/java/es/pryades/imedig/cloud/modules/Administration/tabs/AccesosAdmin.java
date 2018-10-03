@@ -32,9 +32,10 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public class AccesosAdmin extends AdminContent implements ModalParent, Property.ValueChangeListener
 {
+	private static final long serialVersionUID = 8504187372601306700L;
+	
 	private TableImedigPaged tableResultadoBusquedaAccesos;
 	private String[] visibleCols;
 
@@ -138,6 +139,8 @@ public class AccesosAdmin extends AdminContent implements ModalParent, Property.
 	{
 		popUpDateSelected.addValueChangeListener( new ValueChangeListener()
 		{
+			private static final long serialVersionUID = -6673189366165877605L;
+
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
@@ -163,6 +166,8 @@ public class AccesosAdmin extends AdminContent implements ModalParent, Property.
 	{
 		bttnAplicaFiltro.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 7888031501683659302L;
+
 			@Override
 			public void buttonClick( ClickEvent event )
 			{

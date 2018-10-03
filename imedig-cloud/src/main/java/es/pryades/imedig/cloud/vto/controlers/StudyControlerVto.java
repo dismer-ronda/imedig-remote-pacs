@@ -19,6 +19,8 @@ import es.pryades.imedig.pacs.dto.Study;
 @SuppressWarnings("rawtypes")
 public class StudyControlerVto extends GenericControlerVto
 {
+	private static final long serialVersionUID = -6873087829670738808L;
+	
 	private static final String[] visibleCols =	{ "study_datetime", "pat_name", "study_iuid", "num_instances" };
 
 	public StudyControlerVto( ImedigContext ctx )

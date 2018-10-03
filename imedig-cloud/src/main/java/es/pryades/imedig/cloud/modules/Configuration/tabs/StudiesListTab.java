@@ -36,9 +36,10 @@ import es.pryades.imedig.pacs.dto.query.StudyQuery;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings({"serial"})
 public class StudiesListTab extends FilteredContent implements ModalParent
 {
+	private static final long serialVersionUID = -8196252452099428486L;
+
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( StudiesListTab.class );
 

@@ -24,9 +24,10 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public class InformesPlantillasConfig extends FilteredContent implements ModalParent
 {
+	private static final long serialVersionUID = 1615067269082314851L;
+	
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( InformesPlantillasConfig.class );
 

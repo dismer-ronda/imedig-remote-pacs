@@ -1,11 +1,13 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class ImedigResources 
+public class ImedigResources implements Serializable
 {
-	ResourceBundle resources;
-	String bundle;
+	private static final long serialVersionUID = -604168217294054524L;
+	
+	private ResourceBundle resources;
 	
 	private ImedigResources() 
 	{

@@ -1,16 +1,20 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import lombok.Getter;
 
 @SuppressWarnings("rawtypes")
-public class ColumnAccessor 
+public class ColumnAccessor implements Serializable
 {
-    private static final Logger LOG = Logger.getLogger( ColumnAccessor.class );
+ 	private static final long serialVersionUID = -4028197012182499045L;
+
+	private static final Logger LOG = Logger.getLogger( ColumnAccessor.class );
 	
 	private String column;
 	private int pos;

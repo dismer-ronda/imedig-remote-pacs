@@ -1,6 +1,11 @@
 package es.pryades.imedig.cloud.common;
 
-public class ImedigTheme {
+import java.io.Serializable;
+
+public class ImedigTheme implements Serializable {
+
+	private static final long serialVersionUID = -7850989786917513387L;
+	
 	public static final String STUDY_PANEL	= "studypanel";
 	public static final String CURSOR_POINTER	= "cursor_pointer";
 	public static final String FULLSCREEN_INDICATOR= "fullscreen";

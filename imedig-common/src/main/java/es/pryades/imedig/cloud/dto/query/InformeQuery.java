@@ -17,6 +17,8 @@ import es.pryades.imedig.cloud.dto.Informe;
 @Data
 public class InformeQuery extends Informe 
 {
+	private static final long serialVersionUID = -6308105161975673041L;
+	
 	Long desde;
 	Long hasta;
 	List<DetalleCentro> centros;

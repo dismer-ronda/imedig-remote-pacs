@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.Properties;
 
@@ -16,9 +17,11 @@ import es.pryades.imedig.cloud.common.ImedigException;
  * @version 
  * @since Jul, 2010
  */
-public class Settings 
+public class Settings implements Serializable 
 {
-    private static final Logger LOG = Logger.getLogger( Settings.class );
+	private static final long serialVersionUID = -1649820830326056357L;
+
+	private static final Logger LOG = Logger.getLogger( Settings.class );
 
 	public static final String TrustKey = "im3d1gcl0ud25887";
 

@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto.memo;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 /**
@@ -9,8 +11,10 @@ import lombok.Data;
 */
 
 @Data
-public class ResourceResponse
+public class ResourceResponse implements Serializable
 {
+	private static final long serialVersionUID = -6606210302225551613L;
+	
 	Object representation; 
 	Integer code;	
 }

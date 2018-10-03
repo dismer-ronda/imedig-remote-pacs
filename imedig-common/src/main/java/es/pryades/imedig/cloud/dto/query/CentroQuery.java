@@ -14,5 +14,7 @@ import es.pryades.imedig.cloud.dto.Centro;
 @Data
 public class CentroQuery extends Centro 
 {
+	private static final long serialVersionUID = 5077358113525137451L;
+	
 	Integer usuario;
 }

@@ -17,6 +17,8 @@ import es.pryades.imedig.cloud.dto.Usuario;
 @Data
 public class UsuarioQuery extends Usuario 
 {
+	private static final long serialVersionUID = 6152958189551941988L;
+	
 	Integer centro;
 	List<DetalleCentro> centros;
 }

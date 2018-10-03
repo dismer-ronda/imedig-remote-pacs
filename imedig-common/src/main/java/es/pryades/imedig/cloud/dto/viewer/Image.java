@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.dto.viewer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,8 +18,10 @@ import es.pryades.imedig.cloud.common.Utils;
  */
  
 @Data 
-public class Image 
+public class Image implements Serializable 
 {
+	private static final long serialVersionUID = -2314961499865116147L;
+	
 	private String StudyInstanceUID;
 	private String SeriesInstanceUID;
 	private String SOPInstanceUID;

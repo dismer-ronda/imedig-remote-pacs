@@ -7,9 +7,10 @@ import com.vaadin.ui.Window;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 
-@SuppressWarnings("serial")
 public class ReportsDlg extends Window 
 {
+	private static final long serialVersionUID = -6286380398905849561L;
+
 	private ImedigContext ctx;
 
 	private VerticalLayout mainLayout;

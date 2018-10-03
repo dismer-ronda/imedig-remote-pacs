@@ -13,7 +13,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class InformePlantilla extends ImedigDto 
 {
-	String nombre;
-	String datos;
-	Integer centro;
+	private static final long serialVersionUID = 6914821765347696445L;
+
+	private String nombre;
+	private String datos;
+	private Integer centro;
 }

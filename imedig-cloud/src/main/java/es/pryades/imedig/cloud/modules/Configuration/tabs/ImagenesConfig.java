@@ -24,9 +24,10 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-@SuppressWarnings("serial")
 public class ImagenesConfig extends FilteredContent implements ModalParent
 {
+	private static final long serialVersionUID = -6672140430163376710L;
+	
 	@SuppressWarnings("unused")
 	private static final Logger LOG = Logger.getLogger( ImagenesConfig.class );
 
