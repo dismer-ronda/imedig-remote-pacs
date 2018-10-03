@@ -65,8 +65,8 @@ public class SelectDateLayout extends VerticalLayout {
 		dateField.setParseErrorMessage(AppUtils.getString( resource, "error.date.format"));
 		dateField.setImmediate(true);
 		dateField.addValueChangeListener( new ValueChangeListener()  {
-			
-			private static final long serialVersionUID = 1L;
+
+			private static final long serialVersionUID = -8810695992303266319L;
 
 			@Override
 			public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
