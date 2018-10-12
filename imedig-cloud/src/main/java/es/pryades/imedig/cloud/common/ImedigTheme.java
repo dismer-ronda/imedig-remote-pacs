@@ -23,9 +23,22 @@ public class ImedigTheme implements Serializable {
 	public static final String BG_LIME		= "bg_lime";
 	public static final String BG_PINK		= "bg_pink";
 	public static final String BG_MAGENTA 	= "bg_magenta";
-	public static final String BG_YELLOW	= "bg_yelow";
+	public static final String BG_YELLOW	= "bg_yellow";
 	public static final String BG_LIGHT_BLUE= "bg_light_blue";
 	public static final String BG_THUMNAIL  = "bg_thumnails";
+	
+	public static final String COLOR_BLUE		= "color_blue";
+	public static final String COLOR_GREEN		= "color_green";
+	public static final String COLOR_BROWN		= "color_brown";
+	public static final String COLOR_PURPLE 	= "color_purple";
+	public static final String COLOR_RED		= "color_red";
+	public static final String COLOR_ORANGE		= "color_orange";
+	public static final String COLOR_TEAL		= "color_teal";
+	public static final String COLOR_LIME		= "color_lime";
+	public static final String COLOR_PINK		= "color_pink";
+	public static final String COLOR_MAGENTA 	= "color_magenta";
+	public static final String COLOR_YELLOW		= "color_yellow";
+	public static final String COLOR_LIGHT_BLUE	= "color_light_blue";
 	
 	public static final String BUTTON_TOOLBOX= "toolbox";
 	public static final String BUTTON_TOOLBAR= "toolbar";

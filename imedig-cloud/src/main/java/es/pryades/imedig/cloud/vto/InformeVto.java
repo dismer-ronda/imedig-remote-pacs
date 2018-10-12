@@ -1,11 +1,13 @@
 package es.pryades.imedig.cloud.vto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.vaadin.ui.Component;
+
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.vto.controlers.InformeControlerVto;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 
@@ -19,6 +21,7 @@ public class InformeVto extends GenericVto
 {
 	private static final long serialVersionUID = 1614728255098525760L;
 	
+	private Component imgEstado;
 	private String fecha;
 	private String estado;
 	private String paciente_id;

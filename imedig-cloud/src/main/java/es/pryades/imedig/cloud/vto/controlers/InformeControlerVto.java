@@ -2,7 +2,12 @@ package es.pryades.imedig.cloud.vto.controlers;
 
 import java.util.HashMap;
 
-import es.pryades.imedig.cloud.common.ImedigException;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
+
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
@@ -23,7 +28,7 @@ public class InformeControlerVto extends GenericControlerVto
 {
 	private static final long serialVersionUID = -5276816955887400532L;
 	
-	private static final String[] visibleCols =	{ "fecha", "estado", "centro_nombre", "paciente_id", "paciente_nombre", "refiere", "informa"};
+	private static final String[] visibleCols =	{ "imgEstado", "fecha", "estado", "centro_nombre", "paciente_id", "paciente_nombre", "refiere", "informa"};
 
 	public InformeControlerVto( ImedigContext ctx )
 	{
@@ -159,6 +164,28 @@ public class InformeControlerVto extends GenericControlerVto
 		}
 	}
 
+	private Component getImgEstado( Integer estado )
+	{
+		Label label = new Label(FontAwesome.FILE_TEXT.getHtml(), ContentMode.HTML);
+		label.setWidth( "-1px" );
+		switch ( estado.intValue() )
+		{
+			case Informe.STATUS_INFORMED:
+				label.addStyleName( ImedigTheme.COLOR_RED );
+				break;
+			case Informe.STATUS_APROVED:
+				label.addStyleName( ImedigTheme.COLOR_YELLOW );
+				break;
+			case Informe.STATUS_FINISHED:
+				label.addStyleName( ImedigTheme.COLOR_GREEN );
+				break;
+			default:
+				label.addStyleName( ImedigTheme.COLOR_ORANGE );
+		}
+		
+		return label;
+	}
+
 	public GenericVto generateVtoFromDto( Object dtoObj ) throws Throwable
 	{
 		InformeVto result = null;
@@ -170,6 +197,7 @@ public class InformeControlerVto extends GenericControlerVto
 				result = new InformeVto();
 
 				result.setId( ((DetalleInforme)dtoObj).getId() );
+				result.setImgEstado( getImgEstado( ((DetalleInforme)dtoObj).getEstado() ) );
 				result.setEstado( getEstado( ((DetalleInforme)dtoObj).getEstado() ) );
 				result.setFecha( Utils.getFormatedDate( ((DetalleInforme)dtoObj).getFecha(), "dd/MM/yyyy HH:mm" ) );
 				result.setCentro_nombre( ((DetalleInforme)dtoObj).getCentro_nombre() );
