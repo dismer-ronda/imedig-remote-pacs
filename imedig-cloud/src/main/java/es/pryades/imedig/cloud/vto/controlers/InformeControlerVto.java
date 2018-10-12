@@ -166,7 +166,7 @@ public class InformeControlerVto extends GenericControlerVto
 
 	private Component getImgEstado( Integer estado )
 	{
-		Label label = new Label(FontAwesome.FILE_TEXT.getHtml(), ContentMode.HTML);
+		Label label = new Label(FontAwesome.FILE_TEXT_O.getHtml(), ContentMode.HTML);
 		label.setWidth( "-1px" );
 		switch ( estado.intValue() )
 		{
