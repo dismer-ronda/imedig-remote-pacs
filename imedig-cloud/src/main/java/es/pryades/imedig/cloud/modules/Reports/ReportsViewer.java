@@ -1,6 +1,7 @@
 package es.pryades.imedig.cloud.modules.Reports;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -18,6 +19,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -82,28 +84,41 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	private Button btnView;
 	private Button btnApprove;
 	private Button btnFinish;
+	private ComboBox comboRefiere;
+	private ComboBox comboStatus;
 
 	private InformesManager informesManager;
 	private InformesImagenesManager imagenesManager;
 	
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
+	
+	private static final Integer PERFIL_IMAGENOLOGO = 3;
+	private static final Integer PERFIL_USUARIO = 2;
+	
+	private boolean defaultSearch;
 
 	/**
 	 * 
 	 * @param ctx
 	 * @param resource
 	 */
-	public ReportsViewer( ImedigContext ctx )
+	public ReportsViewer( ImedigContext ctx, boolean defaultSearch )
 	{
 		super( ctx );
 		
 		informesManager = (InformesManager) IOCManager.getInstanceOf( InformesManager.class );
 		imagenesManager = (InformesImagenesManager) IOCManager.getInstanceOf( InformesImagenesManager.class );
 		
+		this.defaultSearch = defaultSearch;
+		
 		setSizeFull();
 		setMargin( true );
 		initComponents();
+		
+		if (defaultSearch){
+			Notification.show( "Mesajes que mirar", Notification.Type.ERROR_MESSAGE );
+		}
 	}
 
 	public String[] getVisibleCols()
@@ -179,6 +194,18 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	@Override
 	public Query getQueryObject()
 	{
+		InformeQuery query = null;
+		if (defaultSearch){
+			query = defaultQuery();
+		}else{
+			query = getQuery();
+		}
+		defaultSearch = false;
+		
+		return query;
+	}
+	
+	private InformeQuery getQuery(){
 		InformeQuery queryObj = new InformeQuery();
 
 		setDateFilter( queryObj );
@@ -212,6 +239,24 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 			queryObj.setModalidad( modalidad );
 
 		return queryObj;
+	}
+	
+	private InformeQuery defaultQuery(){
+		InformeQuery query = new InformeQuery();
+		setDateFilter( query );
+		
+		if (getContext().hasProfile( PERFIL_IMAGENOLOGO )){
+			query.setEstados( Arrays.asList( Informe.STATUS_INFORMED, Informe.STATUS_REQUESTED ) );
+		}else if (getContext().hasProfile( PERFIL_USUARIO )){
+			query.setEstados( Arrays.asList( Informe.STATUS_APROVED ) );
+			query.setRefiere( getContext().getUsuario().getId() );
+			comboRefiere.setValue( getContext().getUsuario().getId() );
+			comboStatus.setValue( Informe.STATUS_APROVED );
+		}else{
+			query = getQuery();
+		}
+		
+		return query;
 	}
 
 	private boolean canViewReport( DetalleInforme informe )
@@ -693,24 +738,24 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 
 	public Component getQueryEstado()
 	{
-		ComboBox combo = new ComboBox(getContext().getString( "words.status" )); 
-		combo.setWidth( COMBO_WIDTH );
-		combo.setNullSelectionAllowed( false );
-		combo.setTextInputAllowed( false );
-		combo.setPropertyDataSource( bi.getItemProperty( "estado" ) );
+		comboStatus = new ComboBox(getContext().getString( "words.status" )); 
+		comboStatus.setWidth( COMBO_WIDTH );
+		comboStatus.setNullSelectionAllowed( false );
+		comboStatus.setTextInputAllowed( false );
+		comboStatus.setPropertyDataSource( bi.getItemProperty( "estado" ) );
 		
-		combo.addItem( -1 );
-		combo.setItemCaption( -1, getContext().getString( "words.all" ) );
-		combo.addItem( Informe.STATUS_REQUESTED );
-		combo.setItemCaption( Informe.STATUS_REQUESTED, getContext().getString( "words.requested" ) );
-		combo.addItem( Informe.STATUS_INFORMED );
-		combo.setItemCaption( Informe.STATUS_INFORMED, getContext().getString( "words.not.approved" ) );
-		combo.addItem( Informe.STATUS_APROVED );
-		combo.setItemCaption( Informe.STATUS_APROVED, getContext().getString( "words.approved" ) );		
-		combo.addItem( Informe.STATUS_FINISHED );
-		combo.setItemCaption( Informe.STATUS_FINISHED, getContext().getString( "words.finished" ) );
+		comboStatus.addItem( -1 );
+		comboStatus.setItemCaption( -1, getContext().getString( "words.all" ) );
+		comboStatus.addItem( Informe.STATUS_REQUESTED );
+		comboStatus.setItemCaption( Informe.STATUS_REQUESTED, getContext().getString( "words.requested" ) );
+		comboStatus.addItem( Informe.STATUS_INFORMED );
+		comboStatus.setItemCaption( Informe.STATUS_INFORMED, getContext().getString( "words.not.approved" ) );
+		comboStatus.addItem( Informe.STATUS_APROVED );
+		comboStatus.setItemCaption( Informe.STATUS_APROVED, getContext().getString( "words.approved" ) );		
+		comboStatus.addItem( Informe.STATUS_FINISHED );
+		comboStatus.setItemCaption( Informe.STATUS_FINISHED, getContext().getString( "words.finished" ) );
 		
-		return getRow( combo );
+		return getRow( comboStatus );
 	}
 
 	public Component getQueryCodigo()
@@ -784,15 +829,15 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 
 	public Component getQueryRefiere()
 	{
-		ComboBox combo = new ComboBox(getContext().getString( "words.refer" ));
-		combo.setNullSelectionAllowed( true );
-		combo.setTextInputAllowed( false );
-		combo.setPropertyDataSource( bi.getItemProperty( "refiere" ) );
-		combo.setWidth( COMBO_WIDTH );
+		comboRefiere = new ComboBox(getContext().getString( "words.refer" ));
+		comboRefiere.setNullSelectionAllowed( true );
+		comboRefiere.setTextInputAllowed( false );
+		comboRefiere.setPropertyDataSource( bi.getItemProperty( "refiere" ) );
+		comboRefiere.setWidth( COMBO_WIDTH );
 		
-		fillComboMedicos( combo );
+		fillComboMedicos( comboRefiere );
 		
-		return getRow( combo );
+		return getRow( comboRefiere );
 	}
 
 	public Component getQueryInforma()
@@ -838,39 +883,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		claves = "";
 		
 		bi = new BeanItem<ReportsViewer>( this );
-		
-		/*VerticalLayout column = new VerticalLayout();
-		column.setMargin( false );
-		column.setSpacing( true );
-		
-		HorizontalLayout row1 = new HorizontalLayout();
-		row1.setSpacing( true );
-		row1.setMargin( false );
-		row1.addComponent( getQueryFecha() );
-		row1.addComponent( getQueryEstado() );
-		row1.addComponent( getQueryRefiere() );
-		row1.addComponent( getQueryInforma() );
-		
-		HorizontalLayout row2 = new HorizontalLayout();
-		row2.setSpacing( true );
-		row2.setMargin( false );
-		row2.addComponent( getQueryCentro() );
-		row2.addComponent( getQueryModalidad() );
-		row2.addComponent( getQueryEstudio() );
-		row2.addComponent( getQueryPaciente() );
-
-		HorizontalLayout row3 = new HorizontalLayout();
-		row3.setSpacing( true );
-		row3.setMargin( false );
-		row3.addComponent( getQueryCodigo() );
-		row3.addComponent( getQueryClaves() ); 
-
-		column.addComponent( row1 );
-		column.addComponent( row2 );
-		column.addComponent( row3 );
-
-		return column;*/
-		
+	
 		CssLayout query = new CssLayout();
 		query.setWidth( "100%" );
 		query.addComponents( getQueryFecha(), getQueryEstado(), getQueryRefiere(), 

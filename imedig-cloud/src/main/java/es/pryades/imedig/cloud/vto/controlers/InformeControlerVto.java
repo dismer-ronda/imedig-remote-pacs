@@ -171,16 +171,16 @@ public class InformeControlerVto extends GenericControlerVto
 		switch ( estado.intValue() )
 		{
 			case Informe.STATUS_INFORMED:
-				label.addStyleName( ImedigTheme.COLOR_RED );
-				break;
-			case Informe.STATUS_APROVED:
 				label.addStyleName( ImedigTheme.COLOR_YELLOW );
 				break;
-			case Informe.STATUS_FINISHED:
+			case Informe.STATUS_APROVED:
 				label.addStyleName( ImedigTheme.COLOR_GREEN );
 				break;
+			case Informe.STATUS_REQUESTED:
+				label.addStyleName( ImedigTheme.COLOR_LIGHT_BLUE );
+				break;
 			default:
-				label.addStyleName( ImedigTheme.COLOR_ORANGE );
+				break;
 		}
 		
 		return label;

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,14 +38,17 @@ import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.AccesosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
+import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
 import es.pryades.imedig.cloud.core.dal.ParametrosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Acceso;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.query.CentroQuery;
+import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
@@ -70,6 +74,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private static final String AUTH_CONFIGURACION = "configuracion";
 	private static final String AUTH_ADMINISTRACION = "administracion";
+	private static final Integer PERFIL_IMAGENOLOGO = 3;
+	private static final Integer PERFIL_USUARIO = 2;
 	
 	private LoginPanel loginPanel;
 
@@ -310,11 +316,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		{
 			public void buttonClick( ClickEvent event )
 			{
-				if (btnSelected != null){
-					btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-				}
-				btnSelected = buttonImages;
-				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
 				showImages();
 			}
 		} );
@@ -330,11 +331,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 			public void buttonClick( ClickEvent event )
 			{
-				if (btnSelected != null){
-					btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-				}
-				btnSelected = buttonReports;
-				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
 				showReports();
 			}
 		} );
@@ -544,12 +540,17 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	public void showImages()
 	{
+		if (btnSelected != null){
+			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		}
+		btnSelected = buttonImages;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		
 		contents.removeAllComponents();
 		if (imageViewer == null){
 			imageViewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
 		}
 		contents.addComponent( imageViewer );
-		//contents.setExpandRatio( viewer, 1.0f );
 	}
 	
 	private static User getUser(Usuario usuario){
@@ -592,14 +593,31 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			showGlobalButtons();
 			
 			if ( userHasCenterAccess() ){
-				btnSelected = buttonImages;
-				btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-				showImages();
+				//showImages();
+				showMainView();
 			}
 		}
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
+		}
+	}
+	
+	private void showMainView(){
+		Integer count = 0;
+		boolean defaultSearch = false;
+		if (getContext().hasProfile( PERFIL_IMAGENOLOGO )){
+			count = getCountReport( getContext(), null, Informe.STATUS_INFORMED, Informe.STATUS_REQUESTED);
+			defaultSearch = true;
+		}else if (getContext().hasProfile( PERFIL_USUARIO )){
+			count = getCountReport( getContext(), getContext().getUsuario().getId(), Informe.STATUS_APROVED);
+			defaultSearch = true;
+		}
+		
+		if (count > 0 ){
+			showReports(true);
+		}else{
+			showImages();
 		}
 	}
 
@@ -610,10 +628,21 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private void showReports()
 	{
+		showReports( false );
+	}
+	
+	private void showReports(boolean defaultSearch)
+	{
+		if (btnSelected != null){
+			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		}
+		btnSelected = buttonReports;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+
 		contents.removeAllComponents();
 		
 		if (reportsViewer == null){
-			reportsViewer = new ReportsViewer( getContext() );
+			reportsViewer = new ReportsViewer( getContext(), defaultSearch );
 		}
 		
 		contents.addComponent( reportsViewer );
@@ -713,6 +742,23 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}else if (action instanceof ExitFullScreen) {
 			topBar.setVisible( true );
 		}
+	}
+	
+	private Integer getCountReport(ImedigContext ctx,Integer refiere, Integer...status){
+		//ImedigManager queryMan = (ImedigManager) IOCManager.getInstanceOf( this.VtoDataRef.getFieldManagerImp() );
+		DetallesInformesManager manager = IOCManager.getInstanceOf( DetallesInformesManager.class ); 
+		try
+		{
+			InformeQuery query = new InformeQuery();
+			query.setRefiere( refiere );
+			query.setEstados( Arrays.asList( status ) );
+			return manager.getNumberOfRows( ctx, query );
+		}
+		catch ( Throwable e )
+		{
+			Utils.logException( e, LOG );
+		}
 		
+		return 0;
 	}
 }

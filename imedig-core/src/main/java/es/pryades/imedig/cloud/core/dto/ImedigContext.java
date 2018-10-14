@@ -162,6 +162,13 @@ public class ImedigContext implements Serializable
 
 		return false;
 	}
+	
+	
+	public boolean hasProfile( Integer profile )	{
+		if (usuario == null) return false;
+		
+		return profile.equals( usuario.getPerfil() ); 
+	}	
 
 	public String getString( String key )
 	{

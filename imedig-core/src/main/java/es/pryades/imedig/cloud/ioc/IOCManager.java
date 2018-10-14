@@ -63,8 +63,12 @@ public class IOCManager implements Serializable
 	 * @return <code>Object</code> Devuelve una instancia de la interfaz del servicio solicitado
 	 *         
 	 */
-	public static Object getInstanceOf( Class clazz )
-	{
-		return getInstance().registry.getService( clazz );
+	//public static Object getInstanceOf( Class clazz )
+	//{
+	//	return getInstance().registry.getService( clazz );
+	//}
+	
+	public static <T> T getInstanceOf(Class<T> clazz) {
+		return getInstance().registry.getService(clazz);
 	}
 }

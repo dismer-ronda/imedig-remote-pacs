@@ -37,6 +37,9 @@
 			<if test="estado != null">
 				AND estado = #{estado}  
 	        </if>
+	        <if test="estados != null and !estados.isEmpty()">
+				AND estado in <foreach collection="estados" item="item" open="(" close=")" separator=",">#{item}</foreach>  
+	        </if>
 			<if test="centros != null">
 				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
 	        </if>
@@ -137,6 +140,9 @@
 	        </if>
 			<if test="estado != null">
 				AND susc_informes.estado = #{estado}  
+	        </if>
+	        <if test="estados != null and !estados.isEmpty()">
+				AND susc_informes.estado in <foreach collection="estados" item="item" open="(" close=")" separator=",">#{item}</foreach>  
 	        </if>
 			<if test="centros != null">
 				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
@@ -243,6 +249,10 @@
 			<if test="estado != null">
 				AND susc_informes.estado = #{estado}  
 	        </if>
+	        <if test="estados != null and !estados.isEmpty()">
+				AND susc_informes.estado in <foreach collection="estados" item="item" open="(" close=")" separator=",">#{item}</foreach>  
+	        </if>
+	        
 			<if test="centros != null">
 				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
 	        </if>
