@@ -15,9 +15,11 @@ insert into susc_monedas ( id, nombre, codigo ) values ( 192, 'Peso cubano', 'CU
 insert into susc_monedas ( id, nombre, codigo ) values ( 193, 'Peso convertible', 'CUC' );
 
 insert into susc_perfiles (id, descripcion) values (1, 'Administrador');
-insert into susc_perfiles (id, descripcion) values (2, 'Usuario');
+insert into susc_perfiles (id, descripcion) values (2, 'Médico');
 insert into susc_perfiles (id, descripcion) values (3, 'Imagenólogo');
 insert into susc_perfiles (id, descripcion) values (4, 'Administrador de centros');
+insert into susc_perfiles (id, descripcion) values (5, 'Estudiante');
+insert into susc_perfiles (id, descripcion) values (6, 'Administrativo');
 
 insert into susc_derechos (id, codigo, descripcion) values (1, 'login','Acceso a la aplicación');
 
@@ -45,6 +47,7 @@ insert into susc_derechos (id, codigo, descripcion) values (15,'administracion.a
 insert into susc_derechos (id, codigo, descripcion) values (16,'informes.crear','Creación y modificación de informes') ;
 insert into susc_derechos (id, codigo, descripcion) values (17,'informes.aprobar','Aprobación de informes') ;
 insert into susc_derechos (id, codigo, descripcion) values (23,'informes.solicitar','Solicitud de informes') ;
+insert into susc_derechos (id, codigo, descripcion) values (24,'informes.terminar','Terminar informes') ;
 
 insert into susc_derechos (id, codigo, descripcion) values (18, 'configuracion.informes.plantillas','Mantenimiento de catálogo de plantillas de informes');
 insert into susc_derechos (id, codigo, descripcion) values (19, 'configuracion.informes.plantillas.adicionar','Adicionar plantillas');
@@ -74,14 +77,17 @@ insert into susc_perfiles_derechos (perfil, derecho) values (1, 20);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 21);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 22);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 23);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 24);
 
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 1);
+insert into susc_perfiles_derechos (perfil, derecho) values (2, 23);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 23);
 
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 1);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 16);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 17);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 23);
+insert into susc_perfiles_derechos (perfil, derecho) values (3, 24);
 
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 1);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 2);
@@ -101,6 +107,15 @@ insert into susc_perfiles_derechos (perfil, derecho) values (4, 19);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 20);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 21);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 23);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 24);
+
+insert into susc_perfiles_derechos (perfil, derecho) values (5, 1);
+
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 1);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 16);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 17);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 23);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 24);
 
 ---------------------------------------------    
 -- usuarios 

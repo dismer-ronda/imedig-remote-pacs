@@ -244,7 +244,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 
 	private boolean canFinishReport( DetalleInforme informe )
 	{
-		return informe.aprobado();
+		return informe.aprobado() && getContext().hasRight( "informes.terminar" );
 	}
 
 	private void bttnViewReportListener()

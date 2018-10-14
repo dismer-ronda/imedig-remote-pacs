@@ -109,7 +109,7 @@ public class LeftToolBar extends HorizontalLayout {
 		group = new VerticalLayout();
 		group.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
 		
-		if ( context.hasRight( "informes.crear" ) )
+		if ( context.hasRight( "informes.solicitar" ) )
 		{
 			group.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
 			

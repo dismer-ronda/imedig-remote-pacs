@@ -296,7 +296,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 
 	private boolean canFinishReport( DetalleInforme informe )
 	{
-		return informe.aprobado();
+		return informe.aprobado() && getContext().hasRight( "informes.terminar" );
 	}
 
 	private void bttnViewReportListener()
