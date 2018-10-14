@@ -117,7 +117,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		initComponents();
 		
 		if (defaultSearch){
-			Notification.show( "Mesajes que mirar", Notification.Type.ERROR_MESSAGE );
+			Notification.show( getContext().getString( "ReportsDlg.message.reports.attention" ), Notification.Type.HUMANIZED_MESSAGE);
 		}
 	}
 
