@@ -2,6 +2,7 @@
 
 $v-app-loading-text: "imedig";
 $v-background-color: #444d50;
+$v-disabled-opacity: 0.3;
 $v-focus-color: #02925d;
 $v-focus-style: 0 0 3px 2px $v-focus-color;
 $v-bevel-depth: 40%;
@@ -9,7 +10,7 @@ $v-bevel: false;
 $v-gradient: false;
 $v-shadow: false;
 $v-border-radius: 0px;
-$v-font-family: Roboto,'Open Sans',sans-serif;
+$v-font-family: Roboto,DroidSans,sans-serif;
 $v-font-weight: 400;
 $v-font-weight--header: 600;
 $v-unit-size: 35px;
@@ -26,7 +27,9 @@ $v-component-group-spacing: 6px;
 @include v-font(IcoMoon,
               '../../../../imedig/fonts/icomoon');
 @include v-font(Roboto,
-              '../../../../imedig/fonts/Roboto-Regular');              
+              '../../../../imedig/fonts/Roboto-Regular');
+@include v-font(DroidSans,
+              '../../../../imedig/fonts/DroidSans');                            
 
 /* This contains all of your theme.*/
 /* If somebody wants to extend the theme she will include this mixin. */

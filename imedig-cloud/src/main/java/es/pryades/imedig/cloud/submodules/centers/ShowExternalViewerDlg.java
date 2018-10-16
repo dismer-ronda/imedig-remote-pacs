@@ -116,21 +116,22 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 		operacionesContainer = new HorizontalLayout();
 		operacionesContainer.setMargin( true );
 		operacionesContainer.setSpacing( true );
+		operacionesContainer.addStyleName( "zi30" );
 
 		bttnClose = new Button( getContext().getString( "words.close" ) );
-		
+		bttnClose.addStyleName( "zi30" );
 		if ( getContext().hasRight( "informes.crear" ) )
 		{
 			
-			if ( request ) 
+			if ( request ) {
 				bttnRequest = new Button( getContext().getString( "words.report.request" ) );
-			else
-				bttnReport = new Button( getContext().getString( "words.report.add" ) );
-	
-			if ( request ) 
+				bttnRequest.addStyleName( "zi30" );
 				operacionesContainer.addComponent( bttnRequest );
-			else
+			}else{
+				bttnReport = new Button( getContext().getString( "words.report.add" ) );
+				bttnReport.addStyleName( "zi30" );
 				operacionesContainer.addComponent( bttnReport );
+			}
 		}
 		
 		operacionesContainer.addComponent( bttnClose );

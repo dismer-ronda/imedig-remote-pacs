@@ -19,8 +19,8 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
@@ -28,6 +28,7 @@ import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.common.MessageDlg;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -97,6 +98,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	private static final Integer PERFIL_USUARIO = 2;
 	
 	private boolean defaultSearch;
+	private boolean showMessage;
 
 	/**
 	 * 
@@ -111,16 +113,20 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		imagenesManager = (InformesImagenesManager) IOCManager.getInstanceOf( InformesImagenesManager.class );
 		
 		this.defaultSearch = defaultSearch;
+		this.showMessage = defaultSearch;
 		
 		setSizeFull();
 		setMargin( true );
 		initComponents();
 		
-		if (defaultSearch){
-			Notification.show( getContext().getString( "ReportsDlg.message.reports.attention" ), Notification.Type.HUMANIZED_MESSAGE);
+		if (showMessage){
+			MessageDlg dlg = new MessageDlg( getContext().getString( "words.information" )
+					, getContext().getResources()
+					, getContext().getString( "ReportsDlg.message.reports.attention" ) );
+			UI.getCurrent().addWindow( dlg );
 		}
 	}
-
+	
 	public String[] getVisibleCols()
 	{
 		return InformeControlerVto.getVisibleCols();

@@ -147,7 +147,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		leftToolBar = new LeftToolBar(context, this);
 		content.addComponent(leftToolBar);
 		content.setComponentAlignment(leftToolBar, Alignment.TOP_LEFT);
-		imageCanvas = new ImageCanvas( context, user, this, this );
+		imageCanvas = new ImageCanvas( context, user, this, this, !modeReport );
 		content.addComponent(imageCanvas);
 		content.setExpandRatio(imageCanvas, 1.0f);
 	}

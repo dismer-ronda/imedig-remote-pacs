@@ -351,30 +351,6 @@
 	text-align: center;
 }
 
-@font-face {
-	font-family: "Open Sans";
-	src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot);
-	src: url(../valo/fonts/open-sans/OpenSans-Light-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Light-webfont.ttf) format("truetype");
-	font-weight: 300;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Open Sans";
-	src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot);
-	src: url(../valo/fonts/open-sans/OpenSans-Regular-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Regular-webfont.ttf) format("truetype");
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: "Open Sans";
-	src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot);
-	src: url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-Semibold-webfont.ttf) format("truetype");
-	font-weight: 600;
-	font-style: normal;
-}
-
 @-webkit-keyframes v-rotate-360 {
 		to {
 		-webkit-transform: rotate(360deg);
@@ -1593,8 +1569,26 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 }
 
+@font-face {
+	font-family: DroidSans;
+	font-weight: normal;
+	font-style: normal;
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/DroidSans.eot);
+	src: url(../valo/util/bourbon/css3/../../../../imedig/fonts/DroidSans.eot?#iefix) format("embedded-opentype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/DroidSans.woff) format("woff"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/DroidSans.ttf) format("truetype"), url(../valo/util/bourbon/css3/../../../../imedig/fonts/DroidSans.svg#DroidSans) format("svg");
+}
+
+.DroidSans {
+	font-family: DroidSans;
+	font-style: normal;
+	font-weight: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	display: inline-block;
+	text-align: center;
+}
+
 .imedig.v-app, .imedig.v-app-loading {
-	font: 400 16px/1.55 Roboto, "Open Sans", sans-serif;
+	font: 400 16px/1.55 Roboto, DroidSans, sans-serif;
 	color: #cacecf;
 	background-color: #444d50;
 	cursor: default;
@@ -1842,8 +1836,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig a.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-disabled {
@@ -2220,8 +2214,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-button.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-button.v-disabled:after {
@@ -2460,8 +2454,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-button-link.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-button-tiny {
@@ -2690,8 +2684,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-checkbox.v-disabled  > label, .imedig .v-checkbox.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-checkbox.v-disabled  > label > .v-icon {
@@ -2715,8 +2709,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-checkbox.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-checkbox-small {
@@ -2815,8 +2809,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-checkbox-small.v-disabled  > label, .imedig .v-checkbox-small.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-checkbox-small.v-disabled  > label > .v-icon {
@@ -2840,8 +2834,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-checkbox-small.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-checkbox-large {
@@ -2940,8 +2934,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-checkbox-large.v-disabled  > label, .imedig .v-checkbox-large.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-checkbox-large.v-disabled  > label > .v-icon {
@@ -2965,8 +2959,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-checkbox-large.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect {
@@ -3019,8 +3013,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect [class*="input"].v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect [class*="input"]:focus {
@@ -3105,8 +3099,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect.v-disabled [class$="button"] {
@@ -3570,8 +3564,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect-tiny.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect-tiny.v-disabled [class$="button"] {
@@ -3696,8 +3690,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect-compact.v-disabled, .imedig .v-filterselect-small.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect-compact.v-disabled [class$="button"], .imedig .v-filterselect-small.v-disabled [class$="button"] {
@@ -3827,8 +3821,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect-large.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect-large.v-disabled [class$="button"] {
@@ -3954,8 +3948,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-filterselect-huge.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-filterselect-huge.v-disabled [class$="button"] {
@@ -4214,8 +4208,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textfield.v-disabled, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textarea.v-disabled, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-filterselect input.v-disabled, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-datefield input.v-disabled, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-richtextarea.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textfield:focus, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-textarea:focus, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-filterselect input:focus, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-datefield input:focus, .imedig .v-formlayout.light  > table > tbody > [class*="row"] > [class*="contentcell"]  > .v-richtextarea:focus {
@@ -4920,8 +4914,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-grid.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-grid-header .v-grid-cell {
@@ -5082,8 +5076,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-grid-editor-save.v-disabled, .imedig .v-grid-editor-cancel.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-grid-spacer {
@@ -5157,8 +5151,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-textfield.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-textfield:focus {
@@ -5650,8 +5644,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-textarea.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-textarea:focus {
@@ -5938,8 +5932,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield [class*="textfield"].v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield [class*="textfield"]:focus {
@@ -6008,8 +6002,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield.v-disabled [class*="button"] {
@@ -6660,8 +6654,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield-tiny.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield-tiny.v-disabled [class*="button"] {
@@ -6774,8 +6768,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield-compact.v-disabled, .imedig .v-datefield-small.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield-compact.v-disabled [class*="button"], .imedig .v-datefield-small.v-disabled [class*="button"] {
@@ -6893,8 +6887,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield-large.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield-large.v-disabled [class*="button"] {
@@ -7008,8 +7002,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-datefield-huge.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-datefield-huge.v-disabled [class*="button"] {
@@ -7303,8 +7297,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-menubar.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-menubar.v-disabled:after {
@@ -7429,8 +7423,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-menubar-menuitem-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-menubar > .v-menubar-menuitem-selected {
@@ -7767,8 +7761,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-radiobutton.v-disabled  > label, .imedig .v-radiobutton.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-radiobutton.v-disabled  > label > .v-icon {
@@ -7792,8 +7786,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-radiobutton.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 :root .imedig .v-radiobutton > input:checked ~ label:after {
@@ -7925,8 +7919,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-select-optiongroup-small .v-checkbox.v-disabled  > label, .imedig .v-select-optiongroup-small .v-checkbox.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-small .v-checkbox.v-disabled  > label > .v-icon {
@@ -7950,8 +7944,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-select-optiongroup-small .v-checkbox.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-small .v-radiobutton {
@@ -8049,8 +8043,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-select-optiongroup-small .v-radiobutton.v-disabled  > label, .imedig .v-select-optiongroup-small .v-radiobutton.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-small .v-radiobutton.v-disabled  > label > .v-icon {
@@ -8074,8 +8068,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-select-optiongroup-small .v-radiobutton.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 :root .imedig .v-select-optiongroup-small .v-radiobutton > input:checked ~ label:after {
@@ -8207,8 +8201,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-select-optiongroup-large .v-checkbox.v-disabled  > label, .imedig .v-select-optiongroup-large .v-checkbox.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-large .v-checkbox.v-disabled  > label > .v-icon {
@@ -8232,8 +8226,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-select-optiongroup-large .v-checkbox.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-large .v-radiobutton {
@@ -8331,8 +8325,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-select-optiongroup-large .v-radiobutton.v-disabled  > label, .imedig .v-select-optiongroup-large .v-radiobutton.v-disabled  > .v-icon {
 	cursor: default;
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-select-optiongroup-large .v-radiobutton.v-disabled  > label > .v-icon {
@@ -8356,8 +8350,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 :root .imedig .v-select-optiongroup-large .v-radiobutton.v-readonly > input ~ label:after {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 :root .imedig .v-select-optiongroup-large .v-radiobutton > input:checked ~ label:after {
@@ -8421,8 +8415,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-link.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-link a {
@@ -9327,8 +9321,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-on.v-disabled, .imedig .v-off.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-off:before {
@@ -9925,8 +9919,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-slider.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-slider-base {
@@ -10195,8 +10189,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-tabsheet-tabitemcell .v-caption.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 	cursor: default;
 	color: inherit !important;
 }
@@ -11471,8 +11465,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-label.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-label-undef-w {
@@ -11775,8 +11769,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-popupview.v-disabled {
-	opacity: 0.5;
-	filter: alpha(opacity=50) ;
+	opacity: 0.3;
+	filter: alpha(opacity=30.0) ;
 }
 
 .imedig .v-popupview-popup {
@@ -13235,6 +13229,10 @@ div.v-layout.v-horizontal.v-widget {
 .fullscreen .v-button:focus:after {
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
+}
+
+.zi30 {
+	z-index: 30;
 }
 
 .changeframe {

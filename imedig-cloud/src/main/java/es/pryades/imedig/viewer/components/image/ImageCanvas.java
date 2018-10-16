@@ -109,15 +109,18 @@ public class ImageCanvas extends CssLayout {
 	private Button btnFramePrior;
 	private Button btnFrameNext;
 	private Button btnFrameLast;
+	
+	private final boolean showFullScreen;
 
 	@Getter
 	private ReportInfo reportInfo;
 
-	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction, ImageSerieNavigator navidator) {
+	public ImageCanvas( ImedigContext context, User user, ListenerAction listenerAction, ImageSerieNavigator navidator, boolean showFullScreen) {
 		
 		this.context = context;
 		this.listenerAction = listenerAction;
 		this.imageDataNavigator = navidator;
+		this.showFullScreen = showFullScreen;
 		
 		setSizeFull();
 		
@@ -125,7 +128,8 @@ public class ImageCanvas extends CssLayout {
 
 		init();
 
-		buildFullScreenButtons();
+		if (showFullScreen) buildFullScreenButtons();
+		
 		buildImageFrameChangeButtons();
 		settingCanvas();
 	}
