@@ -78,7 +78,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Viewer -->
+		<!-- addons -->
 		<dependency>
 			<groupId>es.pryades</groupId>
 			<artifactId>fabricjs-addon</artifactId>
@@ -88,6 +88,11 @@
 			<groupId>es.pryades</groupId>
 			<artifactId>fullscreen-addon</artifactId>
 			<version>${fullscreen.addon.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.steinwedel.vaadin.addon</groupId>
+			<artifactId>messagebox</artifactId>
+			<version>2.1.4</version>
 		</dependency>
 
 		<!-- vaadin -->

@@ -92,8 +92,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private Button buttonImages;
 	private Button buttonReports;
 	private Button buttonManual;
-	protected Button bttnRequest;
-	protected Button bttnReport;
 
 	private DetallesCentrosManager centrosManager;
 	private AccesosManager accesosManager;

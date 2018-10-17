@@ -8,6 +8,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -97,6 +98,7 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		setContent( mainLayout );
 		
 		buildMainLayout();
+		settingClose();
 	}
 
 	public void buildMainLayout()
@@ -362,5 +364,23 @@ public class SystemSettingsDlg extends Window implements ModalParent
 	@Override
 	public void refreshVisibleContent()
 	{
+	}
+	
+	private void settingClose(){
+		Button bttnClose = new Button( getContext().getString( "words.close" ) );
+
+		HorizontalLayout closeContainer = new HorizontalLayout(bttnClose);
+		closeContainer.setComponentAlignment( bttnClose, Alignment.BOTTOM_RIGHT );
+		mainLayout.addComponent( closeContainer );
+		mainLayout.addComponent( closeContainer );
+		mainLayout.setComponentAlignment( closeContainer, Alignment.BOTTOM_RIGHT );
+		bttnClose.addClickListener( new ClickListener(){
+			
+			@Override
+			public void buttonClick( ClickEvent event ){
+				SystemSettingsDlg.this.close();
+				
+			}
+		} );
 	}
 }

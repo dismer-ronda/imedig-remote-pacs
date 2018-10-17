@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -19,8 +20,8 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
@@ -28,7 +29,6 @@ import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
-import es.pryades.imedig.cloud.common.MessageDlg;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -120,10 +120,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		initComponents();
 		
 		if (showMessage){
-			MessageDlg dlg = new MessageDlg( getContext().getString( "words.information" )
-					, getContext().getResources()
-					, getContext().getString( "ReportsDlg.message.reports.attention" ) );
-			UI.getCurrent().addWindow( dlg );
+			showNotification();
 		}
 	}
 	
@@ -935,5 +932,14 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		layout.setWidthUndefined();
 		layout.addStyleName( ImedigTheme.FILTER_MARGIN );
 		return layout;
+	}
+	
+	private void showNotification(){
+		Notification notification = new Notification( getContext().getString( "words.information"), 
+				getContext().getString( "ReportsDlg.message.reports.attention" ), 
+				Notification.Type.HUMANIZED_MESSAGE );
+		notification.setDelayMsec(Notification.DELAY_FOREVER);
+		notification.setStyleName( "info" );
+		notification.show( Page.getCurrent() );
 	}
 }
