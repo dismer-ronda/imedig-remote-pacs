@@ -6,6 +6,8 @@
 ---------------------------------------------
 insert into susc_horarios ( id, nombre ) values ( 1, 'Europe/Madrid' );
 insert into susc_horarios ( id, nombre ) values ( 2, 'America/Havana' );
+insert into susc_horarios ( id, nombre ) values ( 3, 'America/Santo_Domingo' );
+
 ---------------------------------------------    
 -- monedas
 ---------------------------------------------
@@ -13,6 +15,7 @@ insert into susc_monedas ( id, nombre, codigo, simbolo ) values ( 978, 'Euro', '
 insert into susc_monedas ( id, nombre, codigo, simbolo ) values ( 840, 'United States Dollar', 'USD', '$' );
 insert into susc_monedas ( id, nombre, codigo ) values ( 192, 'Peso cubano', 'CUP' );
 insert into susc_monedas ( id, nombre, codigo ) values ( 193, 'Peso convertible', 'CUC' );
+insert into susc_monedas ( id, nombre, codigo ) values ( 214, 'Peso Dominicano', 'DOP' );
 
 insert into susc_perfiles (id, descripcion) values (1, 'Administrador');
 insert into susc_perfiles (id, descripcion) values (2, 'Médico');
