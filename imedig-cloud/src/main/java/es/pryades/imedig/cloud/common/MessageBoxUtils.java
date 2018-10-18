@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.common;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import de.steinwedel.messagebox.ButtonId;
@@ -7,8 +8,10 @@ import de.steinwedel.messagebox.Icon;
 import de.steinwedel.messagebox.MessageBox;
 import de.steinwedel.messagebox.MessageBoxListener;
 
-public class MessageBoxUtils{
+public class MessageBoxUtils implements Serializable{
 	
+	private static final long serialVersionUID = -131605950322281000L;
+
 	public static MessageBox showMessageBox(ResourceBundle resources, Icon icon, String title, String plainTextMessage, MessageBoxListener listener, ButtonId... buttonIds) {
 		
 		MessageBox messageBox = MessageBox.showPlain(icon, title, plainTextMessage, listener, buttonIds);
@@ -16,7 +19,7 @@ public class MessageBoxUtils{
 		for (ButtonId buttonId : buttonIds) {
 			messageBox.getButton(buttonId).setCaption( caption(resources, buttonId) );
 		}
-		
+				
 		return messageBox;
 	}
 	

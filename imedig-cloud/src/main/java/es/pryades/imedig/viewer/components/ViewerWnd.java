@@ -16,16 +16,23 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
+import de.steinwedel.messagebox.ButtonId;
+import de.steinwedel.messagebox.Icon;
+import de.steinwedel.messagebox.MessageBox;
+import de.steinwedel.messagebox.MessageBoxListener;
+import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.StudyUtils;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.Action;
 import es.pryades.imedig.cloud.core.action.ImageResource;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
+import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.InformeImagen;
+import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
@@ -53,6 +60,7 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
+import es.pryades.imedig.viewer.actions.ShowReports;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
@@ -62,7 +70,7 @@ import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
-public class ViewerWnd extends CssLayout implements ListenerAction, ImageResource, ModalParent, ImageSerieNavigator {
+public class ViewerWnd extends CssLayout implements ListenerAction, ImageResource, ModalParent, ImageSerieNavigator, MessageBoxListener {
 	private static final long serialVersionUID = 9064212477269947546L;
 
 	private static final Logger LOG = LoggerFactory.getLogger(ViewerWnd.class);
@@ -322,6 +330,34 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	}
 	
 	private void requestReport(){
+		
+		if (countStudyReport()>0){
+			showConfirmationNewReport();
+		}else{
+			showNewReport();
+		}
+	}
+	
+	private int countStudyReport(){
+		InformesManager informesManager = IOCManager.getInstanceOf( InformesManager.class );
+		
+		ReportInfo reportInfo = getReportInfo();
+		
+		InformeQuery query = new InformeQuery();
+		query.setEstudio_uid( reportInfo.getHeader().getStudyInstanceUID() );
+		
+		try
+		{
+			return informesManager.getNumberOfRows( context, query );
+		}
+		catch ( Throwable e ){
+			LOG.error( "Error", e);
+		}
+		
+		return 0;
+	}
+	
+	private void showNewReport(){
 		ReportInfo reportInfo = getReportInfo();
 		if ( reportInfo == null ) return;
 		
@@ -460,6 +496,31 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	@Override
 	public boolean hasNextImageSerie(){
 		return currentIndex != seriesImages.get( currentSerie ).size()-1;
+	}
+	
+	private void showConfirmationNewReport(){
+		MessageBox messageBox = MessageBoxUtils.showMessageBox( context.getResources(), 
+				Icon.NONE,
+				context.getString( "words.confirm" ), 
+				context.getString( "ReportsDlg.confirm.approve" ), this, ButtonId.CUSTOM_1, ButtonId.CUSTOM_2, ButtonId.CUSTOM_3);
+		messageBox.getButton( ButtonId.CUSTOM_1 ).setCaption( context.getString( "ViewerWnd.open.exists" ) );
+		messageBox.getButton( ButtonId.CUSTOM_2 ).setCaption( context.getString( "ViewerWnd.request.new" ) );
+		messageBox.getButton( ButtonId.CUSTOM_3 ).setCaption( context.getString( "words.cancel" ) );
+	}
+
+	@Override
+	public void buttonClicked( ButtonId buttonId )
+	{
+		if (buttonId == ButtonId.CUSTOM_1){
+			if (countStudyReport() == 1){
+				//mostrar el reporte
+			}else {
+				context.sendAction( new ShowReports( this ) );
+			}
+		}else if (buttonId == ButtonId.CUSTOM_2){
+			showNewReport();
+		}
+		
 	}
 
 }

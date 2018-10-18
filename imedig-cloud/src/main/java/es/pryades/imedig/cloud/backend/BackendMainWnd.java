@@ -61,6 +61,7 @@ import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
+import es.pryades.imedig.viewer.actions.ShowReports;
 import es.pryades.imedig.viewer.components.ViewerWnd;
 import lombok.Getter;
 
@@ -739,6 +740,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			topBar.setVisible( false );
 		}else if (action instanceof ExitFullScreen) {
 			topBar.setVisible( true );
+		}else if (action instanceof ShowReports) {
+			showReports();
 		}
 	}
 	

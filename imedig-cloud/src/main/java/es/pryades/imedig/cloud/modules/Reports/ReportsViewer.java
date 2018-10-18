@@ -25,10 +25,14 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 
+import de.steinwedel.messagebox.ButtonId;
+import de.steinwedel.messagebox.Icon;
+import de.steinwedel.messagebox.MessageBoxListener;
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
@@ -63,7 +67,7 @@ import lombok.Setter;
  * 
  */
 @SuppressWarnings({"unchecked"})
-public class ReportsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener
+public class ReportsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener, MessageBoxListener
 {
 	private static final long serialVersionUID = -3588907063210926036L;
 
@@ -479,62 +483,19 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		btnApprove.addClickListener( new Button.ClickListener()
 		{
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -7204444384289336421L;
 
-			public void buttonClick( ClickEvent event )
-			{
-				final DetalleInforme informe = (DetalleInforme)getSelectedRow();
-	
-				final ReportConfigDlg dlg = new ReportConfigDlg( getContext(), getContext().getString( "ReportConfigDlg.title.approve" ), informe );
-				
-				dlg.addCloseListener
-				( 
-					new Window.CloseListener() 
-					{
-						/**
-						 * 
-						 */
-						private static final long serialVersionUID = -6381257314235637218L;
-
-						@Override
-					    public void windowClose( CloseEvent e ) 
-					    {
-							if ( dlg.isAccepted() )
-							{
-								byte[] pdf = getReportPdf( informe, dlg.getTemplate(), dlg.getOrientation(), dlg.getPagesize(), dlg.getImages() );
-								
-								if ( pdf != null )
-								{
-									try
-									{
-										Informe clone = (Informe)Utils.clone( informe );
-										
-										clone.setEstado( 2 );
-										clone.setInforma( getContext().getUsuario().getId() );
-										clone.setFecha( Utils.getTodayAsLong( informe.getHorario_nombre() ) );
-										clone.setPdf( pdf );
-										
-										informesManager.setRow( getContext(), informe, clone );
-										
-										refreshVisibleContent();
-									}
-									catch ( Throwable e1 )
-									{
-										Utils.logException( e1, LOG );
-									}
-								}
-							}
-					    }
-					}
-				);
-			
-				dlg.showModalWindow();
+			public void buttonClick( ClickEvent event ){
+				confirmarAprobar();
 			}
-		}
-		);
+		});
+	}
+	
+	private void confirmarAprobar(){
+		MessageBoxUtils.showMessageBox( getContext().getResources(), 
+				Icon.NONE,
+				getContext().getString( "words.confirm" ), 
+				getContext().getString( "ReportsDlg.confirm.approve" ), this, ButtonId.YES, ButtonId.NO );
 	}
 
 	private void bttnFinishReportListener()
@@ -941,5 +902,56 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		notification.setDelayMsec(Notification.DELAY_FOREVER);
 		notification.setStyleName( "info" );
 		notification.show( Page.getCurrent() );
+	}
+
+	@Override
+	public void buttonClicked( ButtonId buttonId )
+	{
+		if (buttonId == ButtonId.NO) return;
+		
+		final DetalleInforme informe = (DetalleInforme)getSelectedRow();
+		
+		final ReportConfigDlg dlg = new ReportConfigDlg( getContext(), getContext().getString( "ReportConfigDlg.title.approve" ), informe );
+		
+		dlg.addCloseListener
+		( 
+			new Window.CloseListener() 
+			{
+				
+				private static final long serialVersionUID = -6381257314235637218L;
+
+				@Override
+			    public void windowClose( CloseEvent e ) 
+			    {
+					if ( dlg.isAccepted() )
+					{
+						byte[] pdf = getReportPdf( informe, dlg.getTemplate(), dlg.getOrientation(), dlg.getPagesize(), dlg.getImages() );
+						
+						if ( pdf != null )
+						{
+							try
+							{
+								Informe clone = (Informe)Utils.clone( informe );
+								
+								clone.setEstado( 2 );
+								clone.setInforma( getContext().getUsuario().getId() );
+								clone.setFecha( Utils.getTodayAsLong( informe.getHorario_nombre() ) );
+								clone.setPdf( pdf );
+								
+								informesManager.setRow( getContext(), informe, clone );
+								
+								refreshVisibleContent();
+							}
+							catch ( Throwable e1 )
+							{
+								Utils.logException( e1, LOG );
+							}
+						}
+					}
+			    }
+			}
+		);
+	
+		dlg.showModalWindow();
 	}
 }

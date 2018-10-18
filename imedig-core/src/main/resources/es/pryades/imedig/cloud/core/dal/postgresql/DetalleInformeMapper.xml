@@ -22,6 +22,12 @@
 			<if test="estudio_id != null">
 				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
 	        </if>
+	        <if test="estudio_id != null">
+				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+	        <if test="estudio_uid != null">
+				AND susc_informes.estudio_uid = #{estudio_uid}   
+	        </if>
 			<if test="modalidad != null">
 				AND modalidad = #{modalidad}  
 	        </if>
@@ -125,6 +131,9 @@
 	        </if>
 			<if test="estudio_id != null">
 				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+	        <if test="estudio_uid != null">
+				AND susc_informes.estudio_uid = #{estudio_uid}   
 	        </if>
 			<if test="modalidad != null">
 				AND modalidad = #{modalidad}  
@@ -233,6 +242,9 @@
 	        </if>
 			<if test="estudio_id != null">
 				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
+	        </if>
+	        <if test="estudio_uid != null">
+				AND susc_informes.estudio_uid = #{estudio_uid}   
 	        </if>
 			<if test="modalidad != null">
 				AND modalidad = #{modalidad}  
