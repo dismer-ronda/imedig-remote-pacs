@@ -935,7 +935,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	}
 	
 	private void showNotification(){
-		Notification notification = new Notification( getContext().getString( "words.information"), 
+		Notification notification = new Notification( null, /*getContext().getString( "words.information")*/ 
 				getContext().getString( "ReportsDlg.message.reports.attention" ), 
 				Notification.Type.HUMANIZED_MESSAGE );
 		notification.setDelayMsec(Notification.DELAY_FOREVER);

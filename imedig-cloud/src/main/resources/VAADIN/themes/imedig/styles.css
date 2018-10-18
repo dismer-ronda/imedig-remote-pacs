@@ -13286,6 +13286,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .v-Notification.info {
 	color: #283033;
+	font-size: 24px;
 	background: #cacecf;
-	border: 1px solid #02925d;
+	border: 1px solid black;
 }
