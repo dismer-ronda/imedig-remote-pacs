@@ -2,9 +2,6 @@ package es.pryades.imedig.cloud.modules.Reports;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
@@ -24,10 +21,12 @@ import com.vaadin.ui.Window;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dal.InformesPlantillasManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformePlantilla;
 import es.pryades.imedig.cloud.dto.query.InformePlantillaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -67,7 +66,7 @@ public final class ReportConfigDlg extends Window
 	
 	@Getter private ImedigContext context;
 	private InformesPlantillasManager manager;
-	private DetalleInforme informe;
+	private Informe informe;
 	
 	/**
 	 * 
@@ -77,7 +76,7 @@ public final class ReportConfigDlg extends Window
 	 * @param orgCentro
 	 * @param parentWindow
 	 */
-	public ReportConfigDlg( ImedigContext ctx, String caption, DetalleInforme informe )
+	public ReportConfigDlg( ImedigContext ctx, String caption, Informe informe )
 	{
 		super();
 		

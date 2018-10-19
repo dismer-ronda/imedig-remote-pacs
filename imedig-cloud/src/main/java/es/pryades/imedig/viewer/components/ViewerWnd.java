@@ -1,6 +1,7 @@
 package es.pryades.imedig.viewer.components;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,13 @@ import es.pryades.imedig.cloud.core.action.Action;
 import es.pryades.imedig.cloud.core.action.ImageResource;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
+import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
+import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
 import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
@@ -39,6 +43,7 @@ import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
 import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
+import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.Settings;
@@ -60,7 +65,6 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
-import es.pryades.imedig.viewer.actions.ShowReports;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
@@ -357,6 +361,30 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		return 0;
 	}
 	
+	private DetalleInforme getStudyReport(){
+		DetallesInformesManager informesManager = IOCManager.getInstanceOf( DetallesInformesManager.class );
+		
+		ReportInfo reportInfo = getReportInfo();
+		
+		InformeQuery query = new InformeQuery();
+		query.setEstudio_uid( reportInfo.getHeader().getStudyInstanceUID() );
+		
+		try{
+			//Siempre retorna listado ordenado por fecha descendentemente
+			List<DetalleInforme> informes = informesManager.getRows( context, query );
+			return informes.get( 0 );
+			
+		}catch ( Throwable e ){
+			LOG.error( "Error", e);
+		}
+		
+		return null;
+	}
+	
+	private static boolean isToShow(Informe informe){
+		return informe.aprobado() || informe.terminado();
+	}
+	
 	private void showNewReport(){
 		ReportInfo reportInfo = getReportInfo();
 		if ( reportInfo == null ) return;
@@ -512,15 +540,62 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	public void buttonClicked( ButtonId buttonId )
 	{
 		if (buttonId == ButtonId.CUSTOM_1){
-			if (countStudyReport() == 1){
-				//mostrar el reporte
-			}else {
-				context.sendAction( new ShowReports( this ) );
+			DetalleInforme informe = getStudyReport();
+			if (informe == null) return;
+				
+			if (isToShow( informe )){
+				showAprovedReport( informe, 0, "", "", false );
+			}else{
+				modifyReport( informe );
 			}
+			
+			
 		}else if (buttonId == ButtonId.CUSTOM_2){
 			showNewReport();
 		}
-		
 	}
 
+	private void showAprovedReport( Informe informe, Integer template, String orientation, String size, Boolean images ){
+		long ts = new Date().getTime();
+		
+		String extra = "ts=" + ts + 
+						"&id=" + informe.getId() + 
+						"&orientation=" + orientation + 
+						"&size=" + size + 
+						"&template=" + template +
+						"&images=" + images;
+		String token = "token=" + Utils.getTokenString( informe.getId() + "" + ts, Settings.TrustKey );
+		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
+		
+		LOG.debug( "extra " +  extra );
+		
+		String url =  "/imedig-services/report/" + informe.getId() + "?" + token + "&" + code;
+		String title = informe.getId() + "-" + informe.getPaciente_nombre();
+		
+		new ShowExternalUrlDlg( context, title, url ).showModalWindow();
+	}
+	
+	private void modifyReport( DetalleInforme informe  ){
+		
+		InformesImagenesManager manager = IOCManager.getInstanceOf( InformesImagenesManager.class );
+		InformeImagen query = new InformeImagen();
+		query.setInforme( informe.getId() );
+		
+		String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+		
+		List<InformeImagen> images;
+		
+		try
+		{
+			images = manager.getRows( context, query );
+		}
+		catch ( Throwable e )
+		{
+			e.printStackTrace();
+			
+			images = new ArrayList<InformeImagen>();
+		}
+		
+		new ModalNewInforme( context, Operation.OP_MODIFY, informe, images, null, right ).showModalWindow();
+	}
 }
