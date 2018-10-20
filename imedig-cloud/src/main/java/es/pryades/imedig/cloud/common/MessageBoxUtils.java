@@ -18,6 +18,7 @@ public class MessageBoxUtils implements Serializable{
 		
 		for (ButtonId buttonId : buttonIds) {
 			messageBox.getButton(buttonId).setCaption( caption(resources, buttonId) );
+			messageBox.getButton(buttonId).setIcon( null );
 		}
 				
 		return messageBox;

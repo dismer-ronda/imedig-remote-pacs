@@ -41,6 +41,7 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.cloud.submodules.centers.ShowExternalViewerDlg;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -508,4 +509,10 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 		} );
 	}
 
+	@Override
+	public void closeModalWindow( boolean refresh ){
+		super.closeModalWindow( refresh );
+		
+		if (refresh) context.sendAction( new ShowReportsListAction( this ));
+	}
 }

@@ -42,7 +42,6 @@ import es.pryades.imedig.cloud.dto.viewer.StudyTree;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
-import es.pryades.imedig.cloud.modules.Reports.ReportsDlg;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
@@ -444,9 +443,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	}
 	
 	private void showReports(){
-		ReportsDlg dlg = new ReportsDlg( context );
-
-		getUI().addWindow( dlg );
+		//context.sendAction( new ShowReportsListAction( this ) );
 	}
 
 	@Override
@@ -530,7 +527,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		MessageBox messageBox = MessageBoxUtils.showMessageBox( context.getResources(), 
 				Icon.NONE,
 				context.getString( "words.confirm" ), 
-				context.getString( "ReportsDlg.confirm.approve" ), this, ButtonId.CUSTOM_1, ButtonId.CUSTOM_2, ButtonId.CUSTOM_3);
+				context.getString( "ViewerWnd.confirm.study.report.exist" ), this, ButtonId.CUSTOM_1, ButtonId.CUSTOM_2, ButtonId.CUSTOM_3);
 		messageBox.getButton( ButtonId.CUSTOM_1 ).setCaption( context.getString( "ViewerWnd.open.exists" ) );
 		messageBox.getButton( ButtonId.CUSTOM_2 ).setCaption( context.getString( "ViewerWnd.request.new" ) );
 		messageBox.getButton( ButtonId.CUSTOM_3 ).setCaption( context.getString( "words.cancel" ) );

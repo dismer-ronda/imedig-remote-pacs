@@ -1,7 +1,5 @@
 package es.pryades.imedig.cloud.modules.components;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -20,6 +18,7 @@ import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.core.common.ModalParent;
+import lombok.Getter;
 
 /**
  * 
@@ -186,7 +185,7 @@ public abstract class ModalWindowsCRUD extends Window
 	public void closeModalWindow( boolean refresh )
 	{
 		((UI)getContext().getData( "Application" )).removeWindow( this );
-
+		
 		if ( modalParent != null && refresh )
 			modalParent.refreshVisibleContent();
 	}
