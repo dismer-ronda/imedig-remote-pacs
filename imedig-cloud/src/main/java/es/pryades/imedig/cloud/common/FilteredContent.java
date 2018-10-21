@@ -53,13 +53,16 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 
 	protected VerticalLayout mainLayout;
 	protected HorizontalLayout oppLayout;
+	protected HorizontalLayout cellOppLayoutLeft;
+	protected HorizontalLayout cellOppLayoutCenter;
+	protected HorizontalLayout cellOppLayoutRight;
 
 	protected String adminCntOpBusquedaFormTitle;
 	protected String adminCntResultLayoutTitle;
 	protected boolean isInitialized;
 
 	private String[] visibleCols;
-
+	
 	public FilteredContent( ImedigContext ctx )
 	{
 		this.context = ctx;
@@ -135,128 +138,138 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 
 	public void initComponents()
 	{
-		if ( !isInitialized )
-		{
-			isInitialized = true;
-			
-			mainLayout = new VerticalLayout();
-			mainLayout.setSpacing( true );
-			//mainLayout.setMargin( false ); //new MarginInfo( false, true, true, true ) );
-			mainLayout.setSizeFull();
-	
-			initQueryComponents();
-			
-			if ( rowQuery != null ){
-				addComponent( rowQuery );
-			}
-			
-			addComponent( mainLayout );
-			setExpandRatio( mainLayout, 1.0f );
-			
-			tableRows = getTableRows();
-			
-			if ( tableRows != null )
-			{
-				//tableRows.setMargin( new MarginInfo(true, false, false, false));
-
-				visibleCols = getVisibleCols();
-				if ( visibleCols != null )
-				{
-					HashMap<String, String> tableHeadersName = new HashMap<String, String>();
-					for ( String atribute : visibleCols )
-						tableHeadersName.put( atribute, getContext().getString( getResouceKey() + ".headerName." + atribute ) );
+		if (isInitialized) return;
 		
-					tableRows.setTableHeadersNames( tableHeadersName );
-					tableRows.setVisibleCols( new ArrayList<String>( Arrays.asList( this.visibleCols ) ) );
-				}
-				
-				tableRows.initializeTable();
-				tableRows.getTable().addValueChangeListener( this );
-			}
+		isInitialized = true;
+		
+		mainLayout = new VerticalLayout();
+		mainLayout.setSpacing( true );
+		//mainLayout.setMargin( false ); //new MarginInfo( false, true, true, true ) );
+		mainLayout.setSizeFull();
 
-			if ( isAddAvailable() )
-			{
-				btnAdd = new Button();
-				btnAdd.setCaption( getContext().getString( "words.add" ) );
-				btnAdd.setEnabled( isAddAvailable() );
-				bttnAddListener();
-			}
-	
-			if ( isModifyAvailable() )
-			{
-				btnModify = new Button();
-				btnModify.setCaption( getContext().getString( "words.modify" ) );
-				btnModify.setEnabled( false );
-				bttnModifyListener();
-			}
-	
-			if ( isDeleteAvailable() )
-			{
-				btnDelete = new Button();
-				btnDelete.setCaption( getContext().getString( "words.delete" ) );
-				btnDelete.setEnabled( false );
-				bttnDeleteListener();
-			}
-	
-			HorizontalLayout cellOppLayoutLeft = null;
-
-			if ( isAddAvailable() || isModifyAvailable() || isDeleteAvailable() || isExtrasAvailable() )
-			{
-				cellOppLayoutLeft = new HorizontalLayout();
-				cellOppLayoutLeft.setSpacing( true );
-				cellOppLayoutLeft.setMargin( false );
-				
-				if ( isAddAvailable() )
-					cellOppLayoutLeft.addComponent( btnAdd);
-				
-				if ( isModifyAvailable() )
-					cellOppLayoutLeft.addComponent( btnModify );
-				
-				if ( isDeleteAvailable() )
-					cellOppLayoutLeft.addComponent( btnDelete );
-				
-				if ( isExtrasAvailable() )
-				{
-					List<Component> extras = getExtraOperations();
-					if ( extras != null )
-						for ( Component extra : extras )
-							cellOppLayoutLeft.addComponent( extra );
-				}
-			}
-	
-			oppLayout = new HorizontalLayout();
-			oppLayout.setMargin( false );
-			oppLayout.setWidth( "100%" );
-	
-			if ( cellOppLayoutLeft != null )
-			{
-				oppLayout.addComponent( cellOppLayoutLeft );
-				oppLayout.setComponentAlignment( cellOppLayoutLeft, Alignment.MIDDLE_LEFT );
-			}
-			
-			if ( tableRows != null )
-			{
-				HorizontalLayout cellOppLayoutRight = new HorizontalLayout();
-				//cellOppLayoutRight.setMargin( true );
-				cellOppLayoutRight.addComponent( tableRows.getTablePageOppContainer() );
-
-				oppLayout.addComponent( cellOppLayoutRight );
-				oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_CENTER );
-				oppLayout.setExpandRatio( cellOppLayoutRight, 1.0f );
-
-				mainLayout.addComponent( tableRows );
-				mainLayout.setExpandRatio( tableRows, 1.0f );
-			}
-	
-			if ( oppLayout.getComponentCount() > 0 )
-				mainLayout.addComponent( oppLayout );
-			
-			initSpecificContents();
-			
-			refreshVisibleContent();
+		initQueryComponents();
+		
+		if ( rowQuery != null ){
+			addComponent( rowQuery );
 		}
+		
+		addComponent( mainLayout );
+		setExpandRatio( mainLayout, 1.0f );
+		
+		tableRows = getTableRows();
+		
+		if ( tableRows != null )
+		{
+			//tableRows.setMargin( new MarginInfo(true, false, false, false));
+
+			visibleCols = getVisibleCols();
+			if ( visibleCols != null )
+			{
+				HashMap<String, String> tableHeadersName = new HashMap<String, String>();
+				for ( String atribute : visibleCols )
+					tableHeadersName.put( atribute, getContext().getString( getResouceKey() + ".headerName." + atribute ) );
+	
+				tableRows.setTableHeadersNames( tableHeadersName );
+				tableRows.setVisibleCols( new ArrayList<String>( Arrays.asList( this.visibleCols ) ) );
+			}
+			
+			tableRows.initializeTable();
+			tableRows.getTable().addValueChangeListener( this );
+		}
+
+		if ( isAddAvailable() )
+		{
+			btnAdd = new Button();
+			btnAdd.setCaption( getContext().getString( "words.add" ) );
+			btnAdd.setEnabled( isAddAvailable() );
+			bttnAddListener();
+		}
+
+		if ( isModifyAvailable() )
+		{
+			btnModify = new Button();
+			btnModify.setCaption( getContext().getString( "words.modify" ) );
+			btnModify.setEnabled( false );
+			bttnModifyListener();
+		}
+
+		if ( isDeleteAvailable() )
+		{
+			btnDelete = new Button();
+			btnDelete.setCaption( getContext().getString( "words.delete" ) );
+			btnDelete.setEnabled( false );
+			bttnDeleteListener();
+		}
+
+		cellOppLayoutLeft = new HorizontalLayout();
+		cellOppLayoutLeft.setSpacing( true );
+		cellOppLayoutLeft.setMargin( false );
+
+		cellOppLayoutCenter = new HorizontalLayout();
+		cellOppLayoutCenter.setSpacing( true );
+		cellOppLayoutCenter.setMargin( false );
+
+		cellOppLayoutRight = new HorizontalLayout();
+		cellOppLayoutRight.setSpacing( true );
+		cellOppLayoutRight.setMargin( false );
+
+		oppLayout = new HorizontalLayout(cellOppLayoutLeft, cellOppLayoutCenter, cellOppLayoutRight);
+		oppLayout.setMargin( false );
+		oppLayout.setWidth( "100%" );
+		oppLayout.setComponentAlignment( cellOppLayoutLeft, Alignment.MIDDLE_LEFT );
+		oppLayout.setComponentAlignment( cellOppLayoutCenter, Alignment.MIDDLE_CENTER );
+		oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_RIGHT );
+
+		
+		if ( isAddAvailable() || isModifyAvailable() || isDeleteAvailable() || isExtrasAvailable() )
+		{
+			if ( isAddAvailable() )
+				addOpLeft( btnAdd );
+			
+			if ( isModifyAvailable() )
+				addOpLeft( btnModify );
+			
+			if ( isDeleteAvailable() )
+				addOpLeft( btnDelete );
+			
+			if ( isExtrasAvailable() )
+			{
+				List<Component> extras = getExtraOperations();
+				if ( extras != null )
+					for ( Component extra : extras )
+						addOpLeft( extra );
+			}
+		}
+
+		if ( tableRows != null )
+		{
+			//cellOppLayoutRight.setMargin( true );
+			cellOppLayoutCenter.addComponent( tableRows.getTablePageOppContainer() );
+
+			mainLayout.addComponent( tableRows );
+			mainLayout.setExpandRatio( tableRows, 1.0f );
+		}
+
+		if ( oppLayout.getComponentCount() > 0 )
+			mainLayout.addComponent( oppLayout );
+		
+		initSpecificContents();
+		
+		refreshVisibleContent();
 	}
 	
+	protected void addOpLeft( Component component  ){
+		cellOppLayoutLeft.addComponent( component );
+	}
+
+	protected void addOpCenter( Component component  ){
+		cellOppLayoutCenter.addComponent( component );
+	}
+
+	protected void addOpRight( Component component  ){
+		cellOppLayoutRight.addComponent( component );
+	}
+
 	public void initSpecificContents()
 	{
 	}

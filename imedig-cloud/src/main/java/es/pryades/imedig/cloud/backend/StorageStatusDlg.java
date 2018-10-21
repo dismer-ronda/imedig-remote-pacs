@@ -25,6 +25,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -115,6 +116,8 @@ public class StorageStatusDlg extends Window implements ModalParent
 		readStorageUse();
 		
 		buildMainLayout();
+		
+		settingClose();
 	}
 
 	public void initQueryComponents()
@@ -596,5 +599,23 @@ public class StorageStatusDlg extends Window implements ModalParent
 		
 		double average = studies != 0 ? images / (double)studies : 0;
 		labelAverageImagePerStudy.setValue( Double.toString( Utils.roundDouble( average, 1 ) ) );
+	}
+	
+	private void settingClose(){
+		Button bttnClose = new Button( getContext().getString( "words.close" ) );
+
+		HorizontalLayout closeContainer = new HorizontalLayout(bttnClose);
+		closeContainer.setComponentAlignment( bttnClose, Alignment.BOTTOM_RIGHT );
+		mainLayout.addComponent( closeContainer );
+		mainLayout.addComponent( closeContainer );
+		mainLayout.setComponentAlignment( closeContainer, Alignment.BOTTOM_RIGHT );
+		bttnClose.addClickListener( new ClickListener(){
+			
+			@Override
+			public void buttonClick( ClickEvent event ){
+				StorageStatusDlg.this.close();
+				
+			}
+		} );
 	}
 }

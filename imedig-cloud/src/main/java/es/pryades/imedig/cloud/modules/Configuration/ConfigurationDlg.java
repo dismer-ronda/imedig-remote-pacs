@@ -1,11 +1,8 @@
 package es.pryades.imedig.cloud.modules.Configuration;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
@@ -45,7 +42,17 @@ public class ConfigurationDlg extends Window
 
 		setContent( mainLayout );
 		
-		ImedigTabbedContainerConfig instance = new ImedigTabbedContainerConfig();
+		ClickListener closeListener = new ClickListener(){
+			
+			private static final long serialVersionUID = -4176274270634149738L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				ConfigurationDlg.this.close();
+			}
+		};
+		
+		ImedigTabbedContainerConfig instance = new ImedigTabbedContainerConfig(closeListener);
 
 		instance.setContext( ctx );
 		instance.setMainLayout( mainLayout );
@@ -57,24 +64,5 @@ public class ConfigurationDlg extends Window
 		catch ( ImedigException e )
 		{
 		}
-		
-		settingClose();
-	}
-	
-	private void settingClose(){
-		Button bttnClose = new Button( ctx.getString( "words.close" ) );
-
-		HorizontalLayout closeContainer = new HorizontalLayout(bttnClose);
-		closeContainer.setComponentAlignment( bttnClose, Alignment.BOTTOM_RIGHT );
-		mainLayout.addComponent( closeContainer );
-		mainLayout.setComponentAlignment( closeContainer, Alignment.BOTTOM_RIGHT );
-		bttnClose.addClickListener( new ClickListener(){
-			
-			@Override
-			public void buttonClick( ClickEvent event ){
-				ConfigurationDlg.this.close();
-				
-			}
-		} );
 	}
 }

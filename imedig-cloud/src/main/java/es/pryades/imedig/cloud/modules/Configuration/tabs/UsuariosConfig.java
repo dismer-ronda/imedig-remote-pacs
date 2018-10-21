@@ -3,7 +3,7 @@ package es.pryades.imedig.cloud.modules.Configuration.tabs;
 import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.common.FilteredContent;
+import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.cloud.dto.Usuario;
@@ -22,7 +22,7 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-public class UsuariosConfig extends FilteredContent implements ModalParent
+public class UsuariosConfig extends FilteredContentCloseable implements ModalParent
 {
 	private static final long serialVersionUID = 1121627091435186860L;
 

@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.common.FilteredContent;
+import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Imagen;
 import es.pryades.imedig.cloud.dto.Query;
@@ -24,7 +24,7 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author Dismer Ronda
  * 
  */
-public class ImagenesConfig extends FilteredContent implements ModalParent
+public class ImagenesConfig extends FilteredContentCloseable implements ModalParent
 {
 	private static final long serialVersionUID = -6672140430163376710L;
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
@@ -12,6 +13,7 @@ import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.common.FilteredContent;
+import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.CentrosConfig;
@@ -40,18 +42,20 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 	private VerticalLayout content;
 	private TabSheet tabsheet;
 	private List<FilteredContent> tabContentList;
-
-	/**
-	 * 
-	 * 
-	 */
+	
+	private final ClickListener closeListener;
+	
+	public ImedigTabbedContainerConfig(ClickListener closeListener){
+		this.closeListener = closeListener;
+	}
+	
 	public void selectedTabChange( SelectedTabChangeEvent event )
 	{
 		TabSheet tabsheet = event.getTabSheet();
 		Tab tab = tabsheet.getTab( tabsheet.getSelectedTab() );
 		
-		FilteredContent configuration = (FilteredContent)tab.getComponent();
-		configuration.initComponents();
+		FilteredContentCloseable configuration = (FilteredContentCloseable)tab.getComponent();
+		configuration.initComponents(closeListener);
 	}
 
 	private void initComponents() throws ImedigException
@@ -102,8 +106,8 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 				}
 
 				// Inicilizando y seleccionado el rpimer tab
-				FilteredContent configuration = (FilteredContent)tabContentList.get( 0 );
-				configuration.initComponents();
+				FilteredContentCloseable configuration = (FilteredContentCloseable)tabContentList.get( 0 );
+				configuration.initComponents(closeListener);
 				tabsheet.setSelectedTab( configuration );
 				tabsheet.addSelectedTabChangeListener( this );
 			}

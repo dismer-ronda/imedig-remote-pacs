@@ -2,9 +2,6 @@ package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
 import java.sql.Timestamp;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -18,7 +15,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.common.FilteredContent;
+import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Query;
@@ -30,13 +27,15 @@ import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
 import es.pryades.imedig.pacs.dto.Study;
 import es.pryades.imedig.pacs.dto.query.StudyQuery;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
  * @author Dismer Ronda
  * 
  */
-public class StudiesListTab extends FilteredContent implements ModalParent
+public class StudiesListTab extends FilteredContentCloseable implements ModalParent
 {
 	private static final long serialVersionUID = -8196252452099428486L;
 
