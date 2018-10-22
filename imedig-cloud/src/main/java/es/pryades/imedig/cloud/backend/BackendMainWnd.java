@@ -22,6 +22,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -432,12 +433,18 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private void showLogoLayout()
 	{
 		this.logoBar.removeAllComponents();
+		logoBar.setSpacing( true );
 		
 		Image logo = new Image(null, new ThemeResource( "images/logobanner.png" ));
 		logo.setWidth( LOGO_WIDTH );
 		//label.setHeight( "100%" );
 		logoBar.addComponent( logo );
 		logoBar.setComponentAlignment( logo, Alignment.MIDDLE_LEFT );
+		
+		Label label = new Label( getContext().getCentros().get( 0 ).getNombre() );
+		logoBar.addComponent( label );
+		logoBar.setComponentAlignment( label, Alignment.MIDDLE_CENTER );
+
 	}
 
 	private Usuario getUsuario( ImedigContext ctx )

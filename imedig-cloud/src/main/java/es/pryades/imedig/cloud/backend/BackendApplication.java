@@ -45,7 +45,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 
 	private static final Logger LOG = Logger.getLogger( BackendApplication.class );
 	
-	private static final String VERSION = "2.2.2";
+	private static final String VERSION = "2.2.3";
 	
 	private BackendMainWnd window;
 
