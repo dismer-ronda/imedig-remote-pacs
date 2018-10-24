@@ -29,7 +29,6 @@ import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
-import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -43,7 +42,6 @@ public class LeftToolBar extends HorizontalLayout {
 	private Panel panelThumnails;
 	private VerticalLayout thumnails;
 	
-	Button buttonOpen = null;
 	Button buttonClose = null;
 	Button buttonNone = null;
 	Button buttonDistance = null;
@@ -88,7 +86,6 @@ public class LeftToolBar extends HorizontalLayout {
 		toolbox.setSpacing( true );
 		
 		VerticalLayout group = new VerticalLayout();
-		group.addComponent( buttonOpen = getButton( FontAwesome.FOLDER_OPEN, "open", "ViewerWnd.Open" ));
 		group.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
 		toolbox.addComponent( group );
 		
@@ -127,19 +124,6 @@ public class LeftToolBar extends HorizontalLayout {
 			} );
 		}
 		toolbox.addComponent( group );
-		
-		buttonOpen.addClickListener(new Button.ClickListener() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -3957936980477046114L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				context.sendAction( new QueryStudies(this));
-				selectedAction(buttonOpen);
-			}
-		});
 		
 		buttonClose.addClickListener(new Button.ClickListener() {
 			/**
@@ -388,13 +372,12 @@ public class LeftToolBar extends HorizontalLayout {
 		if (lastAction != null){
 			lastAction.removeStyleName( ImedigTheme.BUTTON_SELECTED );
 		}
-		if (button == buttonOpen || 
-				button == buttonClose || 
-				button == buttonErase ||
-				button == buttonUndo  ||
-				button == buttonRestore ||
-				button == buttonDownload ||
-				button == buttonReport) return;
+		if (button == buttonClose || 
+			button == buttonErase ||
+			button == buttonUndo  ||
+			button == buttonRestore ||
+			button == buttonDownload ||
+			button == buttonReport) return;
 		
 		button.addStyleName( ImedigTheme.BUTTON_SELECTED );
 		lastAction = button;

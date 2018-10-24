@@ -19,25 +19,20 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
-import lombok.Setter;
 
-public class QueryDlg extends Window implements PageTable.PaginatorListener{
+public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener{
 
-	private static final long serialVersionUID = 8853270015399380693L;
-
-	private VerticalLayout content;
-
+	private static final long serialVersionUID = 2949836327715684727L;
+	
 	private TextField fieldName;
 	private TextField filedId;
 	private ComboBox type;
@@ -47,34 +42,22 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 
 	private PageTable paginator;
 	private QueryTableModel model;
-	private User user;
-	@Setter
-	private ListenerAction listener; 
+	private final User user;
 	
 	private Button btnQuery;
 	
 	private final ImedigContext context;
 	
-	public static final Integer PAGE_SIZE = 7;
-
-	public QueryDlg(ImedigContext context, User user) {
-		super(context.getString("QueryForm.Title"));
-		
+	public static final Integer PAGE_SIZE = 25;
+	
+	public QueryViewer(ImedigContext context, User user){
 		this.context = context;
 		this.user = user;
-
-		setModal(true);
-		setResizable(false);
-		//setClosable(false);
-		setWidth("900px");
-		setHeight("480px");
-		content = new VerticalLayout();
-		content.setSizeFull();
-		content.setSpacing(true);
-		content.setMargin(true);
-
-		setContent(content);
-
+		
+		setSizeFull();
+		setMargin( true );
+		setSpacing( true );
+		
 		buildFiltros();
 		buildTable();
 		btnQuery.click();
@@ -100,8 +83,8 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		Component buttons = filterButtons();
 		layout.addComponent(buttons);
 		layout.setComponentAlignment(buttons, Alignment.BOTTOM_CENTER);
-		// TODO agregar los botones y sus funcionalidades
-		content.addComponent(layout);
+		addComponent(layout);
+		setComponentAlignment(layout, Alignment.TOP_CENTER);
 	}
 
 	private void initTypeList() {
@@ -148,18 +131,12 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		btnOpen.setImmediate(true);
 		btnOpen.setIcon(FontAwesome.FOLDER_OPEN);
 		btnOpen.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-		//btnOpen.addStyleName(ValoTheme.BUTTON_LARGE);
 		btnOpen.addClickListener(new ClickListener() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = -585302886377865803L;
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				close();
-				if (listener == null) return;
-				listener.doAction(new OpenStudies(this, getSeletedStudies()));
+				context.sendAction( new OpenStudies(this, getSeletedStudies()));
 			}
 		});
 
@@ -212,7 +189,7 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 	}
 
 	private void buildTable() {
-		content.addComponent(paginator = new PageTable(context));
+		paginator = new PageTable(context);
 		paginator.setListener( this );
 		container = new BeanItemContainer<>(QueryTableItem.class);
 		tableEstudies = new Table();
@@ -227,33 +204,26 @@ public class QueryDlg extends Window implements PageTable.PaginatorListener{
 		tableEstudies.setSelectable(true);
 		tableEstudies.setMultiSelect(false);
 		tableEstudies.setSortEnabled(false);
-		tableEstudies.addItemClickListener( new ItemClickListener()
-		{
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -2433489309411823424L;
+		tableEstudies.addItemClickListener( new ItemClickListener() {
+
+			private static final long serialVersionUID = 7774918893866773038L;
 
 			@Override
 			public void itemClick( ItemClickEvent event )
 			{
 				if (event.isDoubleClick()){
-					close();
-					if (listener == null) return;
-					
 					QueryTableItem item = (QueryTableItem)event.getItemId();
 					
 					if (item != null){
-						listener.doAction(new OpenStudies(this, Arrays.asList(item.getStudy().getStudyInstanceUID())));
+						context.sendAction(new OpenStudies(this, Arrays.asList(item.getStudy().getStudyInstanceUID())));
 					}
 				}
 				
 			}
 		} );
 
-		content.addComponent(tableEstudies);
-		content.setExpandRatio(tableEstudies, 1.0f);
+		addComponents(tableEstudies, paginator);
+		setExpandRatio(tableEstudies, 1.0f);
 	}
 
 	@Override

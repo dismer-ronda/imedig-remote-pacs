@@ -61,7 +61,6 @@ import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
-import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -69,7 +68,6 @@ import es.pryades.imedig.viewer.actions.ZoomAction;
 import es.pryades.imedig.viewer.components.image.ImageCanvas;
 import es.pryades.imedig.viewer.components.image.ImageSerieNavigator;
 import es.pryades.imedig.viewer.components.query.FontsDlg;
-import es.pryades.imedig.viewer.components.query.QueryDlg;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.wado.query.QueryManager;
 
@@ -103,8 +101,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	
 	private final ImedigContext context;
 	
-	private QueryDlg queryDlg;
-	
 	private final boolean modeReport;
 	
 	private String currentSerie;
@@ -125,24 +121,18 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		buidComponent();
 		
 		init();
-	}
-	
-	@Override
-	public void attach(){
-		super.attach();
+		
 		context.addListener( this );
 	}
 	
 	@Override
-	public void detach(){
-		super.detach();
+	protected void finalize() throws Throwable{
 		context.removeListener( this );
 	}
 	
 	private void init(){
 		studies = new ArrayList<>();
 		if (modeReport){
-			leftToolBar.buttonOpen.setEnabled( false );
 			leftToolBar.buttonClose.setEnabled( false );
 			leftToolBar.buttonDownload.setVisible( false );
 			if (leftToolBar.buttonReport != null){
@@ -168,9 +158,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		if (action == null)
 			return;
 
-		if (action instanceof QueryStudies) {
-			queryStudies();
-		}else if (action instanceof FontAction) {
+		if (action instanceof FontAction) {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {
 			if (openStudies(((OpenStudies)action).getData())){
@@ -230,7 +218,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	{
 		leftToolBar.studyInViewer();
 		if (modeReport){
-			leftToolBar.buttonOpen.setEnabled( false );
 			leftToolBar.buttonClose.setEnabled( false );
 		}
 	}
@@ -249,16 +236,6 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		currentIndex = seriesImages.get( currentSerie ).indexOf( data );
 		
 		imageCanvas.openImage(data);
-	}
-	
-	private void queryStudies() {
-		if (queryDlg == null){
-			queryDlg = new QueryDlg(context, user);
-			queryDlg.setListener(this);
-		}else{
-			queryDlg.onQuery();
-		}
-		UI.getCurrent().addWindow(queryDlg);
 	}
 	
 	private void queryFonts() {

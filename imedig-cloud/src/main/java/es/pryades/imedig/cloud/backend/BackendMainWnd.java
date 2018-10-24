@@ -62,8 +62,10 @@ import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
+import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
+import es.pryades.imedig.viewer.components.query.QueryViewer;
 import lombok.Getter;
 
 public class BackendMainWnd extends VerticalLayout implements ModalParent,ListenerAction
@@ -92,6 +94,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	private Button btnSelected;
 	private Button buttonImages;
+	private Button buttonStudies;
 	private Button buttonReports;
 	private Button buttonManual;
 
@@ -105,6 +108,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private ViewerWnd imageViewer;
 	private ReportsViewer reportsViewer;
+	private QueryViewer queryViewer;
 	private DetalleCentro detalleCentro;
 	@Getter 
 	private InformeImagen imagen;
@@ -319,7 +323,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 				showImages();
 			}
 		} );
-		selectButtonsBar.addComponent( buttonImages );
 		
 		
 		buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
@@ -335,6 +338,22 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		selectButtonsBar.addComponent( buttonReports );
+		
+
+		buttonStudies = new Button( context.getString( "words.studies" ) , FontAwesome.SEARCH);
+		buttonStudies.setDescription( context.getString( "words.studies" ) );
+		setStyleButtonBar( buttonStudies );
+		buttonStudies.addClickListener( new Button.ClickListener()
+		{
+			private static final long serialVersionUID = 3827413316030851767L;
+
+			public void buttonClick( ClickEvent event )
+			{
+				showQueryStudies();
+			}
+		} );
+
+		selectButtonsBar.addComponents( buttonImages, buttonReports, buttonStudies );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -559,6 +578,23 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.addComponent( imageViewer );
 	}
 	
+	public void showQueryStudies()
+	{
+		if (btnSelected != null){
+			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		}
+		btnSelected = buttonStudies;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		
+		contents.removeAllComponents();
+		if (queryViewer == null){
+			queryViewer = new QueryViewer( context, getUser( getUsuario( getContext() ) ) );
+		}else{
+			queryViewer.onQuery();
+		}
+		contents.addComponent( queryViewer );
+	}
+	
 	private static User getUser(Usuario usuario){
 		User user = new User();
 		user.setLogin( usuario.getLogin());
@@ -750,6 +786,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}else if (action instanceof ShowReportsListAction) {
 			showReports(false);
 			reportsViewer.refreshVisibleContent();
+		}else if (action instanceof OpenStudies){
+			showImages();
 		}
 	}
 	

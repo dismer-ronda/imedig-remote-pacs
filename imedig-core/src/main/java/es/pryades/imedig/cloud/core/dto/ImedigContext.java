@@ -1,10 +1,11 @@
 package es.pryades.imedig.cloud.core.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -55,7 +56,7 @@ public class ImedigContext implements Serializable
 	Integer template;
 	Boolean images;
 	
-	private List<ListenerAction> listeners;
+	private Set<ListenerAction> listeners;
 	
 	public ImedigContext()
 	{
@@ -71,7 +72,7 @@ public class ImedigContext implements Serializable
 		template = 0;
 		images = Boolean.TRUE;
 		
-		listeners = new ArrayList<>();
+		listeners = new HashSet<>();
 	}
 	
 	protected void finalize() throws Throwable 
