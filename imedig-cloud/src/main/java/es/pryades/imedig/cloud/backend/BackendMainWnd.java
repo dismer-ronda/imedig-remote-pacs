@@ -337,9 +337,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 				showReports();
 			}
 		} );
-		selectButtonsBar.addComponent( buttonReports );
 		
-
 		buttonStudies = new Button( context.getString( "words.studies" ) , FontAwesome.SEARCH);
 		buttonStudies.setDescription( context.getString( "words.studies" ) );
 		setStyleButtonBar( buttonStudies );
@@ -353,7 +351,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 
-		selectButtonsBar.addComponents( buttonImages, buttonReports, buttonStudies );
+		selectButtonsBar.addComponents( buttonStudies, buttonImages, buttonReports );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -647,19 +645,17 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	private void showMainView(){
 		Integer count = 0;
-		boolean defaultSearch = false;
+		
 		if (getContext().hasProfile( PERFIL_IMAGENOLOGO )){
 			count = getCountReport( getContext(), null, Informe.STATUS_INFORMED, Informe.STATUS_REQUESTED);
-			defaultSearch = true;
 		}else if (getContext().hasProfile( PERFIL_USUARIO )){
 			count = getCountReport( getContext(), getContext().getUsuario().getId(), Informe.STATUS_APROVED);
-			defaultSearch = true;
 		}
 		
 		if (count > 0 ){
 			showReports(true);
 		}else{
-			showImages();
+			showQueryStudies();
 		}
 	}
 
