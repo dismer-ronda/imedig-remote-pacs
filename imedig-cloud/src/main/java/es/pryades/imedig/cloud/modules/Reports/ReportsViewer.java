@@ -93,7 +93,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	private ComboBox comboStatus;
 
 	private InformesManager informesManager;
-	private InformesImagenesManager imagenesManager;
+	private InformesImagenesManager informeImagenesManager;
 	
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
@@ -114,7 +114,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		super( ctx );
 		
 		informesManager = (InformesManager) IOCManager.getInstanceOf( InformesManager.class );
-		imagenesManager = (InformesImagenesManager) IOCManager.getInstanceOf( InformesImagenesManager.class );
+		informeImagenesManager = (InformesImagenesManager) IOCManager.getInstanceOf( InformesImagenesManager.class );
 		
 		this.defaultSearch = defaultSearch;
 		this.showMessage = defaultSearch;
@@ -338,7 +338,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		
 		try
 		{
-			images = imagenesManager.getRows( getContext(), query );
+			images = informeImagenesManager.getRows( getContext(), query );
 		}
 		catch ( Throwable e )
 		{
@@ -361,7 +361,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		
 		try
 		{
-			images = imagenesManager.getRows( getContext(), query );
+			images = informeImagenesManager.getRows( getContext(), query );
 		}
 		catch ( Throwable e )
 		{
@@ -441,7 +441,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 			
 			try
 			{
-				imagenes = imagenesManager.getRows( ctx, query );
+				imagenes = informeImagenesManager.getRows( ctx, query );
 			}
 			catch ( Throwable e )
 			{

@@ -29,7 +29,7 @@ import es.pryades.imedig.viewer.actions.ContrastAction;
 import es.pryades.imedig.viewer.actions.DistanceAction;
 import es.pryades.imedig.viewer.actions.EraseAction;
 import es.pryades.imedig.viewer.actions.NoneAction;
-import es.pryades.imedig.viewer.actions.RequestReport;
+import es.pryades.imedig.viewer.actions.ReportRequest;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
@@ -119,7 +119,7 @@ public class LeftToolBar extends HorizontalLayout {
 
 				public void buttonClick( ClickEvent event )
 				{
-					context.sendAction(new RequestReport(this));
+					context.sendAction(new ReportRequest(this));
 				}
 			} );
 		}

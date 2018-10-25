@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -21,6 +22,7 @@ public class QueryTableItem implements Serializable {
 	
 	private CheckBox selected;
 	private String studyDate;
+	private Component studyReport;
 	private String modality;
 	private String patientId;
 	private String patientName;

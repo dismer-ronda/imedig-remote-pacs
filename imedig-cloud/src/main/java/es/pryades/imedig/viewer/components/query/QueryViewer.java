@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
@@ -16,21 +18,29 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.viewer.Study;
 import es.pryades.imedig.cloud.dto.viewer.User;
+import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
 
 public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener{
 
+	private static final Logger LOG = Logger.getLogger( QueryViewer.class );
 	private static final long serialVersionUID = 2949836327715684727L;
 	
 	private TextField fieldName;
@@ -195,12 +205,13 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		tableEstudies = new Table();
 		tableEstudies.setContainerDataSource(container);
 		tableEstudies.setSizeFull();
-		tableEstudies.setVisibleColumns(new String[] { "selected", "studyDate", "modality", "patientId", "patientName",
-				"patientAge", "referringPhysicianName" });
+		tableEstudies.setVisibleColumns(new String[] { "selected", "studyDate", "studyReport", "modality", "patientId", "patientName","patientAge", "referringPhysicianName" });
 		tableEstudies.setColumnHeaders(new String[] { "", context.getString("QueryForm.StudyDate"),
+				context.getString("words.inform"),
 				context.getString("QueryForm.Modality"), context.getString("QueryForm.PatientId"),
 				context.getString("QueryForm.PatientName"), context.getString("QueryForm.Age"),
 				context.getString("QueryForm.Referrer") });
+		tableEstudies.setColumnAlignments( Align.LEFT, Align.LEFT, Align.CENTER, Align.LEFT, Align.LEFT, Align.LEFT,Align.LEFT, Align.LEFT);
 		tableEstudies.setSelectable(true);
 		tableEstudies.setMultiSelect(false);
 		tableEstudies.setSortEnabled(false);
@@ -254,8 +265,43 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		container.removeAllItems();
 		
 		for (Study study : studies) {
-			container.addItem(new QueryTableItem(context, study));
+			QueryTableItem item = new QueryTableItem(context, study);
+			
+			DetalleInforme informe = getStudyReport( study );
+			
+			if (informe != null){
+				item.setStudyReport( AppUtils.getImgEstado( informe.getEstado() ) );
+			}else{
+				item.setStudyReport( getEmptyLabel() );
+			}
+			
+			container.addItem(item);
 		}
+	}
+	
+	private static Component getEmptyLabel(){
+		Label label = new Label();
+		label.setWidth( "-1px" );
+		
+		return label;
+	}
+	
+	private DetalleInforme getStudyReport(Study study){
+		DetallesInformesManager informesManager = IOCManager.getInstanceOf( DetallesInformesManager.class );
+		
+		InformeQuery query = new InformeQuery();
+		query.setEstudio_uid( study.getStudyInstanceUID() );
+		
+		try{
+			//Siempre retorna listado ordenado por fecha descendentemente
+			List<DetalleInforme> informes = informesManager.getRows( context, query );
+			if (!informes.isEmpty()) return informes.get( 0 );
+			
+		}catch ( Throwable e ){
+			LOG.error( "Error", e);
+		}
+		
+		return null;
 	}
 	
 	private List<String> getSeletedStudies(){

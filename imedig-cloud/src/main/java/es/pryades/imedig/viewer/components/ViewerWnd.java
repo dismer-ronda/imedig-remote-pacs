@@ -62,7 +62,7 @@ import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
-import es.pryades.imedig.viewer.actions.RequestReport;
+import es.pryades.imedig.viewer.actions.ReportRequest;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
 import es.pryades.imedig.viewer.actions.ZoomAction;
@@ -207,8 +207,8 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 			leftToolBar.buttonErase.setEnabled( true );
 		}else if (action instanceof NotFigures) {
 			leftToolBar.buttonErase.setEnabled( false );
-		}else if (action instanceof RequestReport) {
-			requestReport();
+		}else if (action instanceof ReportRequest) {
+			reportRequest();
 		}else if (action instanceof ChangeImageFrame) {
 			leftToolBar.changeImageFrame( ((ChangeImageFrame)action).getData());
 		}
@@ -313,7 +313,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}
 	}
 	
-	private void requestReport(){
+	private void reportRequest(){
 		
 		if (countStudyReport()>0){
 			showConfirmationNewReport();
