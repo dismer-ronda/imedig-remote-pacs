@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -36,18 +39,15 @@ import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
-import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
 import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.core.reports.PdfExport;
-import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.cloud.dto.Usuario;
-import es.pryades.imedig.cloud.dto.query.CentroQuery;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.query.UsuarioQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
@@ -58,8 +58,6 @@ import es.pryades.imedig.cloud.vto.refs.InformeVtoFieldRef;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 
@@ -595,7 +593,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return null;
 	}
 	
-	public Component getQueryFecha()
+	private Component getQueryFecha()
 	{
 		ComboBox combo = new ComboBox(getContext().getString( "words.date" ));
 		combo.setWidth( COMBO_WIDTH );
@@ -618,7 +616,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return getRow( combo );
 	}
 
-	public Component getQueryPaciente()
+	private Component getQueryPaciente()
 	{
 		TextField text = new TextField( getContext().getString( "words.patient" ), bi.getItemProperty( "paciente" ) );
 		text.setNullRepresentation( "" );
@@ -626,7 +624,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return getRow( text );
 	}
 
-	public Component getQueryEstudio()
+	private Component getQueryEstudio()
 	{
 		TextField text = new TextField( getContext().getString( "words.study" ), bi.getItemProperty( "estudio" ) );
 		text.setNullRepresentation( "" );
@@ -634,7 +632,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return getRow( text );
 	}
 
-	private void fillComboCentro( ComboBox comboCentro )
+	/*private void fillComboCentro( ComboBox comboCentro )
 	{
 		DetallesCentrosManager centrosManager = (DetallesCentrosManager) IOCManager.getInstanceOf( DetallesCentrosManager.class );
 
@@ -687,7 +685,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		}
 	}
 
-	public Component getQueryCentro()
+	private Component getQueryCentro()
 	{
 		ComboBox combo = new ComboBox(getContext().getString( "words.center" ));
 		combo.setNullSelectionAllowed( true );
@@ -698,9 +696,9 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		fillComboCentro( combo );
 		
 		return getRow( combo );
-	}
+	}*/
 
-	public Component getQueryEstado()
+	private Component getQueryEstado()
 	{
 		comboStatus = new ComboBox(getContext().getString( "words.status" )); 
 		comboStatus.setWidth( COMBO_WIDTH );
@@ -851,7 +849,7 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		CssLayout query = new CssLayout();
 		query.setWidth( "100%" );
 		query.addComponents( getQueryFecha(), getQueryEstado(), getQueryRefiere(), 
-				getQueryInforma(), getQueryCentro(), getQueryModalidad(),
+				getQueryInforma(), /*getQueryCentro(),*/ getQueryModalidad(),
 				getQueryEstudio(), getQueryPaciente(), getQueryCodigo(), getQueryClaves());
 		return query;
 		

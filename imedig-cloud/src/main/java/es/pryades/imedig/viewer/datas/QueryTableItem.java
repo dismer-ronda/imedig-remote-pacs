@@ -5,14 +5,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter

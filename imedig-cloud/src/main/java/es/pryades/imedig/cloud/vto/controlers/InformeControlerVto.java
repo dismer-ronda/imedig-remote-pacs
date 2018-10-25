@@ -23,7 +23,7 @@ public class InformeControlerVto extends GenericControlerVto
 {
 	private static final long serialVersionUID = -5276816955887400532L;
 	
-	private static final String[] visibleCols =	{ "imgEstado", "fecha", "estado", "centro_nombre", "paciente_id", "paciente_nombre", "refiere", "informa"};
+	private static final String[] visibleCols =	{ "imgEstado", "fecha", "estado", "paciente_id", "paciente_nombre", "refiere", "informa"};
 
 	public InformeControlerVto( ImedigContext ctx )
 	{

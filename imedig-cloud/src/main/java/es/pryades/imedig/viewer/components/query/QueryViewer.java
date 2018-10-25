@@ -205,13 +205,13 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		tableEstudies = new Table();
 		tableEstudies.setContainerDataSource(container);
 		tableEstudies.setSizeFull();
-		tableEstudies.setVisibleColumns(new String[] { "selected", "studyDate", "studyReport", "modality", "patientId", "patientName","patientAge", "referringPhysicianName" });
-		tableEstudies.setColumnHeaders(new String[] { "", context.getString("QueryForm.StudyDate"),
-				context.getString("words.inform"),
+		tableEstudies.setVisibleColumns(new String[] { "selected", "studyReport", "studyDate", "modality", "patientId", "patientName","patientAge", "referringPhysicianName" });
+		tableEstudies.setColumnHeaders(new String[] { "", "", 
+				context.getString("QueryForm.StudyDate"),
 				context.getString("QueryForm.Modality"), context.getString("QueryForm.PatientId"),
 				context.getString("QueryForm.PatientName"), context.getString("QueryForm.Age"),
 				context.getString("QueryForm.Referrer") });
-		tableEstudies.setColumnAlignments( Align.LEFT, Align.LEFT, Align.CENTER, Align.LEFT, Align.LEFT, Align.LEFT,Align.LEFT, Align.LEFT);
+		tableEstudies.setColumnAlignments( Align.LEFT, Align.LEFT, Align.LEFT, Align.LEFT, Align.LEFT, Align.LEFT, Align.LEFT, Align.LEFT);
 		tableEstudies.setSelectable(true);
 		tableEstudies.setMultiSelect(false);
 		tableEstudies.setSortEnabled(false);
