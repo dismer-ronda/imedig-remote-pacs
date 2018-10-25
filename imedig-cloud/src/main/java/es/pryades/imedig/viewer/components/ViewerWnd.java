@@ -61,6 +61,7 @@ import es.pryades.imedig.viewer.actions.NoneAction;
 import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.actions.OpenImage;
 import es.pryades.imedig.viewer.actions.OpenStudies;
+import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.RequestReport;
 import es.pryades.imedig.viewer.actions.RestoreAction;
 import es.pryades.imedig.viewer.actions.UndoAction;
@@ -246,12 +247,15 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	private void closeStudies(CloseStudies closeStudies)	{
 		if (closeStudies.getData() == null){
 			closeAllStydies();
+			context.sendAction( new QueryStudies( this ) );
 			return;
 		}
 		
 		leftToolBar.removeStudyPanel( (StudyPanel)closeStudies.getSource() );
 		StudyTree study = closeStudies.getData();
 		studies.remove( study );
+		if (studies.isEmpty()) context.sendAction( new QueryStudies( this ) );
+		
 		if (imageCanvas.getImageData()!= null && study == imageCanvas.getImageData().getStudy()){
 			imageCanvas.clear();
 			leftToolBar.allButtonsDisable();

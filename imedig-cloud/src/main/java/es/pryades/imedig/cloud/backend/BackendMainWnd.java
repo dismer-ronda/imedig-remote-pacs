@@ -63,6 +63,7 @@ import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.OpenStudies;
+import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
@@ -652,6 +653,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			count = getCountReport( getContext(), getContext().getUsuario().getId(), Informe.STATUS_APROVED);
 		}
 		
+		imageViewer = new ViewerWnd( context, getUser( getUsuario( getContext() ) ) );
 		if (count > 0 ){
 			showReports(true);
 		}else{
@@ -784,6 +786,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			reportsViewer.refreshVisibleContent();
 		}else if (action instanceof OpenStudies){
 			showImages();
+		}else if (action instanceof QueryStudies){
+			showQueryStudies();
 		}
 	}
 	

@@ -17,11 +17,13 @@ import javax.imageio.stream.ImageInputStream;
 
 import org.apache.log4j.Logger;
 
-import com.vaadin.ui.UI;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.StreamResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -30,7 +32,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+
+import es.pryades.imedig.cloud.dto.Informe;
 
 public class AppUtils implements Serializable 
 {
@@ -303,5 +308,27 @@ public class AppUtils implements Serializable
         }
 		
 		return null;
+	}
+	
+	public static Component getImgEstado( Integer estado )
+	{
+		Label label = new Label(FontAwesome.FILE_TEXT_O.getHtml(), ContentMode.HTML);
+		label.setWidth( "-1px" );
+		switch ( estado.intValue() )
+		{
+			case Informe.STATUS_INFORMED:
+				label.addStyleName( "color_yellow" );
+				break;
+			case Informe.STATUS_APROVED:
+				label.addStyleName( "color_green" );
+				break;
+			case Informe.STATUS_REQUESTED:
+				label.addStyleName( "color_light_blue" );
+				break;
+			default:
+				break;
+		}
+		
+		return label;
 	}
 }

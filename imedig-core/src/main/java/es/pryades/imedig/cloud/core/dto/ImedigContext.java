@@ -211,5 +211,9 @@ public class ImedigContext implements Serializable
 		}
 		
 	}
+	
+	public void removeAllListener( ){
+		listeners.clear();
+	}
 
 }

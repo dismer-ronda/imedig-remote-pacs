@@ -2,12 +2,7 @@ package es.pryades.imedig.cloud.vto.controlers;
 
 import java.util.HashMap;
 
-import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
-
-import es.pryades.imedig.cloud.common.ImedigTheme;
+import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
@@ -164,28 +159,6 @@ public class InformeControlerVto extends GenericControlerVto
 		}
 	}
 
-	private Component getImgEstado( Integer estado )
-	{
-		Label label = new Label(FontAwesome.FILE_TEXT_O.getHtml(), ContentMode.HTML);
-		label.setWidth( "-1px" );
-		switch ( estado.intValue() )
-		{
-			case Informe.STATUS_INFORMED:
-				label.addStyleName( ImedigTheme.COLOR_YELLOW );
-				break;
-			case Informe.STATUS_APROVED:
-				label.addStyleName( ImedigTheme.COLOR_GREEN );
-				break;
-			case Informe.STATUS_REQUESTED:
-				label.addStyleName( ImedigTheme.COLOR_LIGHT_BLUE );
-				break;
-			default:
-				break;
-		}
-		
-		return label;
-	}
-
 	public GenericVto generateVtoFromDto( Object dtoObj ) throws Throwable
 	{
 		InformeVto result = null;
@@ -197,7 +170,7 @@ public class InformeControlerVto extends GenericControlerVto
 				result = new InformeVto();
 
 				result.setId( ((DetalleInforme)dtoObj).getId() );
-				result.setImgEstado( getImgEstado( ((DetalleInforme)dtoObj).getEstado() ) );
+				result.setImgEstado( AppUtils.getImgEstado( ((DetalleInforme)dtoObj).getEstado() ) );
 				result.setEstado( getEstado( ((DetalleInforme)dtoObj).getEstado() ) );
 				result.setFecha( Utils.getFormatedDate( ((DetalleInforme)dtoObj).getFecha(), "dd/MM/yyyy HH:mm" ) );
 				result.setCentro_nombre( ((DetalleInforme)dtoObj).getCentro_nombre() );
