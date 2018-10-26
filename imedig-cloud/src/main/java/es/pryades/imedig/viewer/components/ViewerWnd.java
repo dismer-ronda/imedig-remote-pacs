@@ -131,6 +131,14 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		context.removeListener( this );
 	}
 	
+	@Override
+	public void detach(){
+		super.detach();
+		if (modeReport) context.removeListener( this );
+	}
+	
+	
+	
 	private void init(){
 		studies = new ArrayList<>();
 		if (modeReport){
@@ -234,6 +242,8 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		leftToolBar.buttonRestore.setEnabled( enabled );
 		
 		currentSerie = data.getSeries().getSeriesData().getSeriesInstanceUID();
+		if (seriesImages.get( currentSerie ) == null) return;
+		
 		currentIndex = seriesImages.get( currentSerie ).indexOf( data );
 		
 		imageCanvas.openImage(data);
@@ -284,7 +294,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 				
 			StudyTree study = QueryManager.getInstance().getStudyTree( AETitle, Host, Port, Settings.IMEDIG_AETitle, uid, new HashMap<String,String>() );
 
-			if ( study != null && study.getSeriesList().size() != 0 ){
+			if ( study != null && study.getSeriesList().size() != 0 && !this.studies.contains( study )){
 				this.studies.add( study );
 				for ( String serieUID : StudyUtils.getSeriesUID( study ) )
 				{

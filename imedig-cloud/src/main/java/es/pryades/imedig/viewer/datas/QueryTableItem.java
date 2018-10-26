@@ -5,15 +5,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
+import es.pryades.imedig.viewer.components.query.SelectedStudyListener;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -30,6 +32,8 @@ public class QueryTableItem implements Serializable {
 	private String patientAge;
 	private String referringPhysicianName;
 	private Study study;
+	private SelectedStudyListener listener;
+	private boolean report;
 	
 	private final ImedigContext context;
 
@@ -38,6 +42,15 @@ public class QueryTableItem implements Serializable {
 		this.study = study;
 		this.context = context;
 		selected = new CheckBox();
+		selected.addValueChangeListener( new ValueChangeListener(){
+			private static final long serialVersionUID = 6142729965661373474L;
+
+			public void valueChange( ValueChangeEvent event ){
+				if (listener == null) return;
+				
+				listener.selectStudy();
+			}
+		} );
 		studyDate = study.getStudyDate();
 		modality = study.getModalitiesInStudy();
 		patientId = study.getPatientID();

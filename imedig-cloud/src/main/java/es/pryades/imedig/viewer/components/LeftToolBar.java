@@ -62,9 +62,7 @@ public class LeftToolBar extends HorizontalLayout {
 	Integer studyCount = 0;
 	
 	public LeftToolBar(ImedigContext context, ImageResource imageResource){
-		//setWidth("165px");
 		setHeight("100%");
-		//setSpacing( true );
 		this.imageResource = imageResource;
 		this.context = context;
 		buidInsideLayout();
@@ -72,13 +70,8 @@ public class LeftToolBar extends HorizontalLayout {
 
 
 	private void buidInsideLayout() {
-//		inside = new VerticalLayout();
-//		inside.setSpacing(true);
-//		inside.setHeight("100%");
-		
 		buildButtons();
 		buildPanel();
-//		addComponent(inside);
 	}
 
 	private void buildButtons() {
@@ -351,6 +344,11 @@ public class LeftToolBar extends HorizontalLayout {
 	}
 
 	public void studyInViewer(){
+		if (thumnails.getComponentCount() == 0){
+			allButtonsDisable();
+			return;
+		}
+		
 		buttonNone.setEnabled( true );
 		buttonDistance.setEnabled( true );
 		buttonAngle.setEnabled( true );

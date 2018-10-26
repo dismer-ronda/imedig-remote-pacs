@@ -6,9 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -58,6 +55,8 @@ import es.pryades.imedig.cloud.vto.refs.InformeVtoFieldRef;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -150,20 +149,17 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	{
 		List<Component> extras = new ArrayList<Component>();
 		
-		btnView = new Button();
-		btnView.setCaption( getContext().getString( "words.view" ) );
+		btnView = new Button(getContext().getString( "words.view" ));
 		btnView.setEnabled( false );
 		bttnViewReportListener();
 		extras.add( btnView );
 	
-		btnApprove = new Button();
-		btnApprove.setCaption( getContext().getString( "words.approve" ) );
+		btnApprove = new Button(getContext().getString( "words.approve" ));
 		btnApprove.setEnabled( false );
 		bttnApproveReportListener();
 		extras.add( btnApprove );
 	
-		btnFinish = new Button();
-		btnFinish.setCaption( getContext().getString( "words.finish" ) );
+		btnFinish = new Button(getContext().getString( "words.finish" ));
 		btnFinish.setEnabled( false );
 		bttnFinishReportListener();
 		extras.add( btnFinish );
