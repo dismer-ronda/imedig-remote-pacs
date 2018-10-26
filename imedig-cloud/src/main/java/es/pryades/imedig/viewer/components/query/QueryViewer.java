@@ -311,7 +311,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	private void buildFooter()
 	{
-		btnOpenStudy = buildButton( context.getString( "QueryForm.OpenTip" ) );
+		btnOpenStudy = buildButton( context.getString( "words.open" ) );
 		btnOpenStudy.addClickListener( new ClickListener()
 		{
 			private static final long serialVersionUID = -585302886377865803L;

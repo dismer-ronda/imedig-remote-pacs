@@ -47,6 +47,7 @@ import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
+import es.pryades.imedig.cloud.dto.Perfil;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.query.CentroQuery;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
@@ -79,8 +80,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private static final String AUTH_CONFIGURACION = "configuracion";
 	private static final String AUTH_ADMINISTRACION = "administracion";
-	private static final Integer PERFIL_IMAGENOLOGO = 3;
-	private static final Integer PERFIL_USUARIO = 2;
 	
 	private LoginPanel loginPanel;
 
@@ -171,18 +170,21 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private void registerAccess()
 	{
-		try
+		if ( getContext().getUsuario().isLocal() )
 		{
-			Acceso acceso1 = new Acceso();
-
-			acceso1.setCuando( Utils.getTodayAsLong( "Europe/Madrid" ) );
-			acceso1.setUsuario( getContext().getUsuario().getId() );
-
-			accesosManager.setRow( getContext(), null, acceso1 );
-		}
-		catch ( Throwable e )
-		{
-			Utils.logException( e, LOG );
+			try
+			{
+				Acceso acceso1 = new Acceso();
+	
+				acceso1.setCuando( Utils.getTodayAsLong( "Europe/Madrid" ) );
+				acceso1.setUsuario( getContext().getUsuario().getId() );
+	
+				accesosManager.setRow( getContext(), null, acceso1 );
+			}
+			catch ( Throwable e )
+			{
+				Utils.logException( e, LOG );
+			}
 		}
 	}
 	
@@ -319,6 +321,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		setStyleButtonBar( buttonImages );
 		buttonImages.addClickListener( new Button.ClickListener()
 		{
+			private static final long serialVersionUID = 6196485721108489326L;
+
 			public void buttonClick( ClickEvent event )
 			{
 				showImages();
@@ -647,9 +651,9 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private void showMainView(){
 		Integer count = 0;
 		
-		if (getContext().hasProfile( PERFIL_IMAGENOLOGO )){
+		if (getContext().hasProfile( Perfil.PROFILE_RADIOLOGIST )){
 			count = getCountReport( getContext(), null, Informe.STATUS_INFORMED, Informe.STATUS_REQUESTED);
-		}else if (getContext().hasProfile( PERFIL_USUARIO )){
+		}else if (getContext().hasProfile( Perfil.PROFILE_DOCTOR )){
 			count = getCountReport( getContext(), getContext().getUsuario().getId(), Informe.STATUS_APROVED);
 		}
 		
