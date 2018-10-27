@@ -2085,7 +2085,9 @@ public class Utils implements Serializable
 
 	public static String getEnviroment( String variable )
 	{
-		return System.getenv( variable );
+		String value = System.getenv( variable );
+		
+		return value == null ? "" : value;
 	}
 
 	public static String readFile(String filename)

@@ -1,6 +1,15 @@
 package es.pryades.imedig.cloud.core.bll;
 
+import java.util.Hashtable;
 import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.InitialDirContext;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -12,6 +21,7 @@ import es.pryades.imedig.cloud.core.dal.UsuarioCentrosManager;
 import es.pryades.imedig.cloud.core.dal.ibatis.UsuarioMapper;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Centro;
+import es.pryades.imedig.cloud.dto.Perfil;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.UsuarioCentro;
 import es.pryades.imedig.cloud.dto.query.UsuarioQuery;
@@ -359,7 +369,7 @@ public class UsuariosManagerImpl extends ImedigManagerImpl implements UsuariosMa
 		}
 	}
 
-	public void validateUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
+	public void validateLocalUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
 	{
 		boolean rollback = true;
 
@@ -446,6 +456,112 @@ public class UsuariosManagerImpl extends ImedigManagerImpl implements UsuariosMa
 		{
 			if ( finish )
 				ctx.closeSessionCloud();
+		}
+	}
+
+	private String getLdapAttribute( Attributes attrs, String name )
+	{
+	    if ( attrs == null )
+	    	return "";
+	    
+	    try 
+	    {
+	    	for ( NamingEnumeration ae = attrs.getAll(); ae.hasMore(); ) 
+	    	{
+	    		Attribute attr = (Attribute) ae.next();
+	    		
+	    		if ( attr.getID().equals( name ) )
+	    			return attr.get( 0 ).toString();
+	    	}
+		} 
+	    catch (NamingException e) 
+		{
+	    	e.printStackTrace();
+		}
+	    
+	    return "";
+	}
+	
+	@SuppressWarnings({ "unchecked" })
+	public void validateLdapUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
+	{
+		try 
+		{
+		    String ldapMask = Utils.getEnviroment( "LDAP_MASK" );
+		    String ldapServer = Utils.getEnviroment( "LDAP_SERVER" );
+		    
+		    if ( ldapMask.isEmpty() || ldapServer.isEmpty() )
+		    	throw new Exception( "No ldap auth parameters set" );
+
+			Hashtable env = new Hashtable(11);
+			env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
+			env.put( Context.PROVIDER_URL, ldapServer );
+
+			String dn = ldapMask.replaceAll( "%login%", login );
+			
+			// Authenticate as S. User and password "mysecret"
+			env.put( Context.SECURITY_AUTHENTICATION, "simple" );
+			env.put( Context.SECURITY_PRINCIPAL, dn );
+			env.put( Context.SECURITY_CREDENTIALS, password );
+
+		    // Create initial context
+		    DirContext dctx = new InitialDirContext(env);
+		    
+		    Attributes attrs = dctx.getAttributes( dn );
+		    
+		    Usuario user = new Usuario();
+		    user.setLogin( login );
+		    user.setEmail( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_EMAIL" ) ) );
+		    //user.setNombre( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_NAME" ) ) );
+		    //user.setApe1( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_SURNAME" ) ) );
+		    //user.setTitulo( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_TITLE" ) ) );
+		    user.setLogin( login );
+		    user.setPwd( password );
+		    user.setCambio( Utils.getTodayAsInt() );
+		    user.setIntentos( 0 );
+		    user.setEstado( Usuario.PASS_OK );
+		    user.setPerfil( Perfil.PROFILE_STUDENT );
+		    user.setFiltro( "*" );
+		    user.setQuery( "4" );
+		    user.setCompresion( "image/png" );
+
+		    ctx.setUsuario( user );
+		    
+		    dctx.close();
+		} 
+		catch ( NamingException e ) 
+		{
+		    e.printStackTrace();
+		}		
+	}
+
+	public void validateUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
+	{
+		try
+		{
+			validateLocalUser( ctx, login, password, subject, text, mail );
+			
+			ctx.getUsuario().setLocal( true );
+
+			return;
+		}
+		catch( Throwable e )
+		{
+		}
+
+		try
+		{
+			validateLdapUser( ctx, login, password, subject, text, mail );
+			
+			ctx.getUsuario().setLocal( false);
+
+			return;
+		}
+		catch( Throwable e )
+		{
+			Utils.logException( e, LOG );
+
+			throw e;
 		}
 	}
 

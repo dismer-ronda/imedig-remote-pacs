@@ -19,6 +19,9 @@ public interface UsuariosManager extends ImedigManager
 
 	public void sendNewPassword( ImedigContext ctx, String email, String subject, String text, boolean mail ) throws Throwable;
 
+	public void validateLocalUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable;
+	public void validateLdapUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable;
+	
 	public void validateUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable;
 
 	public Usuario createUsuario( ImedigContext ctx, Usuario usuario, List centros ) throws Throwable;

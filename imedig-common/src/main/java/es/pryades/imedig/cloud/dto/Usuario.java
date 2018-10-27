@@ -47,6 +47,8 @@ public class Usuario extends ImedigDto
 	String compresion; 
 	String titulo; 
 	
+	boolean local;
+	
     /**
 	 * Adiciona un contacto al usuario
 	 * 
