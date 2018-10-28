@@ -235,6 +235,7 @@
 			centro,
 			informa,
 			icd10cm,
+			pdf,
 			refiere,
 			estado,
 			protegido
@@ -254,6 +255,7 @@
 			#{centro},
 			#{informa},
 			#{icd10cm},
+			#{pdf},
 			#{refiere},
 			#{estado},
 			#{protegido}

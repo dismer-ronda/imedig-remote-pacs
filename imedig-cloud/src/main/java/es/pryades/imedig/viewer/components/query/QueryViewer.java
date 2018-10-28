@@ -1,5 +1,7 @@
 package es.pryades.imedig.viewer.components.query;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -22,9 +24,14 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.Align;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Upload;
+import com.vaadin.ui.Upload.FailedEvent;
+import com.vaadin.ui.Upload.StartedEvent;
+import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -36,9 +43,11 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
 import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
+import es.pryades.imedig.cloud.core.dal.InformesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
+import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.viewer.Study;
@@ -52,7 +61,7 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
 
-public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener, SelectedStudyListener, ModalParent
+public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener, SelectedStudyListener, ModalParent, Upload.SucceededListener, Upload.FailedListener, Upload.Receiver, Upload.StartedListener
 {
 
 	private static final Logger LOG = Logger.getLogger( QueryViewer.class );
@@ -68,7 +77,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	private Button btnOpenStudy;
 	private Button btnViewReport;
 	private Button btnReport;
-	private Button btnUpload;
+	private Upload btnUpload;
 
 	private PageTable paginator;
 	private QueryTableModel model;
@@ -77,8 +86,10 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	private Button btnQuery;
 
 	private final ImedigContext context;
+	
+	private ByteArrayOutputStream reportStream;
 
-	public static final Integer PAGE_SIZE = 25;
+	public static final Integer PAGE_SIZE = 20;
 
 	public QueryViewer( ImedigContext context, User user )
 	{
@@ -243,10 +254,14 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 				if ( tableEstudies.getValue() == null )
 				{
 					btnViewReport.setEnabled( false );
+					btnReport.setEnabled( false );
+					btnUpload.setEnabled( false );
 				}
 				else
 				{
 					btnViewReport.setEnabled( ((QueryTableItem)tableEstudies.getValue()).isReport() );
+					btnReport.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
+					btnUpload.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
 				}
 
 			}
@@ -329,7 +344,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			private static final long serialVersionUID = 3390872787511885394L;
 
 			@Override
-			public void buttonClick( ClickEvent event ) {
+			public void buttonClick( ClickEvent event )
+			{
 				QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
 				DetalleInforme informe = getStudyReport( item.getStudy().getStudyInstanceUID() );
 
@@ -338,7 +354,24 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		} );
 
 		btnReport = buildButton( context.getString( "words.do.report" ) );
-		btnUpload = buildButton( context.getString( "QueryForm.Upload.Report" ) );
+		btnReport.addClickListener( new ClickListener()
+		{
+			private static final long serialVersionUID = 1204288685379729587L;
+
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
+				if (item != null) reportRequest( item );
+			}
+		} );
+
+		btnUpload = new Upload( null, this );
+		btnUpload.setImmediate( true );
+		btnUpload.setButtonCaption( context.getString( "QueryForm.Upload.Report" ) );
+		btnUpload.setEnabled( false );
+		btnUpload.addStartedListener( this );
+		btnUpload.addSucceededListener( this );
 		HorizontalLayout left = buildHorizontalLayout();
 		left.addComponents( btnOpenStudy, btnViewReport, btnReport, btnUpload );
 		HorizontalLayout right = buildHorizontalLayout();
@@ -357,18 +390,22 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		addComponent( footer );
 	}
 
-	private void viewReportSelectedStudy( final DetalleInforme informe ){
-		if ( informe.aprobado() || informe.terminado() )		{
+	private void viewReportSelectedStudy( final DetalleInforme informe )
+	{
+		if ( informe.aprobado() || informe.terminado() )
+		{
 			onDownloadReport( informe, 0, "", "", false );
-		} else	{
+		}
+		else
+		{
 			InformesImagenesManager manager = IOCManager.getInstanceOf( InformesImagenesManager.class );
 			InformeImagen query = new InformeImagen();
 			query.setInforme( informe.getId() );
-			
+
 			String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
-			
+
 			List<InformeImagen> images;
-			
+
 			try
 			{
 				images = manager.getRows( context, query );
@@ -376,15 +413,63 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			catch ( Throwable e )
 			{
 				e.printStackTrace();
-				
+
 				images = new ArrayList<InformeImagen>();
 			}
-			
+
 			new ModalNewInforme( context, Operation.OP_MODIFY, informe, images, null, right ).showModalWindow();
 		}
 	}
 
-	private void onDownloadReport( DetalleInforme informe, Integer template, String orientation, String size, Boolean images ){
+	private void reportRequest( final QueryTableItem item ){
+		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
+
+		DetalleCentro detalleCentro = null;
+		try{
+			detalleCentro = (DetalleCentro)centrosManager.getRow( context, 1 );
+		}catch ( Throwable e ){
+			e.printStackTrace();
+			return;
+		}
+
+		List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
+		
+
+		DetalleInforme informe = new DetalleInforme();
+
+		informe.setCentro( detalleCentro.getId() );
+		informe.setEstudio_acceso( item.getStudy().getAccessionNumber() );
+		informe.setEstudio_id( item.getStudy().getStudyID() );
+		informe.setEstudio_uid( item.getStudy().getStudyInstanceUID() );
+		informe.setModalidad( item.getStudy().getModalitiesInStudy() );
+		informe.setPaciente_id( item.getStudy().getPatientID() );
+		informe.setPaciente_nombre( item.getStudy().getPatientName() );
+		informe.setCentro_ip( detalleCentro.getIp() );
+		informe.setCentro_puerto( detalleCentro.getPuerto() );
+
+		informe.setHorario_nombre( detalleCentro.getHorario_nombre() );
+
+		informe.setEstado( 0 );
+		informe.setProtegido( 0 );
+
+		final ModalNewInforme report = new ModalNewInforme( context, Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
+
+		report.addCloseListener( new Window.CloseListener()
+		{
+			private static final long serialVersionUID = -7551376683736330872L;
+
+			@Override
+			public void windowClose( CloseEvent e )
+			{
+				if ( report.isAdded() )
+					refreshVisibleContent();
+			}
+		} );
+		report.showModalWindow();
+	}
+
+	private void onDownloadReport( DetalleInforme informe, Integer template, String orientation, String size, Boolean images )
+	{
 		long ts = new Date().getTime();
 
 		String extra = "ts=" + ts + "&id=" + informe.getId() + "&orientation=" + orientation + "&size=" + size + "&template=" + template + "&images=" + images;
@@ -398,11 +483,12 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 		new ShowExternalUrlDlg( context, title, url ).showModalWindow();
 	}
-	
-	private void showNewReport(Study study){
+
+	private void showNewReport( Study study )
+	{
 		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
-		
-		DetalleCentro detalleCentro = null; 
+
+		DetalleCentro detalleCentro = null;
 		try
 		{
 			detalleCentro = (DetalleCentro)centrosManager.getRow( context, 1 );
@@ -414,7 +500,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		}
 
 		List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
-		
+
 		DetalleInforme informe = new DetalleInforme();
 
 		informe.setCentro( detalleCentro.getId() );
@@ -428,26 +514,25 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		informe.setCentro_puerto( detalleCentro.getPuerto() );
 
 		informe.setHorario_nombre( detalleCentro.getHorario_nombre() );
-		
+
 		informe.setEstado( 0 );
 		informe.setProtegido( 0 );
 
 		final ModalNewInforme report = new ModalNewInforme( context, Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
-		
-		report.addCloseListener(
-			new Window.CloseListener() 
-			{
-				private static final long serialVersionUID = -7551376683736330872L;
 
-				@Override
-			    public void windowClose( CloseEvent e ) 
-			    {
-					if ( report.isAdded() ){
-						//showReports();
-					}
-			    }
+		report.addCloseListener( new Window.CloseListener()
+		{
+			private static final long serialVersionUID = -7551376683736330872L;
+
+			@Override
+			public void windowClose( CloseEvent e )
+			{
+				if ( report.isAdded() )
+				{
+					// showReports();
+				}
 			}
-		);
+		} );
 		report.showModalWindow();
 	}
 
@@ -554,9 +639,84 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	}
 
 	@Override
-	public void refreshVisibleContent()
+	public void refreshVisibleContent(){
+		int size = model.doQuery();
+
+		paginator.resetTotal( size );
+		refreshTable( model.getCurrentPage() );
+	}
+
+	@Override
+	public void uploadStarted( StartedEvent event )
+	{
+		if (!event.getMIMEType().contains( "pdf" )){
+			btnUpload.interruptUpload();
+			Notification.show( context.getString( "QueryForm.Error.Upload.Report.pdf" ), Notification.Type.ERROR_MESSAGE );
+		}
+	}
+
+	@Override
+	public OutputStream receiveUpload( String filename, String mimeType )
+	{
+		reportStream = new ByteArrayOutputStream(); 
+		
+		return reportStream;
+	}
+
+	@Override
+	public void uploadFailed( FailedEvent event )
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void uploadSucceeded( SucceededEvent event )	{
+		
+		//Item seleccionado
+		QueryTableItem selected = (QueryTableItem)tableEstudies.getValue();
+		
+		//Obtener el centro
+		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
+
+		DetalleCentro detalleCentro = new DetalleCentro();
+		try{
+			detalleCentro = (DetalleCentro)centrosManager.getRow( context, 1 );
+			reportStream.close();
+		}catch ( Throwable e ){
+			e.printStackTrace();
+			return;
+		}
+		Informe informe = new Informe();
+		informe.setFecha( Utils.getTodayAsLong( detalleCentro.getHorario_nombre() ) );
+		informe.setPaciente_id( selected.getStudy().getPatientID() );
+		informe.setPaciente_nombre( selected.getStudy().getPatientName() );
+		informe.setEstudio_id( selected.getStudy().getStudyID() );
+		informe.setEstudio_uid( selected.getStudy().getStudyInstanceUID() );
+		informe.setModalidad( selected.getStudy().getModalitiesInStudy() );
+		informe.setModalidad( selected.getStudy().getModalitiesInStudy() );
+		informe.setCentro( detalleCentro.getId() );
+		informe.setInforma( context.getUsuario().getId() );
+		informe.setEstado( Informe.STATUS_APROVED );
+		informe.setPdf( reportStream.toByteArray() );
+		informe.setProtegido( 0 );
+		
+		
+		InformesManager informesManager = (InformesManager) IOCManager.getInstanceOf( InformesManager.class );
+		try{
+			informesManager.setRow( context, null, informe );
+			//informe = (Informe)informesManager.getRow( context, informe.getId() );
+			//Informe clone = (Informe)Utils.clone( informe );
+			//clone.setPdf( reportStream.toByteArray() );
+			//informesManager.setRow( context, informe,  clone);
+		}catch ( Throwable e ){
+			e.printStackTrace();
+			return;
+		}
+
+		btnUpload.setEnabled( false );
+		btnReport.setEnabled( false );
+
+		refreshVisibleContent();
 	}
 }
