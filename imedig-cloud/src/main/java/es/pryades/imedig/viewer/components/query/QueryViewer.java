@@ -87,12 +87,13 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	private final ImedigContext context;
 	
+	private QueryTableItem itemSelected = null;
+	
 	private ByteArrayOutputStream reportStream;
 
-	public static final Integer PAGE_SIZE = 20;
+	public static final Integer PAGE_SIZE = 4;
 
-	public QueryViewer( ImedigContext context, User user )
-	{
+	public QueryViewer( ImedigContext context, User user ){
 		this.context = context;
 		this.user = user;
 
@@ -184,7 +185,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	public void onQuery()
 	{
-		paginator.setPage( 0 );
+		paginator.setPage( paginator.getPage() );
 		paginator.setSize( PAGE_SIZE );
 
 		model = new QueryTableModel( PAGE_SIZE );
@@ -250,38 +251,32 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			public void valueChange( ValueChangeEvent event )
 			{
 				btnOpenStudy.setEnabled( hasStudiesSelected() );
-
-				if ( tableEstudies.getValue() == null )
-				{
+				
+				itemSelected = (QueryTableItem)tableEstudies.getValue();
+				if ( tableEstudies.getValue() == null ){
 					btnViewReport.setEnabled( false );
 					btnReport.setEnabled( false );
 					btnUpload.setEnabled( false );
-				}
-				else
-				{
+				} else {
 					btnViewReport.setEnabled( ((QueryTableItem)tableEstudies.getValue()).isReport() );
 					btnReport.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
 					btnUpload.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
 				}
-
 			}
 		} );
 
-		tableEstudies.addItemClickListener( new ItemClickListener()
-		{
+		tableEstudies.addItemClickListener( new ItemClickListener(){
 
 			private static final long serialVersionUID = 7774918893866773038L;
 
 			@Override
-			public void itemClick( ItemClickEvent event )
-			{
+			public void itemClick( ItemClickEvent event ){
 				if ( !event.isDoubleClick() )
 					return;
 
 				QueryTableItem item = (QueryTableItem)event.getItemId();
 
-				if ( item != null )
-				{
+				if ( item != null ){
 					context.sendAction( new OpenStudies( this, Arrays.asList( item.getStudy().getStudyInstanceUID() ) ) );
 				}
 			}
@@ -297,50 +292,46 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	}
 
 	@Override
-	public void onFirst()
-	{
+	public void onFirst(){
 		model.firstPage();
+		itemSelected = null;
 		refreshTable( model.getCurrentPage() );
 	}
 
 	@Override
-	public void onPrevious()
-	{
+	public void onPrevious(){
 		model.previousPage();
+		itemSelected = null;
 		refreshTable( model.getCurrentPage() );
 	}
 
 	@Override
-	public void onNext()
-	{
+	public void onNext(){
 		model.nextPage();
+		itemSelected = null;
 		refreshTable( model.getCurrentPage() );
 	}
 
 	@Override
-	public void onLast()
-	{
+	public void onLast(){
 		model.lastPage();
+		itemSelected = null;
 		refreshTable( model.getCurrentPage() );
 	}
 
-	private void buildFooter()
-	{
+	private void buildFooter(){
 		btnOpenStudy = buildButton( context.getString( "words.open" ) );
-		btnOpenStudy.addClickListener( new ClickListener()
-		{
+		btnOpenStudy.addClickListener( new ClickListener() {
 			private static final long serialVersionUID = -585302886377865803L;
 
 			@Override
-			public void buttonClick( ClickEvent event )
-			{
+			public void buttonClick( ClickEvent event ){
 				context.sendAction( new OpenStudies( this, getSeletedStudies() ) );
 			}
 		} );
 
 		btnViewReport = buildButton( context.getString( "modalNewReport.wndCaption.view" ) );
-		btnViewReport.addClickListener( new ClickListener()
-		{
+		btnViewReport.addClickListener( new ClickListener(){
 			private static final long serialVersionUID = 3390872787511885394L;
 
 			@Override
@@ -354,13 +345,11 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		} );
 
 		btnReport = buildButton( context.getString( "words.do.report" ) );
-		btnReport.addClickListener( new ClickListener()
-		{
+		btnReport.addClickListener( new ClickListener(){
 			private static final long serialVersionUID = 1204288685379729587L;
 
 			@Override
-			public void buttonClick( ClickEvent event )
-			{
+			public void buttonClick( ClickEvent event )	{
 				QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
 				if (item != null) reportRequest( item );
 			}
@@ -372,6 +361,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		btnUpload.setEnabled( false );
 		btnUpload.addStartedListener( this );
 		btnUpload.addSucceededListener( this );
+		btnUpload.addFailedListener( this );
 		HorizontalLayout left = buildHorizontalLayout();
 		left.addComponents( btnOpenStudy, btnViewReport, btnReport, btnUpload );
 		HorizontalLayout right = buildHorizontalLayout();
@@ -390,14 +380,10 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		addComponent( footer );
 	}
 
-	private void viewReportSelectedStudy( final DetalleInforme informe )
-	{
-		if ( informe.aprobado() || informe.terminado() )
-		{
+	private void viewReportSelectedStudy( final DetalleInforme informe ){
+		if ( informe.aprobado() || informe.terminado() ){
 			onDownloadReport( informe, 0, "", "", false );
-		}
-		else
-		{
+		}else{
 			InformesImagenesManager manager = IOCManager.getInstanceOf( InformesImagenesManager.class );
 			InformeImagen query = new InformeImagen();
 			query.setInforme( informe.getId() );
@@ -406,12 +392,9 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 			List<InformeImagen> images;
 
-			try
-			{
+			try	{
 				images = manager.getRows( context, query );
-			}
-			catch ( Throwable e )
-			{
+			}catch ( Throwable e )	{
 				e.printStackTrace();
 
 				images = new ArrayList<InformeImagen>();
@@ -454,13 +437,11 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 		final ModalNewInforme report = new ModalNewInforme( context, Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
 
-		report.addCloseListener( new Window.CloseListener()
-		{
+		report.addCloseListener( new Window.CloseListener()	{
 			private static final long serialVersionUID = -7551376683736330872L;
 
 			@Override
-			public void windowClose( CloseEvent e )
-			{
+			public void windowClose( CloseEvent e )	{
 				if ( report.isAdded() )
 					refreshVisibleContent();
 			}
@@ -468,8 +449,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		report.showModalWindow();
 	}
 
-	private void onDownloadReport( DetalleInforme informe, Integer template, String orientation, String size, Boolean images )
-	{
+	private void onDownloadReport( DetalleInforme informe, Integer template, String orientation, String size, Boolean images ){
 		long ts = new Date().getTime();
 
 		String extra = "ts=" + ts + "&id=" + informe.getId() + "&orientation=" + orientation + "&size=" + size + "&template=" + template + "&images=" + images;
@@ -484,8 +464,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		new ShowExternalUrlDlg( context, title, url ).showModalWindow();
 	}
 
-	private void showNewReport( Study study )
-	{
+	private void showNewReport( Study study ){
 		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
 
 		DetalleCentro detalleCentro = null;
@@ -574,6 +553,11 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			item.setListener( this );
 			container.addItem( item );
 		}
+		if (itemSelected != null && studies.contains( itemSelected.getStudy() )){
+			tableEstudies.setValue( itemSelected );
+		}else{
+			tableEstudies.setValue( null );
+		}
 		btnOpenStudy.setEnabled( hasStudiesSelected() );
 	}
 
@@ -608,20 +592,10 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		return null;
 	}
 
-	private List<String> getSeletedStudies()
-	{
-		List<String> result = new ArrayList<>();
+	private List<String> getSeletedStudies(){
+		List<String> result = getMultipleSeletedStudies();
 
-		for ( QueryTableItem item : container.getItemIds() )
-		{
-			if ( !item.getSelected().getValue() )
-				continue;
-
-			result.add( item.getStudy().getStudyInstanceUID() );
-		}
-
-		if ( result.isEmpty() )
-		{
+		if ( result.isEmpty() ){
 			QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
 			if ( item != null )
 			{
@@ -632,6 +606,20 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		return result;
 	}
 
+	private List<String> getMultipleSeletedStudies(){
+		List<String> result = new ArrayList<>();
+
+		for ( QueryTableItem item : container.getItemIds() ){
+			if ( !item.getSelected().getValue() )
+				continue;
+
+			result.add( item.getStudy().getStudyInstanceUID() );
+		}
+
+		return result;
+	}
+
+	
 	@Override
 	public void selectStudy()
 	{
@@ -641,8 +629,10 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	@Override
 	public void refreshVisibleContent(){
 		int size = model.doQuery();
-
+		int page = paginator.getPage();  	
 		paginator.resetTotal( size );
+		paginator.setPage( page );
+		paginator.update();
 		refreshTable( model.getCurrentPage() );
 	}
 
@@ -666,7 +656,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	@Override
 	public void uploadFailed( FailedEvent event )
 	{
-		// TODO Auto-generated method stub
+		LOG.error( "Upload Fail -> File: " + event.getFilename() );
 		
 	}
 

@@ -14,11 +14,13 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Study;
 import es.pryades.imedig.viewer.components.query.SelectedStudyListener;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode(of={"study"})
 public class QueryTableItem implements Serializable {
 
 	private static final long serialVersionUID = 2449295980450125857L;

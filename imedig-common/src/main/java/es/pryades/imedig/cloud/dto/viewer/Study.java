@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 
 import es.pryades.imedig.cloud.common.Utils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 
@@ -17,6 +18,7 @@ import lombok.Data;
  */
  
 @Data 
+@EqualsAndHashCode(of={"StudyInstanceUID"})
 public class Study implements Serializable 
 {
 	private static final long serialVersionUID = 3975923599826446923L;

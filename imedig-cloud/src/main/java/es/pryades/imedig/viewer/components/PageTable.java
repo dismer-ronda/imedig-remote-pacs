@@ -54,6 +54,10 @@ public class PageTable extends HorizontalLayout {
 		page = 0;
 		this.total = total; 
 		pages = getNumberOfPages();
+		update();
+	}
+	
+	public void update(){
 		updateLabel();
 		updateButtons();
 	}
@@ -71,8 +75,7 @@ public class PageTable extends HorizontalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page = 0;
-				updateLabel();
-				updateButtons();
+				update();
 				if (listener != null) listener.onFirst();
 			}
 		});
@@ -86,8 +89,7 @@ public class PageTable extends HorizontalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page--;
-				updateLabel();
-				updateButtons();
+				update();
 				if (listener != null) listener.onPrevious();
 			}
 		});
@@ -101,8 +103,7 @@ public class PageTable extends HorizontalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page++;
-				updateLabel();
-				updateButtons();
+				update();
 				if (listener != null) listener.onNext();
 			}
 		});
@@ -116,8 +117,7 @@ public class PageTable extends HorizontalLayout {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				page = pages - 1;
-				updateLabel();
-				updateButtons();
+				update();
 				if (listener != null) listener.onLast();
 			}
 		});
