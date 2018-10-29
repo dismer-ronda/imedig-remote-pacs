@@ -91,7 +91,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	
 	private ByteArrayOutputStream reportStream;
 
-	public static final Integer PAGE_SIZE = 4;
+	public static final Integer PAGE_SIZE = 20;
 
 	public QueryViewer( ImedigContext context, User user ){
 		this.context = context;
@@ -259,8 +259,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 					btnUpload.setEnabled( false );
 				} else {
 					btnViewReport.setEnabled( ((QueryTableItem)tableEstudies.getValue()).isReport() );
-					btnReport.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
-					btnUpload.setEnabled( !((QueryTableItem)tableEstudies.getValue()).isReport() );
+					btnReport.setEnabled( true );
+					btnUpload.setEnabled( true );
 				}
 			}
 		} );
@@ -704,8 +704,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			return;
 		}
 
-		btnUpload.setEnabled( false );
-		btnReport.setEnabled( false );
+		btnUpload.setEnabled( true );
+		btnReport.setEnabled( true );
 
 		refreshVisibleContent();
 	}
