@@ -1,6 +1,7 @@
 package es.pryades.imedig.viewer.components.query;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,12 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.steinwedel.messagebox.ButtonId;
+import de.steinwedel.messagebox.Icon;
+import de.steinwedel.messagebox.MessageBox;
+import de.steinwedel.messagebox.MessageBoxListener;
 import es.pryades.imedig.cloud.common.AppUtils;
+import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
@@ -61,7 +67,9 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
 
-public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener, SelectedStudyListener, ModalParent, Upload.SucceededListener, Upload.FailedListener, Upload.Receiver, Upload.StartedListener
+public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener, SelectedStudyListener, 
+															ModalParent, Upload.SucceededListener, Upload.FailedListener, 
+															Upload.Receiver, Upload.StartedListener, MessageBoxListener
 {
 
 	private static final Logger LOG = Logger.getLogger( QueryViewer.class );
@@ -78,6 +86,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	private Button btnViewReport;
 	private Button btnReport;
 	private Upload btnUpload;
+	private boolean actionUpload = false;
 
 	private PageTable paginator;
 	private QueryTableModel model;
@@ -350,8 +359,9 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 			@Override
 			public void buttonClick( ClickEvent event )	{
-				QueryTableItem item = (QueryTableItem)tableEstudies.getValue();
-				if (item != null) reportRequest( item );
+				actionUpload = false;
+				itemSelected = (QueryTableItem)tableEstudies.getValue();
+				if (itemSelected != null) confirmReportRequest(  );
 			}
 		} );
 
@@ -403,7 +413,67 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			new ModalNewInforme( context, Operation.OP_MODIFY, informe, images, null, right ).showModalWindow();
 		}
 	}
+	
+	private void confirmReportRequest( ){
+		
+		if (getStudyReport( itemSelected.getStudy().getStudyInstanceUID() ) != null){
+			MessageBox messageBox = MessageBoxUtils.showMessageBox( context.getResources(), 
+					Icon.NONE,
+					context.getString( "words.confirm" ), 
+					context.getString( "ViewerWnd.confirm.study.report.exist" ), this, ButtonId.CUSTOM_1, ButtonId.CUSTOM_2, ButtonId.CUSTOM_3);
+			messageBox.getButton( ButtonId.CUSTOM_1 ).setCaption( context.getString( "ViewerWnd.open.exists" ) );
+			messageBox.getButton( ButtonId.CUSTOM_2 ).setCaption( context.getString( "ViewerWnd.request.new" ) );
+			messageBox.getButton( ButtonId.CUSTOM_3 ).setCaption( context.getString( "words.cancel" ) );
+		}else{
+			reportRequest();
+		}
+	}
 
+	private void reportRequest( ){
+		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
+
+		DetalleCentro detalleCentro = null;
+		try{
+			detalleCentro = (DetalleCentro)centrosManager.getRow( context, 1 );
+		}catch ( Throwable e ){
+			e.printStackTrace();
+			return;
+		}
+
+		List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
+		
+
+		DetalleInforme informe = new DetalleInforme();
+
+		informe.setCentro( detalleCentro.getId() );
+		informe.setEstudio_acceso( itemSelected.getStudy().getAccessionNumber() );
+		informe.setEstudio_id( itemSelected.getStudy().getStudyID() );
+		informe.setEstudio_uid( itemSelected.getStudy().getStudyInstanceUID() );
+		informe.setModalidad( itemSelected.getStudy().getModalitiesInStudy() );
+		informe.setPaciente_id( itemSelected.getStudy().getPatientID() );
+		informe.setPaciente_nombre( itemSelected.getStudy().getPatientName() );
+		informe.setCentro_ip( detalleCentro.getIp() );
+		informe.setCentro_puerto( detalleCentro.getPuerto() );
+
+		informe.setHorario_nombre( detalleCentro.getHorario_nombre() );
+
+		informe.setEstado( 0 );
+		informe.setProtegido( 0 );
+
+		final ModalNewInforme report = new ModalNewInforme( context, Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
+
+		report.addCloseListener( new Window.CloseListener()	{
+			private static final long serialVersionUID = -7551376683736330872L;
+
+			@Override
+			public void windowClose( CloseEvent e )	{
+				if ( report.isAdded() )
+					refreshVisibleContent();
+			}
+		} );
+		report.showModalWindow();
+	}
+	
 	private void reportRequest( final QueryTableItem item ){
 		DetallesCentrosManager centrosManager = (DetallesCentrosManager)IOCManager.getInstanceOf( DetallesCentrosManager.class );
 
@@ -536,18 +606,14 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	{
 		container.removeAllItems();
 
-		for ( Study study : studies )
-		{
+		for ( Study study : studies ){
 			QueryTableItem item = new QueryTableItem( context, study );
 
 			DetalleInforme informe = getStudyReport( study.getStudyInstanceUID() );
 			item.setReport( informe != null );
-			if ( informe != null )
-			{
+			if ( informe != null ){
 				item.setStudyReport( AppUtils.getImgEstado( informe.getEstado() ) );
-			}
-			else
-			{
+			}else{
 				item.setStudyReport( getEmptyLabel() );
 			}
 			item.setListener( this );
@@ -576,16 +642,13 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		InformeQuery query = new InformeQuery();
 		query.setEstudio_uid( studyUID );
 
-		try
-		{
+		try{
 			// Siempre retorna listado ordenado por fecha descendentemente
 			List<DetalleInforme> informes = informesManager.getRows( context, query );
 			if ( !informes.isEmpty() )
 				return informes.get( 0 );
 
-		}
-		catch ( Throwable e )
-		{
+		}catch ( Throwable e ){
 			LOG.error( "Error", e );
 		}
 
@@ -621,8 +684,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	
 	@Override
-	public void selectStudy()
-	{
+	public void selectStudy(){
 		btnOpenStudy.setEnabled( hasStudiesSelected() );
 	}
 
@@ -642,6 +704,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		if (!event.getMIMEType().contains( "pdf" )){
 			btnUpload.interruptUpload();
 			Notification.show( context.getString( "QueryForm.Error.Upload.Report.pdf" ), Notification.Type.ERROR_MESSAGE );
+		}else{
+			actionUpload = true;
 		}
 	}
 
@@ -662,7 +726,42 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	@Override
 	public void uploadSucceeded( SucceededEvent event )	{
+		confirmUpload();
+	}
+
+	private void confirmUpload(){
+		MessageBox messageBox = MessageBoxUtils.showMessageBox( context.getResources(), 
+				Icon.NONE,
+				context.getString( "words.confirm" ), 
+				context.getString( "ViewerWnd.confirm.study.report.exist" ), this, ButtonId.CUSTOM_1, ButtonId.CUSTOM_2, ButtonId.CUSTOM_3);
+		messageBox.getButton( ButtonId.CUSTOM_1 ).setCaption( context.getString( "ViewerWnd.open.exists" ) );
+		messageBox.getButton( ButtonId.CUSTOM_2 ).setCaption( context.getString( "QueryForm.Upload.Report" ) );
+		messageBox.getButton( ButtonId.CUSTOM_3 ).setCaption( context.getString( "words.cancel" ) );
+	}
+
+	@Override
+	public void buttonClicked( ButtonId buttonId ){
 		
+		switch ( buttonId )
+		{
+			case CUSTOM_1:
+				openExistsReport();
+				break;
+			case CUSTOM_2:
+				if (actionUpload){
+					finishUpload();
+				}else{
+					reportRequest();
+				}
+				break;
+
+			default:
+				closeReportStream();
+				break;
+		}
+	}
+	
+	private void finishUpload(){
 		//Item seleccionado
 		QueryTableItem selected = (QueryTableItem)tableEstudies.getValue();
 		
@@ -695,6 +794,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		InformesManager informesManager = (InformesManager) IOCManager.getInstanceOf( InformesManager.class );
 		try{
 			informesManager.setRow( context, null, informe );
+			reportStream = null;
 			//informe = (Informe)informesManager.getRow( context, informe.getId() );
 			//Informe clone = (Informe)Utils.clone( informe );
 			//clone.setPdf( reportStream.toByteArray() );
@@ -706,7 +806,81 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 		btnUpload.setEnabled( true );
 		btnReport.setEnabled( true );
+		btnViewReport.setEnabled( true );
 
 		refreshVisibleContent();
+	}
+
+	private void closeReportStream(){
+		if (reportStream == null) return;
+		
+		try{
+			reportStream.close();
+		}catch ( IOException e ){
+		}
+		
+		reportStream = null;
+	}
+
+	private void openExistsReport(){
+		DetalleInforme informe = getStudyReport( itemSelected.getStudy().getStudyInstanceUID() );
+		if (informe == null) return;
+			
+		if (isToShow( informe )){
+			showAprovedReport( informe, 0, "", "", false );
+		}else{
+			modifyReport( informe );
+		}
+	}
+	
+	private void showNewReport()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showAprovedReport( Informe informe, Integer template, String orientation, String size, Boolean images ){
+		long ts = new Date().getTime();
+		
+		String extra = "ts=" + ts + 
+						"&id=" + informe.getId() + 
+						"&orientation=" + orientation + 
+						"&size=" + size + 
+						"&template=" + template +
+						"&images=" + images;
+		String token = "token=" + Utils.getTokenString( informe.getId() + "" + ts, Settings.TrustKey );
+		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
+		
+		LOG.debug( "extra " +  extra );
+		
+		String url =  "/imedig-services/report/" + informe.getId() + "?" + token + "&" + code;
+		String title = informe.getId() + "-" + informe.getPaciente_nombre();
+		
+		new ShowExternalUrlDlg( context, title, url ).showModalWindow();
+	}
+	
+	private static boolean isToShow(Informe informe){
+		return informe.aprobado() || informe.terminado();
+	}
+	
+	private void modifyReport( DetalleInforme informe  ){
+		
+		InformesImagenesManager manager = IOCManager.getInstanceOf( InformesImagenesManager.class );
+		InformeImagen query = new InformeImagen();
+		query.setInforme( informe.getId() );
+		
+		String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+		
+		List<InformeImagen> images;
+		
+		try	{
+			images = manager.getRows( context, query );
+		}catch ( Throwable e ){
+			e.printStackTrace();
+			
+			images = new ArrayList<InformeImagen>();
+		}
+		
+		new ModalNewInforme( context, Operation.OP_MODIFY, informe, images, null, right ).showModalWindow();
 	}
 }
