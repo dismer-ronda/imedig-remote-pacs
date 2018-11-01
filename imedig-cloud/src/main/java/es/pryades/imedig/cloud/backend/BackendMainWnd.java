@@ -18,7 +18,9 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -28,6 +30,8 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.fullscreen.FullScreenExtension;
+import es.pryades.fullscreen.listeners.FullScreenChangeListener;
 import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.ImedigTheme;
@@ -188,8 +192,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}
 	}
 	
-	public void Logout()
-	{
+	public void Logout() {
 		getUI().getSession().close();
 		getUI().getPage().setLocation( getContext().getData( "Url" ).toString() );
 	}
@@ -257,11 +260,106 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 		contents = new CssLayout();
 		contents.setSizeFull();
+		CssLayout virtualContent = new CssLayout();
+		virtualContent.setSizeFull();
+		buildFullScreenButtons(virtualContent);
+		virtualContent.addComponent( contents );
 
-		mainLayout.addComponent( contents );
-		mainLayout.setExpandRatio( contents, 1.0f );
+		mainLayout.addComponent( virtualContent );
+		mainLayout.setExpandRatio( virtualContent, 1.0f );
 
+		
 		return mainLayout;
+	}
+	
+	protected Button btnFullScreen;
+	protected Button btnStudies;
+	protected Button btnImages;
+	protected Button btnReports;
+	private static final String ID_FULLSCREEN = "btn.fullscreen";
+	
+	private void buildFullScreenButtons(ComponentContainer layout){
+		btnFullScreen = buildBtnFloat( ID_FULLSCREEN, context.getString( "words.fullscreen" ) );
+		btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
+		
+		FullScreenExtension extension = new FullScreenExtension();
+        extension.trigger(btnFullScreen);
+        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
+
+            @Override
+            public void onChange(boolean fullscreen) {
+                if (fullscreen) {
+                	context.sendAction( new FullScreen( this ) );
+					btnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
+					btnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
+					btnStudies.setVisible( true );
+					btnImages.setVisible( true );
+					btnReports.setVisible( true );
+                } else {
+                	context.sendAction( new ExitFullScreen( this ) );
+					btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
+					btnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
+					btnStudies.setVisible( false );
+					btnImages.setVisible( false );
+					btnReports.setVisible( false );
+                }
+            }
+        });
+
+        btnStudies = buildBtnFloat( "btn.studies.float", context.getString( "words.studies" ) );
+        btnStudies.setIcon( FontAwesome.SEARCH );
+        btnStudies.setVisible( false );
+        btnStudies.addClickListener( new ClickListener()
+		{
+			private static final long serialVersionUID = 7515427205675270359L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				buttonStudies.click();
+			}
+		} );
+        btnImages = buildBtnFloat( "btn.images.float", context.getString( "words.images" ) );
+        btnImages.setIcon( FontIcoMoon.ROOT_CATEGORY );
+        btnImages.setVisible( false );
+        btnImages.addClickListener( new ClickListener(){
+
+			private static final long serialVersionUID = -8368839172588393747L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				buttonImages.click();
+			}
+		} );
+        btnReports = buildBtnFloat( "btn.reports.float", context.getString( "words.reports" ) );
+        btnReports.setIcon(FontAwesome.FILE_TEXT);
+        btnReports.setVisible( false );
+        btnReports.addClickListener( new ClickListener(){
+
+			private static final long serialVersionUID = -951616351416582941L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				buttonReports.click();
+			}
+		} );
+        
+		CssLayout hide = new CssLayout( btnFullScreen, btnStudies, btnImages, btnReports );
+		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
+		hide.setHeight( "-1px" );
+		hide.setWidth( "0px" );
+		layout.addComponent( hide );
+	}
+	
+	private static Button buildBtnFloat(String id, String description){
+		Button btn = new Button( );
+		btn.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
+		btn.setImmediate( true );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
+		btn.setId( id );
+		btn.setDescription( description );
+		
+		return btn;
 	}
 
 	private Component buildTop()

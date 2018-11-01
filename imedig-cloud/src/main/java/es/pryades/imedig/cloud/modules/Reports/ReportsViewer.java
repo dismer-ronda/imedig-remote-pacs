@@ -830,7 +830,8 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return getRow( combo );
 	}
 
-	
+
+	@Override
 	public Component getQueryComponent()
 	{
 		fecha = 4;

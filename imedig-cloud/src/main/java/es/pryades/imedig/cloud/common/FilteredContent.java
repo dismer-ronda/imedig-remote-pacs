@@ -103,7 +103,9 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			rowQuery.setWidth( "100%" );
 			rowQuery.addComponent( component );
 			rowQuery.addComponent( btnApply );
-			rowQuery.setExpandRatio( component, 1.0f );
+			rowQuery.setComponentAlignment( btnApply, Alignment.TOP_LEFT );
+			rowQuery.setExpandRatio( component, 0.95f );
+			rowQuery.setExpandRatio( btnApply, 0.05f );
 		}
 	}
 	

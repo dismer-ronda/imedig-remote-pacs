@@ -39,9 +39,6 @@ import es.pryades.fabricjs.geometry.Ruler;
 import es.pryades.fabricjs.listeners.DrawFigureListener;
 import es.pryades.fabricjs.listeners.MouseWheelListener;
 import es.pryades.fabricjs.listeners.ResizeListener;
-import es.pryades.fullscreen.FullScreenExtension;
-import es.pryades.fullscreen.listeners.FullScreenChangeListener;
-import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
@@ -55,8 +52,6 @@ import es.pryades.imedig.viewer.actions.AddToUndoAction;
 import es.pryades.imedig.viewer.actions.ChangeImageFrame;
 import es.pryades.imedig.viewer.actions.DisableDistanceAction;
 import es.pryades.imedig.viewer.actions.EnumActions;
-import es.pryades.imedig.viewer.actions.ExitFullScreen;
-import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.NotFigures;
 import es.pryades.imedig.viewer.datas.ImageData;
 import es.pryades.imedig.viewer.exceptions.OperationException;
@@ -101,9 +96,6 @@ public class ImageCanvas extends CssLayout {
 	private Map<ImageData, List<Figure>> imageDataFigures = new HashMap<>();
 	private Map<String, Stack<ImageStatus>> serieStatus = new HashMap<>();
 	
-	private static final String ID_FULLSCREEN = "btn.fullscreen";
-	protected Button bttnFullScreen;
-	
 	private CssLayout changeFrame;
 	private Button btnFrameFirst;
 	private Button btnFramePrior;
@@ -128,8 +120,6 @@ public class ImageCanvas extends CssLayout {
 
 		init();
 
-		if (showFullScreen) buildFullScreenButtons();
-		
 		buildImageFrameChangeButtons();
 		settingCanvas();
 	}
@@ -137,41 +127,6 @@ public class ImageCanvas extends CssLayout {
 	private void init() {
 		imagenFigures = new ArrayList<Figure>();
 		back = new Stack<>();
-	}
-	
-	private void buildFullScreenButtons(){
-		bttnFullScreen = new Button( );
-		bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
-		bttnFullScreen.setImmediate( true );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		bttnFullScreen.addStyleName( ValoTheme.BUTTON_BORDERLESS );
-		bttnFullScreen.setId( ID_FULLSCREEN );
-		bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-		
-		FullScreenExtension extension = new FullScreenExtension();
-        extension.trigger(bttnFullScreen);
-        extension.setFullScreenChangeListener(new FullScreenChangeListener() {
-
-            @Override
-            public void onChange(boolean fullscreen) {
-                if (fullscreen) {
-                	context.sendAction( new FullScreen( this ) );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
-					bttnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-                } else {
-                	context.sendAction( new ExitFullScreen( this ) );
-					bttnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
-					bttnFullScreen.setDescription( context.getString( "words.fullscreen" ) );
-                }
-            }
-        });
-
-		CssLayout hide = new CssLayout( bttnFullScreen );
-		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
-		hide.setHeight( "-1px" );
-		hide.setWidth( "0px" );
-		addComponent( hide );
-
 	}
 	
 	private void buildImageFrameChangeButtons(){
