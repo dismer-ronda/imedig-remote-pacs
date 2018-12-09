@@ -256,7 +256,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	
 	private void closeStudies(CloseStudies closeStudies)	{
 		if (closeStudies.getData() == null){
-			closeAllStydies();
+			closeAllStudies();
 			context.sendAction( new QueryStudies( this ) );
 			return;
 		}
@@ -276,7 +276,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		}
 	}
 	
-	private void closeAllStydies(){
+	private void closeAllStudies(){
 		leftToolBar.clearThumnails();
 		leftToolBar.allButtonsDisable();
 		studies.clear();

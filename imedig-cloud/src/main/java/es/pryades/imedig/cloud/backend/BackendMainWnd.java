@@ -690,8 +690,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.removeAllComponents();
 		if (queryViewer == null){
 			queryViewer = new QueryViewer( context, getUser( getUsuario( getContext() ) ) );
-		}else{
-			queryViewer.onQuery();
 		}
 		contents.addComponent( queryViewer );
 	}
