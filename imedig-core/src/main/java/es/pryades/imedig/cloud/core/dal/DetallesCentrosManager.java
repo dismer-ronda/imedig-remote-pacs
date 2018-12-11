@@ -11,6 +11,5 @@ import es.pryades.imedig.core.common.ImedigManager;
 */
 public interface DetallesCentrosManager extends ImedigManager
 {
-	boolean echoCenter( ImedigContext ctx, DetalleCentro centro );
-	String getCentroUrl( ImedigContext ctx, DetalleCentro centro, String uid );
+	public String getCentroUrl( ImedigContext ctx, DetalleCentro centro, String uid );
 }

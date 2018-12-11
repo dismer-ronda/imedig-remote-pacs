@@ -220,8 +220,7 @@ public class ImageSerie extends CssLayout{
 
 	private String imageUrl( Image image )
 	{
-		//String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
-		String imageUrl = context.getCloudUrl() + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
+		String imageUrl = context.getData( "Url") + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
 
 		LOG.info( "imageUrl " + imageUrl );
 

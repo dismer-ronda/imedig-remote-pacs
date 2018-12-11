@@ -22,8 +22,6 @@ public class Settings implements Serializable
 
 	private static final Logger LOG = Logger.getLogger( Settings.class );
 
-	//public static String CLOUD_Url;
-	
 	public static final String TrustKey = "im3d1gcl0ud25887";
 
 	public static String DB_engine;
@@ -114,8 +112,6 @@ public class Settings implements Serializable
 	
 	private void initSettings() throws ImedigException
 	{
-		//CLOUD_Url = getSetting( "CLOUD_Url", "http://www.imedig.com/imedig-cloud/desktop" );
-
 		DB_engine = getSetting( "DB_engine", "postgresql" );
 		DB_driver = getSetting( DB_engine + ".DB_driver", "org.postgresql.Driver" );
 		DB_url = getSetting( DB_engine + ".DB_url", "jdbc:postgresql://localhost/imedig-cloud" );

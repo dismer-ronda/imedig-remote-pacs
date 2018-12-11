@@ -63,16 +63,13 @@ public class InformesManagerImpl extends ImedigManagerImpl implements InformesMa
 		{
 			session = ctx.openSessionCloud();
 			
-	    	DetalleCentro temp = (DetalleCentro)centrosManager.getRow( ctx, centro.getId() );
-	    	
     		long ts = new Date().getTime();
     		
     		String extra = "ts=" + ts;
     		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
     		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ); 
     		
-			//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
-    		String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+    		String url =  ctx.getData( "Url") + "/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
 
     		LOG.info( "url " + url  );
 			

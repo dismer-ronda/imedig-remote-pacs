@@ -93,7 +93,6 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     public void init( VaadinRequest request )
     {
 		resources = ResourceBundle.getBundle( "language", getLanguage( Settings.LANGUAGES ) );
-		//serverUrl = Utils.getEnviroment( "CLOUD_URL" ) + request.getContextPath();
 		
 		ctx = new ImedigContext();
 		
@@ -111,18 +110,16 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     	ctx.addData( "Application", this );
     	ctx.addData( "Resources", resources );
     	ctx.addData( "MainWnd", window );
-    	ctx.addData( "Url", Page.getCurrent().getLocation().toString() );
-    	ctx.setCloudUrl( getCloudUrl() );
-    	Utils.setProperty( "CLOUD_URL", ctx.getCloudUrl() );
+    	ctx.addData( "Url", Utils.removeTrailing( Page.getCurrent().getLocation().toString(), "/" ) );
+    	
     	LOG.info(  "Url " + ctx.getData( "Url") );
-    	LOG.info(  "Url Cloud " + ctx.getCloudUrl() );
 
     	window.showLogin();
     	
     	executeJScripts();
     }
 	
-	private String getCloudUrl(){
+	/*private String getCloudUrl(){
 		StringBuilder builder = new StringBuilder();
 		builder
 			.append( Page.getCurrent().getLocation().getScheme() )
@@ -137,7 +134,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
         }
     	
     	return builder.toString();
-	}
+	}*/
 	
 	@Override
 	protected void refresh(VaadinRequest request) {

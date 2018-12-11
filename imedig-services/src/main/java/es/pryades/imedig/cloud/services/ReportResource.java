@@ -109,7 +109,6 @@ public class ReportResource extends ImedigResource
 	
 									for ( InformeImagen imagen : imagenes )
 										imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + imagen.getUrl() );
-										//imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer" +  imagen.getUrl() );
 
 									export.setImagenes( imagenes );
 								}

@@ -2483,4 +2483,12 @@ public class Utils implements Serializable
 
 		return ret;
 	}
+	
+	public static String removeTrailing( String source, String trail )
+	{
+		if ( source.endsWith( trail ) )
+			return source.substring( 0,  source.length() - trail.length() );
+		
+		return source;
+	}
 }

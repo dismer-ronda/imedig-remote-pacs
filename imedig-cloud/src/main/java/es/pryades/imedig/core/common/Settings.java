@@ -28,7 +28,6 @@ public class Settings implements Serializable
 	public static String IMEDIG_Auth;
 
 	public static String IMEDIG_RootDir;
-	//public static String IMEDIG_Serial;
 	public static String IMEDIG_AETitle;
 	public static String IMEDIG_Port;
 
@@ -37,7 +36,6 @@ public class Settings implements Serializable
 	public static String Cache_Dir;
 	public static String License;
 
-	//public static String CLOUD_Url;
 	public static Long Cache_TTL; 
 	public static Long Cache_MaxSize; 
 	public static Long Cache_CheckPeriod; 
@@ -46,11 +44,6 @@ public class Settings implements Serializable
 	public static String PACS_Host;
 	public static Integer PACS_Port;
 	
-	/*public static String GPRS_APN;
-	public static String GPRS_PHONE;
-	public static String GPRS_USER;
-	public static String GPRS_PASSWORD;*/
-
 	public static Settings instance = null;
 	
     Boolean lock = Boolean.FALSE;
@@ -112,12 +105,10 @@ public class Settings implements Serializable
     	ConfigPassword = getSetting( "ConfigPassword", "63a9f0ea7bb98050796b649e85481845" );
 
     	IMEDIG_Auth = getSetting( "IMEDIG_Auth", "true" );
-    	//IMEDIG_Serial = getSetting( "IMEDIG_Serial", "IMEDIG001" );
     	IMEDIG_AETitle = getSetting( "IMEDIG_AETitle", "IMEDIG" );
     	IMEDIG_Port = getSetting( "IMEDIG_Port", "8080" );
 
     	Languages = getSetting( "Languages", "es" );
-		//CLOUD_Url = getSetting( "CLOUD_Url", "http://www.imedig.com" );
     	Cache_TTL = Long.parseLong( getSetting( "Cache_TTL", "60" ) ); 
     	Cache_MaxSize = Long.parseLong( getSetting( "Cache_MaxSize", "1024" ) );
     	Cache_CheckPeriod = Long.parseLong( getSetting( "Cache_CheckPeriod", "60" ) ); 
@@ -169,12 +160,10 @@ public class Settings implements Serializable
 	       	
 			writeLn( os, "IMEDIG_Auth = " + IMEDIG_Auth );
 			writeLn( os, "IMEDIG_AETitle = " + IMEDIG_AETitle );
-			//writeLn( os, "IMEDIG_Serial = " + IMEDIG_Serial );
 			writeLn( os, "IMEDIG_Port = " + IMEDIG_Port );
 			writeLn( os, "ConfigPassword = " + ConfigPassword );
 			writeLn( os, "License = " + License );
 			writeLn( os, "Languages = " + Languages );
-			//writeLn( os, "CLOUD_Url = " + CLOUD_Url );
 			writeLn( os, "Cache_TTL = " + Cache_TTL ); 
 			writeLn( os, "Cache_MaxSize = " + Cache_MaxSize );
 			writeLn( os, "Cache_CheckPeriod = " + Cache_CheckPeriod ); 
@@ -184,12 +173,6 @@ public class Settings implements Serializable
 			writeLn( os, "PACS_Host = " + PACS_Host );
 			writeLn( os, "PACS_Port = " + Integer.toString( PACS_Port ) );
 			writeLn( os, "" );
-
-			/*writeLn( os, "GPRS_APN = " + GPRS_APN );
-			writeLn( os, "GPRS_PHONE = " + GPRS_PHONE );
-			writeLn( os, "GPRS_USER = " + GPRS_USER );
-			writeLn( os, "GPRS_PASSWORD = " + GPRS_PASSWORD );
-			writeLn( os, "" );*/
 		}
 		catch ( Throwable e )
 		{

@@ -65,7 +65,6 @@ public class BaseWindow extends Window
 	
 	public void Logout()
 	{
-        // OJO DISMER getUI().setLogoutURL( Settings.CLOUD_Url );
         getUI().close();
 	}
 

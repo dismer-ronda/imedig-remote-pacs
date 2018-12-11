@@ -1,18 +1,14 @@
 package es.pryades.imedig.cloud.backend;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import lombok.Getter;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.StreamResource;
-import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
@@ -48,22 +44,18 @@ import es.pryades.imedig.cloud.core.dal.ParametrosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Acceso;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
-import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.Perfil;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.query.CentroQuery;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
-import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
 import es.pryades.imedig.cloud.dto.viewer.User;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.Administration.AdministrationDlg;
 import es.pryades.imedig.cloud.modules.Configuration.ConfigurationDlg;
-import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
 import es.pryades.imedig.cloud.modules.Reports.ReportsViewer;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
-import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
@@ -72,7 +64,6 @@ import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
-import lombok.Getter;
 
 public class BackendMainWnd extends VerticalLayout implements ModalParent,ListenerAction
 {
@@ -578,92 +569,6 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			return ctx.getUsuario();
 		}
 	}
-	
-	private void doRequest()
-	{
-		//ReportInfo reportInfo = informesManager.getReportInfo( getContext(), detalleCentro );
-		ReportInfo reportInfo = imageViewer.getReportInfo();
-		if ( reportInfo != null )
-		{
-			List<InformeImagen> imagenes = new ArrayList<InformeImagen>();
-			InformeImagen imagen = new InformeImagen();
-			imagen.setUrl( reportInfo.getUrl() );
-			imagen.setIcon( reportInfo.getIcon() );
-			imagenes.add( imagen );
-			
-			DetalleInforme informe = new DetalleInforme();
-
-			informe.setCentro( detalleCentro.getId() );
-			informe.setEstudio_acceso( reportInfo.getHeader().getAccessionNumber() );
-			informe.setEstudio_id( reportInfo.getHeader().getStudyID() );
-			informe.setEstudio_uid( reportInfo.getHeader().getStudyInstanceUID() );
-			informe.setModalidad( reportInfo.getHeader().getModality() );
-			informe.setPaciente_id( reportInfo.getHeader().getPatientID() );
-			informe.setPaciente_nombre( reportInfo.getHeader().getPatientName() );
-			informe.setCentro_ip( detalleCentro.getIp() );
-			informe.setCentro_puerto( detalleCentro.getPuerto() );
-
-			informe.setHorario_nombre( detalleCentro.getHorario_nombre() );
-			
-			informe.setEstado( 0 );
-			informe.setProtegido( 0 );
-
-			final ModalNewInforme report = new ModalNewInforme( getContext(), Operation.OP_ADD, informe, imagenes, this, "informes.solicitar" );
-			
-			report.addCloseListener(
-				new Window.CloseListener() 
-				{
-					private static final long serialVersionUID = -7551376683736330872L;
-
-					@Override
-				    public void windowClose( CloseEvent e ) 
-				    {
-						if ( report.isAdded() )
-							showReports();
-				    }
-				}
-			);
-			report.showModalWindow();
-		}
-	}
-	
-	private String getCurrentImageUrl()
-	{
-		ReportInfo reportInfo = imageViewer.getReportInfo();
-		
-		//String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
-		String imageUrl = reportInfo != null ? context.getCloudUrl() + reportInfo.getUrl() : null;
-		
-		LOG.info(  "imageUrl " + imageUrl );
-		
-		return imageUrl;
-		
-	}
-
-	private StreamResource createResource() 
-	{
-		return new StreamResource( 
-			new StreamSource() 
-			{
-				private static final long serialVersionUID = 8919773793750134590L;
-
-				@Override
-	            public InputStream getStream() 
-	            {
-	                try 
-	                {
-	                	return new URL( getCurrentImageUrl() ).openStream();
-	                } 
-	                catch ( IOException e ) 
-	                {
-	                    e.printStackTrace();
-	                    return null;
-	                }
-	
-	            }
-	        }, 
-	        Utils.getUUID() + ".png" );
-    }
 	
 	public void showImages()
 	{

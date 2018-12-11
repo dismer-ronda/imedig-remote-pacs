@@ -76,8 +76,6 @@ public class BootLoader extends Thread implements Serializable
 				QueryManager.Init();
 				RetrieveManager.Init();
 				
-				//NotifierProcessor.startInstance();
-
 				LOG.info( "init successfull" );
 
 				break;

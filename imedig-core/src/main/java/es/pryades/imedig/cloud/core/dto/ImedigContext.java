@@ -58,8 +58,8 @@ public class ImedigContext implements Serializable
 	Integer template;
 	Boolean images;
 	
-	@Getter @Setter
-	String cloudUrl;
+	/*@Getter @Setter
+	String cloudUrl;*/
 	
 	private Set<ListenerAction> listeners;
 	

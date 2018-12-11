@@ -206,5 +206,67 @@ create table susc_informes_imagenes (
     constraint fk_informes_imagenes_informe foreign key (informe) references susc_informes(id)
     ); 
 
+---
+-- tablas para la versión 2.3.1
+---
+
+-- paciente 
+create table susc_pacientes (
+    id integer not null,
+    uid varchar(64) not null,    					-- identificador unico
+    email varchar(128),    							-- email al que se envian notificaciones
+    nombre varchar(128) not null,   				-- Nombre completo del paciente
+	fecha_nacimiento integer not null,				-- fecha de nacimiento
+	sexo varchar(1) not null,						-- sexo 
+	
+    constraint pk_pacientes primary key(id),
+	constraint uk_pacientes_uid unique(uid),
+	constraint uk_pacientes_email unique(email)
+    );
+create index ix_pacientes_uid on susc_pacientes(uid);
+create index ix_pacientes_email on susc_pacientes(email);
+create index ix_pacientes_sexo on susc_pacientes(sexo);
+
+-- equipos 
+create table susc_equipos (
+    id integer not null,
+    nombre varchar(64) not null,   					-- Nombre del equipo
+    modalidad varchar(2),							-- Modalidad de imágenes
+	
+    constraint pk_equipos primary key(id),
+	constraint uk_equipos_nombre unique(nombre)
+    );
+create index ix_equipos_modalidad on susc_equipos(modalidad);
+
+-- tipos de estudios
+create table susc_tipos_estudios (
+    id integer not null,
+    nombre varchar(64) not null,   					-- Nombre del tipo de estudio
+    duracion integer not null,						-- Duración de la prueba en minutos
+	
+    constraint pk_tipos_estudios primary key(id),
+	constraint uk_tipos_estudios_nombre unique(nombre)
+    );
+
+-- planificacion de estudos
+create table susc_estudios (
+    id integer not null,
+
+    fecha bigint not null,							-- fecha/hora de la prueba
+
+    uid varchar(64) not null,   					-- uuid del estudio
+
+    paciente integer not null,						-- paciente al que se le realiza la prueba
+    equipo integer not null,						-- equipo en el que se realiza la prueba
+    tipo integer not null, 							-- tipo de estudio
+    
+    duracion integer not null,						-- Duración de la prueba en minutos
+    
+    constraint pk_estudios primary key(id),
+    constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id),
+    constraint fk_estudios_equipo foreign key (equipo) references susc_equipos(id),
+    constraint fk_estudios_tipo foreign key (tipo_estudio) references susc_tipos_estudios(id)
+    ); 
+    
 --//@UNDO
 -- SQL to undo the change goes here.
