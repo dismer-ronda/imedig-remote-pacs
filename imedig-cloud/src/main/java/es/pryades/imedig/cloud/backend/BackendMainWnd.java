@@ -631,7 +631,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	{
 		ReportInfo reportInfo = imageViewer.getReportInfo();
 		
-		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
+		//String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
+		String imageUrl = reportInfo != null ? context.getCloudUrl() + reportInfo.getUrl() : null;
 		
 		LOG.info(  "imageUrl " + imageUrl );
 		

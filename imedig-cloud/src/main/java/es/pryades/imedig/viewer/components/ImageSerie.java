@@ -19,7 +19,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.ImedigTheme;
-import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.viewer.Image;
 import es.pryades.imedig.cloud.dto.viewer.SeriesTree;
@@ -221,7 +220,8 @@ public class ImageSerie extends CssLayout{
 
 	private String imageUrl( Image image )
 	{
-		String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
+		//String imageUrl = Utils.getEnviroment( "CLOUD_URL" ) + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
+		String imageUrl = context.getCloudUrl() + image.getWadoUrl() + "&contentType=image/jpeg&columns=64&rows=64";
 
 		LOG.info( "imageUrl " + imageUrl );
 

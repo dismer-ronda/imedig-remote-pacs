@@ -22,6 +22,8 @@ import es.pryades.imedig.cloud.dto.Parametros;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.pacs.dal.ibatis.PacsDalManager;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Dismer Ronda
@@ -55,6 +57,9 @@ public class ImedigContext implements Serializable
 	String pagesize;
 	Integer template;
 	Boolean images;
+	
+	@Getter @Setter
+	String cloudUrl;
 	
 	private Set<ListenerAction> listeners;
 	
@@ -215,5 +220,7 @@ public class ImedigContext implements Serializable
 	public void removeAllListener( ){
 		listeners.clear();
 	}
+	
+	
 
 }

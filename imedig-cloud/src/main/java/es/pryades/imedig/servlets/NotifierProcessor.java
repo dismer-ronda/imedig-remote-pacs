@@ -100,7 +100,8 @@ public class NotifierProcessor extends Thread implements Serializable
     		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
     		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ); 
     		
-			String url = Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-services/echo/" + "IMEDIG" + "?" + token + "&" + code;
+			//String url = Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-services/echo/" + "IMEDIG" + "?" + token + "&" + code;
+    		String url = Utils.getProperty( "CLOUD_URL" ) + "/imedig-services/echo/" + "IMEDIG" + "?" + token + "&" + code;
 
 			LOG.info( "CLOUD_URL " + url );
 			

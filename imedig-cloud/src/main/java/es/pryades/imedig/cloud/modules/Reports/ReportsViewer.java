@@ -443,7 +443,8 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 			}
 	
 			for ( InformeImagen imagen : imagenes )
-				imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + imagen.getUrl() );
+				imagen.setUrl( context.getCloudUrl() + imagen.getUrl() );
+				//imagen.setUrl( Utils.getEnviroment( "CLOUD_URL" ) + imagen.getUrl() );
 		
 			export.setImagenes( imagenes );
 		}

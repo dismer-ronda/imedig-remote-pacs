@@ -49,12 +49,12 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import es.pryades.imedig.cloud.dto.Usuario;
-
-import org.apache.log4j.Logger;
 
 /**
  * 
@@ -2088,6 +2088,18 @@ public class Utils implements Serializable
 		String value = System.getenv( variable );
 		
 		return value == null ? "" : value;
+	}
+
+	public static void setProperty( String key, String value )
+	{
+		if (getProperty( key ) != null) return;
+		
+		System.setProperty( key, value );
+	}
+
+	public static String getProperty( String key )
+	{
+		return System.getProperty( key );
 	}
 
 	public static String readFile(String filename)

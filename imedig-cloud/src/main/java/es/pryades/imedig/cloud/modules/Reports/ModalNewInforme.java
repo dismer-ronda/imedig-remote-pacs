@@ -471,8 +471,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 			}
 		} );
 
-		btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + image.getIcon() ) );
-	
+		//btn.setIcon( new ExternalResource( Utils.getEnviroment( "CLOUD_URL" ) + image.getIcon() ) );
+		btn.setIcon( new ExternalResource( context.getCloudUrl() + image.getIcon() ) );
 		rowImagenes.addComponent( btn );
 		rowImagenes.setComponentAlignment( btn, Alignment.MIDDLE_LEFT );
 	}

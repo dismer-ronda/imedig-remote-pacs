@@ -112,13 +112,32 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
     	ctx.addData( "Resources", resources );
     	ctx.addData( "MainWnd", window );
     	ctx.addData( "Url", Page.getCurrent().getLocation().toString() );
-    	
+    	ctx.setCloudUrl( getCloudUrl() );
+    	Utils.setProperty( "CLOUD_URL", ctx.getCloudUrl() );
     	LOG.info(  "Url " + ctx.getData( "Url") );
+    	LOG.info(  "Url Cloud " + ctx.getCloudUrl() );
 
     	window.showLogin();
     	
     	executeJScripts();
     }
+	
+	private String getCloudUrl(){
+		StringBuilder builder = new StringBuilder();
+		builder
+			.append( Page.getCurrent().getLocation().getScheme() )
+			.append( ":" )
+			.append( "//" )
+			.append( Page.getCurrent().getLocation().getHost() );
+		
+		int port = Page.getCurrent().getLocation().getPort();
+		if (port != -1) {
+			builder.append(':');
+			builder.append(port);
+        }
+    	
+    	return builder.toString();
+	}
 	
 	@Override
 	protected void refresh(VaadinRequest request) {

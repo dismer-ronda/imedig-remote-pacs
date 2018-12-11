@@ -954,7 +954,8 @@ public class ImageCanvas extends CssLayout {
 			String url = imageData.getImage().getWadoUrl() + "&" + zoom + "&" + region + "&" + content + "&" + bright + "&" + frame;
 			String urlIcon = imageData.getImage().getWadoUrl() + "&" + zoomIcon + "&" + region + "&" + contentIcon + "&" + bright + "&" + frame;
 			
-			String urlimage = Utils.getEnviroment( "CLOUD_URL" ) + url;
+			//String urlimage = Utils.getEnviroment( "CLOUD_URL" ) + url;
+			String urlimage = context.getCloudUrl() + url;
 			LOG.info(urlimage);
 			canvas.setImageUrl(new ExternalResource(urlimage));
 			

@@ -442,7 +442,8 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	{
 		ReportInfo reportInfo = getReportInfo();
 		
-		String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
+		//String imageUrl = reportInfo != null ? Utils.getEnviroment( "CLOUD_URL" ) + reportInfo.getUrl() : null;
+		String imageUrl = reportInfo != null ? context.getCloudUrl() + reportInfo.getUrl() : null;
 		
 		LOG.info(  "imageUrl " + imageUrl );
 		

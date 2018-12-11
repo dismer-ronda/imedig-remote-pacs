@@ -65,7 +65,8 @@ public class DetallesCentrosManagerImpl extends ImedigManagerImpl implements Det
     		
 			//String url = "http://" + temp.getIp() + ":" + temp.getPuerto() + "/imedig-viewer/services/echo" + "?" + token + "&" + code;;
 
-			String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+			//String url =  Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
+    		String url =  ctx.getCloudUrl() + "/imedig-viewer/services/report/" + ctx.getUsuario().getLogin() + "?" + token + "&" + code;
 
 			LOG.debug( "url " + url  );
 			
@@ -150,7 +151,8 @@ public class DetallesCentrosManagerImpl extends ImedigManagerImpl implements Det
     		String token = "token=" + Utils.getTokenString( "IMEDIG" + ts, Settings.TrustKey );
     		String code = "code=" + Utils.encrypt( extra, Settings.TrustKey ) ;
     		
-    		String url = Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
+    		//String url = Utils.getEnviroment( "CLOUD_URL" ) + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
+    		String url = ctx.getCloudUrl() + "/imedig-viewer/viewer" + "?" + token + "&" + code + "&debug";
     		
     		return url;
     	}
