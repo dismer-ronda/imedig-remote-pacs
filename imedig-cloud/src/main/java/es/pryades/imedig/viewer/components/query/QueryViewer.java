@@ -3,11 +3,13 @@ package es.pryades.imedig.viewer.components.query;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -197,12 +199,13 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		paginator.setPage( paginator.getPage() );
 		paginator.setSize( PAGE_SIZE );
 
-		model = new QueryTableModel( PAGE_SIZE );
+		model = new QueryTableModel( context, PAGE_SIZE );
 
-		model.setPatientName( "*" + fieldName.getValue() + "*" );
-		model.setPatientId( filedId.getValue() );
-		model.setReferringPhysicianName( user.getFilter() );
-		model.setStudyDate( convertDate( (Integer)bydate.getValue() ) );
+		model.setPatientName( nullIfEmpty( fieldName.getValue() ) );
+		model.setPatientId( nullIfEmpty( filedId.getValue() ) );
+		model.setReferringPhysicianName( "*".equals( user.getFilter()) ? null : user.getFilter() );
+		model.setStudyDateFrom( convertFromDate( (Integer)bydate.getValue() ) );
+		model.setStudyDateTo( convertToDate( (Integer)bydate.getValue() ) );
 		model.setModalitiesInStudy( (String)type.getValue() );
 
 		int size = model.doQuery();
@@ -211,6 +214,14 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		refreshTable( model.getCurrentPage() );
 	}
 
+	
+	private static String nullIfEmpty(String s){
+		
+		if (StringUtils.isEmpty( s )) return null;
+		
+		return s;
+	}
+	
 	private String convertDate( Integer index )
 	{
 		if ( index == null )
@@ -236,6 +247,62 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			default:
 				return "";
 		}
+	}
+	
+	private Timestamp convertFromDate( Integer index )
+	{
+		if ( index == null ) return null;
+		
+		switch ( index )
+		{
+			case 1:
+				return Timestamp.valueOf( Utils.getTodayDate("yyyy-MM-dd") + " 00:00:00" );
+			
+			case 2:
+				return Timestamp.valueOf( Utils.getYesterdayDate("yyyy-MM-dd") + " 00:00:00" );
+			
+			case 3:
+				return Timestamp.valueOf( Utils.getLastWeekDate("yyyy-MM-dd") + " 00:00:00" );
+
+			case 4:
+				return Timestamp.valueOf( Utils.getLastMonthDate("yyyy-MM-dd") + " 00:00:00" );
+
+			case 5:
+				return Timestamp.valueOf( Utils.getLastYearDate("yyyy-MM-dd") + " 00:00:00" );
+			
+			default:
+			break;
+		}
+		
+		return null;
+	}
+	
+	private Timestamp convertToDate( Integer index )
+	{
+		if ( index == null ) return null;
+
+		switch ( index )
+		{
+			case 1:
+				return Timestamp.valueOf( Utils.getTodayDate("yyyy-MM-dd") + " 23:59:59" );
+			
+			case 2:
+				return Timestamp.valueOf( Utils.getYesterdayDate("yyyy-MM-dd") + " 23:59:59" );
+			
+			case 3:
+				return Timestamp.valueOf( Utils.getTodayDate("yyyy-MM-dd") + " 23:59:59" );
+
+			case 4:
+				return Timestamp.valueOf( Utils.getTodayDate("yyyy-MM-dd") + " 23:59:59" );
+
+			case 5:
+				return Timestamp.valueOf( Utils.getTodayDate("yyyy-MM-dd") + " 23:59:59" );
+			
+			default:
+			break;
+		}
+		
+		return null;
 	}
 
 	private void buildTable()

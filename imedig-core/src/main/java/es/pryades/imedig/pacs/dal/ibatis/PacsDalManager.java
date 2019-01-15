@@ -60,6 +60,7 @@ public class PacsDalManager implements Serializable
 					"</environments>" +
 					"<mappers>" +
 						"<mapper resource='es/pryades/imedig/pacs/dal/StudyMapper.xml'/>" +
+						"<mapper resource='es/pryades/imedig/pacs/dal/StudySearchMapper.xml'/>" +
 					"</mappers>"+
 				"</configuration>";
 				

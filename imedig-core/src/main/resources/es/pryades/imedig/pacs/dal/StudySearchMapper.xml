@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.pacs.dal.ibatis.StudySearchMapper">
+
+	<sql id="where">
+	   <if test="from_date != null">
+			AND study_datetime &gt;= #{from_date}   
+        </if>
+		<if test="to_date != null">
+			AND study_datetime &lt; #{to_date}   
+        </if>
+		<if test="mods_in_study != null">
+			AND mods_in_study = '${mods_in_study}'   
+        </if>
+		<if test="pat_name != null">
+			AND UPPER(pat_name) like UPPER('%${pat_name}%')   
+        </if>
+		<if test="pat_id != null">
+			AND pat_id = '${pat_id}'   
+        </if>
+	</sql>
+	
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		select count(1) 
+		from study 
+		inner join patient on study.patient_fk = patient.pk
+		<where><include refid="where"/></where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.pacs.dto.Study">
+		
+		select 
+			study.pk as id,
+			study.study_datetime, 
+			study.study_iuid,
+			study.study_id,
+			study.num_instances,
+	  	    study.accession_no, 
+			study.ref_physician, 
+            study.mods_in_study,
+
+			patient.pat_name, 
+			patient.pat_id, 
+			patient.pat_id_issuer, 
+			patient.pat_birthdate, 
+			patient.pat_sex 
+		from study
+		inner join patient on study.patient_fk = patient.pk	
+		<where><include refid="where"/></where>
+		order by study_datetime desc
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.pacs.dto.Study">
+		select 
+			study.pk as id,
+			study.study_datetime, 
+			study.study_iuid,
+			study.study_id,
+			study.num_instances,
+	  	    study.accession_no, 
+			study.ref_physician, 
+            study.mods_in_study,
+
+			patient.pat_name, 
+			patient.pat_id, 
+			patient.pat_id_issuer, 
+			patient.pat_birthdate, 
+			patient.pat_sex 
+		
+		from study
+		inner join patient on study.patient_fk = patient.pk	
+		<where><include refid="where"/></where>
+		order by study_datetime desc
+	</select>
+
+</mapper>

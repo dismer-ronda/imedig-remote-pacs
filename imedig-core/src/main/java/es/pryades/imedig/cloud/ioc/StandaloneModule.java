@@ -4,10 +4,46 @@ import java.io.Serializable;
 
 import org.apache.tapestry5.ioc.ServiceBinder;
 
-import es.pryades.imedig.cloud.core.bll.*;
-import es.pryades.imedig.cloud.core.dal.*;
+import es.pryades.imedig.cloud.core.bll.UsuariosManager;
+import es.pryades.imedig.cloud.core.bll.UsuariosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.AccesosManager;
+import es.pryades.imedig.cloud.core.dal.AccesosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.CentrosManager;
+import es.pryades.imedig.cloud.core.dal.CentrosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.DerechosManager;
+import es.pryades.imedig.cloud.core.dal.DerechosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
+import es.pryades.imedig.cloud.core.dal.DetallesCentrosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.DetallesEstadisticasInformesManager;
+import es.pryades.imedig.cloud.core.dal.DetallesEstadisticasInformesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
+import es.pryades.imedig.cloud.core.dal.DetallesInformesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.DocumentosManager;
+import es.pryades.imedig.cloud.core.dal.DocumentosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.HorariosManager;
+import es.pryades.imedig.cloud.core.dal.HorariosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.ImagenesManager;
+import es.pryades.imedig.cloud.core.dal.ImagenesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
+import es.pryades.imedig.cloud.core.dal.InformesImagenesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.InformesManager;
+import es.pryades.imedig.cloud.core.dal.InformesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.InformesPlantillasManager;
+import es.pryades.imedig.cloud.core.dal.InformesPlantillasManagerImpl;
+import es.pryades.imedig.cloud.core.dal.MonedasManager;
+import es.pryades.imedig.cloud.core.dal.MonedasManagerImpl;
+import es.pryades.imedig.cloud.core.dal.ParametrosManager;
+import es.pryades.imedig.cloud.core.dal.ParametrosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.PerfilesDerechosManager;
+import es.pryades.imedig.cloud.core.dal.PerfilesDerechosManagerImpl;
+import es.pryades.imedig.cloud.core.dal.PerfilesManager;
+import es.pryades.imedig.cloud.core.dal.PerfilesManagerImpl;
+import es.pryades.imedig.cloud.core.dal.UsuarioCentrosManager;
+import es.pryades.imedig.cloud.core.dal.UsuarioCentrosManagerImpl;
 import es.pryades.imedig.pacs.dal.StudiesManager;
 import es.pryades.imedig.pacs.dal.StudiesManagerImpl;
+import es.pryades.imedig.pacs.dal.StudiesSearchManager;
+import es.pryades.imedig.pacs.dal.StudiesSearchManagerImpl;
 
 /**
 *
@@ -47,5 +83,6 @@ public class StandaloneModule implements Serializable
 		binder.bind( DetallesEstadisticasInformesManager.class, DetallesEstadisticasInformesManagerImpl.class );
 
 		binder.bind( StudiesManager.class, StudiesManagerImpl.class );
+		binder.bind( StudiesSearchManager.class, StudiesSearchManagerImpl.class );
 	}
 }
