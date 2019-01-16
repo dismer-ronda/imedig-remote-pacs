@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.CheckBox;
@@ -65,21 +67,50 @@ public class QueryTableItem implements Serializable {
 		String birthDate = study.getPatientBirthDate();
 		String age = "";
 
-		if (birthDate != null) {
-			SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
-
-			Date dob;
-
-			try {
-				dob = f.parse(birthDate);
-
-				if (dob != null)
-					age = Utils.getAge(dob, 
-							context.getString("Generic.Month"),
-							context.getString("Generic.Year"));
-			} catch (ParseException e) {
-			}
-		}
+		if (StringUtils.isBlank( birthDate )) return age;
+		
+		Date dob = getBirthDate( birthDate );
+		
+		if (dob != null)
+			age = Utils.getAge(dob, 
+					context.getString("Generic.Month"),
+					context.getString("Generic.Year"));
+		
 		return age;
 	}
+	
+	private Date getBirthDate(String sdate){
+		Date result = ddMMyyyy( sdate );
+		
+		if (result == null) result = yyyyMMdd( sdate );
+		
+		return result;
+	}
+	
+	private static Date ddMMyyyy(String sdate){
+		SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+		
+		Date dob = null;
+
+		try {
+			dob = f.parse(sdate);
+		} catch (ParseException e) {
+		}
+		
+		return dob;
+	}
+	
+	private static Date yyyyMMdd(String sdate){
+		SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
+		
+		Date dob = null;
+
+		try {
+			dob = f.parse(sdate);
+		} catch (ParseException e) {
+		}
+		
+		return dob;
+	}
+
 }
