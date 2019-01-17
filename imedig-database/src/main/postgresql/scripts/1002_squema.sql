@@ -231,9 +231,11 @@ create index ix_pacientes_sexo on susc_pacientes(sexo);
 create table susc_equipos (
     id integer not null,
     nombre varchar(64) not null,   					-- Nombre del equipo
+    aetitle varchar(64) not null, 					-- Aetitle
     modalidad varchar(2),							-- Modalidad de imágenes
 	
     constraint pk_equipos primary key(id),
+	constraint uk_equipos_aetitle unique(aetitle),
 	constraint uk_equipos_nombre unique(nombre)
     );
 create index ix_equipos_modalidad on susc_equipos(modalidad);
@@ -259,13 +261,14 @@ create table susc_estudios (
     paciente integer not null,						-- paciente al que se le realiza la prueba
     equipo integer not null,						-- equipo en el que se realiza la prueba
     tipo integer not null, 							-- tipo de estudio
-    
+    referidor integer,   							-- referidor de estudio
     duracion integer not null,						-- Duración de la prueba en minutos
     
     constraint pk_estudios primary key(id),
-    constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id),
-    constraint fk_estudios_equipo foreign key (equipo) references susc_equipos(id),
-    constraint fk_estudios_tipo foreign key (tipo_estudio) references susc_tipos_estudios(id)
+    constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id) on delete cascade,
+    constraint fk_estudios_equipo foreign key (equipo) references susc_equipos(id) on delete cascade,
+    constraint fk_estudios_referidor foreign key (referidor) references susc_usuarios(id) on delete cascade,
+    constraint fk_estudios_tipo foreign key (tipo) references susc_tipos_estudios(id) on delete cascade
     ); 
     
 --//@UNDO
