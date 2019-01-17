@@ -13,6 +13,9 @@
 		<if test="mods_in_study != null">
 			AND mods_in_study = '${mods_in_study}'   
         </if>
+		<if test="ref_physician != null">
+			AND UPPER(ref_physician) like UPPER(#{ref_physician})   
+        </if>
 		<if test="pat_name != null">
 			AND UPPER(pat_name) like UPPER('%${pat_name}%')   
         </if>

@@ -203,7 +203,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 		model.setPatientName( nullIfEmpty( fieldName.getValue() ) );
 		model.setPatientId( nullIfEmpty( filedId.getValue() ) );
-		model.setReferringPhysicianName( "*".equals( user.getFilter()) ? null : user.getFilter() );
+		model.setReferringPhysicianName( user.getFilter() );
 		model.setStudyDateFrom( convertFromDate( (Integer)bydate.getValue() ) );
 		model.setStudyDateTo( convertToDate( (Integer)bydate.getValue() ) );
 		model.setModalitiesInStudy( (String)type.getValue() );
@@ -214,7 +214,6 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		refreshTable( model.getCurrentPage() );
 	}
 
-	
 	private static String nullIfEmpty(String s){
 		
 		if (StringUtils.isEmpty( s )) return null;

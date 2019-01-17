@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,7 +161,7 @@ public class QueryTableModel implements Serializable
 	public int doQuery() 
 	{
 		query = new StudyQuery();
-		query.setRef_physician( referringPhysicianName );
+		query.setRef_physician( filterPhysicianName(referringPhysicianName) );
 		query.setPat_name( patientName );
 		query.setMods_in_study( modalitiesInStudy );
 		query.setFrom_date( studyDateFrom );
@@ -178,6 +179,12 @@ public class QueryTableModel implements Serializable
 		}
 		
 		return totalSize;
+	}
+	
+	private static String filterPhysicianName(String filter){
+		if ("*".equals( filter ) || StringUtils.isEmpty( filter )) return null;
+		
+		return filter.replace( "*", "%" );
 	}
 
 	/*public Study getRow( int i ) 
