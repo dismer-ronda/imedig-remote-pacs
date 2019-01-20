@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.EstudioMapper">
+
+	<sql id="where">
+		<if test="uid != null">
+			AND uid = #{uid}   
+        </if>
+		<if test="paciente != null">
+			AND paciente = #{paciente}   
+        </if>
+		<if test="equipo != null">
+			AND equipo = #{equipo}   
+        </if>
+		<if test="tipo != null">
+			AND tipo = #{tipo}   
+        </if>
+		<if test="referidor != null">
+			AND referidor = #{referidor}   
+        </if>
+	</sql>
+	
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		select count(1) 
+		from susc_estudios 
+		<where><include refid="where"/></where>
+	</select>
+
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
+		select *
+		from susc_estudios
+		<where><include refid="where"/></where>
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
+		select * 
+		from susc_estudios
+		<where><include refid="where"/></where>
+	</select>
+	
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
+		select * from susc_estudios 
+		where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gendat');
+		</selectKey>
+
+		insert into susc_estudios
+		(
+			id,
+			fecha,
+			uid, 
+			paciente,
+			equipo,
+			tipo,
+			referidor,
+			duracion
+		)
+		values
+		(
+			#{id},
+			#{fecha},
+			#{uid},
+			#{paciente},
+			#{equipo},
+			#{tipo},
+			#{referidor},
+			#{duracion}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
+		update susc_estudios
+		set
+			fecha=#{fecha},
+			uid=#{uid},
+			paciente=#{paciente},
+			equipo=#{equipo},
+			tipo=#{tipo},
+			referidor=#{referidor},
+			duracion=#{duracion}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
+		delete from susc_estudios where id = #{id}
+	</update>
+
+</mapper>
