@@ -215,9 +215,13 @@ create table susc_pacientes (
     id integer not null,
     uid varchar(64) not null,    					-- identificador unico
     email varchar(128),    							-- email al que se envian notificaciones
-    nombre varchar(128) not null,   				-- Nombre completo del paciente
+    nombre varchar(50) not null,   				    -- nombre del paciente
+    apellido1 varchar(50) not null,   				-- primer apellido del paciente
+    apellido2 varchar(50),   						-- segundo apellido del paciente
 	fecha_nacimiento integer not null,				-- fecha de nacimiento
 	sexo varchar(1) not null,						-- sexo 
+	telefono varchar(20),							-- telefono del paciente
+	movil varchar(20),								-- numero del movil del paciente
 	
     constraint pk_pacientes primary key(id),
 	constraint uk_pacientes_uid unique(uid),
