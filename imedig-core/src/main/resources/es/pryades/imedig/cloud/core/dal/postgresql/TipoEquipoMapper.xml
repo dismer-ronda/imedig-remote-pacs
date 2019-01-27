@@ -59,7 +59,7 @@
 		update susc_tipos_estudios
 		set
 			nombre=#{nombre},
-			aetitle=#{duracion}
+			duracion=#{duracion}
 		where id = #{id}
 	</update>
 

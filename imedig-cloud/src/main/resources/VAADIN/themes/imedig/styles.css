@@ -1587,6 +1587,110 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 }
 
+.imedig .stepper {
+	position: relative;
+}
+
+.imedig .stepper input[type=text] {
+	line-height: 1.55;
+	font-size: 16px;
+	width: inherit;
+}
+
+.imedig .stepper.v-has-width input[type=text] {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.imedig .stepper.v-disabled {
+	opacity: 0.5;
+}
+
+.imedig .stepper .stepper-updown {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+.imedig .stepper .stepper-up, .imedig .stepper .stepper-down {
+	display: block;
+	outline: none;
+	font-size: 16px;
+	line-height: 0.775;
+}
+
+.v-gecko .imedig .stepper .stepper-updown {
+	top: 4px !important;
+}
+
+.v-trident .imedig .stepper .stepper-updown {
+	top: 5px !important;
+}
+
+.v-trident .imedig .stepper .stepper-up, .v-trident .imedig .stepper .stepper-down {
+	font-size: 14px !important;
+	line-height: 0.5 !important;
+}
+
+.v-sa .imedig .stepper .stepper-updown {
+	top: 4px;
+	right: 4px;
+}
+
+.imedig .stepper {
+	position: relative;
+}
+
+.imedig .stepper input[type=text] {
+	line-height: 1.55;
+	font-size: 16px;
+	width: inherit;
+}
+
+.imedig .stepper.v-has-width input[type=text] {
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.imedig .stepper.v-disabled {
+	opacity: 0.5;
+}
+
+.imedig .stepper .stepper-updown {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+.imedig .stepper .stepper-up, .imedig .stepper .stepper-down {
+	display: block;
+	outline: none;
+	font-size: 16px;
+	line-height: 0.775;
+}
+
+.v-gecko .imedig .stepper .stepper-updown {
+	top: 4px !important;
+}
+
+.v-trident .imedig .stepper .stepper-updown {
+	top: 5px !important;
+}
+
+.v-trident .imedig .stepper .stepper-up, .v-trident .imedig .stepper .stepper-down {
+	font-size: 14px !important;
+	line-height: 0.5 !important;
+}
+
+.v-sa .imedig .stepper .stepper-updown {
+	top: 4px;
+	right: 4px;
+}
+
 .imedig.v-app, .imedig.v-app-loading {
 	font: 400 16px/1.55 Roboto, DroidSans, sans-serif;
 	color: #cacecf;

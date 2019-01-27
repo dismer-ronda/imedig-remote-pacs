@@ -28,4 +28,6 @@
     <inherits name="es.pryades.fabricjs.WidgetSet" />
 
     <inherits name="es.pryades.fullscreen.WidgetSet" />
+
+    <inherits name="org.vaadin.risto.stepper.StepperWidgetset" />
 </module>

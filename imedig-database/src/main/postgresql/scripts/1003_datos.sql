@@ -57,6 +57,11 @@ insert into susc_derechos (id, codigo, descripcion) values (19, 'configuracion.i
 insert into susc_derechos (id, codigo, descripcion) values (20, 'configuracion.informes.plantillas.modificar','Modificar plantillas');
 insert into susc_derechos (id, codigo, descripcion) values (21, 'configuracion.informes.plantillas.borrar','Borrar plantillas');
 
+insert into susc_derechos (id, codigo, descripcion) values (25, 'configuracion.tipos.estudios','Mantenimiento de catálogo de tipos de estudios');
+insert into susc_derechos (id, codigo, descripcion) values (26, 'configuracion.tipos.estudios.adicionar','Adicionar tipos de estudios');
+insert into susc_derechos (id, codigo, descripcion) values (27, 'configuracion.tipos.estudios.modificar','Modificar tipos de estudios');
+insert into susc_derechos (id, codigo, descripcion) values (28, 'configuracion.tipos.estudios.borrar','Borrar tipos de estudios');
+
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 1);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 2);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 3);
@@ -81,6 +86,12 @@ insert into susc_perfiles_derechos (perfil, derecho) values (1, 21);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 22);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 23);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 24);
+--tipos de estudios
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 25);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 26);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 27);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 28);
+
 
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 1);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 23);
