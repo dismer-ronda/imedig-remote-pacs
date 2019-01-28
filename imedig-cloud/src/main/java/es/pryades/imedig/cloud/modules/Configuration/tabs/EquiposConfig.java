@@ -7,13 +7,13 @@ import com.vaadin.ui.Component;
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Query;
-import es.pryades.imedig.cloud.dto.TipoEstudio;
-import es.pryades.imedig.cloud.modules.Configuration.modals.ModalNewTipoEstudio;
+import es.pryades.imedig.cloud.modules.Configuration.modals.ModalNewEquipo;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
-import es.pryades.imedig.cloud.vto.TipoEstudioVto;
-import es.pryades.imedig.cloud.vto.controlers.TipoEstudioControlerVto;
-import es.pryades.imedig.cloud.vto.refs.TipoEstudioVtoFieldRef;
+import es.pryades.imedig.cloud.vto.InstalacionVto;
+import es.pryades.imedig.cloud.vto.controlers.InstalacionControlerVto;
+import es.pryades.imedig.cloud.vto.refs.InstalacionVtoFieldRef;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
@@ -23,42 +23,45 @@ import es.pryades.imedig.core.common.TableImedigPaged;
  * @author hector.licea
  * 
  */
-public class TiposEstudiosConfig extends FilteredContentCloseable implements ModalParent
+public class EquiposConfig extends FilteredContentCloseable implements ModalParent
 {
-	private static final long serialVersionUID = -2902340113398310394L;
-	
+	private static final long serialVersionUID = -4614986510639711401L;
+
 	@SuppressWarnings("unused")
-	private static final Logger LOG = Logger.getLogger( TiposEstudiosConfig.class );
+	private static final Logger LOG = Logger.getLogger( EquiposConfig.class );
 
 	/**
 	 * 
 	 * @param ctx
 	 * @param resource
 	 */
-	public TiposEstudiosConfig( ImedigContext ctx )
+	public EquiposConfig( ImedigContext ctx )
 	{
 		super( ctx );
 	}
 
 	public TableImedigPaged getTableRows()
 	{
-		return new TableImedigPaged( TipoEstudioVto.class, new TipoEstudioVto(), new TipoEstudioVtoFieldRef(), new QueryFilterRef( new TipoEstudio() ), this.context, Constants.DEFAULT_PAGE_SIZE );
+		Instalacion query = new Instalacion();
+		//query.setTipo( 1 );
+		
+		return new TableImedigPaged( InstalacionVto.class, new InstalacionVto(), new InstalacionVtoFieldRef(), new QueryFilterRef( query ), this.context, Constants.DEFAULT_PAGE_SIZE );
 	}
 	
 	public String[] getVisibleCols()
 	{
-		return TipoEstudioControlerVto.getVisibleCols();
+		return InstalacionControlerVto.getVisibleCols();
 	}
 	
 	public String getResouceKey()
 	{
-		return "tipoEstudioConfig.table";
+		return "instalacionConfig.table";
 	}
 
 	@Override
 	public String getTabTitle()
 	{
-		return getContext().getString( "tipoEstudioConfig.tabName" );
+		return getContext().getString( "equipoConfig.tabName" );
 	}
 
 	@Override
@@ -70,25 +73,27 @@ public class TiposEstudiosConfig extends FilteredContentCloseable implements Mod
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_MODIFY, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_MODIFY, (Instalacion)row, EquiposConfig.this, "configuracion.instalaciones" ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_ADD, null, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_ADD, null, EquiposConfig.this, "configuracion.instalaciones" ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_DELETE, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_DELETE, (Instalacion)row, EquiposConfig.this, "configuracion.instalaciones" ).showModalWindow();
 	}
 
 	@Override
 	public Query getQueryObject()
 	{
-		return new TipoEstudio();
+		Instalacion query = new Instalacion();
+		query.setTipo( 1 );
+		return query;
 	}
 
 	@Override

@@ -3,8 +3,8 @@ package es.pryades.imedig.cloud.vto.controlers;
 import java.util.HashMap;
 
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.TipoEstudio;
-import es.pryades.imedig.cloud.vto.TipoEstudioVto;
+import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.vto.InstalacionVto;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
 import es.pryades.imedig.core.common.VtoFieldRef;
@@ -16,14 +16,14 @@ import es.pryades.imedig.core.common.VtoFieldRef;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class TipoEstudioControlerVto extends GenericControlerVto
+public class InstalacionControlerVto extends GenericControlerVto
 {
-	private static final long serialVersionUID = -6978872843411881934L;
+	private static final long serialVersionUID = 6481184312348308369L;
 	
 	private static final String[] visibleCols =
-	{ "nombre", "duracion" };
+	{ "nombre", "aetitle", "modalidad"};
 
-	public TipoEstudioControlerVto( ImedigContext ctx)
+	public InstalacionControlerVto( ImedigContext ctx)
 	{
 		super( ctx );
 	}
@@ -45,7 +45,7 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	 */
 	public static String[] getVisibleCols()
 	{
-		return TipoEstudioControlerVto.visibleCols;
+		return InstalacionControlerVto.visibleCols;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	@Override
 	public String[] getStaticVisibleCols()
 	{
-		return TipoEstudioControlerVto.visibleCols;
+		return InstalacionControlerVto.visibleCols;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	@Override
 	public Class getDtoObjectClass()
 	{
-		return TipoEstudio.class;
+		return Instalacion.class; 
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	@Override
 	public Class getVtoObjClass()
 	{
-		return TipoEstudioVto.class;
+		return InstalacionVto.class;
 	}
 
 	/**
@@ -145,30 +145,24 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	 */
 	public GenericVto generateVtoFromDto( Object dtoObj ) throws Throwable
 	{
-		TipoEstudioVto result = null;
+		InstalacionVto result = null;
 
 		if ( dtoObj != null )
 		{
-			if ( dtoObj.getClass().equals( TipoEstudio.class ) )
+			if ( dtoObj.getClass().equals( Instalacion.class ) )
 			{
-				/* ++++ Mapeando de dto.DetalleCentro -> CentroVto ++++ */
+				result = new InstalacionVto();
 
-				result = new TipoEstudioVto();
-
-				// ++ ID
-				Integer vtoId = ((TipoEstudio)dtoObj).getId();
-				result.setId( vtoId );
-				// -- ID
-
-				// ++ NOMBRE
-				String vtoNombre = ((TipoEstudio)dtoObj).getNombre();
-				result.setNombre( vtoNombre );
-				// -- NOMBRE
-
-				// ++ DURACION
-				Integer vtoDuracion = ((TipoEstudio)dtoObj).getDuracion();
-				result.setDuracion( vtoDuracion );
-				// -- DURACION
+				// ID
+				result.setId( ((Instalacion)dtoObj).getId() );
+				// NOMBRE
+				result.setNombre( ((Instalacion)dtoObj).getNombre() );
+				// AETITLE
+				result.setAetitle( ((Instalacion)dtoObj).getAetitle() );
+				// MODALIDAD
+				result.setModalidad( ((Instalacion)dtoObj).getModalidad() );
+				// TIPO
+				result.setTipo( ((Instalacion)dtoObj).getTipo() );
 			}
 			else
 			{

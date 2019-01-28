@@ -232,12 +232,12 @@ create index ix_pacientes_email on susc_pacientes(email);
 create index ix_pacientes_sexo on susc_pacientes(sexo);
 
 -- equipos 
-create table susc_equipos (
+create table susc_instalaciones (
     id integer not null,
     nombre varchar(64) not null,   					-- Nombre del equipo
     aetitle varchar(64) not null, 					-- Aetitle
-    modalidad varchar(2),							-- Modalidad de imágenes
-	
+    modalidad character varying(2),
+    tipo integer NOT NULL,
     constraint pk_equipos primary key(id),
 	constraint uk_equipos_aetitle unique(aetitle),
 	constraint uk_equipos_nombre unique(nombre)

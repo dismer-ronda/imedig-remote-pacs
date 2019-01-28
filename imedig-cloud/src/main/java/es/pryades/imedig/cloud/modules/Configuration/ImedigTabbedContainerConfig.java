@@ -17,6 +17,7 @@ import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.CentrosConfig;
+import es.pryades.imedig.cloud.modules.Configuration.tabs.EquiposConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.ImagenesConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.InformesPlantillasConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.StudiesListTab;
@@ -100,6 +101,11 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 				if ( ctx.hasRight( "configuracion.tipos.estudios" ) )
 				{
 					tabContentList.add( new TiposEstudiosConfig( ctx ) );
+				}
+				
+				if ( ctx.hasRight( "configuracion.instalaciones" ) )
+				{
+					tabContentList.add( new EquiposConfig( ctx ) );
 				}
 				
 				tabContentList.add( new StudiesListTab( ctx ) );

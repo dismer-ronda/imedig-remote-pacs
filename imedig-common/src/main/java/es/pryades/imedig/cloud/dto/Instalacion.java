@@ -5,9 +5,10 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper=true)
 @Data
-public class Equipo extends ImedigDto
+public class Instalacion extends ImedigDto
 {
 	private String nombre;
     private String aetitle;
-    private String modalidad;	
+    private String modalidad;
+    private Integer tipo;
 }
