@@ -231,18 +231,18 @@ create index ix_pacientes_uid on susc_pacientes(uid);
 create index ix_pacientes_email on susc_pacientes(email);
 create index ix_pacientes_sexo on susc_pacientes(sexo);
 
--- equipos 
+-- instalaciones 
 create table susc_instalaciones (
     id integer not null,
-    nombre varchar(64) not null,   					-- Nombre del equipo
+    nombre varchar(64) not null,   					-- Nombre de la instalación
     aetitle varchar(64) not null, 					-- Aetitle
     modalidad character varying(2),
     tipo integer NOT NULL,
-    constraint pk_equipos primary key(id),
-	constraint uk_equipos_aetitle unique(aetitle),
-	constraint uk_equipos_nombre unique(nombre)
+    constraint pk_instalaciones primary key(id),
+	constraint uk_instalaciones_aetitle unique(aetitle),
+	constraint uk_instalaciones_nombre unique(nombre)
     );
-create index ix_equipos_modalidad on susc_equipos(modalidad);
+create index ix_instalaciones_modalidad on susc_instalaciones(modalidad);
 
 -- tipos de estudios
 create table susc_tipos_estudios (
@@ -263,14 +263,14 @@ create table susc_estudios (
     uid varchar(64) not null,   					-- uuid del estudio
 
     paciente integer not null,						-- paciente al que se le realiza la prueba
-    equipo integer not null,						-- equipo en el que se realiza la prueba
+    instalacion integer not null,					-- instalacion en el que se realiza la prueba
     tipo integer not null, 							-- tipo de estudio
     referidor integer,   							-- referidor de estudio
     duracion integer not null,						-- Duración de la prueba en minutos
     
     constraint pk_estudios primary key(id),
     constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id) on delete cascade,
-    constraint fk_estudios_equipo foreign key (equipo) references susc_equipos(id) on delete cascade,
+    constraint fk_estudios_instalacion foreign key (instalacion) references susc_instalaciones(id) on delete cascade,
     constraint fk_estudios_referidor foreign key (referidor) references susc_usuarios(id) on delete cascade,
     constraint fk_estudios_tipo foreign key (tipo) references susc_tipos_estudios(id) on delete cascade
     ); 
