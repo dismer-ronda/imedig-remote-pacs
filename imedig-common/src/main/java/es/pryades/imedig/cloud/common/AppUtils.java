@@ -36,6 +36,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.dto.Informe;
+import es.pryades.imedig.cloud.dto.Paciente;
 
 public class AppUtils implements Serializable 
 {
@@ -331,4 +332,26 @@ public class AppUtils implements Serializable
 		
 		return label;
 	}
+
+    private static String getNombreNAA(String nombre, String ape1, String ape2) {
+        return ((nombre + " " + ape1 + " " + ape2).trim()).replaceAll("null", "");
+    }
+
+	private static String getNombreAAN(String nombre, String ape1, String ape2) {
+        return ((ape1 + " " + ape2).trim() + ", " + nombre).replaceAll("null", "");
+    }
+
+    public static String getNombreNAA(Paciente pac) {
+        if (pac != null) {
+            return getNombreNAA(pac.getNombre(), pac.getApellido1(), pac.getApellido2());
+        }
+        return "";
+    }
+
+    public static String getNombreAAN(Paciente pac) {
+        if (pac != null) {
+            return getNombreAAN(pac.getNombre(), pac.getApellido1(), pac.getApellido2());
+        }
+        return "";
+    }
 }

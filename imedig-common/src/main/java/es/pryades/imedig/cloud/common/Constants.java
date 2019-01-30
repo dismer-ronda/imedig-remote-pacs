@@ -60,4 +60,8 @@ public class Constants implements Serializable
 	
 	public static final String WIDTH_LABEL				= "200px";
 
+	public static final String SEX_MALE = "M";
+	public static final String SEX_FEMALE = "F";
+	public static final String SEX_OTHER = "O";
+
 }

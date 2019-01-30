@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 
 import com.vaadin.server.FontAwesome;
@@ -63,7 +61,9 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
+import es.pryades.imedig.viewer.components.patients.PatientsViewer;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
+import lombok.Getter;
 
 public class BackendMainWnd extends VerticalLayout implements ModalParent,ListenerAction
 {
@@ -88,6 +88,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private CssLayout contents;
 	
 	private Button btnSelected;
+	private Button buttonPatients;
 	private Button buttonImages;
 	private Button buttonStudies;
 	private Button buttonReports;
@@ -101,6 +102,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	@Getter
 	private ImedigContext context;
 
+	private PatientsViewer patientViewer;
 	private ViewerWnd imageViewer;
 	private ReportsViewer reportsViewer;
 	private QueryViewer queryViewer;
@@ -404,7 +406,20 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		buttonsBar.addComponent( buttonManual );
+		
+		buttonPatients= new Button( context.getString( "words.patients" ) , FontAwesome.USER_PLUS);
+		buttonPatients.setDescription( context.getString( "words.patients.view" ) );
+		setStyleButtonBar( buttonPatients );
+		buttonPatients.addClickListener( new Button.ClickListener()
+		{
+			private static final long serialVersionUID = 2267293731045479204L;
 
+			public void buttonClick( ClickEvent event )
+			{
+				showPatiens();
+			}
+		} );
+		
 		buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
 		buttonImages.setDescription( context.getString( "words.image.view" ) );
 		setStyleButtonBar( buttonImages );
@@ -445,7 +460,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 
-		selectButtonsBar.addComponents( buttonStudies, buttonImages, buttonReports );
+		selectButtonsBar.addComponents( buttonPatients, buttonStudies, buttonImages, buttonReports );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -568,6 +583,20 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		{
 			return ctx.getUsuario();
 		}
+	}
+	
+	public void showPatiens(){
+		if (btnSelected != null){
+			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		}
+		btnSelected = buttonPatients;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		
+		contents.removeAllComponents();
+		if (patientViewer == null){
+			patientViewer = new PatientsViewer( context);
+		}
+		contents.addComponent( patientViewer );
 	}
 	
 	public void showImages()
