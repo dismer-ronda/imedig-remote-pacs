@@ -144,7 +144,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		layout.addComponent( buttons );
 		layout.setComponentAlignment( buttons, Alignment.BOTTOM_CENTER );
 		addComponent( layout );
-		setComponentAlignment( layout, Alignment.TOP_CENTER );
+		setComponentAlignment( layout, Alignment.TOP_LEFT );
 	}
 
 	private void initTypeList()

@@ -13,7 +13,6 @@ import lombok.EqualsAndHashCode;
  * @author hector.licea
  *
  */
-
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class PacienteVto extends GenericVto

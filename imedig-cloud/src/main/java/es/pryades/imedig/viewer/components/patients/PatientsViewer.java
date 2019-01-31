@@ -1,8 +1,5 @@
 package es.pryades.imedig.viewer.components.patients;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -11,8 +8,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 
 import es.pryades.imedig.cloud.common.Constants;
@@ -22,8 +19,6 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.EstudiosManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DetalleInforme;
-import es.pryades.imedig.cloud.dto.InformeImagen;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
@@ -37,7 +32,7 @@ import lombok.Setter;
 
 /**
  * 
- * @author Dismer Ronda
+ * @author hector.licea
  * 
  */
 @SuppressWarnings({"unchecked"})
@@ -99,7 +94,13 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public TableImedigPaged getTableRows()
 	{
-		return new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new Paciente() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
+		TableImedigPaged imedigPaged = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new Paciente() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
+		imedigPaged.getTable().setColumnWidth( "identificador", 250 );
+		imedigPaged.getTable().setColumnWidth( "nombre", 540 );
+		imedigPaged.getTable().setColumnWidth( "sexo", 135 );
+		imedigPaged.getTable().setColumnWidth( "edad", 80 );
+		
+		return imedigPaged;
 	}
 	
 	public String getTabTitle()
@@ -137,50 +138,12 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public void onModifyRow( Object row )
 	{
-		PacienteVto paciente = (PacienteVto)row;
-		
-		InformeImagen query = new InformeImagen();
-		query.setInforme( paciente.getId() );
-		
-		String right = getContext().hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
-		
-		List<InformeImagen> images;
-		
-		try
-		{
-			//images = informeImagenesManager.getRows( getContext(), query );
-		}
-		catch ( Throwable e )
-		{
-			e.printStackTrace();
-			
-			images = new ArrayList<InformeImagen>();
-		}
-		
-		//new ModalNewInforme( getContext(), Operation.OP_MODIFY, informe, images, PatientsViewer.this, right ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_MODIFY, (Paciente)row, this, "configuracion.pacientes" ).showModalWindow();
 	}
 
 	public void onDeleteRow( Object row )
 	{
-		DetalleInforme informe = (DetalleInforme)row;
-		
-		InformeImagen query = new InformeImagen();
-		query.setInforme( informe.getId() );
-		
-		List<InformeImagen> images;
-		
-		try
-		{
-			//images = informeImagenesManager.getRows( getContext(), query );
-		}
-		catch ( Throwable e )
-		{
-			e.printStackTrace();
-			
-			images = new ArrayList<InformeImagen>();
-		}
-
-		//new ModalNewInforme( getContext(), Operation.OP_DELETE, informe, images, PatientsViewer.this, "informes.crear" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_DELETE, (Paciente)row, this, "configuracion.pacientes" ).showModalWindow();
 	}
 	
 	public void setDateFilter( InformeQuery queryObj )
@@ -237,7 +200,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		comboFecha.addItem( 5 );
 		comboFecha.setItemCaption( 5, getContext().getString( "words.lastyear" ) );
 		
-		return getRow( comboFecha );
+		return comboFecha;
 	}
 
 	
@@ -246,7 +209,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		textNombre = new TextField( getContext().getString( "words.name" ), bi.getItemProperty( "nombre" ) );
 		textNombre.setNullRepresentation( "" );
 		textNombre.setWidth( TEXT_WIDTH );
-		return getRow( textNombre );
+		return textNombre;
 	}
 
 	public Component getQueryIdentificador()
@@ -254,7 +217,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		textIdentificador = new TextField( getContext().getString( "QueryForm.PatientId" ), bi.getItemProperty( "identificador" ) );
 		textIdentificador.setNullRepresentation( "" );
 		textIdentificador.setWidth( TEXT_WIDTH );
-		return getRow( textIdentificador );
+		return textIdentificador;
 	}
 
 
@@ -269,12 +232,10 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 //		claves = "";
 		
 		bi = new BeanItem<PatientsViewer>( this );
-	
-		CssLayout query = new CssLayout();
-		query.setWidth( "100%" );
-		query.addComponents( getQueryNombre(), getQueryIdentificador(), getQueryFecha());
-		return query;
 		
+		HorizontalLayout layout = new HorizontalLayout( getQueryNombre(), getQueryIdentificador(), getQueryFecha() );
+		layout.setSpacing( true );
+		return layout;
 	}
 
 	@Override

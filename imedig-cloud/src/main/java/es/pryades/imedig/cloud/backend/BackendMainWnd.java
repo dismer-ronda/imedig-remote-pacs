@@ -61,6 +61,7 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
+import es.pryades.imedig.viewer.components.citas.CitationsViewer;
 import es.pryades.imedig.viewer.components.patients.PatientsViewer;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
 import lombok.Getter;
@@ -89,6 +90,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	private Button btnSelected;
 	private Button buttonPatients;
+	private Button buttonCitas;
 	private Button buttonImages;
 	private Button buttonStudies;
 	private Button buttonReports;
@@ -103,6 +105,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private ImedigContext context;
 
 	private PatientsViewer patientViewer;
+	private CitationsViewer citationsViewer;
 	private ViewerWnd imageViewer;
 	private ReportsViewer reportsViewer;
 	private QueryViewer queryViewer;
@@ -420,6 +423,19 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		
+		buttonCitas= new Button( context.getString( "words.citations" ) , FontAwesome.CLOCK_O);
+		buttonCitas.setDescription( context.getString( "words.patients.view" ) );
+		setStyleButtonBar( buttonCitas );
+		buttonCitas.addClickListener( new Button.ClickListener()
+		{
+			private static final long serialVersionUID = -9001228234723748388L;
+
+			public void buttonClick( ClickEvent event )
+			{
+				showCitations();
+			}
+		} );
+		
 		buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
 		buttonImages.setDescription( context.getString( "words.image.view" ) );
 		setStyleButtonBar( buttonImages );
@@ -460,7 +476,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 
-		selectButtonsBar.addComponents( buttonPatients, buttonStudies, buttonImages, buttonReports );
+		selectButtonsBar.addComponents( buttonPatients, buttonCitas, buttonStudies, buttonImages, buttonReports );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -585,6 +601,21 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}
 	}
 	
+	public void showCitations()
+	{
+		if (btnSelected != null){
+			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		}
+		btnSelected = buttonCitas;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		
+		contents.removeAllComponents();
+		if (citationsViewer == null){
+			citationsViewer = new CitationsViewer( context);
+		}
+		contents.addComponent( citationsViewer );
+	}
+
 	public void showPatiens(){
 		if (btnSelected != null){
 			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );

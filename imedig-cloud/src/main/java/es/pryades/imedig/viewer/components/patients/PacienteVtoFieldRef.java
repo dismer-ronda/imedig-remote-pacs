@@ -8,8 +8,8 @@ import es.pryades.imedig.core.common.VtoFieldRef;
 
 /**
  * 
- * @author Dismer Ronda
- *
+ * @author hector.licea
+ * 
  */
 @SuppressWarnings("rawtypes")
 public class PacienteVtoFieldRef extends VtoFieldRef 

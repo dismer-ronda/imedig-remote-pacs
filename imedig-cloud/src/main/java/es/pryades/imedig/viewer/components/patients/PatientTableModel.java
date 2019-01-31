@@ -18,6 +18,11 @@ import es.pryades.imedig.pacs.dto.query.StudyQuery;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 
+ * @author hector.licea
+ * 
+ */
 public class PatientTableModel implements Serializable
 {
 	private static final long serialVersionUID = -1958881715934013874L;
@@ -57,25 +62,6 @@ public class PatientTableModel implements Serializable
 		studiesSearchManager = (StudiesSearchManager) IOCManager.getInstanceOf( StudiesSearchManager.class );
 		this.ctx = ctx;
 	}
-
-	/**
-	 * 
-	 */
-	/*public Object getValueAt( int col, int row ) 
-	{
-		return null;
-	}*/
-
-	/**
-	 * Recuperar el número de filas a pintar
-	 */
-	/*public int getRowCount() 
-	{
-		if ( (page + 1) * size >= getTotalSize() )
-			return getTotalSize() - page * size;
-			
-		return size;
-	}*/
 
 	public boolean firstPage()
 	{

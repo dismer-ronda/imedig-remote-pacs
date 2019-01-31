@@ -830,6 +830,11 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		return getRow( combo );
 	}
 
+	@Override
+	public void initQueryComponents(){
+		super.initQueryComponents();
+		rowQuery.setWidth( "100%" );
+	}
 
 	@Override
 	public Component getQueryComponent()

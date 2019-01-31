@@ -4,8 +4,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
 import org.apache.ibatis.exceptions.PersistenceException;
-import org.postgresql.util.PSQLException;
 import org.apache.log4j.Logger;
+import org.postgresql.util.PSQLException;
 
 /**
  * 
@@ -93,6 +93,10 @@ public class ImedigException extends Exception
 	public static final int LOGIN_BLOCKED = -1501;
 	public static final int LOGIN_PASSWORD_CHANGED = -1502;
 
+	public ImedigException( Throwable e, Logger LOG){
+		this( e, LOG, UNKNOWN );
+	}
+	
 	public ImedigException( Throwable e, Logger LOG, int imedigError )
 	{
 		super();

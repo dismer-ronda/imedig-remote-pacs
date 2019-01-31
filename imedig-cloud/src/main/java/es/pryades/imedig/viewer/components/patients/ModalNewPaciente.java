@@ -1,8 +1,11 @@
 package es.pryades.imedig.viewer.components.patients;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
@@ -11,10 +14,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.ioc.IOCManager;
@@ -48,9 +51,9 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 
 	private PacientesManager pacientesManager;
 
-	public ModalNewPaciente( ImedigContext ctx, Operation modalOperation, DetalleCentro orgCentro, ModalParent parentWindow, String right )
+	public ModalNewPaciente( ImedigContext ctx, Operation modalOperation, Paciente oldPaciente, ModalParent parentWindow, String right )
 	{
-		super( ctx, parentWindow, modalOperation, orgCentro, right );
+		super( ctx, parentWindow, modalOperation, oldPaciente, right );
 		
 		pacientesManager = (PacientesManager) IOCManager.getInstanceOf( PacientesManager.class );
 		
@@ -59,7 +62,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		if ( !operation.equals( Operation.OP_DELETE ) )
 			defaultFocus();
 		
-		setWidth( "800px" );
+		setWidth( "850px" );
 	}
 
 	@Override
@@ -80,20 +83,26 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 
 		editNombre = new TextField( getContext().getString( "modalNewPaciente.lbNombre" ), bi.getItemProperty( "nombre" ) );
 		editNombre.setNullRepresentation( "" );
+		editNombre.setWidth( "100%" );
 		editNombre.setMaxLength( 50 );
+		editNombre.setRequired( true );
 
 		editApellido1 = new TextField( getContext().getString( "modalNewPaciente.lbApellido1" ), bi.getItemProperty( "apellido1" ) );
 		editApellido1.setNullRepresentation( "" );
+		editApellido1.setWidth( "100%" );
 		editApellido1.setMaxLength( 50 );
+		editApellido1.setRequired( true );
 
 		editApellido2 = new TextField( getContext().getString( "modalNewPaciente.lbApellido2" ), bi.getItemProperty( "apellido2" ) );
 		editApellido2.setNullRepresentation( "" );
+		editApellido2.setWidth( "100%" );
 		editApellido2.setMaxLength( 50 );
 		
 		editIdentificador = new TextField( getContext().getString( "modalNewPaciente.lbIdentificador" ), bi.getItemProperty( "uid" ) );
 		editIdentificador.setNullRepresentation( "" );
 		editIdentificador.setMaxLength( 64 );
-
+		editIdentificador.setRequired( true );
+		
 		editEMail = new TextField( getContext().getString( "modalNewPaciente.lbEmail" ), bi.getItemProperty( "email" ) );
 		editEMail.setNullRepresentation( "" );
 		editEMail.setMaxLength( 128 );
@@ -111,9 +120,13 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		dateFechaNacimiento.setPropertyDataSource(bi.getItemProperty( "fecha_nacimiento" ));
 		dateFechaNacimiento.setDateFormat( "dd/MM/yyyy" );
 		dateFechaNacimiento.setResolution( Resolution.DAY );
+		dateFechaNacimiento.setRequired( true );
+		//dateFechaNacimiento.setRangeStart( Utils.getDateFromInt( 19730101 ) );
 		//dateFechaNacimiento.setRangeEnd( new Date() );
+		dateFechaNacimiento.addValidator( new IntegerRangeValidator( getContext().getString( "modalNewPaciente.error.fnacimiento" ), null, Utils.getDateAsInt( new Date() ) ) );
 		
 		groupSexo = new OptionGroup( getContext().getString( "modalNewPaciente.lbSexo" ) );
+		groupSexo.setRequired( true );
 		
 		groupSexo.addItem( "M" );
 		groupSexo.setItemCaption( "M", getContext().getString( "words.sex.male" ) );
@@ -180,7 +193,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ) );
 		}
 
 		return false;
@@ -196,7 +209,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ) );
 		}
 
 		return false;
@@ -212,7 +225,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ) );
 		}
 
 		return false;
