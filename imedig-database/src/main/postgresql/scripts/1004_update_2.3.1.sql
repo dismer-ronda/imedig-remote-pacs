@@ -71,12 +71,16 @@ create table susc_estudios (
 insert into susc_derechos (id, codigo, descripcion) values (25, 'configuracion.tipos.estudios','Mantenimiento de catálogo de tipos de estudios');
 insert into susc_derechos (id, codigo, descripcion) values (26, 'configuracion.instalaciones','Mantenimiento de catálogos de instalaciones');
 insert into susc_derechos (id, codigo, descripcion) values (27, 'configuracion.pacientes','Mantenimiento a pacientes');
+insert into susc_derechos (id, codigo, descripcion) values (28, 'administracion.citas','Mantenimiento de citas');
 
 --derechos por perfiles
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 25);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 26);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 27);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 28);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 27);
+insert into susc_perfiles_derechos (perfil, derecho) values (2, 28);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 27);
+insert into susc_perfiles_derechos (perfil, derecho) values (3, 28);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 27);
 insert into susc_perfiles_derechos (perfil, derecho) values (5, 27);

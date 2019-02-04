@@ -20,7 +20,7 @@
 		from susc_instalaciones 
 		<where><include refid="where"/></where>
 	</select>
-
+	
 	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Instalacion">
 		select *
 		from susc_instalaciones

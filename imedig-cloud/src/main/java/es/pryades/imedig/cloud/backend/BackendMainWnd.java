@@ -61,7 +61,7 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
-import es.pryades.imedig.viewer.components.citas.CitationsViewer;
+import es.pryades.imedig.viewer.components.citations.CitationsViewer;
 import es.pryades.imedig.viewer.components.patients.PatientsViewer;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
 import lombok.Getter;
@@ -269,6 +269,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	}
 	
 	protected Button btnFullScreen;
+	protected Button btnPatients;
+	protected Button btnCitations;
 	protected Button btnStudies;
 	protected Button btnImages;
 	protected Button btnReports;
@@ -291,6 +293,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 					btnStudies.setVisible( true );
 					btnImages.setVisible( true );
 					btnReports.setVisible( true );
+					btnPatients.setVisible( true );
+					btnCitations.setVisible( true );
                 } else {
                 	context.sendAction( new ExitFullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
@@ -298,6 +302,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 					btnStudies.setVisible( false );
 					btnImages.setVisible( false );
 					btnReports.setVisible( false );
+					btnPatients.setVisible( false );
+					btnCitations.setVisible( false );
                 }
             }
         });
@@ -339,7 +345,33 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
         
-		CssLayout hide = new CssLayout( btnFullScreen, btnStudies, btnImages, btnReports );
+        btnPatients = buildBtnFloat( "btn.patiens.float", context.getString( "words.patients" ) );
+        btnPatients.setIcon(FontAwesome.USER_PLUS);
+        btnPatients.setVisible( false );
+        btnPatients.addClickListener( new ClickListener(){
+
+			private static final long serialVersionUID = -951616351416582941L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				buttonPatients.click();
+			}
+		} );
+        
+        btnCitations = buildBtnFloat( "btn.cattions.float", context.getString( "words.citations" ) );
+        btnCitations.setIcon(FontAwesome.CALENDAR);
+        btnCitations.setVisible( false );
+        btnCitations.addClickListener( new ClickListener(){
+
+			private static final long serialVersionUID = -951616351416582941L;
+
+			@Override
+			public void buttonClick( ClickEvent event ){
+				buttonCitas.click();
+			}
+		} );
+        
+		CssLayout hide = new CssLayout( btnFullScreen, btnPatients, btnCitations, btnStudies, btnImages, btnReports );
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "-1px" );
 		hide.setWidth( "0px" );
@@ -423,7 +455,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		
-		buttonCitas= new Button( context.getString( "words.citations" ) , FontAwesome.CLOCK_O);
+		buttonCitas= new Button( context.getString( "words.citations" ) , FontAwesome.CALENDAR);
 		buttonCitas.setDescription( context.getString( "words.patients.view" ) );
 		setStyleButtonBar( buttonCitas );
 		buttonCitas.addClickListener( new Button.ClickListener()

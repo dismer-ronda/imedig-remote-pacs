@@ -99,6 +99,11 @@
 			<artifactId>stepper</artifactId>
 			<version>2.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.thomas</groupId>
+			<artifactId>timefield</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 
 		<!-- vaadin -->
 		<dependency>

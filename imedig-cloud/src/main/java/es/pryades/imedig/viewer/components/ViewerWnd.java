@@ -166,7 +166,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 	public void doAction(Action action) {
 		if (action == null)
 			return;
-
+		
 		if (action instanceof FontAction) {
 			queryFonts();
 		}else if (action instanceof OpenStudies) {

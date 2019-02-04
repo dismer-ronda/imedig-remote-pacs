@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.ui.ComboBox;
 
+import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.core.common.ModalParent;
@@ -46,7 +47,7 @@ public final class ModalNewEquipo extends ModalNewInstalacion
 	@Override
 	protected Integer getTipo()
 	{
-		return 1;
+		return Constants.TYPE_IMAGING_DEVICE;
 	}
 
 	

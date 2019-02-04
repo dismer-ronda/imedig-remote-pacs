@@ -20,11 +20,6 @@ public class Constants implements Serializable
 	public static final String COLOR_NAME_ROSE		= "american-rose";
 	public static final String COLOR_NAME_LEMON		= "lemon";
 
-	public static final int DEVICE_SCEE_ANNALIZER	= 1;
-	public static final int DEVICE_SACI_ANNALIZER	= 6;
-	public static final int DEVICE_SOLAR_ANNALIZER	= 7;
-	public static final int DEVICE_SCEEV2_ANNALIZER	= 8;
-
 	public static final int TRANSPORT_CLIENT_TCP	= 102;
 	
 	public static final int PROTOCOL_MODBUS			= 202;
@@ -63,5 +58,7 @@ public class Constants implements Serializable
 	public static final String SEX_MALE = "M";
 	public static final String SEX_FEMALE = "F";
 	public static final String SEX_OTHER = "O";
-
+	
+	//Tipo instalaciones
+	public static final Integer TYPE_IMAGING_DEVICE = 1;
 }

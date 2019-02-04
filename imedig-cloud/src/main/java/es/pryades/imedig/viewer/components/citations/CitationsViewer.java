@@ -1,4 +1,8 @@
-package es.pryades.imedig.viewer.components.citas;
+package es.pryades.imedig.viewer.components.citations;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -7,12 +11,15 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.core.dal.EstudiosManager;
-import es.pryades.imedig.cloud.core.dal.PacientesManager;
+import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.ModalParent;
 import lombok.Getter;
@@ -20,7 +27,7 @@ import lombok.Setter;
 
 /**
  * 
- * @author Dismer Ronda
+ * @author hector.licea
  * 
  */
 @SuppressWarnings({"unchecked"})
@@ -35,13 +42,16 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 	@Setter @Getter private String identificador;
 	@Setter @Getter private Integer fecha;
 	
+	private ImedigContext ctx;
 	private BeanItem<CitationsViewer> bi;
+	
+	private TabSheet tabSheet;
 	
 	private TextField textNombre;
 	private TextField textIdentificador;
 	private ComboBox comboFecha;
 
-	private PacientesManager pacientesManager;
+	private InstalacionesManager instalacionesManager;
 	private EstudiosManager estudiosManager;
 	
 	private static final String COMBO_WIDTH = "200px";
@@ -52,15 +62,17 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 	
 	//private boolean defaultSearch;
 	//private boolean showMessage;
+	private List<Integer> types = Arrays.asList( Constants.TYPE_IMAGING_DEVICE );
+			
 
 	/**
 	 * 
 	 * @param ctx
-	 * @param resource
 	 */
 	public CitationsViewer( ImedigContext ctx )
 	{
-		pacientesManager = (PacientesManager) IOCManager.getInstanceOf( PacientesManager.class );
+		this.ctx = ctx;
+		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );
 		estudiosManager = (EstudiosManager) IOCManager.getInstanceOf( EstudiosManager.class );
 		
 		setSizeFull();
@@ -69,7 +81,14 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 	}
 	
 	private void buildComponents(){
-		buildDeviceCitations();
+		try
+		{
+			buildFacilityType();
+		}
+		catch ( Throwable e )
+		{
+			LOG.error( "Error creando componente", e );
+		}
 	}
 
 	private void buildDeviceCitations()
@@ -80,6 +99,52 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 		addComponent( calendar );
 		
 	}
+	
+	private void buildFacilityType() throws Throwable
+	{
+		int counter = 0;
+		
+		List<FacilityTypeViewer> viewers = new ArrayList<>();
+		Instalacion query = new Instalacion();
+		
+		for ( Integer type : types )
+		{
+			query.setTipo( type );
+			int falicities = instalacionesManager.getNumberOfRows( ctx, query );
+			
+			if (falicities == 0 ) continue;
+			counter++;
+			
+			viewers.add( new FacilityTypeViewer( ctx, type ) );
+		}
+		
+		if (counter == 0) return;
+		if (counter == 1) {
+			addFacilitiesType(viewers.get( 0 ));
+		}else{
+			addFacilitiesType(viewers);
+		}
+		
+	}
+
+	private void addFacilitiesType( FacilityTypeViewer facilityTypeViewer )
+	{
+		addComponent( facilityTypeViewer );
+		
+	}
+
+	private void addFacilitiesType( List<FacilityTypeViewer> viewers )
+	{
+		tabSheet = new TabSheet();
+		tabSheet.setSizeFull();
+		for ( FacilityTypeViewer viewer : viewers )
+		{
+			tabSheet.addTab( viewer, ctx.getString( "facility.type."+viewer.getType() ) );
+		}
+		
+		
+	}
+
 
 	@Override
 	public void valueChange( ValueChangeEvent event )

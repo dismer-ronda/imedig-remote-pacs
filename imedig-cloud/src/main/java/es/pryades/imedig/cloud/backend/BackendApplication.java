@@ -92,7 +92,9 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 	@Override
     public void init( VaadinRequest request )
     {
-		resources = ResourceBundle.getBundle( "language", getLanguage( Settings.LANGUAGES ) );
+		Locale locale = getLanguage( Settings.LANGUAGES );
+		setLocale( locale );
+		resources = ResourceBundle.getBundle( "language", locale );
 		
 		ctx = new ImedigContext();
 		

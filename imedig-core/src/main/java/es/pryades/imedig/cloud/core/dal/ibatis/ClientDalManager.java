@@ -84,7 +84,7 @@ public class ClientDalManager implements Serializable
 						"<mapper resource='es/pryades/imedig/cloud/core/dal/" + engine + "/InstalacionMapper.xml'/>" +
 						"<mapper resource='es/pryades/imedig/cloud/core/dal/" + engine + "/PacienteMapper.xml'/>" +
 						"<mapper resource='es/pryades/imedig/cloud/core/dal/" + engine + "/EstudioMapper.xml'/>" +
-						"<mapper resource='es/pryades/imedig/cloud/core/dal/" + engine + "/TipoEquipoMapper.xml'/>" +
+						"<mapper resource='es/pryades/imedig/cloud/core/dal/" + engine + "/TipoEstudioMapper.xml'/>" +
 					"</mappers>"+
 				"</configuration>";
 				

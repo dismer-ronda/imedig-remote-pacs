@@ -179,12 +179,14 @@ public abstract class ModalWindowsCRUD extends Window
 
 	public void showModalWindow()
 	{
-		((UI)getContext().getData( "Application" )).addWindow( this );
+		UI.getCurrent().addWindow( this );
+		//((UI)getContext().getData( "Application" )).addWindow( this );
 	}
 
 	public void closeModalWindow( boolean refresh )
 	{
-		((UI)getContext().getData( "Application" )).removeWindow( this );
+		UI.getCurrent().removeWindow( this );
+		//((UI)getContext().getData( "Application" )).removeWindow( this );
 		
 		if ( modalParent != null && refresh )
 			modalParent.refreshVisibleContent();
