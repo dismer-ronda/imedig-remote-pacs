@@ -1,11 +1,11 @@
 package es.pryades.imedig.viewer.components.citations;
 
 import java.util.Date;
-
-import org.vaadin.thomas.timefield.TimeField;
+import java.util.List;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -16,11 +16,15 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Constants;
+import es.pryades.imedig.cloud.common.TimeField;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Estudio;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.TipoEstudio;
+import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.components.converters.DateToIntegerConverter;
@@ -30,7 +34,6 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 
 	private static final long serialVersionUID = -831617884634887703L;
 
-	private ImedigContext ctx;
 	private Instalacion instalacion;
 	private Estudio newEstudio;
 	
@@ -103,7 +106,12 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 		referidor.setExpandRatio( editReferidor, 1.0f );
 
 		comboTipo = new ComboBox( getContext().getString( "modalCitationDlg.lbTipo" ) );
-		comboTipo.setWidth( "50%" );
+		comboTipo.setWidth( "70%" );
+		comboTipo.setFilteringMode( FilteringMode.CONTAINS );
+		comboTipo.setNullSelectionAllowed( false );
+		comboTipo.setNewItemsAllowed( false );
+		comboTipo.setRequired( true );
+		fillTipoEstudio();
 		
 		dateFieldFecha = new DateField( getContext().getString( "modalCitationDlg.lbFecha" ));
 		dateFieldFecha.setConverter( new DateToIntegerConverter() );
@@ -112,10 +120,12 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 		dateFieldFecha.setRequired( true );
 		
 		timeInicio = new TimeField( getContext().getString( "modalCitationDlg.lbHoraInicio" ) );
-		timeInicio.set24HourClock( true );
+		timeInicio.set24HourFormat( true );
+		timeInicio.setRequired( true );
 		
 		timeFin = new TimeField( getContext().getString( "modalCitationDlg.lbHoraFin" ) );
-		timeFin.set24HourClock( true );
+		timeFin.set24HourFormat( true );
+		timeFin.setRequired( true );
 		
 		FormLayout layout = new FormLayout( paciente, editInstalacion, referidor, comboTipo, dateFieldFecha, timeInicio, timeFin );
 		layout.setMargin( true );
@@ -123,6 +133,28 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 		layout.setWidth( "100%" );
 	
 		componentsContainer.addComponent( layout );
+	}
+
+	private void fillTipoEstudio()
+	{
+		TipoEstudio query = new TipoEstudio();
+		TiposEstudiosManager manager = (TiposEstudiosManager) IOCManager.getInstanceOf( TiposEstudiosManager.class );
+		
+		try
+		{
+			for ( TipoEstudio item : (List<TipoEstudio>)manager.getRows( getContext(), query ) )
+			{
+				comboTipo.addItem( item.getId() );
+				comboTipo.setItemCaption( item.getId(), item.getNombre() );
+				
+			}
+		}
+		catch ( Throwable e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
