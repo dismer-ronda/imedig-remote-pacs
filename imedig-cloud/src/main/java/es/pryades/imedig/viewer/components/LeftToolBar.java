@@ -92,8 +92,8 @@ public class LeftToolBar extends HorizontalLayout {
 		group.addComponent( buttonNone = getButton( FontAwesome.MOUSE_POINTER, "cursor-green", "ViewerWnd.NoOperation" ));
 		group.addComponent( buttonZoom = getButton( FontAwesome.SEARCH_PLUS, "magnifier", "ViewerWnd.Zoom" ));
 		group.addComponent( buttonContrast = getButton( FontAwesome.ADJUST, "contrast", "ViewerWnd.Contrast" ));
-		group.addComponent( buttonDistance = getButton( FontIcoMoon.RULE, "distance", "ViewerWnd.Distance" ));
-		group.addComponent( buttonAngle = getButton( FontIcoMoon.PROTRACTOR, "angle", "ViewerWnd.Angle" ));
+		group.addComponent( buttonDistance = getButton( FontIcoMoon.RULER, "distance", "ViewerWnd.Distance" ));
+		group.addComponent( buttonAngle = getButton( FontIcoMoon.ANGLE, "angle", "ViewerWnd.Angle" ));
 		toolbox.addComponent( group );
 		
 		group = new VerticalLayout();

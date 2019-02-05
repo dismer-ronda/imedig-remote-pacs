@@ -31,5 +31,5 @@
 
     <inherits name="org.vaadin.risto.stepper.StepperWidgetset" />
 
-    <inherits name="org.vaadin.thomas.timefield.WidgetSet" />
+    
 </module>

@@ -346,7 +346,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
         
         btnPatients = buildBtnFloat( "btn.patiens.float", context.getString( "words.patients" ) );
-        btnPatients.setIcon(FontAwesome.USER_PLUS);
+        btnPatients.setIcon(FontIcoMoon.PATIENT);
         btnPatients.setVisible( false );
         btnPatients.addClickListener( new ClickListener(){
 
@@ -442,7 +442,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
 		buttonsBar.addComponent( buttonManual );
 		
-		buttonPatients= new Button( context.getString( "words.patients" ) , FontAwesome.USER_PLUS);
+		buttonPatients= new Button( context.getString( "words.patients" ) , FontIcoMoon.PATIENT);
 		buttonPatients.setDescription( context.getString( "words.patients.view" ) );
 		setStyleButtonBar( buttonPatients );
 		buttonPatients.addClickListener( new Button.ClickListener()

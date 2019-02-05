@@ -23,11 +23,19 @@ import com.vaadin.server.GenericFontIcon;
 public enum FontIcoMoon implements FontIcon, Serializable {
 
 	// @formatter:off
-	ROOT_CATEGORY(0Xe901),
-	PROTRACTOR(0Xe900),
-    RULE(0Xe915),
-    WINDOW_MAXIMIZE(0Xf2d0),
-    WINDOW_RESTORE(0Xf2d2);
+	WINDOW_MAXIMIZE(0Xe900),
+    WINDOW_RESTORE(0Xe901),
+    ROOT_CATEGORY(0Xe902),
+    ANGLE(0Xe903),
+    RULER(0Xe904),
+    CATH_LAB(0Xe905),			
+    MAMMOGRAPHY(0Xe906),
+    MRI(0Xe907),
+    PATIENT(0Xe908),
+    RADIOLOGY(0Xe909),
+    ULTRASOUND(0Xe90a);
+	
+	//PROTRACTOR(0Xe900),
     // @formatter:on
     public static final String FONT_FAMILY = "IcoMoon";
     private final int codepoint;
