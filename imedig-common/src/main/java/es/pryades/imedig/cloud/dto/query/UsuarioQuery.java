@@ -2,10 +2,10 @@ package es.pryades.imedig.cloud.dto.query;
 
 import java.util.List;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.Usuario;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
 *
@@ -21,4 +21,5 @@ public class UsuarioQuery extends Usuario
 	
 	Integer centro;
 	List<DetalleCentro> centros;
+	List<Integer> perfiles;
 }

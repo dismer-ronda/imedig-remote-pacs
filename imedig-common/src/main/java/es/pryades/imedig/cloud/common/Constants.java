@@ -61,4 +61,12 @@ public class Constants implements Serializable
 	
 	//Tipo instalaciones
 	public static final Integer TYPE_IMAGING_DEVICE = 1;
+	
+	//Perfiles de los usuarion
+	public static final Integer PROFILE_ADMIN = 1;
+	public static final Integer PROFILE_DOCTOR = 2;
+	public static final Integer PROFILE_IMGDOCTOR = 3;
+	public static final Integer PROFILE_CENTER_ADMIN = 4;
+	public static final Integer PROFILE_STUDENT = 5;
+	public static final Integer PROFILE_ADMINISTRATIVE = 6;
 }

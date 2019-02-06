@@ -5,6 +5,7 @@ import java.util.List;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.UsuarioCentro;
+import es.pryades.imedig.cloud.dto.query.UsuarioQuery;
 import es.pryades.imedig.core.common.ImedigManager;
 
 /**
@@ -41,4 +42,6 @@ public interface UsuariosManager extends ImedigManager
 	public void updateListaCentros( ImedigContext ctx, Usuario usuario, List<Integer> newlistaCentros ) throws Throwable;
 
 	public void remoteLogin(ImedigContext ctx, String login, String password) throws Throwable;
+	
+	List getPageLazy(ImedigContext ctx, UsuarioQuery query) throws Throwable;
 }

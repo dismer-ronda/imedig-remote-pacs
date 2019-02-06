@@ -169,6 +169,11 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 				Integer vtoDuracion = ((TipoEstudio)dtoObj).getDuracion();
 				result.setDuracion( vtoDuracion );
 				// -- DURACION
+				
+				// ++ TIPO
+				Integer vtoTipo = ((TipoEstudio)dtoObj).getTipo();
+				result.setTipo( vtoTipo );
+				// -- TIPO
 			}
 			else
 			{

@@ -10,8 +10,8 @@
 		<if test="paciente != null">
 			AND paciente = #{paciente}   
         </if>
-		<if test="equipo != null">
-			AND equipo = #{equipo}   
+		<if test="instalacion != null">
+			AND instalacion = #{instalacion}   
         </if>
 		<if test="tipo != null">
 			AND tipo = #{tipo}   
@@ -55,23 +55,23 @@
 		(
 			id,
 			fecha,
+			fechafin,
 			uid, 
 			paciente,
-			equipo,
+			instalacion,
 			tipo,
-			referidor,
-			duracion
+			referidor
 		)
 		values
 		(
 			#{id},
 			#{fecha},
+			#{fechafin},
 			#{uid},
 			#{paciente},
-			#{equipo},
+			#{instalacion},
 			#{tipo},
-			#{referidor},
-			#{duracion}
+			#{referidor}
 		)
 	</insert>
 
@@ -79,9 +79,10 @@
 		update susc_estudios
 		set
 			fecha=#{fecha},
+			fechafin=#{fechafin},
 			uid=#{uid},
 			paciente=#{paciente},
-			equipo=#{equipo},
+			instalacion=#{instalacion},
 			tipo=#{tipo},
 			referidor=#{referidor},
 			duracion=#{duracion}

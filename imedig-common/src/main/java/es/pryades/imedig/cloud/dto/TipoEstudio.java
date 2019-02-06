@@ -9,4 +9,5 @@ public class TipoEstudio extends ImedigDto
 {
 	private String nombre;
     private Integer duracion;
+    private Integer tipo;
 }

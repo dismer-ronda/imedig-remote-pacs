@@ -9,10 +9,10 @@ public class Estudio extends ImedigDto
 {
 
 	private Long fecha;
+	private Long fechafin;
 	private String uid;
 	private Integer paciente;
-    private Integer equipo;
+    private Integer instalacion;
     private Integer tipo;
     private Integer referidor;
-    private Integer duracion;		
 }

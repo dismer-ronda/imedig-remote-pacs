@@ -1,5 +1,8 @@
 package es.pryades.imedig.cloud.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
+import es.pryades.imedig.cloud.common.AppUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,5 +18,16 @@ public class Paciente extends ImedigDto
 	private Integer fecha_nacimiento;
 	private String sexo;			
 	private String telefono;			
-	private String movil;			
+	private String movil;		
+	
+	public String getNombreCompleto() {
+		return AppUtils.getNombreNAA( this );
+	}
+	
+	public String getNombreCompletoConIdentificador() {
+		if (StringUtils.isNotBlank(uid)) {
+			return uid +" - "+ getNombreCompleto();
+		}
+		return getNombreCompleto();
+	}
 }

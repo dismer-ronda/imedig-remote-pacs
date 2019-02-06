@@ -118,6 +118,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	{
 		buttonAddEvent = new Button( FontAwesome.CLOCK_O );
 		buttonAddEvent.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		buttonAddEvent.addStyleName( ValoTheme.BUTTON_PRIMARY );
 		buttonAddEvent.setDescription( ctx.getString( "words.citations.add" ) );
 		insideLayout.addComponent( buttonAddEvent );
 		insideLayout.setComponentAlignment( buttonAddEvent, Alignment.BOTTOM_LEFT );
@@ -257,7 +258,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 	private void diaryView()
 	{
-		dateClick(new DateClickEvent( viewer.getCiationsCalendar(), dateFieldDay.getValue() ));
+		dateClick(new DateClickEvent( viewer.citationsCalendar, dateFieldDay.getValue() ));
 	}
 
 
@@ -273,7 +274,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
 		}
 		
-		WeekClick weekEvent = new WeekClick( viewer.getCiationsCalendar(), lastWeek, lastYear );
+		WeekClick weekEvent = new WeekClick( viewer.citationsCalendar, lastWeek, lastYear );
 		weekClick( weekEvent );
 	}
 
@@ -378,7 +379,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			calendar.setTime( end );
 			lastYear = calendar.get( Calendar.YEAR);
 			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
-			WeekClick weekEvent = new WeekClick( viewer.getCiationsCalendar(), lastWeek, lastYear );
+			WeekClick weekEvent = new WeekClick( viewer.citationsCalendar, lastWeek, lastYear );
 			weekClick( weekEvent );
 		}
 	}

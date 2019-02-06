@@ -333,11 +333,11 @@ public class AppUtils implements Serializable
 		return label;
 	}
 
-    private static String getNombreNAA(String nombre, String ape1, String ape2) {
+    public static String getNombreNAA(String nombre, String ape1, String ape2) {
         return ((nombre + " " + ape1 + " " + ape2).trim()).replaceAll("null", "");
     }
 
-	private static String getNombreAAN(String nombre, String ape1, String ape2) {
+    public static String getNombreAAN(String nombre, String ape1, String ape2) {
         return ((ape1 + " " + ape2).trim() + ", " + nombre).replaceAll("null", "");
     }
 

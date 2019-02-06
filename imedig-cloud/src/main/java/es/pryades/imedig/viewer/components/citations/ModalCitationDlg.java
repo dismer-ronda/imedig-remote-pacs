@@ -4,26 +4,29 @@ import java.util.Date;
 import java.util.List;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Constants;
+import es.pryades.imedig.cloud.common.FiltrerAddSelect;
 import es.pryades.imedig.cloud.common.TimeField;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.common.lazy.LazyContainer;
+import es.pryades.imedig.cloud.common.lazy.PacienteLazyProvider;
+import es.pryades.imedig.cloud.common.lazy.ReferidorLazyProvider;
+import es.pryades.imedig.cloud.common.lazy.SearchCriteria;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Estudio;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
+import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
@@ -37,13 +40,16 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 	private Instalacion instalacion;
 	private Estudio newEstudio;
 	
-	private TextField editPaciente;
+	private FiltrerAddSelect selectPaciente;
+	private FiltrerAddSelect selectReferidor;
 	private TextField editInstalacion;
 	private ComboBox comboTipo;
-	private TextField editReferidor;
 	private DateField dateFieldFecha;
 	private TimeField timeInicio;
 	private TimeField timeFin;
+	
+	private PacienteLazyProvider pacienteLazyProvider;
+	private ReferidorLazyProvider referidorLazyProvider;
 	
 	public ModalCitationDlg(ImedigContext ctx, Operation modalOperation, Instalacion instalacion, Estudio oldEstudio, ModalParent parentWindow, String right){
 		super( ctx, parentWindow, modalOperation, oldEstudio, right );
@@ -70,19 +76,16 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 
 		bi = new BeanItem<ImedigDto>( newEstudio );
 
-		editPaciente = new TextField();
-		editPaciente.setWidth( "100%" );
-		editPaciente.setNullRepresentation( "" );
-		//editPaciente.setRequired( true );
-		Button search = new Button( FontAwesome.SEARCH );
-		search.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-
-		HorizontalLayout paciente = new HorizontalLayout(editPaciente, search);
-		paciente.addStyleName( ValoTheme.LAYOUT_COMPONENT_GROUP );
-		paciente.setCaption( getContext().getString( "modalCitationDlg.lbPaciente" ) );
-		paciente.setWidth( "100%" );
-		paciente.setExpandRatio( editPaciente, 1.0f );
+		selectPaciente = new FiltrerAddSelect( getContext().getString( "modalCitationDlg.lbPaciente" ) );
+		selectPaciente.setWidth( "100%" );
+		selectPaciente.setRequired( true );
 		
+		pacienteLazyProvider = new PacienteLazyProvider( getContext() );
+		LazyContainer dataSourcePaciente = new LazyContainer(Paciente.class, pacienteLazyProvider, new SearchCriteria());
+		dataSourcePaciente.setMinFilterLength(0);
+		selectPaciente.getComboBox().setItemCaptionPropertyId("nombreCompletoConIdentificador");
+		selectPaciente.getComboBox().setContainerDataSource(dataSourcePaciente);
+				
 		if (Constants.TYPE_IMAGING_DEVICE.equals( instalacion.getTipo() )){
 			editInstalacion = new TextField( getContext().getString( "modalCitationDlg.lbInstalacion.equipo" ));
 		}else{
@@ -92,19 +95,17 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 		editInstalacion.setReadOnly( true );
 		editInstalacion.setWidth( "100%" );
 		
-		editReferidor = new TextField( );
-		editReferidor.setWidth( "100%" );
-		editReferidor.setNullRepresentation( "" );
+		selectReferidor = new FiltrerAddSelect( getContext().getString( "modalCitationDlg.lbReferidor" ) );
+		selectReferidor.setWidth( "100%" );
+		selectReferidor.setRequired( true );
+		selectReferidor.getButtonAdd().setVisible( false );
 		
-		search = new Button( FontAwesome.SEARCH );
-		search.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-
-		HorizontalLayout referidor = new HorizontalLayout(editReferidor, search);
-		referidor.addStyleName( ValoTheme.LAYOUT_COMPONENT_GROUP );
-		referidor.setCaption(getContext().getString( "modalCitationDlg.lbReferidor" ));
-		referidor.setWidth( "100%" );
-		referidor.setExpandRatio( editReferidor, 1.0f );
-
+		referidorLazyProvider = new ReferidorLazyProvider( getContext() );
+		LazyContainer dataSourceReferidor = new LazyContainer(Usuario.class, referidorLazyProvider, new SearchCriteria());
+		dataSourceReferidor.setMinFilterLength(0);
+		selectReferidor.getComboBox().setItemCaptionPropertyId("nombreCompleto");
+		selectReferidor.getComboBox().setContainerDataSource(dataSourceReferidor);
+		
 		comboTipo = new ComboBox( getContext().getString( "modalCitationDlg.lbTipo" ) );
 		comboTipo.setWidth( "70%" );
 		comboTipo.setFilteringMode( FilteringMode.CONTAINS );
@@ -127,7 +128,9 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 		timeFin.set24HourFormat( true );
 		timeFin.setRequired( true );
 		
-		FormLayout layout = new FormLayout( paciente, editInstalacion, referidor, comboTipo, dateFieldFecha, timeInicio, timeFin );
+		FiltrerAddSelect select = new FiltrerAddSelect( getContext().getString( "modalCitationDlg.lbFecha" ) );
+				
+		FormLayout layout = new FormLayout( selectPaciente, editInstalacion, selectReferidor, comboTipo, dateFieldFecha, timeInicio, timeFin );
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );

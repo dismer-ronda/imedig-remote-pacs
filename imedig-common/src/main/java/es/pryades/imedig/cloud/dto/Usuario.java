@@ -3,12 +3,14 @@ package es.pryades.imedig.cloud.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.google.gson.reflect.TypeToken;
 
+import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.dto.memo.Contacto;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -104,6 +106,9 @@ public class Usuario extends ImedigDto
 	
 	public String getNombreCompleto()
 	{
-		return (titulo.isEmpty() ? "" : titulo + " ") + nombre + " " + ape1 + (ape2.isEmpty() ? "" : " " + ape2);
+		if (StringUtils.isBlank( titulo )){
+			return AppUtils.getNombreNAA( nombre, ape1, ape2 );
+		}
+		return titulo+ " " + AppUtils.getNombreNAA( nombre, ape1, ape2 );
 	}
 }

@@ -7,6 +7,9 @@
 	    <if test="nombre != null">
 			AND UPPER(nombre) like UPPER('%${nombre}%')   
         </if>
+        <if test="tipo != null">
+			AND tipo = #{tipo} 
+        </if>
 	</sql>
 	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
@@ -45,13 +48,15 @@
 		(
 			id,
 			nombre, 
-			duracion
+			duracion,
+			tipo
 		)
 		values
 		(
 			#{id},
 			#{nombre},
-			#{duracion}
+			#{duracion},
+			#{tipo}
 		)
 	</insert>
 
@@ -59,7 +64,8 @@
 		update susc_tipos_estudios
 		set
 			nombre=#{nombre},
-			duracion=#{duracion}
+			duracion=#{duracion},
+			tipo=#{tipo}
 		where id = #{id}
 	</update>
 

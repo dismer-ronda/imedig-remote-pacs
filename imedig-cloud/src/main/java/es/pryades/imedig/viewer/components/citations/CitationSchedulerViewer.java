@@ -24,8 +24,8 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	private ImedigContext ctx;
 	@Getter
 	private Instalacion instalacion;
-	@Getter
-	private Calendar ciationsCalendar;
+	
+	Calendar citationsCalendar;
 	private CalendarPeriodPanel periodPanel;
 	
 	
@@ -42,9 +42,10 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	private void buildComponents()
 	{
 		
-		ciationsCalendar = new Calendar();
-		ciationsCalendar.setLocale( UI.getCurrent().getLocale() );
-		ciationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
+		citationsCalendar = new Calendar();
+		citationsCalendar.setLocale( UI.getCurrent().getLocale() );
+		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
+		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
 		//ciationsCalendar.setStartDate( UtilsCalendar.getFirstDayMonth( new Date() ) );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
@@ -56,17 +57,17 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		//cal.setTime( new Date() );
 		//cal.add( java.util.Calendar.MONTH, 1 );
 		//ciationsCalendar.setEndDate( UtilsCalendar.getLastDayMonth( cal.getTime() ) );
-		ciationsCalendar.setSizeFull();
-		addComponent( ciationsCalendar );
-		setExpandRatio( ciationsCalendar, 1.0f );
+		citationsCalendar.setSizeFull();
+		addComponent( citationsCalendar );
+		setExpandRatio( citationsCalendar, 1.0f );
 	}
 
 	private void settingHandlers()
 	{
-		ciationsCalendar.setHandler( (DateClickHandler)periodPanel );
-		ciationsCalendar.setHandler( (WeekClickHandler)periodPanel );
-		ciationsCalendar.setHandler( (ForwardHandler)periodPanel );
-		ciationsCalendar.setHandler( (BackwardHandler)periodPanel );
+		citationsCalendar.setHandler( (DateClickHandler)periodPanel );
+		citationsCalendar.setHandler( (WeekClickHandler)periodPanel );
+		citationsCalendar.setHandler( (ForwardHandler)periodPanel );
+		citationsCalendar.setHandler( (BackwardHandler)periodPanel );
 //		ciationsCalendar.setHandler( new RangeSelectHandler()
 //		{
 //			
@@ -80,8 +81,8 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	}
 	
 	public void setDates(Date start, Date end){
-		ciationsCalendar.setStartDate( start );
-		ciationsCalendar.setEndDate( end );
+		citationsCalendar.setStartDate( start );
+		citationsCalendar.setEndDate( end );
 	}
 	
 	

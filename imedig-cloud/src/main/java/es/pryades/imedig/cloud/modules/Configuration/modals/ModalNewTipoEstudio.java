@@ -5,6 +5,7 @@ import org.vaadin.risto.stepper.IntStepper;
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
 
 import es.pryades.imedig.cloud.common.Utils;
@@ -34,6 +35,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 
 	private TextField editNombre;
 	private IntStepper stepperDuracion;
+	private OptionGroup groupTipo;
 
 	private TiposEstudiosManager tiposEstudiosManager;
 
@@ -71,12 +73,21 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		editNombre = new TextField( getContext().getString( "modalNewStudyType.lbNombre" ), bi.getItemProperty( "nombre" ) );
 		editNombre.setWidth( "100%" );
 		editNombre.setNullRepresentation( "" );
+		editNombre.setRequired( true );
+		
+		groupTipo = new OptionGroup( getContext().getString( "modalNewStudyType.lbTipo" ) );
+		groupTipo.addItem( 1 );
+		groupTipo.setItemCaption( 1, getContext().getString( "facility.type.1" ) );
+		groupTipo.setPropertyDataSource( bi.getItemProperty( "tipo" ) );
+		groupTipo.setRequired( true );
+		groupTipo.setValue( 1 );
 
 		stepperDuracion = new IntStepper( getContext().getString( "modalNewStudyType.lbDuracion" ));
 		stepperDuracion.setPropertyDataSource( bi.getItemProperty( "duracion" ) );
 		stepperDuracion.setWidth( "60px" );
+		stepperDuracion.setRequired( true );
 		
-		FormLayout layout = new FormLayout(editNombre, stepperDuracion);
+		FormLayout layout = new FormLayout(editNombre, groupTipo, stepperDuracion);
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );

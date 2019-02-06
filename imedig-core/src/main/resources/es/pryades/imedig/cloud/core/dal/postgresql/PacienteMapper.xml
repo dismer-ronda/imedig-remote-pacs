@@ -10,6 +10,9 @@
 		<if test="uid != null">
 			AND uid = #{uid}   
         </if>
+        <if test="filtro != null">
+			AND UPPER(nombre) like UPPER('%${filtro}%') OR UPPER(apellido1) like UPPER('%${filtro}%') OR UPPER(apellido2) like UPPER('%${filtro}%') OR uid = #{filtro}   
+        </if>
 	</sql>
 	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
@@ -23,6 +26,14 @@
 		from susc_pacientes
 		<where><include refid="where"/></where>
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+	
+	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.PacienteQuery" resultType="es.pryades.imedig.cloud.dto.Paciente">
+		select *
+		from susc_pacientes
+		<where><include refid="where"/></where>
+	    order by nombre
+	    LIMIT #{pageSize} OFFSET #{pageNumber}
 	</select>
 
 	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Paciente">

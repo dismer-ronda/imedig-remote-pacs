@@ -3,6 +3,26 @@
 
 <mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.UsuarioMapper">
 
+	<sql id="where">
+		<if test="login != null">
+			AND susc_usuarios.login = #{login} or susc_usuarios.email = #{login}
+	    </if>
+		<if test="nombre != null">
+			AND (UPPER(susc_usuarios.nombre) like UPPER('%${nombre}%') OR UPPER(susc_usuarios.ape1) like UPPER('%${nombre}%') OR UPPER(susc_usuarios.ape2) like UPPER('%${nombre}%'))   
+        </if>
+		<if test="centro != null">
+			AND susc_usuarios_centros.centro = #{centro}
+			AND susc_usuarios.perfil != 1
+        </if>
+		<if test="centros != null">
+			AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
+			AND susc_usuarios.perfil != 1
+        </if>
+        <if test="perfiles != null">
+			AND susc_usuarios.perfil in <foreach collection="perfiles" item="item" open="(" close=")" separator=",">#{item}</foreach>
+        </if>
+	</sql>
+	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="int">
 
 		select count( distinct susc_usuarios.id ) from susc_usuarios 
@@ -11,18 +31,7 @@
 			inner join susc_usuarios_centros 
 			on susc_usuarios_centros.usuario = susc_usuarios.id
         </if>
-
-		<where>
-			<if test="centro != null">
-				AND susc_usuarios_centros.centro = #{centro}
-				AND susc_usuarios.perfil != 1
-	        </if>
-			<if test="centros != null">
-				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
-				AND susc_usuarios.perfil != 1
-	        </if>
-		</where>
-
+		<where><include refid="where"/></where>
 	</select>
 
 	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">
@@ -54,16 +63,7 @@
 			on susc_usuarios_centros.usuario = susc_usuarios.id
         </if>
 
-		<where>
-			<if test="centro != null">
-				AND susc_usuarios_centros.centro = #{centro}
-				AND susc_usuarios.perfil != 1
-	        </if>
-			<if test="centros != null">
-				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
-				AND susc_usuarios.perfil != 1
-	        </if>
-		</where>
+		<where><include refid="where"/></where>
 
 		order by id
 
@@ -99,21 +99,33 @@
 			on susc_usuarios_centros.usuario = susc_usuarios.id
         </if>
 
-		<where>
-			<if test="login != null">
-				AND susc_usuarios.login = #{login} or susc_usuarios.email = #{login}
-	        </if>
-			<if test="centro != null">
-				AND susc_usuarios_centros.centro = #{centro}
-				AND susc_usuarios.perfil != 1
-	        </if>
-			<if test="centros != null">
-				AND susc_usuarios_centros.centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
-				AND susc_usuarios.perfil != 1
-	        </if>
-		</where>
+		<where><include refid="where"/></where>
 
 		order by id
+	</select>
+	
+	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.PacienteQuery" resultType="es.pryades.imedig.cloud.dto.Paciente">
+		select distinct 
+			susc_usuarios.id,
+			susc_usuarios.login,
+			susc_usuarios.email,
+			susc_usuarios.pwd,
+			susc_usuarios.cambio,
+			susc_usuarios.intentos,
+			susc_usuarios.estado,
+			susc_usuarios.perfil,
+			susc_usuarios.titulo,
+			susc_usuarios.nombre,
+			susc_usuarios.ape1,
+			susc_usuarios.ape2,
+			susc_usuarios.contactos, 
+			susc_usuarios.filtro, 
+			susc_usuarios.query, 
+			susc_usuarios.compresion
+		from susc_usuarios
+		<where><include refid="where"/></where>
+	    order by nombre
+	    LIMIT #{pageSize} OFFSET #{pageNumber}
 	</select>
 
 	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">

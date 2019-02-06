@@ -29,7 +29,8 @@ create table susc_instalaciones (
     nombre varchar(64) not null,   					-- Nombre de la instalación
     aetitle varchar(64) not null, 					-- Aetitle
     modalidad character varying(2),
-    tipo integer NOT NULL,
+    tipo integer NOT NULL,							--Tipo de instalación 1 - equipo...
+    
     constraint pk_instalaciones primary key(id),
 	constraint uk_instalaciones_aetitle unique(aetitle),
 	constraint uk_instalaciones_nombre unique(nombre)
@@ -41,7 +42,7 @@ create table susc_tipos_estudios (
     id integer not null,
     nombre varchar(64) not null,   					-- Nombre del tipo de estudio
     duracion integer not null,						-- Duración de la prueba en minutos
-	
+	tipo integer NOT NULL,							-- Tipo de instalación 1 - equipo...
     constraint pk_tipos_estudios primary key(id),
 	constraint uk_tipos_estudios_nombre unique(nombre)
     );
@@ -50,15 +51,14 @@ create table susc_tipos_estudios (
 create table susc_estudios (
     id integer not null,
 
-    fecha bigint not null,							-- fecha/hora de la prueba
-
+    fecha bigint not null,							-- fecha/hora de inicio de la prueba
+    fechafin bigint not null,						-- fecha/hora de fin de la prueba
     uid varchar(64) not null,   					-- uuid del estudio
 
     paciente integer not null,						-- paciente al que se le realiza la prueba
     instalacion integer not null,					-- instalacion en el que se realiza la prueba
     tipo integer not null, 							-- tipo de estudio
     referidor integer,   							-- referidor de estudio
-    duracion integer not null,						-- Duración de la prueba en minutos
     
     constraint pk_estudios primary key(id),
     constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id) on delete cascade,

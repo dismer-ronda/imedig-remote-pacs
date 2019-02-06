@@ -1,15 +1,16 @@
 package es.pryades.imedig.cloud.core.bll;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.naming.Context;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
-import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
@@ -21,6 +22,7 @@ import es.pryades.imedig.cloud.core.dal.UsuarioCentrosManager;
 import es.pryades.imedig.cloud.core.dal.ibatis.UsuarioMapper;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Centro;
+import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Perfil;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.UsuarioCentro;
@@ -771,5 +773,44 @@ public class UsuariosManagerImpl extends ImedigManagerImpl implements UsuariosMa
 	public void closeDatabaseSession( ImedigContext ctx ) throws Throwable
 	{
 		ctx.closeSessionCloud();
+	}
+
+	@Override
+	public List getPageLazy( ImedigContext ctx, UsuarioQuery query ) throws Throwable
+	{
+		SqlSession session = getDatabaseSession( ctx );
+		
+		boolean finish = session == null;		
+		
+		if ( finish )
+			session = openDatabaseSession( ctx );
+		
+		ArrayList<ImedigDto> rows = null;
+		
+		try 
+		{
+			UsuarioMapper mapper = (UsuarioMapper)session.getMapper( getMapperClass() );
+			
+			rows = mapper.getPageLazy( query );
+			
+			for ( ImedigDto dto : rows )
+				Utils.nullToEmpty( dto, dto.getClass() );
+		}
+		catch ( Throwable e )
+		{
+			Utils.logException( e, getLogger() );
+			
+			throw e;
+		}
+		finally
+		{
+			if ( finish )
+				closeDatabaseSession( ctx );
+		}
+
+		if ( rows == null )
+			throw new Exception( "Null return" );
+		
+		return rows;
 	}
 }

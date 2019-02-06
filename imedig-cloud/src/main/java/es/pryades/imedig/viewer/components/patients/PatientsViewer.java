@@ -20,6 +20,7 @@ import es.pryades.imedig.cloud.core.dal.EstudiosManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Paciente;
+import es.pryades.imedig.cloud.dto.PacienteQuery;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
@@ -94,7 +95,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public TableImedigPaged getTableRows()
 	{
-		TableImedigPaged imedigPaged = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new Paciente() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
+		TableImedigPaged imedigPaged = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new PacienteQuery() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
 		imedigPaged.getTable().setColumnWidth( "identificador", 250 );
 		imedigPaged.getTable().setColumnWidth( "nombre", 540 );
 		imedigPaged.getTable().setColumnWidth( "sexo", 135 );
@@ -123,7 +124,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	}
 	
 	private Paciente getQuery(){
-		Paciente query = new Paciente();
+		Paciente query = new PacienteQuery();
 		
 		if (StringUtils.isNotEmpty( nombre )){
 			query.setNombre( nombre );
