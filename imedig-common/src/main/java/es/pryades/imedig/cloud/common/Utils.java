@@ -454,6 +454,14 @@ public class Utils implements Serializable
 
 		return getCalendarDateAsInt( calendar, 0 );
 	}
+	
+	public static long getDateAsLong( Date date )
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( date );
+
+		return getCalendarDateAsLong( calendar, 0 );
+	}
 
 	public static long getTodayAsLong( String horario )
 	{
@@ -536,6 +544,14 @@ public class Utils implements Serializable
 
 		return (long)hour * 10000 + (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
 	}
+	
+	public static long getHourFirstSecondAsLong( Date date  )
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( date );
+		
+		return getHourFirstSecondAsLong( calendar, 0 );
+	}
 
 	public static long getHourLastSecondAsLong( Calendar calendar )
 	{
@@ -545,6 +561,14 @@ public class Utils implements Serializable
 		int hour = calendar.get( Calendar.HOUR_OF_DAY );
 
 		return (long)59 + (long)59 * 100 + (long)hour * 10000 + (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
+	}
+
+	public static long getHourLastSecondAsLong( Date date  )
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( date );
+		
+		return getHourLastSecondAsLong( calendar );
 	}
 
 	// hector.licea

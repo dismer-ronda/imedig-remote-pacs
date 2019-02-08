@@ -28,7 +28,7 @@
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
 	</select>
 	
-	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.PacienteQuery" resultType="es.pryades.imedig.cloud.dto.Paciente">
+	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.query.PacienteQuery" resultType="es.pryades.imedig.cloud.dto.Paciente">
 		select *
 		from susc_pacientes
 		<where><include refid="where"/></where>

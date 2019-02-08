@@ -11,7 +11,7 @@ import es.pryades.imedig.cloud.core.dal.ibatis.PacienteMapper;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Paciente;
-import es.pryades.imedig.cloud.dto.PacienteQuery;
+import es.pryades.imedig.cloud.dto.query.PacienteQuery;
 import es.pryades.imedig.core.common.ImedigManager;
 
 

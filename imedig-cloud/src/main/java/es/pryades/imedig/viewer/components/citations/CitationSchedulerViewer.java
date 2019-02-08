@@ -2,6 +2,8 @@ package es.pryades.imedig.viewer.components.citations;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -25,6 +27,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	@Getter
 	private Instalacion instalacion;
 	
+	private CitationsEventProvider eventProvider;
 	Calendar citationsCalendar;
 	private CalendarPeriodPanel periodPanel;
 	
@@ -46,7 +49,10 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setLocale( UI.getCurrent().getLocale() );
 		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
 		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
+		citationsCalendar.setEventCaptionAsHtml( true );
 		//ciationsCalendar.setStartDate( UtilsCalendar.getFirstDayMonth( new Date() ) );
+		eventProvider = new CitationsEventProvider( ctx, instalacion );
+		citationsCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
 		addComponent( periodPanel );		
@@ -85,17 +91,30 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setEndDate( end );
 	}
 	
-	
 	public void newCitation(){
 		ModalCitationDlg dlg = new ModalCitationDlg( ctx, Operation.OP_ADD, instalacion, null, this, "administracion.citas" );
-		dlg.setDate( new Date() );
+		dlg.setDate( getStartDate() );
 		dlg.showModalWindow();
+	}
+	
+	private Date getStartDate(){
+		Date start = citationsCalendar.getStartDate();
+		Date end = citationsCalendar.getEndDate();
+		Date today = new Date();
+		
+		if (end.before( today )) return today;
+		
+		if (today.before( end ) && !today.before( start )) return today;
+		
+		if (DateUtils.isSameDay( today, end )) return today;
+		
+		return start;
 	}
 
 	@Override
 	public void refreshVisibleContent()
 	{
-		// TODO Auto-generated method stub
+		citationsCalendar.markAsDirty();
 		
 	}
 

@@ -13262,6 +13262,12 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #1c2123;
 }
 
+.v-button-citation {
+	font-size: 13px !important;
+	border-radius: 14px !important;
+	height: 28px !important;
+}
+
 .study-thumnails-panel {
 	padding: 2px;
 }
