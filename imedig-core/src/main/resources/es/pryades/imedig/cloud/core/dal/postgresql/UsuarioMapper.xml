@@ -70,7 +70,7 @@
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
 	</select>
 
-	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Usuario" resultType="es.pryades.imedig.cloud.dto.Usuario">
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Usuario">
 
 		select distinct 
 			
@@ -104,7 +104,7 @@
 		order by id
 	</select>
 	
-	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.PacienteQuery" resultType="es.pryades.imedig.cloud.dto.Paciente">
+	<select id="getPageLazy" parameterType="es.pryades.imedig.cloud.dto.query.UsuarioQuery" resultType="es.pryades.imedig.cloud.dto.Usuario">
 		select distinct 
 			susc_usuarios.id,
 			susc_usuarios.login,

@@ -1,17 +1,32 @@
 package es.pryades.imedig.viewer.components.patients;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.FontIcon;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.Constants;
+import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dal.EstudiosManager;
+import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Estudio;
 import es.pryades.imedig.cloud.dto.Informe;
+import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
+import es.pryades.imedig.cloud.dto.query.EstudioQuery;
+import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
 import es.pryades.imedig.core.common.VtoFieldRef;
@@ -28,10 +43,20 @@ public class PacienteControlerVto extends GenericControlerVto
 	private static final long serialVersionUID = -6601043762758420586L;
 
 	private static final String[] visibleCols =	{ "identificador", "nombre", "sexo", "edad", "citas"};
+	
+	private Map<Integer, Instalacion> cacheInstalaciones;
+	private InstalacionesManager instalacionesManager;
+	private EstudiosManager estudiosManager;
+	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat( "dd/MM HH:mm" );
 
 	public PacienteControlerVto( ImedigContext ctx )
 	{
 		super( ctx );
+		
+		cacheInstalaciones = new HashMap<>();
+		
+		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
+		estudiosManager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
 	}
 
 	/**
@@ -196,7 +221,7 @@ public class PacienteControlerVto extends GenericControlerVto
 				result.setNombre( AppUtils.getNombreAAN( (Paciente)dtoObj ) );
 				result.setSexo( getSexo( ((Paciente)dtoObj).getSexo() ) );
 				result.setEdad( calcAge( (Paciente)dtoObj ) );
-				result.setCitas( getCitas() );
+				result.setCitas( getCitas((Paciente)dtoObj) );
 			}
 			else
 			{
@@ -220,8 +245,91 @@ public class PacienteControlerVto extends GenericControlerVto
 		return age;
 	}
 
-	private Component getCitas()
+	private Component getCitas(Paciente paciente)
 	{
-		return new HorizontalLayout();
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.setSpacing( true );
+		
+		List<Estudio> estudios = getEstudios( paciente.getId() );
+		for ( Estudio estudio : estudios )
+		{
+			Button btn = new Button( buidCaption( estudio ) );
+			btn.addStyleName( "citation" );
+			layout.addComponent( btn );
+		}
+		
+		Button btn = new Button( FontAwesome.PLUS_CIRCLE );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btn.addStyleName( "citation" );
+		layout.addComponent( btn );
+		return layout;
 	}
+	
+	private List<Estudio> getEstudios(Integer pacienteId){
+		try
+		{
+			EstudioQuery query = new EstudioQuery();
+			query.setPaciente( pacienteId );
+			query.setFecha_desde( Utils.getHourFirstSecondAsLong( new Date() ) );
+			return estudiosManager.getRows( getContext(), query );
+		}
+		catch ( Throwable e )
+		{
+			return new ArrayList<>();
+		}
+	}
+	
+	private String buidCaption(Estudio estudio ){
+		Instalacion instalacion = getInstalacion( estudio.getInstalacion() );
+		return instalacion.getModalidad()+" " + dateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ) );
+	}
+	
+	private FontIcon buidIcom(Estudio estudio ){
+		
+		if (cacheInstalaciones.get( estudio.getInstalacion() ) == null){
+			try
+			{
+				cacheInstalaciones.put( estudio.getInstalacion(), (Instalacion)instalacionesManager.getRow( getContext(), estudio.getInstalacion() ) );
+			}
+			catch ( Throwable e )
+			{
+			}
+		}
+		
+		Instalacion instalacion = cacheInstalaciones.get( estudio.getInstalacion() );
+		
+		if (!Constants.TYPE_IMAGING_DEVICE.equals( instalacion.getTipo() )) return FontIcoMoon.ROOT_CATEGORY;
+		
+		switch ( instalacion.getModalidad() )
+		{
+			case "US":
+				return FontIcoMoon.ULTRASOUND;
+			case "MR":
+				return FontIcoMoon.MRI;
+			case "MG":
+				return FontIcoMoon.MAMMOGRAPHY;	
+			case "MN":
+				return FontIcoMoon.CATH_LAB;	
+			case "CR":
+			case "DX":
+				return FontIcoMoon.RADIOLOGY;	
+			default:
+				return FontIcoMoon.ROOT_CATEGORY;
+		}
+	}
+	
+	private Instalacion getInstalacion(Integer instalacionId){
+		if (cacheInstalaciones.get( instalacionId ) == null){
+			try
+			{
+				cacheInstalaciones.put( instalacionId, (Instalacion)instalacionesManager.getRow( getContext(), instalacionId ) );
+			}
+			catch ( Throwable e )
+			{
+			}
+		}
+		
+		return cacheInstalaciones.get( instalacionId );
+	}
+
 }

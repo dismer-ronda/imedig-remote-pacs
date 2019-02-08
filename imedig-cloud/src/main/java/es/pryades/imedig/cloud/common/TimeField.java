@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.vaadin.data.util.converter.Converter.ConversionException;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.ComboBox;
@@ -28,13 +27,17 @@ public class TimeField extends CustomField<Date>
 	private int maxHours = 23;
 	
 	private boolean use24HourFormat = true;
+	private boolean created = false;
 	
 	private static final String AM = "AM";
 	private static final String PM = "PM";
 	
+	
+	
 	public TimeField(){
 		super();
 		buildComponents();
+		created = true;
 	}
 
 	public TimeField(String caption){
@@ -59,7 +62,7 @@ public class TimeField extends CustomField<Date>
 
 		minutes = buildComboBox();
 		fillMinutes();
-		hours.addValueChangeListener( new ValueChangeListener()
+		minutes.addValueChangeListener( new ValueChangeListener()
 		{
 			private static final long serialVersionUID = -641008316493683413L;
 
@@ -110,6 +113,8 @@ public class TimeField extends CustomField<Date>
 
 	private void updateComponents()
 	{
+		if (!created) return;
+		
 		final Date val = getValue();
 		
 		if (use24HourFormat) 
@@ -157,11 +162,11 @@ public class TimeField extends CustomField<Date>
 		super.setReadOnly(readOnly);
 	}
 	
-	@Override
-	public void setValue( Date newFieldValue ) throws com.vaadin.data.Property.ReadOnlyException, ConversionException
-	{
-		super.setValue( newFieldValue );
-	}
+//	@Override
+//	public void setValue( Date newFieldValue ) throws com.vaadin.data.Property.ReadOnlyException, ConversionException
+//	{
+//		super.setValue( newFieldValue );
+//	}
 
 	@Override
 	public Class<? extends Date> getType()
@@ -206,9 +211,23 @@ public class TimeField extends CustomField<Date>
 	}
 	
 	@Override
-	public Date getValue()
-	{
-		return super.getValue();
+    public void markAsDirty() {
+		super.markAsDirty();
+		updateComponents();
+    }
+	
+//	@Override
+//	public Date getValue()
+//	{
+//		return super.getValue();
+//	}
+	
+	public void add(int field, int value){
+		
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( getValue() );
+		calendar.add( field, value );
+		setValue( calendar.getTime() );
 	}
 	
 	private void updateInternalValue() {

@@ -16,6 +16,12 @@
 		<if test="tipo != null">
 			AND tipo = #{tipo}   
         </if>
+		<if test="fecha_desde != null">
+			AND fecha &gt;= #{fecha_desde}   
+        </if>
+		<if test="fecha_hasta != null">
+			AND fecha &lt;= #{fecha_hasta}   
+        </if>
 		<if test="referidor != null">
 			AND referidor = #{referidor}   
         </if>
@@ -23,6 +29,12 @@
 	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
 		select count(1) 
+		from susc_estudios 
+		<where><include refid="where"/></where>
+	</select>
+	
+	<select id="getLastDate" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="long">
+		select max(fechafin) 
 		from susc_estudios 
 		<where><include refid="where"/></where>
 	</select>
@@ -84,8 +96,7 @@
 			paciente=#{paciente},
 			instalacion=#{instalacion},
 			tipo=#{tipo},
-			referidor=#{referidor},
-			duracion=#{duracion}
+			referidor=#{referidor}
 		where id = #{id}
 	</update>
 

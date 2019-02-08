@@ -3,8 +3,8 @@ package es.pryades.imedig.viewer.components.patients;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Paciente;
-import es.pryades.imedig.cloud.dto.PacienteQuery;
 import es.pryades.imedig.cloud.dto.Query;
+import es.pryades.imedig.cloud.dto.query.PacienteQuery;
 import es.pryades.imedig.core.common.VtoFieldRef;
 
 /**

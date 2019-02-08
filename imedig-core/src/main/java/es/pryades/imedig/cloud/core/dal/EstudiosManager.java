@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.core.dal;
 
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.query.EstudioQuery;
 import es.pryades.imedig.core.common.ImedigManager;
 
 /**
@@ -9,4 +11,5 @@ import es.pryades.imedig.core.common.ImedigManager;
 */
 public interface EstudiosManager extends ImedigManager
 {
+	Long getLastDate(ImedigContext ctx, EstudioQuery query) throws Throwable;
 }

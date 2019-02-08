@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Paciente;
-import es.pryades.imedig.cloud.dto.PacienteQuery;
+import es.pryades.imedig.cloud.dto.query.PacienteQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class PacienteLazyProvider implements DataProvider<Paciente>

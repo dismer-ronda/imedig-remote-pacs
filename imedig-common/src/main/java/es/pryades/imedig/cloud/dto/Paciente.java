@@ -10,7 +10,9 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Paciente extends ImedigDto
 {
-    private String uid;
+ 	private static final long serialVersionUID = 3025909671511166747L;
+
+ 	private String uid;
     private String email;
     private String nombre;
     private String apellido1;

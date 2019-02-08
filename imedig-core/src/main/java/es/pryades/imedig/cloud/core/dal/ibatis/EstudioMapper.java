@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.core.dal.ibatis;
 
+import es.pryades.imedig.cloud.dto.query.EstudioQuery;
 import es.pryades.imedig.core.common.ImedigMapper;
 
 /**
@@ -10,4 +11,5 @@ import es.pryades.imedig.core.common.ImedigMapper;
 
 public interface EstudioMapper extends ImedigMapper
 {
+	long getLastDate(EstudioQuery query);
 }

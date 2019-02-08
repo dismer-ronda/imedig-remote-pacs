@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Estudio extends ImedigDto
 {
+	private static final long serialVersionUID = -8328086467606070724L;
 
 	private Long fecha;
 	private Long fechafin;
