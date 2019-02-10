@@ -38,6 +38,12 @@
 		from susc_estudios 
 		<where><include refid="where"/></where>
 	</select>
+	
+	<select id="getLastDate" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="long">
+		select max(fechafin) 
+		from susc_estudios 
+		<where><include refid="where"/></where>
+	</select>
 
 	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
 		select *

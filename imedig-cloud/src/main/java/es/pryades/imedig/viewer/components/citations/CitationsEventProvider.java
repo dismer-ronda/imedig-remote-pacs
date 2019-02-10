@@ -191,9 +191,8 @@ public class CitationsEventProvider implements CalendarEventProvider
 	}
 
 	private static <T> List<T> tail(List<T> list){
-		if (list.isEmpty()) return null;
+		if (list.isEmpty()) return list;
 		
-		return list.subList( 1, list.size());
+		return new ArrayList<>();
 	}
-
 }
