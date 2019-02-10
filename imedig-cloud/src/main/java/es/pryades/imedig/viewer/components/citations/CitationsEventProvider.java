@@ -25,16 +25,21 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class CitationsEventProvider implements CalendarEventProvider
 {
+	private static final long serialVersionUID = 16654819655615842L;
+	
 	private Instalacion instalacion;
 	private ImedigContext ctx;
 	private EstudiosManager estudiosManager;
 	private TiposEstudiosManager tiposEstudiosManager;
 	private PacientesManager pacientesManager;
+	
+	private com.vaadin.ui.Calendar citationsCalendar;
 
-	public CitationsEventProvider(ImedigContext ctx, Instalacion instalacion)
+	public CitationsEventProvider(ImedigContext ctx, Instalacion instalacion, com.vaadin.ui.Calendar citationsCalendar)
 	{
 		this.ctx = ctx;
 		this.instalacion = instalacion;
+		this.citationsCalendar = citationsCalendar;
 		
 		estudiosManager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class ); 
 		tiposEstudiosManager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class ); 
@@ -51,8 +56,11 @@ public class CitationsEventProvider implements CalendarEventProvider
 
 		try
 		{
-			//return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ));
-			return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ), startDate, endDate);
+			if (citationsCalendar.isMonthlyMode()){
+				return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ));
+			}else{
+				return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ), startDate, endDate);
+			}
 		}
 		catch ( Throwable e )
 		{
@@ -83,8 +91,10 @@ public class CitationsEventProvider implements CalendarEventProvider
 		calendar.setTime( start );
 		
 		Date start1 = start;
-		calendar.add( Calendar.HOUR_OF_DAY, 1 );
-		Date end1 = calendar.getTime();
+		
+		//calendar.add( Calendar.HOUR_OF_DAY, 1 );
+		//Date end1 = calendar.getTime();
+		Date end1 = Utils.getLastSecondHourAsDate( start1 );
 		
 		Comparator<CalendarEvent> comparator = new Comparator<CalendarEvent>()
 		{
@@ -107,22 +117,24 @@ public class CitationsEventProvider implements CalendarEventProvider
 				events = tail( events );
 				event = head( events );
 				
-				while(start1.after( end1 )){
-					calendar.add( Calendar.HOUR_OF_DAY, 1 );
-					end1 = calendar.getTime();
+				if (start1.after( end1 )){
+					end1 = Utils.getLastSecondHourAsDate( start1 );
 				}
 				
 				if (!Utils.isSameDay( start1, end1 )){
 					start1 = end1;
-					calendar.add( Calendar.HOUR_OF_DAY, 1 );
-					end1 = calendar.getTime();
+					end1 = Utils.getLastSecondHourAsDate( start1 );
 				}
 				
 			}else{
 				result.add( freeEvent( start1, end1 ) );
-				start1 = end1;
+				//start1 = end1;
 				calendar.add( Calendar.HOUR_OF_DAY, 1 );
-				end1 = calendar.getTime();
+				while(calendar.getTime().before( end1 )){
+					calendar.add( Calendar.HOUR_OF_DAY, 1 );
+				}
+				start1 = calendar.getTime();
+				end1 = Utils.getLastSecondHourAsDate( start1 );
 			}
 			
 		}
@@ -191,8 +203,9 @@ public class CitationsEventProvider implements CalendarEventProvider
 	}
 
 	private static <T> List<T> tail(List<T> list){
-		if (list.isEmpty()) return list;
+		if (list.isEmpty()) return null;
 		
-		return new ArrayList<>();
+		return list.subList( 1, list.size());
 	}
+
 }

@@ -39,16 +39,11 @@
 		<where><include refid="where"/></where>
 	</select>
 	
-	<select id="getLastDate" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="long">
-		select max(fechafin) 
-		from susc_estudios 
-		<where><include refid="where"/></where>
-	</select>
-
 	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
 		select *
 		from susc_estudios
 		<where><include refid="where"/></where>
+		order by fecha
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
 	</select>
 
@@ -56,6 +51,7 @@
 		select * 
 		from susc_estudios
 		<where><include refid="where"/></where>
+		order by fecha
 	</select>
 	
 	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">

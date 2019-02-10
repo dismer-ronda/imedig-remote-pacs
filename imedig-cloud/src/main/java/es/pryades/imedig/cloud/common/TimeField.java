@@ -25,6 +25,7 @@ public class TimeField extends CustomField<Date>
 	
 	private int minHours = 0;
 	private int maxHours = 23;
+	private int minuteSkip = 5;
 	
 	private boolean use24HourFormat = true;
 	private boolean created = false;
@@ -192,10 +193,13 @@ public class TimeField extends CustomField<Date>
 	private void fillMinutes() {
 
 		minutes.removeAllItems();
-		for (int i = 0; i < 60; i++) {
-			minutes.addItem(i);
-			minutes.setItemCaption(i, i < 10 ? "0" + i : i + "");
+		int to = 60/minuteSkip;
+		for (int i = 0; i < to; i++) {
+			minutes.addItem(i*minuteSkip);
+			minutes.setItemCaption(i*minuteSkip, i*minuteSkip < 10 ? "0" + (i*minuteSkip) : i*minuteSkip + "");
 		}
+		minutes.addItem(59);
+		minutes.setItemCaption(59, 59 + "");
 	}
 
 	private void fillAmPm()

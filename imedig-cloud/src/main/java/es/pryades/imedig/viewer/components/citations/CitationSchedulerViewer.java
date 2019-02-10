@@ -54,8 +54,8 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
 		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
 		citationsCalendar.setEventCaptionAsHtml( true );
-		//ciationsCalendar.setStartDate( UtilsCalendar.getFirstDayMonth( new Date() ) );
-		eventProvider = new CitationsEventProvider( ctx, instalacion );
+		citationsCalendar.setFirstVisibleHourOfDay( 8 );
+		eventProvider = new CitationsEventProvider( ctx, instalacion, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
@@ -68,7 +68,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		//cal.add( java.util.Calendar.MONTH, 1 );
 		//ciationsCalendar.setEndDate( UtilsCalendar.getLastDayMonth( cal.getTime() ) );
 		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( "1000px" );
+		citationsCalendar.setHeight( "1500px" );
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		panel.setContent( citationsCalendar );

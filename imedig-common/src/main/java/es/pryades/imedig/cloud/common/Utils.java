@@ -519,6 +519,16 @@ public class Utils implements Serializable
 
 		return calendar.getTime();
 	}
+	
+	public static Date getLastSecondHourAsDate( Date date )
+	{
+		Calendar calendar = GregorianCalendar.getInstance( );
+		calendar.setTime( date );
+
+		calendar.set( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ), calendar.get( Calendar.DATE ), calendar.get( Calendar.HOUR_OF_DAY ), 59, 59 );
+
+		return calendar.getTime();
+	}
 
 	public static long getElapsedTimeUntilNow( Date date, String horario )
 	{

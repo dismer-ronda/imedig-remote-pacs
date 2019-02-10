@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Calendar;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextField;
@@ -91,15 +90,6 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 		}
 	}
 
-	private void buildDeviceCitations()
-	{
-		Calendar calendar = new Calendar();
-		calendar.setSizeFull();
-		
-		addComponent( calendar );
-		
-	}
-	
 	private void buildFacilityType() throws Throwable
 	{
 		int counter = 0;

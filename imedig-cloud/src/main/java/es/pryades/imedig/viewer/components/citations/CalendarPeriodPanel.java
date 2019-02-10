@@ -16,6 +16,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.BackwardEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.BackwardHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
@@ -38,7 +39,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 	private ImedigContext ctx;
 	
-	private ComboBox comboView;
+	private OptionGroup optionView;
 	private Button buttonAddEvent;
 	private ComboBox comboYear;
 	private ComboBox comboMonth;
@@ -53,7 +54,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private static final int PERIOD_WEEKLY = 2;
 	private static final int PERIOD_DIARY = 3;
 	
-	private com.vaadin.ui.Calendar calendar;
 	private CitationSchedulerViewer viewer;
 	private BasicDateClickHandler basicDateClickHandler;
 	private BasicWeekClickHandler basicWeekClickHandler;
@@ -84,7 +84,22 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	
 	private void buildComponent()
 	{
-		comboView = new ComboBox( ctx.getString( "words.view" ) );
+		optionView = new OptionGroup( ctx.getString( "words.view" ) );
+		optionView.addStyleName( ValoTheme.OPTIONGROUP_HORIZONTAL );
+		insideLayout.addComponent( optionView );
+		insideLayout.setComponentAlignment( optionView, Alignment.BOTTOM_LEFT );
+		fillOptionView();
+		optionView.addValueChangeListener( new ValueChangeListener()
+		{
+			private static final long serialVersionUID = -836123805155475215L;
+			@Override
+			public void valueChange( ValueChangeEvent event )
+			{
+				changeView();
+			}
+		} );
+		
+		/*comboView = new ComboBox( ctx.getString( "words.view" ) );
 		comboView.setNullSelectionAllowed( false );
 		comboView.setNewItemsAllowed( false );
 		insideLayout.addComponent( comboView );
@@ -98,7 +113,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			{
 				changeView();
 			}
-		} );
+		} );*/
 		buildAddButton();
 
 		buildMonthlyComponents();
@@ -110,7 +125,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		insideLayout.setComponentAlignment( weeklyLayout, Alignment.BOTTOM_LEFT );
 		insideLayout.setComponentAlignment( diaryLayout, Alignment.BOTTOM_LEFT );
 		//changeView();
-		comboView.setValue( PERIOD_MONTHLY );
+		optionView.setValue( PERIOD_MONTHLY );
 	}
 
 
@@ -223,21 +238,21 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	}
 
 
-	private void fillComboView()
+	private void fillOptionView()
 	{
-		comboView.addItem( PERIOD_MONTHLY );
-		comboView.setItemCaption( PERIOD_MONTHLY, ctx.getString( "words.monthly" ) );
-		comboView.setItemIcon( PERIOD_MONTHLY, FontAwesome.TH );
-		comboView.addItem( PERIOD_WEEKLY );
-		comboView.setItemCaption( PERIOD_WEEKLY, ctx.getString( "words.weekly" ) );
-		comboView.setItemIcon( PERIOD_WEEKLY, FontAwesome.TH_LARGE );
-		comboView.addItem( PERIOD_DIARY );
-		comboView.setItemCaption( PERIOD_DIARY, ctx.getString( "words.diary" ) );
-		comboView.setItemIcon( PERIOD_DIARY, FontAwesome.TH_LIST );
+		optionView.addItem( PERIOD_MONTHLY );
+		optionView.setItemCaption( PERIOD_MONTHLY, ctx.getString( "words.monthly" ) );
+		//optionView.setItemIcon( PERIOD_MONTHLY, FontAwesome.TH );
+		optionView.addItem( PERIOD_WEEKLY );
+		optionView.setItemCaption( PERIOD_WEEKLY, ctx.getString( "words.weekly" ) );
+		//optionView.setItemIcon( PERIOD_WEEKLY, FontAwesome.TH_LARGE );
+		optionView.addItem( PERIOD_DIARY );
+		optionView.setItemCaption( PERIOD_DIARY, ctx.getString( "words.diary" ) );
+		//optionView.setItemIcon( PERIOD_DIARY, FontAwesome.TH_LIST );
 	}
 	
 	private void changeView(){
-		Integer period = (Integer)comboView.getValue();
+		Integer period = (Integer)optionView.getValue();
 		switch ( period )
 		{
 			case PERIOD_DIARY:
@@ -293,7 +308,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	}
 	
 	private void visibleViewComponent(){
-		Integer period = (Integer)comboView.getValue();
+		Integer period = (Integer)optionView.getValue();
 		diaryLayout.setVisible( period.equals( PERIOD_DIARY ) );
 		weeklyLayout.setVisible( period.equals( PERIOD_WEEKLY ) );
 		monthlyLayout.setVisible( period.equals( PERIOD_MONTHLY ) );
@@ -330,7 +345,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	@Override
 	public void dateClick( DateClickEvent event )
 	{
-		comboView.setValue( PERIOD_DIARY );
+		optionView.setValue( PERIOD_DIARY );
 		dateFieldDay.setValue( event.getDate() );
 		
 		basicDateClickHandler.dateClick( event );
@@ -342,7 +357,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		lastWeek = event.getWeek();
 		lastYear = event.getYear();
 		
-		comboView.setValue( PERIOD_WEEKLY );
+		optionView.setValue( PERIOD_WEEKLY );
 		basicWeekClickHandler.weekClick( event );
 	}
 
