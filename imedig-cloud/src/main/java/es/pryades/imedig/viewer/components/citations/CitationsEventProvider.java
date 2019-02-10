@@ -33,7 +33,12 @@ public class CitationsEventProvider implements CalendarEventProvider
 	private TiposEstudiosManager tiposEstudiosManager;
 	private PacientesManager pacientesManager;
 	
+	private Calendar mainCalendar = GregorianCalendar.getInstance();
+	
 	private com.vaadin.ui.Calendar citationsCalendar;
+
+	private int timeField = Calendar.MINUTE;
+	private int amount = 10;
 
 	public CitationsEventProvider(ImedigContext ctx, Instalacion instalacion, com.vaadin.ui.Calendar citationsCalendar)
 	{
@@ -87,14 +92,17 @@ public class CitationsEventProvider implements CalendarEventProvider
 		
 		List<CalendarEvent> result = new ArrayList<>();
 		
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime( start );
+		//Calendar calendar = GregorianCalendar.getInstance();
+		//calendar.setTime( start );
+		mainCalendar.setTime( start );
 		
 		Date start1 = start;
 		
 		//calendar.add( Calendar.HOUR_OF_DAY, 1 );
 		//Date end1 = calendar.getTime();
-		Date end1 = Utils.getLastSecondHourAsDate( start1 );
+		
+		//Date end1 = Utils.getLastSecondHourAsDate( start1 );
+		Date end1 = incNextTimePeriod();
 		
 		Comparator<CalendarEvent> comparator = new Comparator<CalendarEvent>()
 		{
@@ -117,24 +125,29 @@ public class CitationsEventProvider implements CalendarEventProvider
 				events = tail( events );
 				event = head( events );
 				
-				if (start1.after( end1 )){
-					end1 = Utils.getLastSecondHourAsDate( start1 );
+				while(start1.after( end1 )){
+					end1 = incNextTimePeriod();
 				}
+				//if (start1.after( end1 )){
+					//end1 = Utils.getLastSecondHourAsDate( start1 );
+				//}
 				
-				if (!Utils.isSameDay( start1, end1 )){
-					start1 = end1;
-					end1 = Utils.getLastSecondHourAsDate( start1 );
-				}
+				//if (!Utils.isSameDay( start1, end1 )){
+				//	start1 = end1;
+				//	end1 = Utils.getLastSecondHourAsDate( start1 );
+				//}
 				
 			}else{
 				result.add( freeEvent( start1, end1 ) );
-				//start1 = end1;
-				calendar.add( Calendar.HOUR_OF_DAY, 1 );
-				while(calendar.getTime().before( end1 )){
-					calendar.add( Calendar.HOUR_OF_DAY, 1 );
+				start1 = end1;
+				//calendar.add( Calendar.HOUR_OF_DAY, 1 );
+				end1 = incNextTimePeriod();
+				while(start1.after( end1 )){
+					end1 = incNextTimePeriod();
 				}
-				start1 = calendar.getTime();
-				end1 = Utils.getLastSecondHourAsDate( start1 );
+				//start1 = calendar.getTime();
+				//end1 = Utils.getLastSecondHourAsDate( start1 );
+				//end1 = incNextTimePeriod();
 			}
 			
 		}
@@ -142,6 +155,13 @@ public class CitationsEventProvider implements CalendarEventProvider
 		return result;
 	}
 	
+	private Date incNextTimePeriod()
+	{
+		mainCalendar.add( timeField, amount );
+		
+		return mainCalendar.getTime();
+	}
+
 	private Date addEvent( List<CalendarEvent> events, CalendarEvent event, Date start, Date end )
 	{
 		if (start.equals( event.getStart() )){

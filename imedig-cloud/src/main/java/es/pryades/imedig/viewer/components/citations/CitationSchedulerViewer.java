@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.vaadin.ui.Calendar;
+import com.vaadin.ui.Calendar.TimeFormat;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -53,8 +54,11 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setLocale( UI.getCurrent().getLocale() );
 		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
 		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
+		citationsCalendar.setTimeFormat( TimeFormat.Format24H );
 		citationsCalendar.setEventCaptionAsHtml( true );
 		citationsCalendar.setFirstVisibleHourOfDay( 8 );
+		citationsCalendar.setLastVisibleHourOfDay( 17 );
+		
 		eventProvider = new CitationsEventProvider( ctx, instalacion, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );
 
@@ -68,7 +72,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		//cal.add( java.util.Calendar.MONTH, 1 );
 		//ciationsCalendar.setEndDate( UtilsCalendar.getLastDayMonth( cal.getTime() ) );
 		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( "1500px" );
+		citationsCalendar.setHeight( "1200px" );
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		panel.setContent( citationsCalendar );
