@@ -99,6 +99,21 @@
 			<artifactId>stepper</artifactId>
 			<version>2.3.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>inputmask</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>brtextfield</artifactId>
+			<version>1.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.addons</groupId>
+			<artifactId>maskedtextfield</artifactId>
+			<version>0.1.6</version>
+		</dependency>-->
 
 		<!-- vaadin -->
 		<dependency>

@@ -185,7 +185,7 @@ public class CitationsEventProvider implements CalendarEventProvider
 		Paciente paciente  = (Paciente)pacientesManager.getRow( ctx, estudio.getPaciente() ); 
 		
 		CitationEvent event = new CitationEvent();
-		event.setCaption( tipoEstudio.getNombre()+"<br/>"+paciente.getNombreCompletoConIdentificador() );
+		event.setCaption( paciente.getNombreCompleto());
 		event.setDescription( paciente.getNombreCompletoConIdentificador() );
 		event.setStart( Utils.getDateHourFromLong( estudio.getFecha() ) );
 		event.setEnd( Utils.getDateHourFromLong( estudio.getFechafin() ) );

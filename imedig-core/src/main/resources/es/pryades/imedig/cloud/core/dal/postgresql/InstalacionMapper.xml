@@ -53,7 +53,8 @@
 			nombre, 
 			aetitle,
 			modalidad,
-			tipo
+			tipo,
+			datos
 		)
 		values
 		(
@@ -61,7 +62,8 @@
 			#{nombre},
 			#{aetitle},
 			#{modalidad},
-			#{tipo}
+			#{tipo},
+			#{datos}
 		)
 	</insert>
 
@@ -71,7 +73,8 @@
 			nombre=#{nombre},
 			aetitle=#{aetitle},
 			modalidad=#{modalidad},
-			tipo = #{tipo}
+			tipo = #{tipo},
+			horario = #{horario}
 		where id = #{id}
 	</update>
 

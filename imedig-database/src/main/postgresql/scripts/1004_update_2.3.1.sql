@@ -29,7 +29,9 @@ create table susc_instalaciones (
     nombre varchar(64) not null,   					-- Nombre de la instalación
     aetitle varchar(64) not null, 					-- Aetitle
     modalidad character varying(2),
-    tipo integer NOT NULL,							--Tipo de instalación 1 - equipo...
+    tipo integer NOT NULL,							-- Tipo de instalación 1 - equipo...
+    tiempominimo integer NOT NULL,					-- Tiempo m inimo de demora de una consulta
+    datos text,									-- JSON con el horario de trabajo
     
     constraint pk_instalaciones primary key(id),
 	constraint uk_instalaciones_aetitle unique(aetitle),

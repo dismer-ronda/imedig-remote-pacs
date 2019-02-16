@@ -88,16 +88,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setHandler( (ForwardHandler)periodPanel );
 		citationsCalendar.setHandler( (BackwardHandler)periodPanel );
 		citationsCalendar.setHandler( (EventClickHandler)this);
-//		ciationsCalendar.setHandler( new RangeSelectHandler()
-//		{
-//			
-//			@Override
-//			public void rangeSelect( RangeSelectEvent event )
-//			{
-//				Notification.show( "RangeSelectEvent" , Notification.Type.HUMANIZED_MESSAGE );
-//				
-//			}
-//		});
+
 	}
 	
 	public void setDates(Date start, Date end){

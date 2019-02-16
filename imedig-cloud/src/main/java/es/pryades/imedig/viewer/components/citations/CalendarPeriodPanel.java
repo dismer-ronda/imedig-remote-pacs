@@ -46,13 +46,13 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private DateField dateFieldDay;
 	
 	private HorizontalLayout insideLayout;
-	private HorizontalLayout diaryLayout;
+	//private HorizontalLayout diaryLayout;
 	private HorizontalLayout weeklyLayout;
 	private HorizontalLayout monthlyLayout;
 	
 	private static final int PERIOD_MONTHLY = 1;
 	private static final int PERIOD_WEEKLY = 2;
-	private static final int PERIOD_DIARY = 3;
+	//private static final int PERIOD_DIARY = 3;
 	
 	private CitationSchedulerViewer viewer;
 	private BasicDateClickHandler basicDateClickHandler;
@@ -118,12 +118,12 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 		buildMonthlyComponents();
 		buildWeeklyComponents();
-		buildDiaryComponents();
+		//buildDiaryComponents();
 		
-		insideLayout.addComponents( monthlyLayout, weeklyLayout, diaryLayout );
+		insideLayout.addComponents( monthlyLayout, weeklyLayout/*, diaryLayout*/ );
 		insideLayout.setComponentAlignment( monthlyLayout, Alignment.BOTTOM_LEFT );
 		insideLayout.setComponentAlignment( weeklyLayout, Alignment.BOTTOM_LEFT );
-		insideLayout.setComponentAlignment( diaryLayout, Alignment.BOTTOM_LEFT );
+		//insideLayout.setComponentAlignment( diaryLayout, Alignment.BOTTOM_LEFT );
 		//changeView();
 		optionView.setValue( PERIOD_MONTHLY );
 	}
@@ -233,8 +233,8 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			}
 		} );
 		
-		diaryLayout = new HorizontalLayout( dateFieldDay );
-		diaryLayout.setSpacing( true );
+//		diaryLayout = new HorizontalLayout( dateFieldDay );
+//		diaryLayout.setSpacing( true );
 	}
 
 
@@ -246,8 +246,8 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		optionView.addItem( PERIOD_WEEKLY );
 		optionView.setItemCaption( PERIOD_WEEKLY, ctx.getString( "words.weekly" ) );
 		//optionView.setItemIcon( PERIOD_WEEKLY, FontAwesome.TH_LARGE );
-		optionView.addItem( PERIOD_DIARY );
-		optionView.setItemCaption( PERIOD_DIARY, ctx.getString( "words.diary" ) );
+//		optionView.addItem( PERIOD_DIARY );
+//		optionView.setItemCaption( PERIOD_DIARY, ctx.getString( "words.diary" ) );
 		//optionView.setItemIcon( PERIOD_DIARY, FontAwesome.TH_LIST );
 	}
 	
@@ -255,9 +255,9 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		Integer period = (Integer)optionView.getValue();
 		switch ( period )
 		{
-			case PERIOD_DIARY:
-				diaryView();
-				break;
+//			case PERIOD_DIARY:
+//				diaryView();
+//				break;
 			case PERIOD_WEEKLY:
 				weeklyView();
 				break;
@@ -309,7 +309,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	
 	private void visibleViewComponent(){
 		Integer period = (Integer)optionView.getValue();
-		diaryLayout.setVisible( period.equals( PERIOD_DIARY ) );
+		//diaryLayout.setVisible( period.equals( PERIOD_DIARY ) );
 		weeklyLayout.setVisible( period.equals( PERIOD_WEEKLY ) );
 		monthlyLayout.setVisible( period.equals( PERIOD_MONTHLY ) );
 	}
@@ -345,10 +345,11 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	@Override
 	public void dateClick( DateClickEvent event )
 	{
-		optionView.setValue( PERIOD_DIARY );
-		dateFieldDay.setValue( event.getDate() );
-		
-		basicDateClickHandler.dateClick( event );
+		return;
+//		optionView.setValue( PERIOD_DIARY );
+//		dateFieldDay.setValue( event.getDate() );
+//		
+//		basicDateClickHandler.dateClick( event );
 	}
 
 	@Override

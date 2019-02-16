@@ -21,7 +21,7 @@ import com.vaadin.ui.TextField;
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FiltrerAddSelect;
 import es.pryades.imedig.cloud.common.ImedigException;
-import es.pryades.imedig.cloud.common.TimeField;
+import es.pryades.imedig.cloud.common.TimeField2;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.common.lazy.LazyContainer;
 import es.pryades.imedig.cloud.common.lazy.PacienteLazyProvider;
@@ -58,8 +58,8 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 	private TextField editInstalacion;
 	private ComboBox comboTipo;
 	private DateField dateFieldFecha;
-	private TimeField timeInicio;
-	private TimeField timeFin;
+	private TimeField2 timeInicio;
+	private TimeField2 timeFin;
 	
 	private PacienteLazyProvider pacienteLazyProvider;
 	private ReferidorLazyProvider referidorLazyProvider;
@@ -161,12 +161,11 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 			}
 		} );
 		
-		
-		timeInicio = new TimeField( getContext().getString( "modalCitationDlg.lbHoraInicio" ) );
-		timeInicio.set24HourFormat( true );
+		timeInicio = new TimeField2( getContext().getString( "modalCitationDlg.lbHoraInicio" ) );
 		timeInicio.setRequired( true );
-		timeInicio.setImmediate( true );
+		timeInicio.setWidth( "60px" );
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
+		timeInicio.setImmediate( true );
 		timeInicio.addValueChangeListener( new ValueChangeListener()
 		{
 			private static final long serialVersionUID = -5095557634162961055L;
@@ -178,9 +177,9 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 			}
 		} );
 		
-		timeFin = new TimeField( getContext().getString( "modalCitationDlg.lbHoraFin" ) );
-		timeFin.set24HourFormat( true );
+		timeFin = new TimeField2( getContext().getString( "modalCitationDlg.lbHoraFin" ) );
 		timeFin.setRequired( true );
+		timeFin.setWidth( "60px" );
 		timeFin.setPropertyDataSource( bi.getItemProperty( "fechafin" ) );
 		timeFin.setImmediate( true );
 		
@@ -303,17 +302,30 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 
 	private boolean isValid() throws ImedigException{
 		
+		try
+		{
+			timeInicio.commit();
+			timeFin.commit();
+		}
+		catch ( Throwable t )
+		{
+			throw new ImedigException( new RuntimeException( "Parámetros incorrectos" ), LOG, ImedigException.NOT_NULL_VIOLATION );
+		}
+		
 		if (!isValidRequired()){
 			throw new ImedigException( new RuntimeException( "Parámetros incorrectos" ), LOG, ImedigException.NOT_NULL_VIOLATION );
 		}
 		
-		if (!vo.getFechainicio().before( vo.getFechafin() )){
+		Date datei = Utils.setTimeToDate( vo.getFecha(), vo.getFechainicio() );
+		Date datef = Utils.setTimeToDate( vo.getFecha(), vo.getFechafin() );
+		
+		if (datei.after( datef )){
 			Notification.show( getContext().getString( "modalCitationDlg.error.rango.horas" ), Notification.Type.ERROR_MESSAGE );
 			return false;
 		}
 		
 		Date today = new Date();
-		if (!today.before( vo.getFechafin() )){
+		if (today.after( datef )){
 			Notification.show( getContext().getString( "modalCitationDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
 			return false;
 		}
@@ -365,13 +377,18 @@ public class ModalCitationDlg extends ModalWindowsCRUD
 	}
 	
 	public void setDate(Date date){
-		dateFieldFecha.setValue( date );
-		timeInicio.setValue( date );
-		timeFin.setValue( date );
+		vo.setFecha( date );
+		vo.setFechainicio( date );
+		vo.setFechafin( date );
+		
+		dateFieldFecha.markAsDirty();
+		timeInicio.markAsDirty();
+		timeFin.markAsDirty();
 	}
 	
 	public void setEndDate(Date date){
-		timeFin.setValue( date );
+		vo.setFechafin( date );
+		timeFin.markAsDirty();
 	}
 	
 	@Override

@@ -35,6 +35,7 @@ public final class ModalNewEquipo extends ModalNewInstalacion
 		for ( String modality : modalities )
 		{
 			comboBox.addItem( modality );
+			comboBox.setItemCaption( modality, modality +" - "+getContext().getString( "words.modality."+modality ) );
 		}
 	}
 

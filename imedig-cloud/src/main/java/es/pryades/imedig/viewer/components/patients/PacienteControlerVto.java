@@ -258,9 +258,10 @@ public class PacienteControlerVto extends GenericControlerVto
 			layout.addComponent( btn );
 		}
 		
-		Button btn = new Button( FontAwesome.PLUS_CIRCLE );
+		Button btn = new Button( FontAwesome.PLUS );
 		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		btn.addStyleName( "citation" );
+		btn.addStyleName( ValoTheme.BUTTON_TINY );
+		btn.addStyleName( "action" );
 		layout.addComponent( btn );
 		return layout;
 	}

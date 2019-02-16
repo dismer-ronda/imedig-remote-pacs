@@ -49,6 +49,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
@@ -462,6 +463,7 @@ public class Utils implements Serializable
 
 		return getCalendarDateAsLong( calendar, 0 );
 	}
+	
 
 	public static long getTodayAsLong( String horario )
 	{
@@ -912,6 +914,10 @@ public class Utils implements Serializable
 			throw e;
 		}
 	}
+	
+	public static <T extends Serializable> T clone2(T dto) {
+        return SerializationUtils.clone(dto);
+    }
 
 	public static Object clone( Object o ) throws Throwable
 	{
@@ -1987,6 +1993,43 @@ public class Utils implements Serializable
 		return calPrev.get( Calendar.WEEK_OF_YEAR ) == calNext.get( Calendar.WEEK_OF_YEAR ) && calPrev.get( Calendar.YEAR ) == calNext.get( Calendar.YEAR );
 	}
 
+	public static Date setTimeToDate(Date date, Date time){
+		Calendar calDate = GregorianCalendar.getInstance();
+		calDate.setTime( date );
+
+		Calendar calTime = GregorianCalendar.getInstance();
+		calTime.setTime( time );
+		
+		calDate.set( Calendar.SECOND, 0 );
+		calDate.set( Calendar.HOUR_OF_DAY, calTime.get( Calendar.HOUR_OF_DAY ) );
+		calDate.set( Calendar.MINUTE, calTime.get( Calendar.MINUTE ));
+		
+		return calDate.getTime();
+	}
+	
+	public static Integer getTime(Date date){
+		return Integer.valueOf( new SimpleDateFormat( "HHmm" ).format( date ));
+	}
+	
+	public static Date getTime(Integer date){
+		try
+		{
+			String s = date.toString();
+			
+			if (s.length() == 1) s = "000"+s;
+			else if (s.length() == 2) s = "00"+s;
+			else if (s.length() == 3) s = "0"+s;
+			
+			return new SimpleDateFormat( "HHmm" ).parse( s );
+		}
+		catch ( ParseException e )
+		{
+			Utils.logException( e, LOG );
+			
+			return new Date();
+		}
+	}
+	
 	public static String replaceWildcards( String text, Usuario usuario )
 	{
 		return text.replaceAll( "%login%", usuario.getLogin() ).replaceAll( "%password%", usuario.getPwd() );
