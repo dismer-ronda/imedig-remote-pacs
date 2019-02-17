@@ -52,7 +52,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	
 	private static final int PERIOD_MONTHLY = 1;
 	private static final int PERIOD_WEEKLY = 2;
-	//private static final int PERIOD_DIARY = 3;
 	
 	private CitationSchedulerViewer viewer;
 	private BasicDateClickHandler basicDateClickHandler;
@@ -206,8 +205,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			comboYear.setItemCaption( id , ""+id);
 		}
 	}
-
-
 
 	private void buildWeeklyComponents()
 	{

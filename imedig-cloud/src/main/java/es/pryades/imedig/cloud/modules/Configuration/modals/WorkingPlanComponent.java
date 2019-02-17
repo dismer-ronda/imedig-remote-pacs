@@ -11,13 +11,14 @@ import java.util.Map;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.Validator;
-import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 
+import es.pryades.imedig.cloud.common.TimeValidador;
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.common.UtilsUI;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DayPlan;
@@ -38,6 +39,8 @@ public class WorkingPlanComponent extends GridLayout
 	
 	private static final String DEFAULT_START = "08:00";
 	private static final String DEFAULT_END = "18:00";
+	
+	private Validator validator  = new TimeValidador();
 	
 	private static final List<Integer> week = Arrays.asList( Calendar.MONDAY, Calendar.TUESDAY, 
 			Calendar.WEDNESDAY, Calendar.THURSDAY, 
@@ -198,8 +201,6 @@ public class WorkingPlanComponent extends GridLayout
 		TextField end;
 		BreakComponent breaks;
 		
-		Validator validator  = new RegexpValidator( UtilsUI.TIME_REGEX, null );
-		
 		public DiaryComponents(int day, CheckBox checkBox, TextField start, TextField end, BreakComponent breaks )
 		{
 			this.day = day;
@@ -214,7 +215,7 @@ public class WorkingPlanComponent extends GridLayout
 		public boolean isValid(){
 			if (!checkBox.getValue()) return true;
 					
-			return start.isValid() && end.isValid() && breaks.isValidBreaksTime();
+			return start.isValid() && end.isValid() && Utils.isValidTimeRange( start.getValue(), end.getValue() )  && breaks.isValidBreaksTime();
 		}
 		
 		public DayPlan<String> getDayPlan(){
@@ -242,6 +243,7 @@ public class WorkingPlanComponent extends GridLayout
 				{
 					start.setEnabled( checkBox.getValue() );
 					end.setEnabled( checkBox.getValue() );
+					breaks.setEnabled( checkBox.getValue() );
 				}
 			} );
 		}

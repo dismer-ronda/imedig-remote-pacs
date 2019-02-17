@@ -2,6 +2,7 @@ package es.pryades.imedig.viewer.components.citations;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
 import com.vaadin.ui.Calendar;
@@ -17,7 +18,9 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.ForwardHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClickHandler;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.DatosIntalacion;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
@@ -31,22 +34,68 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	private ImedigContext ctx;
 	@Getter
 	private Instalacion instalacion;
-	
+	private DatosIntalacion datosIntalacion;	
 	private CitationsEventProvider eventProvider;
 	Calendar citationsCalendar;
 	private CalendarPeriodPanel periodPanel;
 	
+	private String timeZone;
+	private Integer firstHour;
+	private Integer lastHour;
 	
 	public CitationSchedulerViewer( ImedigContext ctx, Instalacion instalacion)
 	{
 		this.ctx = ctx;
 		this.instalacion = instalacion;
 		
+		timeZone = ctx.getCentros().get( 0 ).getHorario_nombre();
+		
+		settingInstalationWorkingPlan();
+		
 		setSizeFull();
 		setMargin( true );
 		buildComponents();
 	}
 
+	private void settingInstalationWorkingPlan()
+	{
+		datosIntalacion = getExtraInformationFromJson();
+
+		firstHour = findFirstHour();
+		lastHour = findLastHour();
+	}
+	
+	private DatosIntalacion getExtraInformationFromJson()
+	{
+		if (StringUtils.isBlank( instalacion.getDatos()) ) return new DatosIntalacion();
+		
+		try
+		{
+			return (DatosIntalacion)Utils.toPojo( instalacion.getDatos(), DatosIntalacion.class, false );
+		}
+		catch ( Throwable e )
+		{
+		}
+		return new DatosIntalacion();
+	}
+
+	private Integer findFirstHour()
+	{
+		if (datosIntalacion.getWorkingPlan() == null || datosIntalacion.getWorkingPlan().getDiaryPlan() == null)
+			return 8;
+		
+		return AppointmentUtils.getEarlyHour( datosIntalacion.getWorkingPlan().getDiaryPlan() );
+	}
+	
+	private Integer findLastHour()
+	{
+		if (datosIntalacion.getWorkingPlan() == null || datosIntalacion.getWorkingPlan().getDiaryPlan() == null)
+			return 18;
+		
+		
+		return AppointmentUtils.getLaterHour( datosIntalacion.getWorkingPlan().getDiaryPlan() );
+	}
+	
 	private void buildComponents()
 	{
 		
@@ -56,8 +105,8 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
 		citationsCalendar.setTimeFormat( TimeFormat.Format24H );
 		citationsCalendar.setEventCaptionAsHtml( true );
-		citationsCalendar.setFirstVisibleHourOfDay( 8 );
-		citationsCalendar.setLastVisibleHourOfDay( 17 );
+		citationsCalendar.setFirstVisibleHourOfDay( firstHour );
+		citationsCalendar.setLastVisibleHourOfDay( lastHour );
 		
 		eventProvider = new CitationsEventProvider( ctx, instalacion, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );

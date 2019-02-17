@@ -178,6 +178,6 @@ public class TimeField2 extends CustomField<Date>
 	
 	public Integer getTimeAsInteger(){
 		if (getValue() == null) return null;
-		return Integer.getInteger( timeIntFormat.format( getValue() ));
+		return Integer.valueOf( timeIntFormat.format( getValue() ));
 	}
 }

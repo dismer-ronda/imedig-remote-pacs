@@ -74,7 +74,7 @@
 			aetitle=#{aetitle},
 			modalidad=#{modalidad},
 			tipo = #{tipo},
-			horario = #{horario}
+			datos = #{datos}
 		where id = #{id}
 	</update>
 

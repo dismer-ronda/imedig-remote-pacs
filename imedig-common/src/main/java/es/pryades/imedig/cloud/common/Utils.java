@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
+import java.text.DateFormat;
 import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,6 +52,7 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.Logger;
+import org.joda.time.LocalTime;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -76,6 +78,9 @@ public class Utils implements Serializable
 	public static final long ONE_SECOND = 1000;
 	public static final long ONE_MINUTE = 60 * ONE_SECOND;
 	public static final long ONE_HOUR = 60 * ONE_MINUTE;
+
+	public static final String TIME_FORMAT = "HH:mm";
+	public static final DateFormat timeFormat = new SimpleDateFormat( TIME_FORMAT );
 
 	public static String getSelector( String s, int length )
 	{
@@ -155,7 +160,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -177,7 +182,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -269,7 +274,7 @@ public class Utils implements Serializable
 	public static String getExceptionString( Throwable e )
 	{
 		String txt = "";
-		
+
 		StackTraceElement stack[] = e.getStackTrace();
 
 		if ( stack.length > 0 )
@@ -290,10 +295,10 @@ public class Utils implements Serializable
 				txt += "\nat class " + stack[i].getClassName() + " method " + stack[i].getMethodName() + " line " + stack[i].getLineNumber();
 			}
 		}
-		
+
 		return txt;
 	}
-	
+
 	public static void logException( Throwable e, Logger LOG )
 	{
 		StackTraceElement stack[] = e.getStackTrace();
@@ -320,7 +325,7 @@ public class Utils implements Serializable
 			LOG.error( txt + extra );
 		}
 	}
-	
+
 	public static String getRandomPassword( int length )
 	{
 		return (new RandPass()).getPass( length );
@@ -394,7 +399,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -455,7 +460,7 @@ public class Utils implements Serializable
 
 		return getCalendarDateAsInt( calendar, 0 );
 	}
-	
+
 	public static long getDateAsLong( Date date )
 	{
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -463,7 +468,6 @@ public class Utils implements Serializable
 
 		return getCalendarDateAsLong( calendar, 0 );
 	}
-	
 
 	public static long getTodayAsLong( String horario )
 	{
@@ -521,10 +525,10 @@ public class Utils implements Serializable
 
 		return calendar.getTime();
 	}
-	
+
 	public static Date getLastSecondHourAsDate( Date date )
 	{
-		Calendar calendar = GregorianCalendar.getInstance( );
+		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( date );
 
 		calendar.set( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ), calendar.get( Calendar.DATE ), calendar.get( Calendar.HOUR_OF_DAY ), 59, 59 );
@@ -556,12 +560,12 @@ public class Utils implements Serializable
 
 		return (long)hour * 10000 + (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
 	}
-	
-	public static long getHourFirstSecondAsLong( Date date  )
+
+	public static long getHourFirstSecondAsLong( Date date )
 	{
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( date );
-		
+
 		return getHourFirstSecondAsLong( calendar, 0 );
 	}
 
@@ -575,11 +579,11 @@ public class Utils implements Serializable
 		return (long)59 + (long)59 * 100 + (long)hour * 10000 + (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
 	}
 
-	public static long getHourLastSecondAsLong( Date date  )
+	public static long getHourLastSecondAsLong( Date date )
 	{
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( date );
-		
+
 		return getHourLastSecondAsLong( calendar );
 	}
 
@@ -612,7 +616,8 @@ public class Utils implements Serializable
 	}
 
 	/**
-	 * @author Dismer Ronda </br> <b>Description:</b> </br>
+	 * @author Dismer Ronda </br>
+	 *         <b>Description:</b> </br>
 	 *         <p>
 	 *         Return the <b>last day</b> of a month from the given date, -1 in
 	 *         case of error.
@@ -776,7 +781,7 @@ public class Utils implements Serializable
 		return calendar.getTime().getTime() - GregorianCalendar.getInstance().getTime().getTime();
 	}
 
-	public static Date getDateFromInt( int date ) 
+	public static Date getDateFromInt( int date )
 	{
 		try
 		{
@@ -788,7 +793,7 @@ public class Utils implements Serializable
 		}
 	}
 
-	public static Date getMonthFromInt( int date ) 
+	public static Date getMonthFromInt( int date )
 	{
 		try
 		{
@@ -875,7 +880,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -896,7 +901,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -910,14 +915,15 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
-	
-	public static <T extends Serializable> T clone2(T dto) {
-        return SerializationUtils.clone(dto);
-    }
+
+	public static <T extends Serializable> T clone2( T dto )
+	{
+		return SerializationUtils.clone( dto );
+	}
 
 	public static Object clone( Object o ) throws Throwable
 	{
@@ -944,7 +950,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -970,7 +976,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1061,7 +1067,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1113,7 +1119,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1434,7 +1440,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 
@@ -1468,7 +1474,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 
@@ -1493,7 +1499,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1511,7 +1517,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1574,13 +1580,62 @@ public class Utils implements Serializable
 			catch ( Throwable e )
 			{
 				Utils.logException( e, LOG );
-				
+
 				throw e;
 			}
 		}
 
 		return fechaFormated;
 	}
+
+	public static boolean isValidTimeRange( String start, String end )
+	{
+		try
+		{
+			Date d1 = timeFormat.parse( start );
+			Date d2 = timeFormat.parse( end );
+
+			return d1.before( d2 );
+		}
+		catch ( ParseException e )
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	public static LocalTime getTime( String time )
+	{
+		return LocalTime.parse( time );
+	}
+
+//	public static Date getTime( String time )
+//	{
+//
+//		Date date = new Date( 0 );
+//
+//		try
+//		{
+//			Date d1 = timeFormat.parse( time );
+//
+//			Calendar calendar = GregorianCalendar.getInstance();
+//			calendar.setTime( date );
+//			Calendar calendar2 = GregorianCalendar.getInstance();
+//			calendar.setTime( d1 );
+//
+//			calendar.set( Calendar.HOUR_OF_DAY, calendar2.get( Calendar.HOUR_OF_DAY ) );
+//			calendar.set( Calendar.MINUTE, calendar2.get( Calendar.MINUTE ) );
+//
+//			return calendar.getTime();
+//		}
+//		catch ( ParseException e )
+//		{
+//		}
+//
+//		return new Date( 0 );
+//	}
 
 	public static Calendar getCalendarFromDate( Date date, String horario, int field, int offset )
 	{
@@ -1709,7 +1764,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1728,7 +1783,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1750,7 +1805,7 @@ public class Utils implements Serializable
 		}
 	}
 
-	public static String getFormatedMonth( Integer ldate, String format ) 
+	public static String getFormatedMonth( Integer ldate, String format )
 	{
 		try
 		{
@@ -1785,7 +1840,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1837,7 +1892,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			throw e;
 		}
 	}
@@ -1855,7 +1910,7 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			return new Date();
 		}
 	}
@@ -1884,43 +1939,31 @@ public class Utils implements Serializable
 		return cause;
 	}
 
-/*	public static boolean evaluateCondition( String condition, Map<String, Double> map, boolean exception ) throws Throwable
-	{
-		try
-		{
-			JexlEngine jexl = new JexlEngine();
-			jexl.setStrict( true );
-			jexl.setSilent( false );
-
-			Expression e = jexl.createExpression( condition );
-
-			// Create a context and add data
-			JexlContext jc = new MapContext();
-
-			Iterator it = map.entrySet().iterator();
-			while ( it.hasNext() )
-			{
-				Map.Entry pairs = (Map.Entry)it.next();
-
-				jc.set( (String)pairs.getKey(), pairs.getValue() );
-			}
-
-			// Now evaluate the expression, getting the result
-			Object o = e.evaluate( jc );
-
-			return (o instanceof Boolean) ? (Boolean)o : false;
-		}
-		catch ( Throwable e )
-		{
-			LOG.info( "exception evaluating " + condition + " " + e.getMessage() );
-
-			if ( exception )
-				throw e;
-		}
-
-		return false;
-	}
-*/
+	/*
+	 * public static boolean evaluateCondition( String condition, Map<String,
+	 * Double> map, boolean exception ) throws Throwable { try { JexlEngine jexl
+	 * = new JexlEngine(); jexl.setStrict( true ); jexl.setSilent( false );
+	 * 
+	 * Expression e = jexl.createExpression( condition );
+	 * 
+	 * // Create a context and add data JexlContext jc = new MapContext();
+	 * 
+	 * Iterator it = map.entrySet().iterator(); while ( it.hasNext() ) {
+	 * Map.Entry pairs = (Map.Entry)it.next();
+	 * 
+	 * jc.set( (String)pairs.getKey(), pairs.getValue() ); }
+	 * 
+	 * // Now evaluate the expression, getting the result Object o = e.evaluate(
+	 * jc );
+	 * 
+	 * return (o instanceof Boolean) ? (Boolean)o : false; } catch ( Throwable e
+	 * ) { LOG.info( "exception evaluating " + condition + " " + e.getMessage()
+	 * );
+	 * 
+	 * if ( exception ) throw e; }
+	 * 
+	 * return false; }
+	 */
 	public static boolean isSameHour( Date prev, Date next )
 	{
 		if ( prev == null || next == null )
@@ -1993,43 +2036,49 @@ public class Utils implements Serializable
 		return calPrev.get( Calendar.WEEK_OF_YEAR ) == calNext.get( Calendar.WEEK_OF_YEAR ) && calPrev.get( Calendar.YEAR ) == calNext.get( Calendar.YEAR );
 	}
 
-	public static Date setTimeToDate(Date date, Date time){
+	public static Date setTimeToDate( Date date, Date time )
+	{
 		Calendar calDate = GregorianCalendar.getInstance();
 		calDate.setTime( date );
 
 		Calendar calTime = GregorianCalendar.getInstance();
 		calTime.setTime( time );
-		
+
 		calDate.set( Calendar.SECOND, 0 );
 		calDate.set( Calendar.HOUR_OF_DAY, calTime.get( Calendar.HOUR_OF_DAY ) );
-		calDate.set( Calendar.MINUTE, calTime.get( Calendar.MINUTE ));
-		
+		calDate.set( Calendar.MINUTE, calTime.get( Calendar.MINUTE ) );
+
 		return calDate.getTime();
 	}
-	
-	public static Integer getTime(Date date){
-		return Integer.valueOf( new SimpleDateFormat( "HHmm" ).format( date ));
+
+	public static Integer getTime( Date date )
+	{
+		return Integer.valueOf( new SimpleDateFormat( "HHmm" ).format( date ) );
 	}
-	
-	public static Date getTime(Integer date){
+
+	public static Date getTime( Integer date )
+	{
 		try
 		{
 			String s = date.toString();
-			
-			if (s.length() == 1) s = "000"+s;
-			else if (s.length() == 2) s = "00"+s;
-			else if (s.length() == 3) s = "0"+s;
-			
+
+			if ( s.length() == 1 )
+				s = "000" + s;
+			else if ( s.length() == 2 )
+				s = "00" + s;
+			else if ( s.length() == 3 )
+				s = "0" + s;
+
 			return new SimpleDateFormat( "HHmm" ).parse( s );
 		}
 		catch ( ParseException e )
 		{
 			Utils.logException( e, LOG );
-			
+
 			return new Date();
 		}
 	}
-	
+
 	public static String replaceWildcards( String text, Usuario usuario )
 	{
 		return text.replaceAll( "%login%", usuario.getLogin() ).replaceAll( "%password%", usuario.getPwd() );
@@ -2163,14 +2212,15 @@ public class Utils implements Serializable
 	public static String getEnviroment( String variable )
 	{
 		String value = System.getenv( variable );
-		
+
 		return value == null ? "" : value;
 	}
 
 	public static void setProperty( String key, String value )
 	{
-		if (getProperty( key ) != null) return;
-		
+		if ( getProperty( key ) != null )
+			return;
+
 		System.setProperty( key, value );
 	}
 
@@ -2179,68 +2229,69 @@ public class Utils implements Serializable
 		return System.getProperty( key );
 	}
 
-	public static String readFile(String filename)
+	public static String readFile( String filename )
 	{
-	   String content = "";
-	   
-	   File file = new File(filename); 
-	   try 
-	   {
-	       FileReader reader = new FileReader(file);
-	       
-           BufferedReader bufferedReader = new BufferedReader( reader );
+		String content = "";
 
-           String line = null;
-           while ( (line = bufferedReader.readLine()) != null ) 
-           {
-        	   if ( !content.isEmpty())
-        		   content += "\n";
-        	   
-               content += line;
-           }    
+		File file = new File( filename );
+		try
+		{
+			FileReader reader = new FileReader( file );
 
-           bufferedReader.close();
-	   } 
-	   catch ( Throwable e) 
-	   {
-	       LOG.info( filename );
-	       e.printStackTrace();
-	   }
+			BufferedReader bufferedReader = new BufferedReader( reader );
 
-	   return content;
+			String line = null;
+			while ( (line = bufferedReader.readLine()) != null )
+			{
+				if ( !content.isEmpty() )
+					content += "\n";
+
+				content += line;
+			}
+
+			bufferedReader.close();
+		}
+		catch ( Throwable e )
+		{
+			LOG.info( filename );
+			e.printStackTrace();
+		}
+
+		return content;
 	}
 
 	public static void writeFile( String filename, String text )
 	{
-	   try 
-	   {
-	       FileWriter writer = new FileWriter( filename );
-	       
-           BufferedWriter bufferedWriter = new BufferedWriter(writer);
+		try
+		{
+			FileWriter writer = new FileWriter( filename );
 
-           bufferedWriter.write( text );
-           //bufferedWriter.newLine();
+			BufferedWriter bufferedWriter = new BufferedWriter( writer );
 
-           bufferedWriter.close();
-	   } 
-	   catch (IOException e) 
-	   {
-	       LOG.info( filename );
-	       e.printStackTrace();
-	   }
+			bufferedWriter.write( text );
+			// bufferedWriter.newLine();
+
+			bufferedWriter.close();
+		}
+		catch ( IOException e )
+		{
+			LOG.info( filename );
+			e.printStackTrace();
+		}
 	}
 
 	public static String cmdExec( String cmdLine )
 	{
 		LOG.info( "cmdExec " + cmdLine );
-		
+
 		String line;
 		String output = "";
 		try
 		{
-			String[] cmd = { "/bin/sh", "-c", cmdLine };
+			String[] cmd =
+			{ "/bin/sh", "-c", cmdLine };
 			Process p = Runtime.getRuntime().exec( cmd );
-			
+
 			BufferedReader input = new BufferedReader( new InputStreamReader( p.getInputStream() ) );
 			while ( (line = input.readLine()) != null )
 			{
@@ -2252,7 +2303,7 @@ public class Utils implements Serializable
 		{
 			ex.printStackTrace();
 		}
-		
+
 		return output;
 	}
 
@@ -2260,7 +2311,8 @@ public class Utils implements Serializable
 	{
 		try
 		{
-			String[] cmd = { "/bin/sh", "-c", cmdLine };
+			String[] cmd =
+			{ "/bin/sh", "-c", cmdLine };
 			Runtime.getRuntime().exec( cmd );
 		}
 		catch ( Throwable e )
@@ -2268,17 +2320,17 @@ public class Utils implements Serializable
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static byte[] getSerializedObject( Object obj )
 	{
 		ObjectOutputStream oos = null;
-		
+
 		try
 		{
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			
-			oos = new ObjectOutputStream(os);
-			oos.writeObject(obj);
+
+			oos = new ObjectOutputStream( os );
+			oos.writeObject( obj );
 
 			return os.toByteArray();
 		}
@@ -2307,12 +2359,12 @@ public class Utils implements Serializable
 	public static Object getDeserializedObject( String content )
 	{
 		ObjectInputStream ois = null;
-		
+
 		try
 		{
-			
+
 			ByteArrayInputStream is = new ByteArrayInputStream( content.getBytes() );
-			
+
 			ois = new ObjectInputStream( is );
 
 			return ois.readObject();
@@ -2338,7 +2390,7 @@ public class Utils implements Serializable
 
 		return null;
 	}
-	
+
 	public static boolean writeObject( String fileName, Object obj )
 	{
 		try
@@ -2346,22 +2398,22 @@ public class Utils implements Serializable
 			FileOutputStream fileOut = new FileOutputStream( fileName );
 
 			ObjectOutputStream objectStream = new ObjectOutputStream( fileOut );
-			
+
 			objectStream.writeObject( obj );
-			
+
 			objectStream.close();
 			fileOut.close();
-			
+
 			return true;
 		}
 		catch ( Throwable e )
 		{
 			e.printStackTrace();
 		}
-		
+
 		return false;
 	}
-	
+
 	public static Object readObject( String fileName )
 	{
 		try
@@ -2369,12 +2421,12 @@ public class Utils implements Serializable
 			FileInputStream fileIn = new FileInputStream( fileName );
 
 			ObjectInputStream objectStream = new ObjectInputStream( fileIn );
-			
+
 			Object request = objectStream.readObject();
-			
+
 			objectStream.close();
 			fileIn.close();
-			
+
 			return request;
 		}
 		catch ( Throwable e )
@@ -2384,20 +2436,20 @@ public class Utils implements Serializable
 
 		return null;
 	}
-	
+
 	public static String extractLastDir( String path )
 	{
 		File file = new File( path );
-		
+
 		return file.getName();
 	}
 
 	public static String formatTimeSpan( int years, int days, int hours, int mins, int secs )
 	{
 		String ret = "";
-		
+
 		int parts = 0;
-		
+
 		if ( years > 0 && parts < 2 )
 		{
 			ret += String.format( "%02dy", years );
@@ -2411,7 +2463,7 @@ public class Utils implements Serializable
 			ret += String.format( "%02dd", days );
 			parts++;
 		}
-		
+
 		if ( hours > 0 && parts < 2 )
 		{
 			if ( !ret.isEmpty() )
@@ -2419,29 +2471,29 @@ public class Utils implements Serializable
 			ret += String.format( "%02dh", hours );
 			parts++;
 		}
-		
+
 		if ( mins > 0 && parts < 2 )
 		{
 			if ( !ret.isEmpty() )
 				ret += " ";
-			ret += String.format( "%02d'", mins ); 
+			ret += String.format( "%02d'", mins );
 			parts++;
 		}
-		
+
 		if ( secs > 0 && parts < 2 )
 		{
 			if ( !ret.isEmpty() )
 				ret += " ";
 			ret += String.format( "%02d\"", secs );
 			parts++;
-		}		
-		
+		}
+
 		return ret;
 	}
-	
+
 	public static Calendar getServerCalendarFromDateLong( long time )
 	{
-		Calendar calendar = GregorianCalendar.getInstance(); 
+		Calendar calendar = GregorianCalendar.getInstance();
 
 		try
 		{
@@ -2450,35 +2502,35 @@ public class Utils implements Serializable
 		catch ( Throwable e )
 		{
 		}
-		
+
 		return calendar;
 	}
-	
+
 	public static String getDuration( long duration )
 	{
-		try 
+		try
 		{
-		    int years = (int) duration / (365 * 3600 * 24);
-		    int remainder = (int) duration - years * 365 * 3600 * 24;
-		    
-		    int days = (int) remainder / (3600*24);
-		    remainder = (int) remainder - days * 3600 * 24;
+			int years = (int)duration / (365 * 3600 * 24);
+			int remainder = (int)duration - years * 365 * 3600 * 24;
 
-		    int hours = (int) remainder / 3600;
-		    remainder = (int) remainder - hours * 3600;
-		    
-		    int mins = remainder / 60;
-		    remainder = remainder - mins * 60;
-		    
-		    int secs = remainder;
-		    
+			int days = (int)remainder / (3600 * 24);
+			remainder = (int)remainder - days * 3600 * 24;
+
+			int hours = (int)remainder / 3600;
+			remainder = (int)remainder - hours * 3600;
+
+			int mins = remainder / 60;
+			remainder = remainder - mins * 60;
+
+			int secs = remainder;
+
 			return Utils.formatTimeSpan( years, days, hours, mins, secs );
-		} 
-		catch (Throwable e) 
+		}
+		catch ( Throwable e )
 		{
 			e.printStackTrace();
 		}
-		
+
 		return "";
 	}
 
@@ -2488,28 +2540,28 @@ public class Utils implements Serializable
 			return "https";
 		if ( url.startsWith( "http://" ) )
 			return "http";
-				
+
 		return "http";
 	}
-	
+
 	public static boolean isHostSeparator( char c )
 	{
 		return c == '/' || c == '?' || c == ':';
 	}
-	
+
 	public static boolean isPortSeparator( char c )
 	{
 		return c == '/' || c == '?';
 	}
-	
+
 	public static String getHostFromUrl( String url )
 	{
 		int pos = url.indexOf( "://" );
-		
+
 		String ret = "";
 
 		int i = pos != -1 ? pos + 3 : 0;
-		
+
 		while ( i < url.length() && !isHostSeparator( url.charAt( i ) ) )
 		{
 			ret += url.charAt( i );
@@ -2522,7 +2574,7 @@ public class Utils implements Serializable
 	public static int getPortFromUrl( String url )
 	{
 		String protocol = getProtocolFromUrl( url );
-		
+
 		String ret = "";
 
 		int pos = url.indexOf( "://" );
@@ -2531,24 +2583,24 @@ public class Utils implements Serializable
 			i++;
 		if ( i < url.length() )
 			i++;
-		
+
 		while ( i < url.length() && !isPortSeparator( url.charAt( i ) ) )
 		{
 			ret += url.charAt( i );
 			i++;
 		}
-		
-		return !ret.isEmpty() ? Integer.parseInt( ret ) : (protocol.equals( "https" ) ? 443 : 80 );
+
+		return !ret.isEmpty() ? Integer.parseInt( ret ) : (protocol.equals( "https" ) ? 443 : 80);
 	}
 
 	public static String getUriFromUrl( String url )
 	{
 		int pos = url.indexOf( "://" );
-		
+
 		String ret = "";
 
 		int i = pos != -1 ? pos + 3 : 0;
-		
+
 		while ( i < url.length() && url.charAt( i ) != '/' )
 			i++;
 
@@ -2560,12 +2612,12 @@ public class Utils implements Serializable
 
 		return ret;
 	}
-	
+
 	public static String removeTrailing( String source, String trail )
 	{
 		if ( source.endsWith( trail ) )
-			return source.substring( 0,  source.length() - trail.length() );
-		
+			return source.substring( 0, source.length() - trail.length() );
+
 		return source;
 	}
 }

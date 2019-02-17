@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.data.Validator;
-import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -17,6 +16,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.TimeValidador;
+import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.common.UtilsUI;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.TimeRange;
@@ -129,7 +130,7 @@ public class BreakComponent extends HorizontalLayout
 		Button remove;
 		TextField start;
 		TextField end;
-		Validator validator  = new RegexpValidator( UtilsUI.TIME_REGEX, null );
+		Validator validator  = new TimeValidador();
 		
 		public BreakDetail()
 		{
@@ -139,7 +140,7 @@ public class BreakComponent extends HorizontalLayout
 		}
 		
 		public boolean isValid(){
-			return start.isValid() && end.isValid();
+			return start.isValid() && end.isValid() && Utils.isValidTimeRange( start.getValue(), end.getValue() );
 		}
 
 		private void buildComponents()
@@ -162,12 +163,14 @@ public class BreakComponent extends HorizontalLayout
 			} );
 			
 			start = UtilsUI.createTimeImput( null, null );
+			start.addValidator( validator );
 			//start.setCaption( ctx.getString( "words.start" ) );
 			start.setWidth( "60px" );
 			start.addStyleName( ValoTheme.TEXTFIELD_SMALL );
 			start.setValue( DEFAULT_START );
 			
 			end = UtilsUI.createTimeImput( null, null );
+			end.addValidator( validator );
 			//end.setCaption( ctx.getString( "words.end" ) );
 			end.setWidth( "60px" );
 			end.addStyleName( ValoTheme.TEXTFIELD_SMALL );

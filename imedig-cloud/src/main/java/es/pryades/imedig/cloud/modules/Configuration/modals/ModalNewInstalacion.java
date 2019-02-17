@@ -49,13 +49,13 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	public ModalNewInstalacion( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, ModalParent parentWindow, String right )
 	{
 		super( ctx, parentWindow, modalOperation, instalacion, right );
-		
+
 		setWidth( "750px" );
-		
-		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );
-		
+
+		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
+
 		initComponents();
-		
+
 		if ( !operation.equals( Operation.OP_DELETE ) )
 			defaultFocus();
 	}
@@ -67,7 +67,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 
 		try
 		{
-			newInstalacion = (Instalacion) Utils.clone( (Instalacion) orgDto );
+			newInstalacion = (Instalacion)Utils.clone( (Instalacion)orgDto );
 		}
 		catch ( Throwable e1 )
 		{
@@ -79,7 +79,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		editNombre = new TextField( getContext().getString( "modalNewInst.lbNombre" ), bi.getItemProperty( "nombre" ) );
 		editNombre.setWidth( "100%" );
 		editNombre.setNullRepresentation( "" );
-		
+
 		editAEtitle = new TextField( getContext().getString( "modalNewInst.lbAEtitle" ), bi.getItemProperty( "aetitle" ) );
 		editAEtitle.setWidth( "100%" );
 		editAEtitle.setNullRepresentation( "" );
@@ -90,43 +90,43 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		comboBoxModalidad.setNewItemsAllowed( false );
 		comboBoxModalidad.setNullSelectionAllowed( true );
 		fillModalidad( comboBoxModalidad );
-		
+
 		editTiempoMin = new TextField( getContext().getString( "modalNewInst.lbTiempoMinimo" ) );
-		editTiempoMin.setRequired( true );
 		editTiempoMin.setWidth( "60px" );
-		
-		//editTiempoMin.setMaxLength( 3 );
+
+		// editTiempoMin.setMaxLength( 3 );
 		InputMask mask = new InputMask( "[0-9]{0,3}" );
 		mask.setRegexMask( true );
 		mask.setPlaceholder( " " );
 		mask.extend( editTiempoMin );
-		
-		FormLayout layout = new FormLayout(editNombre, editAEtitle, comboBoxModalidad, editTiempoMin);
+		editTiempoMin.setValue( "30" );
+
+		FormLayout layout = new FormLayout( editNombre, editAEtitle, comboBoxModalidad, editTiempoMin );
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );
-		
+
 		componentsContainer.addComponent( layout );
-		
+
 		Panel panel = new Panel( getContext().getString( "modalNewInst.lbHorario" ) );
 		panel.setWidth( "100%" );
 		panel.setHeight( "425px" );
-		
+
 		List<DayPlan<String>> plan = null;
 		DatosIntalacion datos = getExtraInformationFromJson();
-		if (datos != null && datos.getWorkingPlan() != null){
+		if ( datos != null && datos.getWorkingPlan() != null )
+		{
 			plan = datos.getWorkingPlan().getDiaryPlan();
 		}
 		workingPlanComponent = new WorkingPlanComponent( getContext(), plan );
 		workingPlanComponent.setWidth( "100%" );
 		panel.setContent( workingPlanComponent );
-		//panel.addStyleName( ValoTheme.PANEL_BORDERLESS );
-		componentsContainer.addComponent( panel );		
-		
+		// panel.addStyleName( ValoTheme.PANEL_BORDERLESS );
+		componentsContainer.addComponent( panel );
+
 	}
-	
-	
-	protected abstract void fillModalidad(ComboBox comboBox);
+
+	protected abstract void fillModalidad( ComboBox comboBox );
 
 	@Override
 	protected String getWindowResourceKey()
@@ -135,7 +135,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	}
 
 	protected abstract String getMainResourceKey();
-	
+
 	@Override
 	protected void defaultFocus()
 	{
@@ -146,12 +146,13 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			if (!workingPlanComponent.isValid()){
+			if ( !workingPlanComponent.isValid() )
+			{
 				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
 				return false;
 			}
-			
-			DatosIntalacion datos = getExtraInformation(); 
+
+			DatosIntalacion datos = getExtraInformation();
 			newInstalacion.setDatos( Utils.toJson( datos ) );
 			newInstalacion.setTipo( getTipo() );
 			instalacionesManager.setRow( context, null, newInstalacion );
@@ -165,28 +166,31 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 
 		return false;
 	}
-	
+
 	private DatosIntalacion getExtraInformation()
 	{
 		DatosIntalacion datos = new DatosIntalacion();
 		WorkingPlan workingPlan = new WorkingPlan();
 		workingPlan.setDiaryPlan( workingPlanComponent.getWeekPlan() );
 		datos.setWorkingPlan( workingPlan );
-		
-		if (StringUtils.isEmpty( editTiempoMin.getValue())){
+
+		if ( StringUtils.isEmpty( editTiempoMin.getValue() ) )
+		{
 			datos.setTiempominimo( 60 );
-		}else{
-			datos.setTiempominimo( Integer.getInteger( editTiempoMin.getValue() ) );
 		}
-		
+		else
+		{
+			datos.setTiempominimo( Integer.valueOf( editTiempoMin.getValue() ) );
+		}
+
 		return datos;
 	}
-	
+
 	private DatosIntalacion getExtraInformationFromJson()
 	{
-		if (StringUtils.isBlank( newInstalacion.getDatos()) ) return null;
-		
-		DatosIntalacion datos = null;
+		if ( StringUtils.isBlank( newInstalacion.getDatos() ) )
+			return null;
+
 		try
 		{
 			return (DatosIntalacion)Utils.toPojo( newInstalacion.getDatos(), DatosIntalacion.class, false );
@@ -205,15 +209,16 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			if (!workingPlanComponent.isValid()){
+			if ( !workingPlanComponent.isValid() )
+			{
 				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
 				return false;
 			}
-			
-			DatosIntalacion datos = getExtraInformation(); 
+
+			DatosIntalacion datos = getExtraInformation();
 			newInstalacion.setDatos( Utils.toJson( datos ) );
 			newInstalacion.setTipo( getTipo() );
-			instalacionesManager.setRow( context, (Instalacion) orgDto, newInstalacion );
+			instalacionesManager.setRow( context, (Instalacion)orgDto, newInstalacion );
 
 			return true;
 		}
@@ -241,5 +246,4 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		return false;
 	}
 
-	
 }
