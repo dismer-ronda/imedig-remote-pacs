@@ -61,7 +61,7 @@ import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.actions.QueryStudies;
 import es.pryades.imedig.viewer.actions.ShowReportsListAction;
 import es.pryades.imedig.viewer.components.ViewerWnd;
-import es.pryades.imedig.viewer.components.citations.CitationsViewer;
+import es.pryades.imedig.viewer.components.appointments.AppointmentsViewer;
 import es.pryades.imedig.viewer.components.patients.PatientsViewer;
 import es.pryades.imedig.viewer.components.query.QueryViewer;
 import lombok.Getter;
@@ -105,7 +105,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private ImedigContext context;
 
 	private PatientsViewer patientViewer;
-	private CitationsViewer citationsViewer;
+	private AppointmentsViewer citationsViewer;
 	private ViewerWnd imageViewer;
 	private ReportsViewer reportsViewer;
 	private QueryViewer queryViewer;
@@ -643,7 +643,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		
 		contents.removeAllComponents();
 		if (citationsViewer == null){
-			citationsViewer = new CitationsViewer( context);
+			citationsViewer = new AppointmentsViewer( context);
 		}
 		contents.addComponent( citationsViewer );
 	}

@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.Date;
 
@@ -14,19 +14,25 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.BackwardHandler
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventMoveHandler;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventResizeHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.ForwardHandler;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClickHandler;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DatosIntalacion;
 import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.PlanificacionHorario;
+import es.pryades.imedig.cloud.dto.TipoHorario;
+import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import lombok.Getter;
 
-public class CitationSchedulerViewer extends VerticalLayout implements ModalParent, EventClickHandler
+public class AppointmentSchedulerViewer extends VerticalLayout implements ModalParent, EventClickHandler
 {
 	
 	private static final long serialVersionUID = 1683377378764769059L;
@@ -34,16 +40,16 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	private ImedigContext ctx;
 	@Getter
 	private Instalacion instalacion;
-	private DatosIntalacion datosIntalacion;	
-	private CitationsEventProvider eventProvider;
+	private AppointmentEventProvider eventProvider;
 	Calendar citationsCalendar;
 	private CalendarPeriodPanel periodPanel;
+	private PlanificacionHorario planificacionHorario;
 	
 	private String timeZone;
 	private Integer firstHour;
 	private Integer lastHour;
 	
-	public CitationSchedulerViewer( ImedigContext ctx, Instalacion instalacion)
+	public AppointmentSchedulerViewer( ImedigContext ctx, Instalacion instalacion)
 	{
 		this.ctx = ctx;
 		this.instalacion = instalacion;
@@ -59,41 +65,42 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 
 	private void settingInstalationWorkingPlan()
 	{
-		datosIntalacion = getExtraInformationFromJson();
+		planificacionHorario = getPlanificacionHorarioFromJson();
 
 		firstHour = findFirstHour();
 		lastHour = findLastHour();
 	}
 	
-	private DatosIntalacion getExtraInformationFromJson()
+	private PlanificacionHorario getPlanificacionHorarioFromJson()
 	{
-		if (StringUtils.isBlank( instalacion.getDatos()) ) return new DatosIntalacion();
-		
 		try
 		{
-			return (DatosIntalacion)Utils.toPojo( instalacion.getDatos(), DatosIntalacion.class, false );
+			TipoHorarioManager manager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
+			TipoHorario tipoHorario = (TipoHorario)manager.getRow( ctx, instalacion.getTipo_horario() );
+			
+			if (StringUtils.isBlank( tipoHorario.getDatos()) ) return new PlanificacionHorario();
+			return (PlanificacionHorario)Utils.toPojo( tipoHorario.getDatos(), PlanificacionHorario.class, false );
 		}
 		catch ( Throwable e )
 		{
 		}
-		return new DatosIntalacion();
+		return new PlanificacionHorario();
 	}
 
 	private Integer findFirstHour()
 	{
-		if (datosIntalacion.getWorkingPlan() == null || datosIntalacion.getWorkingPlan().getDiaryPlan() == null)
+		if (planificacionHorario.getDiaryPlan() == null)
 			return 8;
 		
-		return AppointmentUtils.getEarlyHour( datosIntalacion.getWorkingPlan().getDiaryPlan() );
+		return AppointmentUtils.getEarlyHour( planificacionHorario.getDiaryPlan() );
 	}
 	
 	private Integer findLastHour()
 	{
-		if (datosIntalacion.getWorkingPlan() == null || datosIntalacion.getWorkingPlan().getDiaryPlan() == null)
+		if (planificacionHorario.getDiaryPlan() == null)
 			return 18;
 		
-		
-		return AppointmentUtils.getLaterHour( datosIntalacion.getWorkingPlan().getDiaryPlan() );
+		return AppointmentUtils.getLaterHour( planificacionHorario.getDiaryPlan() );
 	}
 	
 	private void buildComponents()
@@ -108,7 +115,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setFirstVisibleHourOfDay( firstHour );
 		citationsCalendar.setLastVisibleHourOfDay( lastHour );
 		
-		eventProvider = new CitationsEventProvider( ctx, instalacion, citationsCalendar );
+		eventProvider = new AppointmentEventProvider( ctx, instalacion, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
@@ -137,7 +144,9 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 		citationsCalendar.setHandler( (ForwardHandler)periodPanel );
 		citationsCalendar.setHandler( (BackwardHandler)periodPanel );
 		citationsCalendar.setHandler( (EventClickHandler)this);
-
+		citationsCalendar.setHandler( (EventMoveHandler)null);
+		citationsCalendar.setHandler( (EventResizeHandler)null);
+		citationsCalendar.setHandler( (RangeSelectHandler)null);
 	}
 	
 	public void setDates(Date start, Date end){
@@ -146,7 +155,7 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	}
 	
 	public void newCitation(){
-		ModalCitationDlg dlg = new ModalCitationDlg( ctx, Operation.OP_ADD, instalacion, null, this, "administracion.citas" );
+		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, Operation.OP_ADD, instalacion, null, this, "administracion.citas" );
 		dlg.setDate( getStartDate() );
 		dlg.showModalWindow();
 	}
@@ -175,12 +184,22 @@ public class CitationSchedulerViewer extends VerticalLayout implements ModalPare
 	@Override
 	public void eventClick( EventClick event )
 	{
-		CitationEvent citationEvent = (CitationEvent)event.getCalendarEvent();
+		AppointmentEvent citationEvent = (AppointmentEvent)event.getCalendarEvent();
 		Operation operation = citationEvent.getData() == null ? Operation.OP_ADD : Operation.OP_MODIFY;
-		ModalCitationDlg dlg = new ModalCitationDlg( ctx, operation, instalacion, citationEvent.getData(), this, "administracion.citas" );
+		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, operation, instalacion, citationEvent.getData(), this, "administracion.citas" );
 		dlg.setDate( citationEvent.getStart() );
-		dlg.setEndDate( citationEvent.getEnd() );
+		dlg.setDuracionMin( calDuracionInMin( citationEvent.getStart(), citationEvent.getEnd() ) );
+		//dlg.setEndDate( citationEvent.getEnd() );
 		dlg.showModalWindow();
 	}
 
+	private Integer calDuracionInMin( Date from, Date to )
+	{
+		Long mili = to.getTime() - from.getTime(); // diferencia de tiempo en
+													// milisegundos
+		Long seg = mili / 1000;// llevarlo a segundo
+		Long min = seg / 60; // llevarlo a minutos
+
+		return min.intValue();
+	}
 }

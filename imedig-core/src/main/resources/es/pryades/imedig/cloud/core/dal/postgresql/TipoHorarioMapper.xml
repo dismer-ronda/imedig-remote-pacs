@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.TipoHorarioMapper">
+
+	<sql id="where">
+	    <if test="nombre != null">
+			AND UPPER(nombre) like UPPER('%${nombre}%')   
+        </if>
+		<if test="tipo_instalacion != null">
+			AND tipo_instalacion = #{tipo_instalacion}   
+        </if>
+        <if test="tipo_horario != null">
+			AND tipo_horario = #{tipo_horario}   
+        </if>
+	</sql>
+	
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		select count(1) 
+		from susc_tipos_horarios 
+		<where><include refid="where"/></where>
+	</select>
+	
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.TipoHorario">
+		select *
+		from susc_tipos_horarios
+		<where><include refid="where"/></where>
+		order by nombre asc
+		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
+	</select>
+
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.TipoHorario">
+		select *
+		from susc_tipos_horarios
+		<where><include refid="where"/></where>
+		order by nombre asc
+	</select>
+	
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.TipoHorario">
+		select * from susc_tipos_horarios 
+		where id = #{id}
+	</select>
+
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.TipoHorario">
+
+		<selectKey keyProperty="id" resultType="int" order="BEFORE">
+			SELECT nextval('gencfg');
+		</selectKey>
+
+		insert into susc_tipos_horarios
+		(
+			id,
+			nombre, 
+			tipo_instalacion,
+			tipo_horario,
+			datos
+		)
+		values
+		(
+			#{id},
+			#{nombre},
+			#{tipo_instalacion},
+			#{tipo_horario},
+			#{datos}
+		)
+	</insert>
+
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.TipoHorario">
+		update susc_tipos_horarios
+		set
+			nombre=#{nombre},
+			tipo_instalacion=#{tipo_instalacion},
+			tipo_horario=#{tipo_horario},
+			datos = #{datos}
+		where id = #{id}
+	</update>
+
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.TipoHorario">
+		delete from susc_tipos_horarios where id = #{id}
+	</update>
+
+</mapper>

@@ -1,9 +1,12 @@
 package es.pryades.imedig.cloud.modules.Configuration.modals;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.log4j.Logger;
-import org.vaadin.risto.stepper.IntStepper;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
@@ -34,8 +37,10 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	protected TipoEstudio newTipoEstudio;
 
 	private TextField editNombre;
-	private IntStepper stepperDuracion;
+	private ComboBox comboBoxDuracion;
 	private OptionGroup groupTipo;
+	
+	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 12, 15, 20, 30, 60 );
 
 	private TiposEstudiosManager tiposEstudiosManager;
 
@@ -65,7 +70,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		catch ( Throwable e1 )
 		{
 			newTipoEstudio = new TipoEstudio();
-			newTipoEstudio.setDuracion( 15 );
+			newTipoEstudio.setDuracion( 10 );
 		}
 
 		bi = new BeanItem<ImedigDto>( newTipoEstudio );
@@ -82,18 +87,29 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		groupTipo.setRequired( true );
 		groupTipo.setValue( 1 );
 
-		stepperDuracion = new IntStepper( getContext().getString( "modalNewStudyType.lbDuracion" ));
-		stepperDuracion.setPropertyDataSource( bi.getItemProperty( "duracion" ) );
-		stepperDuracion.setWidth( "60px" );
-		stepperDuracion.setRequired( true );
+		comboBoxDuracion = new ComboBox( getContext().getString( "modalNewStudyType.lbDuracion" ) );
+		comboBoxDuracion.setWidth( "80px" );
+		comboBoxDuracion.setNullSelectionAllowed( false );
+		comboBoxDuracion.setNewItemsAllowed( false );
+		comboBoxDuracion.setRequired( true );
+		fillDuracion(comboBoxDuracion);
+		comboBoxDuracion.setPropertyDataSource( bi.getItemProperty( "duracion" ) );
 		
-		FormLayout layout = new FormLayout(editNombre, groupTipo, stepperDuracion);
+		FormLayout layout = new FormLayout(editNombre, groupTipo, comboBoxDuracion);
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );
 		
 		componentsContainer.addComponent( layout );
 		
+	}
+
+	private void fillDuracion( ComboBox comboBox )
+	{
+		for ( Integer n : NUMBERS )
+		{
+			comboBox.addItem( n );
+		}
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class FacilityTypeViewer extends VerticalLayout
 	private void buildFacilities() throws Throwable
 	{
 		
-		List<CitationSchedulerViewer> viewers = new ArrayList<>();
+		List<AppointmentSchedulerViewer> viewers = new ArrayList<>();
 		Instalacion query = new Instalacion();
 		query.setTipo( type );
 		int counter = instalacionesManager.getNumberOfRows( ctx, query );
@@ -66,7 +66,7 @@ public class FacilityTypeViewer extends VerticalLayout
 		
 		for ( Instalacion instalacion : instalaciones )
 		{
-			viewers.add( new CitationSchedulerViewer( ctx, instalacion ) );
+			viewers.add( new AppointmentSchedulerViewer( ctx, instalacion ) );
 		}
 		
 		if (counter == 0) return;
@@ -78,17 +78,17 @@ public class FacilityTypeViewer extends VerticalLayout
 		
 	}
 
-	private void addFacilities( CitationSchedulerViewer facilityTypeViewer )
+	private void addFacilities( AppointmentSchedulerViewer facilityTypeViewer )
 	{
 		addComponent( facilityTypeViewer );
 		
 	}
 
-	private void addFacilities( List<CitationSchedulerViewer> viewers )
+	private void addFacilities( List<AppointmentSchedulerViewer> viewers )
 	{
 		tabSheet = new TabSheet();
 		tabSheet.setSizeFull();
-		for ( CitationSchedulerViewer viewer : viewers )
+		for ( AppointmentSchedulerViewer viewer : viewers )
 		{
 			tabSheet.addTab( viewer,  viewer.getInstalacion().getNombre()+" ("+viewer.getInstalacion().getModalidad()+")");
 		}

@@ -54,7 +54,8 @@
 			aetitle,
 			modalidad,
 			tipo,
-			datos
+			tiempominimo,
+    		tipo_horario
 		)
 		values
 		(
@@ -63,7 +64,8 @@
 			#{aetitle},
 			#{modalidad},
 			#{tipo},
-			#{datos}
+			#{tiempominimo},
+			#{tipo_horario}
 		)
 	</insert>
 
@@ -74,7 +76,8 @@
 			aetitle=#{aetitle},
 			modalidad=#{modalidad},
 			tipo = #{tipo},
-			datos = #{datos}
+			tiempominimo = #{tiempominimo},
+			tipo_horario = #{tipo_horario}
 		where id = #{id}
 	</update>
 

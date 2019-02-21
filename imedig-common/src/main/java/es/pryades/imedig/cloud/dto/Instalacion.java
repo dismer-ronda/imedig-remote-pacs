@@ -13,5 +13,6 @@ public class Instalacion extends ImedigDto
     private String aetitle;
     private String modalidad;
     private Integer tipo;
-    private String datos;
+    private Integer tiempominimo;
+    private Integer tipo_horario;
 }

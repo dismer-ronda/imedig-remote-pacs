@@ -1,6 +1,8 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -16,22 +18,25 @@ import org.joda.time.LocalTime;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 
+import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.EstudiosManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
+import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DatosIntalacion;
 import es.pryades.imedig.cloud.dto.DayPlan;
 import es.pryades.imedig.cloud.dto.Estudio;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
+import es.pryades.imedig.cloud.dto.PlanificacionHorario;
 import es.pryades.imedig.cloud.dto.TimeRange;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
+import es.pryades.imedig.cloud.dto.TipoHorario;
 import es.pryades.imedig.cloud.dto.query.EstudioQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 
-public class CitationsEventProvider implements CalendarEventProvider
+public class AppointmentEventProvider implements CalendarEventProvider
 {
 	private static final long serialVersionUID = 16654819655615842L;
 
@@ -40,18 +45,24 @@ public class CitationsEventProvider implements CalendarEventProvider
 	private EstudiosManager estudiosManager;
 	private TiposEstudiosManager tiposEstudiosManager;
 	private PacientesManager pacientesManager;
-	private DatosIntalacion datosIntalacion;
+	private TipoHorarioManager tipoHorarioManager;
+	
+	private TipoHorario tipoHorario;
+	private PlanificacionHorario planificacionHorario;
 
 	private Calendar mainCalendar = GregorianCalendar.getInstance();
 	private Map<Integer, TimeRange<LocalTime>> mapWorking;
 	private Map<Integer, List<TimeRange<LocalTime>>> breaksByDay;
+	
+	private static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat( "dd/MM/yyyy" );
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat( "HH:mm" );
 
 	private com.vaadin.ui.Calendar citationsCalendar;
 
 	private int timeField = Calendar.MINUTE;
 	private int amount = 10;
 
-	public CitationsEventProvider( ImedigContext ctx, Instalacion instalacion, com.vaadin.ui.Calendar citationsCalendar )
+	public AppointmentEventProvider( ImedigContext ctx, Instalacion instalacion, com.vaadin.ui.Calendar citationsCalendar )
 	{
 		this.ctx = ctx;
 		this.instalacion = instalacion;
@@ -60,17 +71,80 @@ public class CitationsEventProvider implements CalendarEventProvider
 		estudiosManager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
 		tiposEstudiosManager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class );
 		pacientesManager = (PacientesManager)IOCManager.getInstanceOf( PacientesManager.class );
-
+		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
+		
 		settingPlan();
 	}
 
 	private void settingPlan()
 	{
-		DatosIntalacion datos = getExtraInformationFromJson();
-		amount = datos.getTiempominimo();
+		planificacionHorario = getPlanificacionHorarioFromJson();
+		
+		amount = instalacion.getTiempominimo();
 		mapWorking = new HashMap<>();
 		breaksByDay = new HashMap<>();
-		for ( DayPlan<String> plan : datos.getWorkingPlan().getDiaryPlan() )
+		
+		settingPlan( tipoHorario.getTipo_horario() );
+	}
+	
+	private void settingPlan(int type)
+	{
+		switch ( type )
+		{
+			case Constants.SCHEDULER_ALL_EQUALS:
+				settingPlanAllEquals();
+				break;
+			case Constants.SCHEDULER_ALL_WEEK_DAYS:
+				settingPlanWeekDays();
+				break;
+			case Constants.SCHEDULER_CUSTOM:
+				settingPlanCustom();
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void settingPlanAllEquals()
+	{
+		DayPlan<String> plan = planificacionHorario.getDiaryPlan().get( 0 );
+		
+		List<Integer> days = Arrays.asList( Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY );
+		for ( Integer day : days )
+		{
+			mapWorking.put( day, getTimeRange( plan.getWorkingTime().getStart(), plan.getWorkingTime().getEnd() ) );
+
+			settingBreaks( day, plan.getBreaks() );
+		}
+		
+	}
+
+	private void settingPlanWeekDays()
+	{
+		List<DayPlan<String>> daysplan = new ArrayList<>( planificacionHorario.getDiaryPlan() );
+		DayPlan<String> plan = daysplan.get( 0 );
+		
+		List<Integer> days = Arrays.asList( Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY );
+		for ( Integer day : days )
+		{
+			mapWorking.put( day, getTimeRange( plan.getWorkingTime().getStart(), plan.getWorkingTime().getEnd() ) );
+
+			settingBreaks( day, plan.getBreaks() );
+		}
+		
+		daysplan.remove( plan );
+		for ( DayPlan<String> dayplan : daysplan )
+		{
+			mapWorking.put( dayplan.getDay(), getTimeRange( dayplan.getWorkingTime().getStart(), dayplan.getWorkingTime().getEnd() ) );
+
+			settingBreaks( dayplan.getDay(), dayplan.getBreaks() );
+		}
+	}
+
+	private void settingPlanCustom()
+	{
+		for ( DayPlan<String> plan : planificacionHorario.getDiaryPlan() )
 		{
 			mapWorking.put( plan.getDay(), getTimeRange( plan.getWorkingTime().getStart(), plan.getWorkingTime().getEnd() ) );
 
@@ -98,19 +172,20 @@ public class CitationsEventProvider implements CalendarEventProvider
 		return new TimeRange<LocalTime>( s, e );
 	}
 
-	private DatosIntalacion getExtraInformationFromJson()
+	private PlanificacionHorario getPlanificacionHorarioFromJson()
 	{
-		if ( StringUtils.isBlank( instalacion.getDatos() ) )
-			return new DatosIntalacion();
-
 		try
 		{
-			return (DatosIntalacion)Utils.toPojo( instalacion.getDatos(), DatosIntalacion.class, false );
+			TipoHorarioManager manager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
+			tipoHorario = (TipoHorario)manager.getRow( ctx, instalacion.getTipo_horario() );
+			
+			if (StringUtils.isBlank( tipoHorario.getDatos()) ) return new PlanificacionHorario();
+			return (PlanificacionHorario)Utils.toPojo( tipoHorario.getDatos(), PlanificacionHorario.class, false );
 		}
 		catch ( Throwable e )
 		{
 		}
-		return new DatosIntalacion();
+		return new PlanificacionHorario();
 	}
 
 	@Override
@@ -244,7 +319,7 @@ public class CitationsEventProvider implements CalendarEventProvider
 		while ( start1.before( end ) )
 		{
 
-			if ( event != null && inside( event, start1, end1 ) )
+			if ( inside( event, start1, end1 ) )
 			{
 				start1 = addEvent( result, event, start1, end1 );
 				events = tail( events );
@@ -258,7 +333,11 @@ public class CitationsEventProvider implements CalendarEventProvider
 			}
 			else
 			{
-				result.add( freeEvent( start1, end1 ) );
+				if (end1.after( end )){
+					result.add( freeEvent( start1, end ) );
+				}else{
+					result.add( freeEvent( start1, end1 ) );
+				}
 				start1 = end1;
 				end1 = incNextTimePeriod();
 				while ( start1.after( end1 ) )
@@ -425,29 +504,50 @@ public class CitationsEventProvider implements CalendarEventProvider
 
 	private static boolean inside( CalendarEvent event, Date start, Date end )
 	{
+		if (event == null) return false;
+		
 		return (start.equals( event.getStart() ) || start.before( event.getStart() )) && end.after( event.getStart() );
 	}
 
 	private CalendarEvent toEvent( Estudio estudio ) throws Throwable
 	{
 
-		TipoEstudio tipoEstudio = (TipoEstudio)tiposEstudiosManager.getRow( ctx, estudio.getTipo() );
+		
 		Paciente paciente = (Paciente)pacientesManager.getRow( ctx, estudio.getPaciente() );
 
-		CitationEvent event = new CitationEvent();
+		AppointmentEvent event = new AppointmentEvent();
 		event.setCaption( paciente.getNombreCompleto() );
-		event.setDescription( paciente.getNombreCompletoConIdentificador() + "<br/>" + "Otra linea" );
+		event.setDescription( getDescription( paciente, estudio ) );
 		event.setStart( Utils.getDateHourFromLong( estudio.getFecha() ) );
 		event.setEnd( Utils.getDateHourFromLong( estudio.getFechafin() ) );
 		event.setData( estudio );
 
 		return event;
 	}
+	
+	private String getDescription(Paciente paciente, Estudio estudio) throws Throwable{
+		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ));
+		String inicio = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFecha()));
+		String fin = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFechafin()));
+		//String instalacion = getInstalacion( estudio.getInstalacion() ).getNombre();
+		TipoEstudio tipoEstudio = (TipoEstudio)tiposEstudiosManager.getRow( ctx, estudio.getTipo() );
+		
+		StringBuilder s = new StringBuilder();
+		s.append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbIdentificador") ).append( ": </b>" ).append( paciente.getUid() ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbNombre") ).append( ": </b>" ).append( paciente.getNombreCompleto() ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "words.facility") ).append( ": </b>" ).append( instalacion.getNombre() ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbTipo") ).append( ": </b>" ).append( tipoEstudio.getNombre() ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbHoraInicio") ).append( ": </b>" ).append( inicio ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbHoraFin") ).append( ": </b>" ).append( fin );
+
+		return s.toString(); 
+	}
 
 	private CalendarEvent freeEvent( Date start, Date end )
 	{
 
-		CitationEvent event = new CitationEvent();
+		AppointmentEvent event = new AppointmentEvent();
 		event.setStart( start );
 		event.setEnd( end );
 		event.setStyleName( "color2" );

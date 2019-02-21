@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.io.Serializable;
 import java.util.List;

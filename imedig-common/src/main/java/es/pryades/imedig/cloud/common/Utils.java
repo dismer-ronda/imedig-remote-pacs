@@ -2160,6 +2160,23 @@ public class Utils implements Serializable
 		else
 			return Integer.toString( ageYr ) + year;
 	}
+	
+	public static String elapseTimeFromSec( Integer seconds )
+	{
+        int sec = seconds % 60;
+        int hour = seconds / 60;
+        int min = hour % 60;
+        hour = hour / 60;
+        
+        if (min == 0) return String.format( "%dh", hour);
+        
+        return String.format( "%dh, %dmin", hour, min );
+	}
+
+	public static String elapseTimeFromMin( Integer minutes )
+	{
+		return elapseTimeFromSec( minutes * 60 );
+	}
 
 	public static String getLastYearDate( String format )
 	{

@@ -22,6 +22,7 @@ import es.pryades.imedig.cloud.modules.Configuration.tabs.ImagenesConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.InformesPlantillasConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.StudiesListTab;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.TiposEstudiosConfig;
+import es.pryades.imedig.cloud.modules.Configuration.tabs.TiposHorariosConfig;
 import es.pryades.imedig.cloud.modules.Configuration.tabs.UsuariosConfig;
 import lombok.Getter;
 import lombok.Setter;
@@ -101,6 +102,10 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 				if ( ctx.hasRight( "configuracion.tipos.estudios" ) )
 				{
 					tabContentList.add( new TiposEstudiosConfig( ctx ) );
+				}
+				if ( ctx.hasRight( "configuracion.tipos.horarios" ) )
+				{
+					tabContentList.add( new TiposHorariosConfig( ctx ) );
 				}
 				
 				if ( ctx.hasRight( "configuracion.instalaciones" ) )

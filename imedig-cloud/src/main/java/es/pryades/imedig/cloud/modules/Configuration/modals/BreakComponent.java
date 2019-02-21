@@ -10,6 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
@@ -47,7 +48,8 @@ public class BreakComponent extends HorizontalLayout
 	private void buildComponents()
 	{
 		GridLayout grid = new GridLayout( 2, 1 );
-		grid.setWidth( "100%" );
+		//grid.setWidth( "100%" );
+		grid.setSpacing( true );
 		grid.setColumnExpandRatio( 0, 0.15f );
 		grid.setColumnExpandRatio( 1, 0.85f );
 		Button button = new Button( FontAwesome.PLUS);
@@ -137,6 +139,8 @@ public class BreakComponent extends HorizontalLayout
 			super();
 			setSpacing( true );
 			this.buildComponents();
+			
+			start.focus();
 		}
 		
 		public boolean isValid(){
@@ -164,32 +168,31 @@ public class BreakComponent extends HorizontalLayout
 			
 			start = UtilsUI.createTimeImput( null, null );
 			start.addValidator( validator );
-			//start.setCaption( ctx.getString( "words.start" ) );
+			start.setCaption( ctx.getString( "words.start" ) );
 			start.setWidth( "60px" );
 			start.addStyleName( ValoTheme.TEXTFIELD_SMALL );
 			start.setValue( DEFAULT_START );
 			
 			end = UtilsUI.createTimeImput( null, null );
 			end.addValidator( validator );
-			//end.setCaption( ctx.getString( "words.end" ) );
+			end.setCaption( ctx.getString( "words.end" ) );
 			end.setWidth( "60px" );
 			end.addStyleName( ValoTheme.TEXTFIELD_SMALL );
 			end.setValue( DEFAULT_END );
 			
-//			FormLayout s = new FormLayout( start );
-//			s.setMargin( false );
-//			FormLayout e = new FormLayout( end );
-//			e.setMargin( false );
-			addComponents( remove, start, end );
+			FormLayout s = new FormLayout( start );
+			s.setMargin( false );
+			FormLayout e = new FormLayout( end );
+			e.setMargin( false );
+			addComponents( remove, s, e );
 			setComponentAlignment( remove, Alignment.MIDDLE_CENTER );
-			setComponentAlignment( start, Alignment.MIDDLE_CENTER );
-			setComponentAlignment( end, Alignment.MIDDLE_CENTER );
+			setComponentAlignment( s, Alignment.MIDDLE_CENTER );
+			setComponentAlignment( e, Alignment.MIDDLE_CENTER );
 		}
 
 		private void removeThis()
 		{
 			breaksContent.removeComponent( this );
 		}
-		
 	}
 }

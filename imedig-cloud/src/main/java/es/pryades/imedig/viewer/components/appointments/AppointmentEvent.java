@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.Date;
 
@@ -8,7 +8,7 @@ import es.pryades.imedig.cloud.dto.Estudio;
 import lombok.Getter;
 import lombok.Setter;
 
-public class CitationEvent extends BasicEvent
+public class AppointmentEvent extends BasicEvent
 {
 
 	private static final long serialVersionUID = -7147097006359825905L;
@@ -16,12 +16,12 @@ public class CitationEvent extends BasicEvent
 	@Getter @Setter
 	private Estudio data;
 
-	public CitationEvent()
+	public AppointmentEvent()
 	{
 		super();
 	}
 	
-	public CitationEvent(String caption, String description, Date startDate, Date endDate, Estudio estudio) {
+	public AppointmentEvent(String caption, String description, Date startDate, Date endDate, Estudio estudio) {
         super( caption, description, startDate, endDate );
         data = estudio;
     }

@@ -69,4 +69,9 @@ public class Constants implements Serializable
 	public static final Integer PROFILE_CENTER_ADMIN = 4;
 	public static final Integer PROFILE_STUDENT = 5;
 	public static final Integer PROFILE_ADMINISTRATIVE = 6;
+	
+	//Tipo de horarios
+	public static final int SCHEDULER_ALL_EQUALS = 0;
+	public static final int SCHEDULER_ALL_WEEK_DAYS = 1;
+	public static final int SCHEDULER_CUSTOM = 2;
 }

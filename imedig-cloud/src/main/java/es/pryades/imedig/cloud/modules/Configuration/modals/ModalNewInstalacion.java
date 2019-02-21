@@ -1,26 +1,23 @@
 package es.pryades.imedig.cloud.modules.Configuration.modals;
 
+import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.vaadin.inputmask.InputMask;
 
 import com.vaadin.data.util.BeanItem;
+import com.vaadin.data.util.converter.StringToIntegerConverter;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.DatosIntalacion;
-import es.pryades.imedig.cloud.dto.DayPlan;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Instalacion;
-import es.pryades.imedig.cloud.dto.WorkingPlan;
+import es.pryades.imedig.cloud.dto.TipoHorario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
@@ -40,12 +37,15 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 
 	private TextField editNombre;
 	private TextField editAEtitle;
-	private TextField editTiempoMin;
+	private ComboBox comboBoxTiempoMin;
 	private ComboBox comboBoxModalidad;
-	private WorkingPlanComponent workingPlanComponent;
+	private ComboBox comboBoxHorario;
 
 	private InstalacionesManager instalacionesManager;
-
+	private TipoHorarioManager tipoHorarioManager;
+	
+	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 12, 15, 20, 30, 60 );
+	
 	public ModalNewInstalacion( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, ModalParent parentWindow, String right )
 	{
 		super( ctx, parentWindow, modalOperation, instalacion, right );
@@ -53,6 +53,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		setWidth( "750px" );
 
 		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
+		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
 
 		initComponents();
 
@@ -72,6 +73,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		catch ( Throwable e1 )
 		{
 			newInstalacion = new Instalacion();
+			newInstalacion.setTiempominimo( 10 );
 		}
 
 		bi = new BeanItem<ImedigDto>( newInstalacion );
@@ -90,40 +92,63 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		comboBoxModalidad.setNewItemsAllowed( false );
 		comboBoxModalidad.setNullSelectionAllowed( true );
 		fillModalidad( comboBoxModalidad );
+		
+		comboBoxHorario = new ComboBox( getContext().getString( "modalNewInst.lbHorario" ) );
+		comboBoxHorario.setPropertyDataSource( bi.getItemProperty( "tipo_horario" ) );
+		comboBoxHorario.setWidth( "100%" );
+		comboBoxHorario.setNewItemsAllowed( false );
+		comboBoxHorario.setNullSelectionAllowed( false );
+		comboBoxHorario.setRequired( false );;
+		fillHorarios( comboBoxHorario );
 
-		editTiempoMin = new TextField( getContext().getString( "modalNewInst.lbTiempoMinimo" ) );
-		editTiempoMin.setWidth( "60px" );
+		StringToIntegerConverter converter = new StringToIntegerConverter();
+		
+		comboBoxTiempoMin = new ComboBox( getContext().getString( "modalNewInst.lbTiempoMinimo" ) );
+		comboBoxTiempoMin.setWidth( "80px" );
+		comboBoxTiempoMin.setNullSelectionAllowed( false );
+		comboBoxTiempoMin.setNewItemsAllowed( false );
+		fillTiemposMinimos(comboBoxTiempoMin);
+		comboBoxTiempoMin.setPropertyDataSource( bi.getItemProperty( "tiempominimo" ) );
+		
+//		InputMask mask = new InputMask( "[0-9]{0,3}" );
+//		mask.setRegexMask( true );
+//		mask.setPlaceholder( " " );
+//		mask.extend( editTiempoMin );
+//		editTiempoMin.setValue( "30" );
 
-		// editTiempoMin.setMaxLength( 3 );
-		InputMask mask = new InputMask( "[0-9]{0,3}" );
-		mask.setRegexMask( true );
-		mask.setPlaceholder( " " );
-		mask.extend( editTiempoMin );
-		editTiempoMin.setValue( "30" );
-
-		FormLayout layout = new FormLayout( editNombre, editAEtitle, comboBoxModalidad, editTiempoMin );
+		FormLayout layout = new FormLayout( editNombre, editAEtitle, comboBoxModalidad, comboBoxHorario, comboBoxTiempoMin );
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );
 
 		componentsContainer.addComponent( layout );
+	}
 
-		Panel panel = new Panel( getContext().getString( "modalNewInst.lbHorario" ) );
-		panel.setWidth( "100%" );
-		panel.setHeight( "425px" );
-
-		List<DayPlan<String>> plan = null;
-		DatosIntalacion datos = getExtraInformationFromJson();
-		if ( datos != null && datos.getWorkingPlan() != null )
+	private void fillTiemposMinimos( ComboBox comboBox )
+	{
+		for ( Integer n : NUMBERS )
 		{
-			plan = datos.getWorkingPlan().getDiaryPlan();
+			comboBox.addItem( n );
 		}
-		workingPlanComponent = new WorkingPlanComponent( getContext(), plan );
-		workingPlanComponent.setWidth( "100%" );
-		panel.setContent( workingPlanComponent );
-		// panel.addStyleName( ValoTheme.PANEL_BORDERLESS );
-		componentsContainer.addComponent( panel );
+	}
 
+	private void fillHorarios( ComboBox comboBox )
+	{
+		TipoHorario query = new TipoHorario();
+		query.setTipo_instalacion( getTipo() );
+		try
+		{
+			List<TipoHorario> tipos = tipoHorarioManager.getRows( getContext(), query );
+			for ( TipoHorario tipo : tipos )
+			{
+				comboBox.addItem( tipo.getId() );
+				comboBox.setItemCaption( tipo.getId(), tipo.getNombre() );
+			}
+		}
+		catch ( Throwable e )
+		{
+			LOG.error( "Error", e );
+		}
 	}
 
 	protected abstract void fillModalidad( ComboBox comboBox );
@@ -146,14 +171,6 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			if ( !workingPlanComponent.isValid() )
-			{
-				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
-				return false;
-			}
-
-			DatosIntalacion datos = getExtraInformation();
-			newInstalacion.setDatos( Utils.toJson( datos ) );
 			newInstalacion.setTipo( getTipo() );
 			instalacionesManager.setRow( context, null, newInstalacion );
 
@@ -167,56 +184,12 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 		return false;
 	}
 
-	private DatosIntalacion getExtraInformation()
-	{
-		DatosIntalacion datos = new DatosIntalacion();
-		WorkingPlan workingPlan = new WorkingPlan();
-		workingPlan.setDiaryPlan( workingPlanComponent.getWeekPlan() );
-		datos.setWorkingPlan( workingPlan );
-
-		if ( StringUtils.isEmpty( editTiempoMin.getValue() ) )
-		{
-			datos.setTiempominimo( 60 );
-		}
-		else
-		{
-			datos.setTiempominimo( Integer.valueOf( editTiempoMin.getValue() ) );
-		}
-
-		return datos;
-	}
-
-	private DatosIntalacion getExtraInformationFromJson()
-	{
-		if ( StringUtils.isBlank( newInstalacion.getDatos() ) )
-			return null;
-
-		try
-		{
-			return (DatosIntalacion)Utils.toPojo( newInstalacion.getDatos(), DatosIntalacion.class, false );
-		}
-		catch ( Throwable e )
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	protected abstract Integer getTipo();
 
 	protected boolean onModify()
 	{
 		try
 		{
-			if ( !workingPlanComponent.isValid() )
-			{
-				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
-				return false;
-			}
-
-			DatosIntalacion datos = getExtraInformation();
-			newInstalacion.setDatos( Utils.toJson( datos ) );
 			newInstalacion.setTipo( getTipo() );
 			instalacionesManager.setRow( context, (Instalacion)orgDto, newInstalacion );
 

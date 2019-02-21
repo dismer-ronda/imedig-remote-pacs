@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -48,6 +47,8 @@ public class PacienteControlerVto extends GenericControlerVto
 	private InstalacionesManager instalacionesManager;
 	private EstudiosManager estudiosManager;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat( "dd/MM HH:mm" );
+	private static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat( "dd/MM/yyyy" );
+	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat( "HH:mm" );
 
 	public PacienteControlerVto( ImedigContext ctx )
 	{
@@ -251,19 +252,38 @@ public class PacienteControlerVto extends GenericControlerVto
 		layout.setSpacing( true );
 		
 		List<Estudio> estudios = getEstudios( paciente.getId() );
+		
+		Integer counter = 1;
 		for ( Estudio estudio : estudios )
 		{
 			Button btn = new Button( buidCaption( estudio ) );
 			btn.addStyleName( "citation" );
+			btn.addStyleName( ValoTheme.BUTTON_TINY );
+			btn.setDescription( getDescription( estudio ) );
 			layout.addComponent( btn );
 		}
 		
-		Button btn = new Button( FontAwesome.PLUS );
-		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		btn.addStyleName( ValoTheme.BUTTON_TINY );
-		btn.addStyleName( "action" );
-		layout.addComponent( btn );
+//		Button btn = new Button( FontAwesome.PLUS );
+//		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+//		btn.addStyleName( ValoTheme.BUTTON_TINY );
+//		btn.addStyleName( "action" );
+//		layout.addComponent( btn );
 		return layout;
+	}
+	
+	private String getDescription(Estudio estudio){
+		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ));
+		String inicio = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFecha()));
+		String fin = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFechafin()));
+		String instalacion = getInstalacion( estudio.getInstalacion() ).getNombre();
+		
+		StringBuilder s = new StringBuilder();
+		s.append( "<b>" ).append( getContext().getString( "words.facility") ).append( ": </b>" ).append( instalacion ).append( "<br/>" ).
+		  append( "<b>" ).append( getContext().getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "<br/>" ).
+		  append( "<b>" ).append( getContext().getString( "modalAppointmentDlg.lbHoraInicio") ).append( ": </b>" ).append( inicio ).append( "<br/>" ).
+		  append( "<b>" ).append( getContext().getString( "modalAppointmentDlg.lbHoraFin") ).append( ": </b>" ).append( fin );
+
+		return s.toString(); 
 	}
 	
 	private List<Estudio> getEstudios(Integer pacienteId){
@@ -272,6 +292,8 @@ public class PacienteControlerVto extends GenericControlerVto
 			EstudioQuery query = new EstudioQuery();
 			query.setPaciente( pacienteId );
 			query.setFecha_desde( Utils.getHourFirstSecondAsLong( new Date() ) );
+			query.setPageNumber( 1 );
+			query.setPageSize( 4 );
 			return estudiosManager.getRows( getContext(), query );
 		}
 		catch ( Throwable e )

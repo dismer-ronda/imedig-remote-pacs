@@ -23,19 +23,33 @@ create index ix_pacientes_uid on susc_pacientes(uid);
 create index ix_pacientes_email on susc_pacientes(email);
 create index ix_pacientes_sexo on susc_pacientes(sexo);
 
--- instalaciones 
+-- tipos de horarios
+create table susc_tipos_horarios (
+    id integer not null,
+    nombre varchar(64) not null,            -- Nombre del tipo de horario
+    tipo_instalacion integer NOT NULL,      -- Tipo de instalación 1 - equipo...
+    tipo_horario integer NOT NULL,          -- Tipo de horario 0 - todos los dias iguales, 1-Horario comun de Lunes a Viernes, Shorario para sabdo  y domingo
+    datos text,                             -- JSON con el horario de trabajo según el tipo de horario seleccionado y el tipo de instalacion
+
+    constraint pk_tipos_horarios primary key(id),
+    constraint uk_tipos_horarios_nombre unique(nombre)
+    );
+
+-- instalaciones:
 create table susc_instalaciones (
     id integer not null,
-    nombre varchar(64) not null,   					-- Nombre de la instalación
-    aetitle varchar(64) not null, 					-- Aetitle
+    nombre varchar(64) not null,                  -- Nombre de la instalación
+    aetitle varchar(64) not null,                 -- Aetitle
     modalidad character varying(2),
-    tipo integer NOT NULL,							-- Tipo de instalación 1 - equipo...
-    tiempominimo integer NOT NULL,					-- Tiempo m inimo de demora de una consulta
-    datos text,									-- JSON con el horario de trabajo
-    
+    tipo integer NOT NULL,                        -- Tipo de instalación 1 - equipo...
+    tiempominimo integer NOT NULL,                -- Tiempo m inimo de demora de una consulta
+    tipo_horario integer,                         -- referencia al tipo de horario de trabajo que se aplica
+
     constraint pk_instalaciones primary key(id),
-	constraint uk_instalaciones_aetitle unique(aetitle),
-	constraint uk_instalaciones_nombre unique(nombre)
+    constraint uk_instalaciones_aetitle unique(aetitle),
+    constraint uk_instalaciones_nombre unique(nombre),
+
+    constraint fk_instalaciones_tipo_horario foreign key (ref_tipo_horario) references susc_tipos_horarios(id) on delete cascade
     );
 create index ix_instalaciones_modalidad on susc_instalaciones(modalidad);
 
@@ -74,14 +88,17 @@ insert into susc_derechos (id, codigo, descripcion) values (25, 'configuracion.t
 insert into susc_derechos (id, codigo, descripcion) values (26, 'configuracion.instalaciones','Mantenimiento de catálogos de instalaciones');
 insert into susc_derechos (id, codigo, descripcion) values (27, 'configuracion.pacientes','Mantenimiento a pacientes');
 insert into susc_derechos (id, codigo, descripcion) values (28, 'administracion.citas','Mantenimiento de citas');
+insert into susc_derechos (id, codigo, descripcion) values (29, 'configuracion.tipos.horarios','Configuracion de tipos de horarios');
 
 --derechos por perfiles
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 25);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 26);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 27);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 28);
+insert into susc_perfiles_derechos (perfil, derecho) values (1, 29);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 27);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 28);
+insert into susc_perfiles_derechos (perfil, derecho) values (2, 29);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 27);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 28);
 insert into susc_perfiles_derechos (perfil, derecho) values (4, 27);

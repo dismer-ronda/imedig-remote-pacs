@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,19 +30,19 @@ import lombok.Setter;
  * 
  */
 @SuppressWarnings({"unchecked"})
-public class CitationsViewer extends VerticalLayout implements ModalParent, Property.ValueChangeListener
+public class AppointmentsViewer extends VerticalLayout implements ModalParent, Property.ValueChangeListener
 {
 
 	private static final long serialVersionUID = 486852411457445182L;
 
-	private static final Logger LOG = Logger.getLogger( CitationsViewer.class );
+	private static final Logger LOG = Logger.getLogger( AppointmentsViewer.class );
 
 	@Setter @Getter private String nombre;
 	@Setter @Getter private String identificador;
 	@Setter @Getter private Integer fecha;
 	
 	private ImedigContext ctx;
-	private BeanItem<CitationsViewer> bi;
+	private BeanItem<AppointmentsViewer> bi;
 	
 	private TabSheet tabSheet;
 	
@@ -68,7 +68,7 @@ public class CitationsViewer extends VerticalLayout implements ModalParent, Prop
 	 * 
 	 * @param ctx
 	 */
-	public CitationsViewer( ImedigContext ctx )
+	public AppointmentsViewer( ImedigContext ctx )
 	{
 		this.ctx = ctx;
 		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );

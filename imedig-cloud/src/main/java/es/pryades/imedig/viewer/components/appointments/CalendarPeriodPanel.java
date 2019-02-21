@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -53,7 +53,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private static final int PERIOD_MONTHLY = 1;
 	private static final int PERIOD_WEEKLY = 2;
 	
-	private CitationSchedulerViewer viewer;
+	private AppointmentSchedulerViewer viewer;
 	private BasicDateClickHandler basicDateClickHandler;
 	private BasicWeekClickHandler basicWeekClickHandler;
 	private BasicForwardHandler basicForwardHandler;
@@ -63,7 +63,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private Integer lastYear = null;
 	
 	
-	public CalendarPeriodPanel(ImedigContext ctx, CitationSchedulerViewer viewer){
+	public CalendarPeriodPanel(ImedigContext ctx, AppointmentSchedulerViewer viewer){
 		this.ctx = ctx;
 		this.viewer = viewer;
 		setWidth( "100%" );
@@ -113,7 +113,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 				changeView();
 			}
 		} );*/
-		buildAddButton();
+		//buildAddButton();
 
 		buildMonthlyComponents();
 		buildWeeklyComponents();

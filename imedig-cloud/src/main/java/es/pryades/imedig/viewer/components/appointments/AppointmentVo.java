@@ -1,4 +1,4 @@
-package es.pryades.imedig.viewer.components.citations;
+package es.pryades.imedig.viewer.components.appointments;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,7 +10,7 @@ import es.pryades.imedig.cloud.dto.Usuario;
 import lombok.Data;
 
 @Data
-public class CitationVo extends ImedigDto implements Serializable
+public class AppointmentVo extends ImedigDto implements Serializable
 {	
 	private static final long serialVersionUID = -8776864293789319567L;
 	
@@ -19,5 +19,6 @@ public class CitationVo extends ImedigDto implements Serializable
 	private TipoEstudio tipo;
 	private Date fecha;
 	private Date fechainicio;
-	private Date fechafin;
+	private Integer duracion;
+	//private Date fechafin;
 }
