@@ -1,5 +1,6 @@
 package es.pryades.imedig.viewer.components.appointments;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -61,6 +62,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	private DateField dateFieldFecha;
 	private TimeField2 timeInicio;
 	private ComboBox comboBoxDuracion;
+	private List<Integer> duracion;
 
 	private PacienteLazyProvider pacienteLazyProvider;
 	private ReferidorLazyProvider referidorLazyProvider;
@@ -76,7 +78,19 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		manager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
 
 		setWidth( "800px" );
+		generarDuracion();
+		
 		initComponents();
+	}
+
+	private void generarDuracion()
+	{
+		duracion = new ArrayList<>();
+		
+		for ( int i = 1; i <= 10; i++ )
+		{
+			duracion.add( instalacion.getTiempominimo() * i );
+		}
 	}
 
 	@Override
@@ -147,9 +161,11 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
-				vo.setDuracion( vo.getTipo().getDuracion() );
+				fillDuracion( comboBoxDuracion );
+				vo.setDuracion( getProximaDuracion(vo.getTipo().getDuracion()) );
 				comboBoxDuracion.markAsDirty();
 			}
+
 		} );
 
 		dateFieldFecha = new DateField( getContext().getString( "modalAppointmentDlg.lbFecha" ), bi.getItemProperty( "fecha" ) );
@@ -202,23 +218,46 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		componentsContainer.addComponent( layout );
 	}
 
+	private Integer getProximaDuracion( Integer min )
+	{
+		for ( Integer item : duracion )
+		{
+			if (min> item) continue;
+			return item;
+		}
+		
+		return duracion.get( 0 );
+	}
+
 	private void fillDuracion( ComboBox comboBox )
 	{
-		for ( int i = 1; i <= 10; i++ )
+		comboBox.getContainerDataSource().removeAllItems();
+		
+		for ( Integer item : duracion )
 		{
-			Integer min = instalacion.getTiempominimo() * i;
-			if ( min < 61 )
-			{
-				comboBox.addItem( min );
-				continue;
+			if (vo.getTipo() == null){
+				addMinute( comboBox, item );
+			}else{
+				if (vo.getTipo().getDuracion() <= item){
+					addMinute( comboBox, item );
+				}
 			}
-
-			String caption = Utils.elapseTimeFromMin( min );
+			
+		}
+	}
+	
+	private static void addMinute(ComboBox comboBox, Integer min){
+		if ( min < 61 )
+		{
 			comboBox.addItem( min );
-			comboBox.setItemCaption( min, caption );
+			return;
 		}
 
+		String caption = Utils.elapseTimeFromMin( min );
+		comboBox.addItem( min );
+		comboBox.setItemCaption( min, caption );
 	}
+	
 
 	private AppointmentVo toVo( Estudio estudio )
 	{

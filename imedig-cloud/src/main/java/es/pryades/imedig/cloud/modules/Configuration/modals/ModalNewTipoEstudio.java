@@ -40,7 +40,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	private ComboBox comboBoxDuracion;
 	private OptionGroup groupTipo;
 	
-	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 12, 15, 20, 30, 60 );
+	private static final List<Integer> NUMBERS = Arrays.asList( 10, 12, 15, 20, 30, 60 );
 
 	private TiposEstudiosManager tiposEstudiosManager;
 

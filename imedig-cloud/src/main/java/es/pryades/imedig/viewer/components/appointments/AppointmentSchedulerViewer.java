@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.Calendar.TimeFormat;
 import com.vaadin.ui.Panel;
@@ -102,7 +103,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		
 		return AppointmentUtils.getLaterHour( planificacionHorario.getDiaryPlan() );
 	}
-	
+		
 	private void buildComponents()
 	{
 		
@@ -128,10 +129,13 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		//cal.add( java.util.Calendar.MONTH, 1 );
 		//ciationsCalendar.setEndDate( UtilsCalendar.getLastDayMonth( cal.getTime() ) );
 		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( "1200px" );
+		citationsCalendar.setHeight( "1100px" );
 		Panel panel = new Panel();
 		panel.setSizeFull();
-		panel.setContent( citationsCalendar );
+		VerticalLayout content = new VerticalLayout( citationsCalendar );
+		content.setWidth( "100%" );
+		content.setMargin( new MarginInfo( false, true, false, false ) );
+		panel.setContent( content );
 		panel.addStyleName( ValoTheme.PANEL_BORDERLESS );
 		addComponent( panel );
 		setExpandRatio( panel, 1.0f );

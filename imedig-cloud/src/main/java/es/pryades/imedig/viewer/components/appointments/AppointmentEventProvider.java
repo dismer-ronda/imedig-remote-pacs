@@ -176,8 +176,8 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	{
 		try
 		{
-			TipoHorarioManager manager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
-			tipoHorario = (TipoHorario)manager.getRow( ctx, instalacion.getTipo_horario() );
+			tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
+			tipoHorario = (TipoHorario)tipoHorarioManager.getRow( ctx, instalacion.getTipo_horario() );
 			
 			if (StringUtils.isBlank( tipoHorario.getDatos()) ) return new PlanificacionHorario();
 			return (PlanificacionHorario)Utils.toPojo( tipoHorario.getDatos(), PlanificacionHorario.class, false );
@@ -198,14 +198,17 @@ public class AppointmentEventProvider implements CalendarEventProvider
 
 		try
 		{
+			List<CalendarEvent> events = null;
 			if ( citationsCalendar.isMonthlyMode() )
 			{
-				return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ) );
+				events = toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ) );
 			}
 			else
 			{
-				return toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ), startDate, endDate );
+				events = toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ), startDate, endDate );
 			}
+			
+			return events;
 		}
 		catch ( Throwable e )
 		{
@@ -225,6 +228,17 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		{
 			result.add( toEvent( estudio ) );
 		}
+		
+		Comparator<CalendarEvent> comparator = new Comparator<CalendarEvent>()
+		{
+			@Override
+			public int compare( CalendarEvent o1, CalendarEvent o2 )
+			{
+				return o1.getStart().compareTo( o2.getStart() );
+			}
+		};
+
+		Collections.sort( result, comparator );
 
 		return result;
 	}
@@ -315,6 +329,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		Date start1 = start;
 		Date end1 = incNextTimePeriod();
 		CalendarEvent event = head( events );
+		Date today = new Date();
 
 		while ( start1.before( end ) )
 		{
@@ -333,10 +348,12 @@ public class AppointmentEventProvider implements CalendarEventProvider
 			}
 			else
 			{
-				if (end1.after( end )){
-					result.add( freeEvent( start1, end ) );
-				}else{
-					result.add( freeEvent( start1, end1 ) );
+				if (end.after( today ) || end1.after( today )){
+					if (end1.after( end )){
+						result.add( freeEvent( start1, end ) );
+					}else{
+						result.add( freeEvent( start1, end1 ) );
+					}
 				}
 				start1 = end1;
 				end1 = incNextTimePeriod();
@@ -361,8 +378,8 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		List<TimeRange<Date>> breaksDate = toDates( start, breaksTime );
 		
 		Date start1 = mainCalendar.getTime();
-		Date end1 = incNextTimePeriod();
-		CalendarEvent event = head( events );
+		//Date end1 = incNextTimePeriod();
+		//CalendarEvent event = head( events );
 		
 		for ( TimeRange<Date> breakDate : breaksDate )
 		{
@@ -396,16 +413,6 @@ public class AppointmentEventProvider implements CalendarEventProvider
 			{
 				TimeRange<LocalTime> workingDay = mapWorking.get( day );
 				Date temp = cFrom.getTime();
-
-//				cFrom.set( Calendar.SECOND, 0 );
-//				cFrom.set( Calendar.HOUR_OF_DAY, workingDay.getEnd().getHourOfDay() );
-//				cFrom.set( Calendar.MINUTE, workingDay.getEnd().getMinuteOfHour() );
-//				Date dFrom = cFrom.getTime();
-//
-//				cFrom.set( Calendar.SECOND, 0 );
-//				cFrom.set( Calendar.HOUR_OF_DAY, workingDay.getStart().getHourOfDay() );
-//				cFrom.set( Calendar.MINUTE, workingDay.getStart().getMinuteOfHour() );
-//				Date dStart = cFrom.getTime();
 				result.add( toDate( temp, workingDay ) );
 				cFrom.setTime( temp );
 			}
@@ -446,34 +453,26 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		return new TimeRange<Date>( dFrom, dTo );
 	}
 
-	private boolean isBreak( Date date )
-	{
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime( date );
-
-		List<TimeRange<LocalTime>> breaks = breaksByDay.get( calendar.get( Calendar.DAY_OF_WEEK ) );
-
-		if ( breaks == null || breaks.isEmpty() )
-			return false;
-
-		LocalTime time = new LocalTime( calendar.get( Calendar.HOUR_OF_DAY ), calendar.get( Calendar.MINUTE ) );
-
-		for ( TimeRange<LocalTime> range : breaks )
-		{
-			if ( time.equals( range.getStart() ) || (time.isAfter( range.getStart() ) && time.isBefore( range.getEnd() )) )
-				return true;
-		}
-
-		return false;
-	}
-
-	private boolean isWorking( Date date )
-	{
-		Calendar calendar = GregorianCalendar.getInstance();
-		calendar.setTime( date );
-
-		return mapWorking.get( calendar.get( Calendar.DAY_OF_WEEK ) ) != null;
-	}
+//	private boolean isBreak( Date date )
+//	{
+//		Calendar calendar = GregorianCalendar.getInstance();
+//		calendar.setTime( date );
+//
+//		List<TimeRange<LocalTime>> breaks = breaksByDay.get( calendar.get( Calendar.DAY_OF_WEEK ) );
+//
+//		if ( breaks == null || breaks.isEmpty() )
+//			return false;
+//
+//		LocalTime time = new LocalTime( calendar.get( Calendar.HOUR_OF_DAY ), calendar.get( Calendar.MINUTE ) );
+//
+//		for ( TimeRange<LocalTime> range : breaks )
+//		{
+//			if ( time.equals( range.getStart() ) || (time.isAfter( range.getStart() ) && time.isBefore( range.getEnd() )) )
+//				return true;
+//		}
+//
+//		return false;
+//	}
 
 	private Date incNextTimePeriod()
 	{
@@ -497,10 +496,10 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		return event.getEnd();
 	}
 
-	private static boolean inside( Date startD, Date start, Date end )
-	{
-		return (start.equals( startD ) || start.before( startD )) && end.after( startD );
-	}
+//	private static boolean inside( Date startD, Date start, Date end )
+//	{
+//		return (start.equals( startD ) || start.before( startD )) && end.after( startD );
+//	}
 
 	private static boolean inside( CalendarEvent event, Date start, Date end )
 	{
@@ -521,6 +520,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		event.setStart( Utils.getDateHourFromLong( estudio.getFecha() ) );
 		event.setEnd( Utils.getDateHourFromLong( estudio.getFechafin() ) );
 		event.setData( estudio );
+		event.setStyleName( "cita" );
 
 		return event;
 	}
@@ -537,9 +537,8 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		  append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbNombre") ).append( ": </b>" ).append( paciente.getNombreCompleto() ).append( "<br/>" ).
 		  append( "<b>" ).append( ctx.getString( "words.facility") ).append( ": </b>" ).append( instalacion.getNombre() ).append( "<br/>" ).
 		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbTipo") ).append( ": </b>" ).append( tipoEstudio.getNombre() ).append( "<br/>" ).
-		  append( "<b>" ).append( ctx.getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "<br/>" ).
-		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbHoraInicio") ).append( ": </b>" ).append( inicio ).append( "<br/>" ).
-		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbHoraFin") ).append( ": </b>" ).append( fin );
+		  append( "<b>" ).append( ctx.getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "  " ).
+		  append( "<b>" ).append( ctx.getString( "words.time") ).append( ": </b>" ).append( inicio ).append( " - " ).append( fin );
 
 		return s.toString(); 
 	}
@@ -550,7 +549,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		AppointmentEvent event = new AppointmentEvent();
 		event.setStart( start );
 		event.setEnd( end );
-		event.setStyleName( "color2" );
+		event.setStyleName( "free" );
 
 		return event;
 	}

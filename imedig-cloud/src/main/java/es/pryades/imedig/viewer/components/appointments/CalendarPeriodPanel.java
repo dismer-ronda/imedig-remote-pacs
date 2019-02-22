@@ -278,10 +278,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	{
 		if (lastWeek == null){
 			Calendar calendar =  GregorianCalendar.getInstance();
-			calendar.set( Calendar.DAY_OF_MONTH, 1 );
-			calendar.set( Calendar.MONTH, (Integer)comboMonth.getValue() );
-			calendar.set( Calendar.YEAR, (Integer)comboYear.getValue() );
-			
+			calendar.setTime( new Date() );
 			lastYear = calendar.get( Calendar.YEAR);
 			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
 		}
