@@ -13405,22 +13405,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-calendar-event-month[class*="free"]:before {
-	color: #02925d;
+	color: white;
 }
 
 .imedig .v-calendar-event-all-day[class*="free"] {
-	background-color: #02925d;
-	background-color: rgba(2, 146, 93, 0.05);
-	color: #02925d;
+	background-color: rgba(255, 255, 255, 0.05);
+	color: white;
 }
 
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="free"] {
-	color: #02925d;
+	color: white;
 }
 
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="free"] .v-calendar-event-content {
-	background-color: #02925d;
-	background-color: rgba(2, 146, 93, 0.05);
+	background-color: transparent;
 }
 
 .imedig .v-calendar-event-month[class*="cita"]:before {
@@ -13428,8 +13426,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-calendar-event-all-day[class*="cita"] {
-	background-color: #505a5d;
-	background-color: rgba(80, 90, 93, 0.85);
+	background-color: transparent;
 	color: #ced1d2;
 }
 
@@ -13438,6 +13435,5 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="cita"] .v-calendar-event-content {
-	background-color: #505a5d;
-	background-color: rgba(80, 90, 93, 0.85);
+	background-color: #283033;
 }
