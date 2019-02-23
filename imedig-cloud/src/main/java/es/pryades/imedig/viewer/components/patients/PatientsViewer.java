@@ -16,14 +16,11 @@ import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.dal.EstudiosManager;
-import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.cloud.dto.query.InformeQuery;
 import es.pryades.imedig.cloud.dto.query.PacienteQuery;
-import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
@@ -53,17 +50,8 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	private TextField textIdentificador;
 	private ComboBox comboFecha;
 
-	private PacientesManager pacientesManager;
-	private EstudiosManager estudiosManager;
-	
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
-	
-	//private static final Integer PERFIL_IMAGENOLOGO = 3;
-	//private static final Integer PERFIL_USUARIO = 2;
-	
-	//private boolean defaultSearch;
-	//private boolean showMessage;
 
 	/**
 	 * 
@@ -73,9 +61,6 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	public PatientsViewer( ImedigContext ctx )
 	{
 		super( ctx );
-		
-		pacientesManager = (PacientesManager) IOCManager.getInstanceOf( PacientesManager.class );
-		estudiosManager = (EstudiosManager) IOCManager.getInstanceOf( EstudiosManager.class );
 		
 		setSizeFull();
 		setMargin( true );

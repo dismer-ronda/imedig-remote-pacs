@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.EstudioMapper">
+<mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.CitaMapper">
 
 	<sql id="where">
 		<if test="uid != null">
@@ -29,43 +29,43 @@
 	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
 		select count(1) 
-		from susc_estudios 
+		from susc_citas 
 		<where><include refid="where"/></where>
 	</select>
 	
 	<select id="getLastDate" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="long">
 		select max(fechafin) 
-		from susc_estudios 
+		from susc_citas 
 		<where><include refid="where"/></where>
 	</select>
 	
-	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
+	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Cita">
 		select *
-		from susc_estudios
+		from susc_citas
 		<where><include refid="where"/></where>
 		order by fecha
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
 	</select>
 
-	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
+	<select id="getRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Cita">
 		select * 
-		from susc_estudios
+		from susc_citas
 		<where><include refid="where"/></where>
 		order by fecha
 	</select>
 	
-	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Estudio">
-		select * from susc_estudios 
+	<select id="getRow" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Cita">
+		select * from susc_citas 
 		where id = #{id}
 	</select>
 
-	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
+	<insert id="addRow" parameterType="es.pryades.imedig.cloud.dto.Cita">
 
 		<selectKey keyProperty="id" resultType="int" order="BEFORE">
 			SELECT nextval('gendat');
 		</selectKey>
 
-		insert into susc_estudios
+		insert into susc_citas
 		(
 			id,
 			fecha,
@@ -89,8 +89,8 @@
 		)
 	</insert>
 
-	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
-		update susc_estudios
+	<update id="setRow" parameterType="es.pryades.imedig.cloud.dto.Cita">
+		update susc_citas
 		set
 			fecha=#{fecha},
 			fechafin=#{fechafin},
@@ -102,8 +102,8 @@
 		where id = #{id}
 	</update>
 
-	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Estudio">
-		delete from susc_estudios where id = #{id}
+	<update id="delRow" parameterType="es.pryades.imedig.cloud.dto.Cita">
+		delete from susc_citas where id = #{id}
 	</update>
 
 </mapper>

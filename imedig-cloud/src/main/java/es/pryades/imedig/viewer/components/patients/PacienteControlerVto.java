@@ -17,14 +17,14 @@ import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.dal.EstudiosManager;
+import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Estudio;
+import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
-import es.pryades.imedig.cloud.dto.query.EstudioQuery;
+import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
@@ -45,7 +45,7 @@ public class PacienteControlerVto extends GenericControlerVto
 	
 	private Map<Integer, Instalacion> cacheInstalaciones;
 	private InstalacionesManager instalacionesManager;
-	private EstudiosManager estudiosManager;
+	private CitasManager citasManager;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat( "dd/MM HH:mm" );
 	private static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat( "dd/MM/yyyy" );
 	private static final SimpleDateFormat timeFormatter = new SimpleDateFormat( "HH:mm" );
@@ -57,7 +57,7 @@ public class PacienteControlerVto extends GenericControlerVto
 		cacheInstalaciones = new HashMap<>();
 		
 		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
-		estudiosManager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
+		citasManager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
 	}
 
 	/**
@@ -251,15 +251,15 @@ public class PacienteControlerVto extends GenericControlerVto
 		HorizontalLayout layout = new HorizontalLayout();
 		layout.setSpacing( true );
 		
-		List<Estudio> estudios = getEstudios( paciente.getId() );
+		List<Cita> citas = getCitas( paciente.getId() );
 		
 		Integer counter = 1;
-		for ( Estudio estudio : estudios )
+		for ( Cita cita : citas )
 		{
-			Button btn = new Button( buidCaption( estudio ) );
+			Button btn = new Button( buidCaption( cita ) );
 			btn.addStyleName( "citation" );
 			btn.addStyleName( ValoTheme.BUTTON_TINY );
-			btn.setDescription( getDescription( estudio ) );
+			btn.setDescription( getDescription( cita ) );
 			layout.addComponent( btn );
 		}
 		
@@ -271,11 +271,11 @@ public class PacienteControlerVto extends GenericControlerVto
 		return layout;
 	}
 	
-	private String getDescription(Estudio estudio){
-		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ));
-		String inicio = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFecha()));
-		String fin = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFechafin()));
-		String instalacion = getInstalacion( estudio.getInstalacion() ).getNombre();
+	private String getDescription(Cita cita){
+		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ));
+		String inicio = timeFormatter.format( Utils.getDateHourFromLong( cita.getFecha()));
+		String fin = timeFormatter.format( Utils.getDateHourFromLong( cita.getFechafin()));
+		String instalacion = getInstalacion( cita.getInstalacion() ).getNombre();
 		
 		StringBuilder s = new StringBuilder();
 		s.append( "<b>" ).append( getContext().getString( "words.facility") ).append( ": </b>" ).append( instalacion ).append( "<br/>" ).
@@ -286,15 +286,15 @@ public class PacienteControlerVto extends GenericControlerVto
 		return s.toString(); 
 	}
 	
-	private List<Estudio> getEstudios(Integer pacienteId){
+	private List<Cita> getCitas(Integer pacienteId){
 		try
 		{
-			EstudioQuery query = new EstudioQuery();
+			CitaQuery query = new CitaQuery();
 			query.setPaciente( pacienteId );
 			query.setFecha_desde( Utils.getHourFirstSecondAsLong( new Date() ) );
 			query.setPageNumber( 1 );
 			query.setPageSize( 4 );
-			return estudiosManager.getRows( getContext(), query );
+			return citasManager.getRows( getContext(), query );
 		}
 		catch ( Throwable e )
 		{
@@ -302,24 +302,24 @@ public class PacienteControlerVto extends GenericControlerVto
 		}
 	}
 	
-	private String buidCaption(Estudio estudio ){
-		Instalacion instalacion = getInstalacion( estudio.getInstalacion() );
-		return instalacion.getModalidad()+" " + dateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ) );
+	private String buidCaption(Cita cita ){
+		Instalacion instalacion = getInstalacion( cita.getInstalacion() );
+		return instalacion.getModalidad()+" " + dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
 	}
 	
-	private FontIcon buidIcom(Estudio estudio ){
+	private FontIcon buidIcom(Cita cita ){
 		
-		if (cacheInstalaciones.get( estudio.getInstalacion() ) == null){
+		if (cacheInstalaciones.get( cita.getInstalacion() ) == null){
 			try
 			{
-				cacheInstalaciones.put( estudio.getInstalacion(), (Instalacion)instalacionesManager.getRow( getContext(), estudio.getInstalacion() ) );
+				cacheInstalaciones.put( cita.getInstalacion(), (Instalacion)instalacionesManager.getRow( getContext(), cita.getInstalacion() ) );
 			}
 			catch ( Throwable e )
 			{
 			}
 		}
 		
-		Instalacion instalacion = cacheInstalaciones.get( estudio.getInstalacion() );
+		Instalacion instalacion = cacheInstalaciones.get( cita.getInstalacion() );
 		
 		if (!Constants.TYPE_IMAGING_DEVICE.equals( instalacion.getTipo() )) return FontIcoMoon.ROOT_CATEGORY;
 		

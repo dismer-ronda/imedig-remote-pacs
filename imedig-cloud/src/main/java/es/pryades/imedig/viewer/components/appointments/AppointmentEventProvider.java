@@ -20,20 +20,20 @@ import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.dal.EstudiosManager;
+import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.DayPlan;
-import es.pryades.imedig.cloud.dto.Estudio;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.PlanificacionHorario;
 import es.pryades.imedig.cloud.dto.TimeRange;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
 import es.pryades.imedig.cloud.dto.TipoHorario;
-import es.pryades.imedig.cloud.dto.query.EstudioQuery;
+import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 
 public class AppointmentEventProvider implements CalendarEventProvider
@@ -42,7 +42,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 
 	private Instalacion instalacion;
 	private ImedigContext ctx;
-	private EstudiosManager estudiosManager;
+	private CitasManager citasManager;
 	private TiposEstudiosManager tiposEstudiosManager;
 	private PacientesManager pacientesManager;
 	private TipoHorarioManager tipoHorarioManager;
@@ -68,7 +68,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		this.instalacion = instalacion;
 		this.citationsCalendar = citationsCalendar;
 
-		estudiosManager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
+		citasManager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
 		tiposEstudiosManager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class );
 		pacientesManager = (PacientesManager)IOCManager.getInstanceOf( PacientesManager.class );
 		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
@@ -191,7 +191,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	@Override
 	public List<CalendarEvent> getEvents( Date startDate, Date endDate )
 	{
-		EstudioQuery query = new EstudioQuery();
+		CitaQuery query = new CitaQuery();
 		query.setInstalacion( instalacion.getId() );
 		query.setFecha_desde( Utils.getDateAsLong( startDate ) );
 		query.setFecha_hasta( Utils.getDateAsLong( endDate ) );
@@ -201,11 +201,11 @@ public class AppointmentEventProvider implements CalendarEventProvider
 			List<CalendarEvent> events = null;
 			if ( citationsCalendar.isMonthlyMode() )
 			{
-				events = toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ) );
+				events = toCalendarEvents( (List<Cita>)citasManager.getRows( ctx, query ) );
 			}
 			else
 			{
-				events = toCalendarEvents( (List<Estudio>)estudiosManager.getRows( ctx, query ), startDate, endDate );
+				events = toCalendarEvents( (List<Cita>)citasManager.getRows( ctx, query ), startDate, endDate );
 			}
 			
 			return events;
@@ -219,14 +219,14 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		return new ArrayList<>();
 	}
 
-	private List<CalendarEvent> toCalendarEvents( List<Estudio> estudios ) throws Throwable
+	private List<CalendarEvent> toCalendarEvents( List<Cita> citas ) throws Throwable
 	{
 
 		List<CalendarEvent> result = new ArrayList<>();
 
-		for ( Estudio estudio : estudios )
+		for ( Cita cita : citas )
 		{
-			result.add( toEvent( estudio ) );
+			result.add( toEvent( cita ) );
 		}
 		
 		Comparator<CalendarEvent> comparator = new Comparator<CalendarEvent>()
@@ -243,13 +243,13 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		return result;
 	}
 
-	private List<CalendarEvent> toCalendarEvents( List<Estudio> estudios, Date start, Date end ) throws Throwable
+	private List<CalendarEvent> toCalendarEvents( List<Cita> citas, Date start, Date end ) throws Throwable
 	{
 
 		List<CalendarEvent> result = new ArrayList<>();
 
 		List<TimeRange<Date>> wokingDates = getWokingDates( start, end );
-		Map<Integer, List<CalendarEvent>> eventsByDay = eventsByDay( estudios );
+		Map<Integer, List<CalendarEvent>> eventsByDay = eventsByDay( citas );
 
 		Calendar calendar = GregorianCalendar.getInstance();
 
@@ -273,7 +273,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	}
 	
 
-	private Map<Integer, List<CalendarEvent>> eventsByDay( List<Estudio> estudios ) throws Throwable
+	private Map<Integer, List<CalendarEvent>> eventsByDay( List<Cita> citas ) throws Throwable
 	{
 		Comparator<CalendarEvent> comparator = new Comparator<CalendarEvent>()
 		{
@@ -284,7 +284,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 			}
 		};
 
-		List<CalendarEvent> events = toCalendarEvents( estudios );
+		List<CalendarEvent> events = toCalendarEvents( citas );
 		Collections.sort( events, comparator );
 
 		Map<Integer, List<CalendarEvent>> result = new HashMap<>();
@@ -508,29 +508,28 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		return (start.equals( event.getStart() ) || start.before( event.getStart() )) && end.after( event.getStart() );
 	}
 
-	private CalendarEvent toEvent( Estudio estudio ) throws Throwable
+	private CalendarEvent toEvent( Cita cita ) throws Throwable
 	{
 
 		
-		Paciente paciente = (Paciente)pacientesManager.getRow( ctx, estudio.getPaciente() );
+		Paciente paciente = (Paciente)pacientesManager.getRow( ctx, cita.getPaciente() );
 
 		AppointmentEvent event = new AppointmentEvent();
 		event.setCaption( paciente.getNombreCompleto() );
-		event.setDescription( getDescription( paciente, estudio ) );
-		event.setStart( Utils.getDateHourFromLong( estudio.getFecha() ) );
-		event.setEnd( Utils.getDateHourFromLong( estudio.getFechafin() ) );
-		event.setData( estudio );
+		event.setDescription( getDescription( paciente, cita ) );
+		event.setStart( Utils.getDateHourFromLong( cita.getFecha() ) );
+		event.setEnd( Utils.getDateHourFromLong( cita.getFechafin() ) );
+		event.setData( cita );
 		event.setStyleName( "cita" );
 
 		return event;
 	}
 	
-	private String getDescription(Paciente paciente, Estudio estudio) throws Throwable{
-		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( estudio.getFecha() ));
-		String inicio = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFecha()));
-		String fin = timeFormatter.format( Utils.getDateHourFromLong( estudio.getFechafin()));
-		//String instalacion = getInstalacion( estudio.getInstalacion() ).getNombre();
-		TipoEstudio tipoEstudio = (TipoEstudio)tiposEstudiosManager.getRow( ctx, estudio.getTipo() );
+	private String getDescription(Paciente paciente, Cita cita) throws Throwable{
+		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ));
+		String inicio = timeFormatter.format( Utils.getDateHourFromLong( cita.getFecha()));
+		String fin = timeFormatter.format( Utils.getDateHourFromLong( cita.getFechafin()));
+		TipoEstudio tipoEstudio = (TipoEstudio)tiposEstudiosManager.getRow( ctx, cita.getTipo() );
 		
 		StringBuilder s = new StringBuilder();
 		s.append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbIdentificador") ).append( ": </b>" ).append( paciente.getUid() ).append( "<br/>" ).

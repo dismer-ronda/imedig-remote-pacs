@@ -46,7 +46,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	private CalendarPeriodPanel periodPanel;
 	private PlanificacionHorario planificacionHorario;
 	
-	private String timeZone;
 	private Integer firstHour;
 	private Integer lastHour;
 	
@@ -54,8 +53,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	{
 		this.ctx = ctx;
 		this.instalacion = instalacion;
-		
-		timeZone = ctx.getCentros().get( 0 ).getHorario_nombre();
 		
 		settingInstalationWorkingPlan();
 		

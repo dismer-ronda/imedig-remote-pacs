@@ -1,12 +1,12 @@
 package es.pryades.imedig.cloud.dto.query;
 
-import es.pryades.imedig.cloud.dto.Estudio;
+import es.pryades.imedig.cloud.dto.Cita;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EstudioQuery extends Estudio
+public class CitaQuery extends Cita
 {
 	private static final long serialVersionUID = -1862899224852314602L;
 	

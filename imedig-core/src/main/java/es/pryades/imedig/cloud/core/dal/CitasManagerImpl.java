@@ -4,10 +4,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.dal.ibatis.EstudioMapper;
+import es.pryades.imedig.cloud.core.dal.ibatis.CitaMapper;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Estudio;
-import es.pryades.imedig.cloud.dto.query.EstudioQuery;
+import es.pryades.imedig.cloud.dto.Cita;
+import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.core.common.ImedigManager;
 
 
@@ -16,24 +16,24 @@ import es.pryades.imedig.core.common.ImedigManager;
 * @author hector.licea 
 * 
 */
-public class EstudiosManagerImpl extends ImedigCloudManagerImpl implements EstudiosManager
+public class CitasManagerImpl extends ImedigCloudManagerImpl implements CitasManager
 {
 	private static final long serialVersionUID = -6213712981966757378L;
 
-	private static final Logger LOG = Logger.getLogger( EstudiosManagerImpl.class );
+	private static final Logger LOG = Logger.getLogger( CitasManagerImpl.class );
 
 	public static ImedigManager build()
 	{
-		return new EstudiosManagerImpl();
+		return new CitasManagerImpl();
 	}
 
-	public EstudiosManagerImpl()
+	public CitasManagerImpl()
 	{
-		super( EstudioMapper.class, Estudio.class, LOG );
+		super( CitaMapper.class, Cita.class, LOG );
 	}
 
 	@Override
-	public Long getLastDate( ImedigContext ctx, EstudioQuery query ) throws Throwable
+	public Long getLastDate( ImedigContext ctx, CitaQuery query ) throws Throwable
 	{
 		SqlSession session = getDatabaseSession( ctx );
 		
@@ -44,7 +44,7 @@ public class EstudiosManagerImpl extends ImedigCloudManagerImpl implements Estud
 		
 		try 
 		{
-			EstudioMapper mapper = (EstudioMapper)session.getMapper( getMapperClass() );
+			CitaMapper mapper = (CitaMapper)session.getMapper( getMapperClass() );
 			
 			return mapper.getLastDate( query );
 		}

@@ -7,18 +7,24 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FiltrerAddSelect;
@@ -30,11 +36,11 @@ import es.pryades.imedig.cloud.common.lazy.PacienteLazyProvider;
 import es.pryades.imedig.cloud.common.lazy.ReferidorLazyProvider;
 import es.pryades.imedig.cloud.common.lazy.SearchCriteria;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
-import es.pryades.imedig.cloud.core.dal.EstudiosManager;
+import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Estudio;
+import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
@@ -52,7 +58,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	private static final Logger LOG = Logger.getLogger( ModalAppointmentDlg.class );
 
 	private Instalacion instalacion;
-	private Estudio newEstudio;
+	private Cita newCita;
 	private AppointmentVo vo;
 
 	private FiltrerAddSelect selectPaciente;
@@ -67,26 +73,26 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	private PacienteLazyProvider pacienteLazyProvider;
 	private ReferidorLazyProvider referidorLazyProvider;
 
-	private EstudiosManager manager;
+	private CitasManager manager;
 
-	public ModalAppointmentDlg( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, Estudio oldEstudio, ModalParent parentWindow, String right )
+	public ModalAppointmentDlg( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, Cita oldCita, ModalParent parentWindow, String right )
 	{
-		super( ctx, parentWindow, modalOperation, oldEstudio, right );
+		super( ctx, parentWindow, modalOperation, oldCita, right );
 
 		this.instalacion = instalacion;
 
-		manager = (EstudiosManager)IOCManager.getInstanceOf( EstudiosManager.class );
+		manager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
 
 		setWidth( "800px" );
 		generarDuracion();
-		
+
 		initComponents();
 	}
 
 	private void generarDuracion()
 	{
 		duracion = new ArrayList<>();
-		
+
 		for ( int i = 1; i <= 10; i++ )
 		{
 			duracion.add( instalacion.getTiempominimo() * i );
@@ -98,14 +104,14 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	{
 		super.initComponents();
 
-		vo = toVo( (Estudio)orgDto );
+		vo = toVo( (Cita)orgDto );
 		try
 		{
-			newEstudio = (Estudio)Utils.clone( (Estudio)orgDto );
+			newCita = (Cita)Utils.clone( (Cita)orgDto );
 		}
 		catch ( Throwable e1 )
 		{
-			newEstudio = new Estudio();
+			newCita = new Cita();
 		}
 
 		bi = new BeanItem<ImedigDto>( vo );
@@ -162,7 +168,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			public void valueChange( ValueChangeEvent event )
 			{
 				fillDuracion( comboBoxDuracion );
-				vo.setDuracion( getProximaDuracion(vo.getTipo().getDuracion()) );
+				vo.setDuracion( getProximaDuracion( vo.getTipo().getDuracion() ) );
 				comboBoxDuracion.markAsDirty();
 			}
 
@@ -189,7 +195,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		timeInicio.setWidth( "60px" );
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
 		timeInicio.setImmediate( true );
-		
+
 		comboBoxDuracion = new ComboBox( getContext().getString( "modalAppointmentDlg.lbDuracion" ) );
 		comboBoxDuracion.setWidth( "125px" );
 		comboBoxDuracion.setNullSelectionAllowed( false );
@@ -203,50 +209,86 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		layoutTime.setCaption( getContext().getString( "modalAppointmentDlg.lbHoraInicio" ) );
 		layoutTime.setSpacing( true );
 
-		// timeFin = new TimeField2( getContext().getString(
-		// "modalAppointmentDlg.lbHoraFin" ) );
-		// timeFin.setRequired( true );
-		// timeFin.setWidth( "60px" );
-		// timeFin.setPropertyDataSource( bi.getItemProperty( "fechafin" ) );
-		// timeFin.setImmediate( true );
-
 		FormLayout layout = new FormLayout( selectPaciente, editInstalacion, selectReferidor, comboTipo, dateFieldFecha, layoutTime );
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );
 
 		componentsContainer.addComponent( layout );
+
+		if (orgDto != null) {
+			selectPaciente.setReadOnly( true );
+			addCancelarCita();
+		}
+	}
+
+	private void addCancelarCita()
+	{
+		Button button = new Button( getContext().getString( "modalAppointmentDlg.wndCaption.cancel" ) );
+		button.setImmediate( true );
+		button.addStyleName( ValoTheme.BUTTON_DANGER );
+		operacionesContainer.addComponent( button );
+		button.addClickListener( new ClickListener()
+		{
+			private static final long serialVersionUID = -7170543331188736832L;
+
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( "modalAppointmentDlg.confirm.cancel" ), new ConfirmDialog.Listener()
+				{
+					private static final long serialVersionUID = -7797844014333609680L;
+
+					public void onClose( ConfirmDialog dialog )
+					{
+						if ( dialog.isConfirmed() )
+						{
+							if ( onDelete() )
+							{
+								closeModalWindow( true, true );
+							}
+						}
+					}
+				} );
+			}
+		} );
 	}
 
 	private Integer getProximaDuracion( Integer min )
 	{
 		for ( Integer item : duracion )
 		{
-			if (min> item) continue;
+			if ( min > item )
+				continue;
 			return item;
 		}
-		
+
 		return duracion.get( 0 );
 	}
 
 	private void fillDuracion( ComboBox comboBox )
 	{
 		comboBox.getContainerDataSource().removeAllItems();
-		
+
 		for ( Integer item : duracion )
 		{
-			if (vo.getTipo() == null){
+			if ( vo.getTipo() == null )
+			{
 				addMinute( comboBox, item );
-			}else{
-				if (vo.getTipo().getDuracion() <= item){
+			}
+			else
+			{
+				if ( vo.getTipo().getDuracion() <= item )
+				{
 					addMinute( comboBox, item );
 				}
 			}
-			
+
 		}
 	}
-	
-	private static void addMinute(ComboBox comboBox, Integer min){
+
+	private static void addMinute( ComboBox comboBox, Integer min )
+	{
 		if ( min < 61 )
 		{
 			comboBox.addItem( min );
@@ -257,31 +299,27 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		comboBox.addItem( min );
 		comboBox.setItemCaption( min, caption );
 	}
-	
 
-	private AppointmentVo toVo( Estudio estudio )
+	private AppointmentVo toVo( Cita cita )
 	{
 		AppointmentVo result = new AppointmentVo();
 
-		if ( estudio == null )
+		if ( cita == null )
 			return result;
 
-		result.setFecha( Utils.getDateHourFromLong( estudio.getFecha() ) );
-		result.setFechainicio( Utils.getDateHourFromLong( estudio.getFecha() ) );
-		result.setDuracion( calDuracion( Utils.getDateHourFromLong( estudio.getFecha() ), Utils.getDateHourFromLong( estudio.getFechafin() ) ) );
-		// result.setFechafin( Utils.getDateHourFromLong( estudio.getFechafin()
-		// ) );
-
+		result.setFecha( Utils.getDateHourFromLong( cita.getFecha() ) );
+		result.setFechainicio( Utils.getDateHourFromLong( cita.getFecha() ) );
+		result.setDuracion( calDuracion( Utils.getDateHourFromLong( cita.getFecha() ), Utils.getDateHourFromLong( cita.getFechafin() ) ) );
 		try
 		{
 			TiposEstudiosManager tiposEstudiosManager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class );
-			result.setTipo( (TipoEstudio)tiposEstudiosManager.getRow( getContext(), estudio.getTipo() ) );
+			result.setTipo( (TipoEstudio)tiposEstudiosManager.getRow( getContext(), cita.getTipo() ) );
 
 			PacientesManager pacientesManager = (PacientesManager)IOCManager.getInstanceOf( PacientesManager.class );
-			result.setPaciente( (Paciente)pacientesManager.getRow( getContext(), estudio.getPaciente() ) );
+			result.setPaciente( (Paciente)pacientesManager.getRow( getContext(), cita.getPaciente() ) );
 
 			UsuariosManager usuariosManager = (UsuariosManager)IOCManager.getInstanceOf( UsuariosManager.class );
-			result.setReferidor( (Usuario)usuariosManager.getRow( getContext(), estudio.getReferidor() ) );
+			result.setReferidor( (Usuario)usuariosManager.getRow( getContext(), cita.getReferidor() ) );
 		}
 		catch ( Throwable t )
 		{
@@ -306,43 +344,21 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	{
 		vo.setFechainicio( dateFieldFecha.getValue() );
 		timeInicio.markAsDirty();
-		//vo.setDuracion( vo.getTipo().getDuracion() );
-		//comboBoxDuracion.markAsDirty();
-		// Calendar calendar = GregorianCalendar.getInstance();
-		// calendar.setTime( vo.getFechainicio() );
-		// calendar.add( Calendar.MINUTE, vo.getTipo().getDuracion() );
-		// vo.setFechafin( calendar.getTime() );
-		// timeFin.add( Calendar.MINUTE, vo.getTipo().getDuracion() );
-		// dateFieldFecha.getValue();
-	}
-
-	private void updateFechaInicio()
-	{
-		if ( vo.getTipo() == null )
-			return;
-
-		//vo.setDuracion( vo.getTipo().getDuracion() );
-		//comboBoxDuracion.markAsDirty();
-		// Calendar calendar = GregorianCalendar.getInstance();
-		// calendar.setTime( vo.getFechainicio() );
-		// calendar.add( Calendar.MINUTE, vo.getTipo().getDuracion() );
-		// vo.setFechafin( calendar.getTime() );
-		// timeFin.markAsDirty();
 	}
 
 	private void toDto()
 	{
-		newEstudio.setPaciente( vo.getPaciente().getId() );
-		newEstudio.setInstalacion( instalacion.getId() );
-		newEstudio.setTipo( vo.getTipo().getId() );
-		newEstudio.setReferidor( vo.getReferidor().getId() );
-		newEstudio.setFecha( Utils.getDateAsLong( vo.getFechainicio() ) );
+		newCita.setPaciente( vo.getPaciente().getId() );
+		newCita.setInstalacion( instalacion.getId() );
+		newCita.setTipo( vo.getTipo().getId() );
+		newCita.setReferidor( vo.getReferidor().getId() );
+		newCita.setFecha( Utils.getDateAsLong( vo.getFechainicio() ) );
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( vo.getFechainicio() );
 		calendar.add( Calendar.MINUTE, vo.getDuracion() );
-		newEstudio.setFechafin( Utils.getDateAsLong( calendar.getTime() ) );
-		newEstudio.setUid( "UID" );
+		newCita.setFechafin( Utils.getDateAsLong( calendar.getTime() ) );
+		newCita.setUid( "UID" );
 	}
 
 	private void fillTipoEstudio()
@@ -356,8 +372,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			for ( TipoEstudio item : (List<TipoEstudio>)manager.getRows( getContext(), query ) )
 			{
 				comboTipo.addItem( item );
-				// comboTipo.setItemCaption( item, item.getNombre() );
-
 			}
 		}
 		catch ( Throwable e )
@@ -378,7 +392,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 			toDto();
 
-			manager.setRow( getContext(), null, newEstudio );
+			manager.setRow( getContext(), null, newCita );
 
 			return true;
 		}
@@ -395,11 +409,10 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 		try
 		{
-			if (!timeInicio.isValid() || comboBoxDuracion.getValue() == null)
+			if ( !timeInicio.isValid() || comboBoxDuracion.getValue() == null )
 			{
 				throw new RuntimeException();
 			}
-			// timeFin.commit();
 		}
 		catch ( Throwable t )
 		{
@@ -412,14 +425,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		}
 
 		Date datei = Utils.setTimeToDate( vo.getFecha(), vo.getFechainicio() );
-		// Date datef = Utils.setTimeToDate( vo.getFecha(), vo.getFechafin() );
-		//
-		// if (datei.after( datef )){
-		// Notification.show( getContext().getString(
-		// "modalAppointmentDlg.error.rango.horas" ),
-		// Notification.Type.ERROR_MESSAGE );
-		// return false;
-		// }
 
 		Date today = new Date();
 		if ( today.after( datei ) )
@@ -446,7 +451,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 			toDto();
 
-			manager.setRow( getContext(), (Estudio)orgDto, newEstudio );
+			manager.setRow( getContext(), (Cita)orgDto, newCita );
 
 			return true;
 		}
@@ -461,6 +466,17 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	@Override
 	protected boolean onDelete()
 	{
+		try
+		{
+			manager.delRow( getContext(), orgDto );
+
+			return true;
+		}
+		catch ( Throwable e )
+		{
+			showErrorMessage( e );
+		}
+		
 		return false;
 	}
 
@@ -475,13 +491,11 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	{
 		vo.setFecha( date );
 		vo.setFechainicio( date );
-		// vo.setFechafin( date );
 		vo.setDuracion( 10 );
 
 		dateFieldFecha.markAsDirty();
 		timeInicio.markAsDirty();
 		comboBoxDuracion.markAsDirty();
-		// timeFin.markAsDirty();
 	}
 
 	public void setDuracionMin( Integer duracion )
@@ -489,10 +503,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		vo.setDuracion( duracion );
 		comboBoxDuracion.markAsDirty();
 	}
-	// public void setEndDate(Date date){
-	// vo.setFechafin( date );
-	// timeFin.markAsDirty();
-	// }
 
 	@Override
 	protected String getWindowResourceKey()

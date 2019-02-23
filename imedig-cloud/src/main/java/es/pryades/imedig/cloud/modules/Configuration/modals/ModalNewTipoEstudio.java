@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.modules.Configuration.modals;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,9 +9,11 @@ import org.apache.log4j.Logger;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
 
+import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -37,10 +40,12 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	protected TipoEstudio newTipoEstudio;
 
 	private TextField editNombre;
-	private ComboBox comboBoxDuracion;
+	private ComboBox comboBoxHoras;
+	private ComboBox comboBoxMinutos;
 	private OptionGroup groupTipo;
 	
-	private static final List<Integer> NUMBERS = Arrays.asList( 10, 12, 15, 20, 30, 60 );
+	private static final List<Integer> HOURS = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+	private List<Integer> MINUTES;
 
 	private TiposEstudiosManager tiposEstudiosManager;
 
@@ -52,10 +57,26 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		
 		tiposEstudiosManager = (TiposEstudiosManager) IOCManager.getInstanceOf( TiposEstudiosManager.class );
 		
+		buildMinutes();
+		
 		initComponents();
 		
 		if ( !operation.equals( Operation.OP_DELETE ) )
 			defaultFocus();
+		
+	}
+
+	private void buildMinutes()
+	{
+		int to = 60/5;
+		MINUTES = new ArrayList<>();
+		
+		for ( int i = 0; i <= to; i++ )
+		{
+			MINUTES.add( i*5 );
+			
+		}
+		
 	}
 
 	@Override
@@ -70,7 +91,6 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		catch ( Throwable e1 )
 		{
 			newTipoEstudio = new TipoEstudio();
-			newTipoEstudio.setDuracion( 10 );
 		}
 
 		bi = new BeanItem<ImedigDto>( newTipoEstudio );
@@ -86,16 +106,40 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		groupTipo.setPropertyDataSource( bi.getItemProperty( "tipo" ) );
 		groupTipo.setRequired( true );
 		groupTipo.setValue( 1 );
-
-		comboBoxDuracion = new ComboBox( getContext().getString( "modalNewStudyType.lbDuracion" ) );
-		comboBoxDuracion.setWidth( "80px" );
-		comboBoxDuracion.setNullSelectionAllowed( false );
-		comboBoxDuracion.setNewItemsAllowed( false );
-		comboBoxDuracion.setRequired( true );
-		fillDuracion(comboBoxDuracion);
-		comboBoxDuracion.setPropertyDataSource( bi.getItemProperty( "duracion" ) );
 		
-		FormLayout layout = new FormLayout(editNombre, groupTipo, comboBoxDuracion);
+
+		comboBoxHoras = new ComboBox( getContext().getString( "words.hours" ) );
+		comboBoxHoras.setWidth( "80px" );
+		comboBoxHoras.setNullSelectionAllowed( false );
+		comboBoxHoras.setNewItemsAllowed( false );
+		fillHoras(comboBoxHoras);
+
+		comboBoxMinutos = new ComboBox( getContext().getString( "words.minutes" ) );
+		comboBoxMinutos.setWidth( "80px" );
+		comboBoxMinutos.setNullSelectionAllowed( false );
+		comboBoxMinutos.setNewItemsAllowed( false );
+		fillMinutos( comboBoxMinutos);
+		FormLayout hoursLayout = new FormLayout( comboBoxHoras );
+		hoursLayout.setMargin( false );
+		FormLayout minLayout = new FormLayout( comboBoxMinutos );
+		minLayout.setMargin( false );
+		
+		Integer h = 0;
+		Integer m = 0;
+		if (orgDto != null){
+			h = newTipoEstudio.getDuracion()/60;
+			m = newTipoEstudio.getDuracion()%60;
+			
+		}
+		comboBoxHoras.setValue( h );
+		comboBoxMinutos.setValue( m );
+
+
+		HorizontalLayout timeLayout = new HorizontalLayout(hoursLayout, minLayout);
+		timeLayout.setSpacing( true );
+		timeLayout.setCaption( getContext().getString( "modalNewStudyType.lbDuracion" ) );
+		FormLayout layout = new FormLayout(editNombre, groupTipo, timeLayout);
+		
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );
@@ -104,9 +148,17 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		
 	}
 
-	private void fillDuracion( ComboBox comboBox )
+	private void fillHoras( ComboBox comboBox )
 	{
-		for ( Integer n : NUMBERS )
+		for ( Integer n : HOURS )
+		{
+			comboBox.addItem( n );
+		}
+	}
+
+	private void fillMinutos( ComboBox comboBox )
+	{
+		for ( Integer n : MINUTES )
 		{
 			comboBox.addItem( n );
 		}
@@ -128,13 +180,14 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	{
 		try
 		{
+			newTipoEstudio.setDuracion( getMinutes() );
 			tiposEstudiosManager.setRow( context, null, newTipoEstudio );
 
 			return true;
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ));
 		}
 
 		return false;
@@ -144,16 +197,26 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	{
 		try
 		{
+			newTipoEstudio.setDuracion( getMinutes() );
 			tiposEstudiosManager.setRow( context, (TipoEstudio) orgDto, newTipoEstudio );
 
 			return true;
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ));
 		}
 
 		return false;
+	}
+	
+	private Integer getMinutes(){
+		Integer h = (Integer)comboBoxHoras.getValue();
+		Integer m = (Integer)comboBoxMinutos.getValue();
+		
+		if (h == 0 && m == 0) return null;
+		
+		return (h*60)+m;
 	}
 
 	protected boolean onDelete()
@@ -166,7 +229,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		}
 		catch ( Throwable e )
 		{
-			showErrorMessage( e );
+			showErrorMessage( new ImedigException( e, LOG ));
 		}
 
 		return false;

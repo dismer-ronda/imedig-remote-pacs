@@ -9,13 +9,10 @@ import org.apache.log4j.Logger;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.core.dal.EstudiosManager;
 import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Instalacion;
@@ -46,21 +43,11 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 	
 	private TabSheet tabSheet;
 	
-	private TextField textNombre;
-	private TextField textIdentificador;
-	private ComboBox comboFecha;
-
 	private InstalacionesManager instalacionesManager;
-	private EstudiosManager estudiosManager;
 	
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
 	
-	//private static final Integer PERFIL_IMAGENOLOGO = 3;
-	//private static final Integer PERFIL_USUARIO = 2;
-	
-	//private boolean defaultSearch;
-	//private boolean showMessage;
 	private List<Integer> types = Arrays.asList( Constants.TYPE_IMAGING_DEVICE );
 			
 
@@ -72,7 +59,6 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 	{
 		this.ctx = ctx;
 		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );
-		estudiosManager = (EstudiosManager) IOCManager.getInstanceOf( EstudiosManager.class );
 		
 		setSizeFull();
 		setMargin( true );
