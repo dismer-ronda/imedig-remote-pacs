@@ -16,6 +16,9 @@
 		<if test="tipo != null">
 			AND tipo = #{tipo}   
         </if>
+        <if test="estado != null">
+			AND estado = #{estado}   
+        </if>
 		<if test="fecha_desde != null">
 			AND fecha &gt;= #{fecha_desde}   
         </if>
@@ -74,7 +77,8 @@
 			paciente,
 			instalacion,
 			tipo,
-			referidor
+			referidor,
+			estado
 		)
 		values
 		(
@@ -85,7 +89,8 @@
 			#{paciente},
 			#{instalacion},
 			#{tipo},
-			#{referidor}
+			#{referidor},
+			#{estado}
 		)
 	</insert>
 
@@ -98,7 +103,8 @@
 			paciente=#{paciente},
 			instalacion=#{instalacion},
 			tipo=#{tipo},
-			referidor=#{referidor}
+			referidor=#{referidor},
+			estado=#{estado}
 		where id = #{id}
 	</update>
 

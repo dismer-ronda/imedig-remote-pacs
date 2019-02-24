@@ -76,8 +76,8 @@ public class Constants implements Serializable
 	public static final int SCHEDULER_CUSTOM = 2;
 	
 	//Estado de las citas
-	public static final int STATUS_APPOINTMENT_PLANING = 0; //Estado planificadas
-	public static final int STATUS_APPOINTMENT_EXECUTED = 1;
-	public static final int STATUS_APPOINTMENT_ENDED = 2;
+	public static final int APPOINTMENT_STATUS_PLANING = 0; //Estado planificadas
+	public static final int APPOINTMENT_STATUS_EXECUTING = 1;//En ejecución
+	public static final int APPOINTMENT_STATUS_ENDED = 2;//Terminada
 		
 }

@@ -358,7 +358,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
         
-        btnCitations = buildBtnFloat( "btn.cattions.float", context.getString( "words.citations" ) );
+        btnCitations = buildBtnFloat( "btn.cattions.float", context.getString( "words.appointments" ) );
         btnCitations.setIcon(FontAwesome.CALENDAR);
         btnCitations.setVisible( false );
         btnCitations.addClickListener( new ClickListener(){
@@ -455,8 +455,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		
-		buttonCitas= new Button( context.getString( "words.citations" ) , FontAwesome.CALENDAR);
-		buttonCitas.setDescription( context.getString( "words.patients.view" ) );
+		buttonCitas= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
+		buttonCitas.setDescription( context.getString( "words.appointments.view" ) );
 		setStyleButtonBar( buttonCitas );
 		buttonCitas.addClickListener( new Button.ClickListener()
 		{

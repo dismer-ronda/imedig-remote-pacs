@@ -133,7 +133,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		buttonAddEvent = new Button( FontAwesome.CLOCK_O );
 		buttonAddEvent.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		buttonAddEvent.addStyleName( ValoTheme.BUTTON_PRIMARY );
-		buttonAddEvent.setDescription( ctx.getString( "words.citations.add" ) );
+		buttonAddEvent.setDescription( ctx.getString( "words.appointments.add" ) );
 		insideLayout.addComponent( buttonAddEvent );
 		insideLayout.setComponentAlignment( buttonAddEvent, Alignment.BOTTOM_LEFT );
 		

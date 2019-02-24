@@ -75,7 +75,7 @@ create table susc_citas (
     instalacion integer not null,					-- instalacion en el que se realiza la prueba
     tipo integer not null, 							-- tipo de estudio
     referidor integer,   							-- referidor de estudio
-    estado integer									-- 0-planificada, 1- En ejecuión, 3-terminada
+    estado integer NOT NULL,						-- 0-planificada, 1- En ejecuión, 3-terminada
     
     constraint pk_estudios primary key(id),
     constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id) on delete cascade,

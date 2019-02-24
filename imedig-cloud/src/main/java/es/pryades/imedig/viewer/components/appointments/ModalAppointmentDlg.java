@@ -46,6 +46,7 @@ import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
 import es.pryades.imedig.cloud.dto.Usuario;
+import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
@@ -68,13 +69,16 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	private DateField dateFieldFecha;
 	private TimeField2 timeInicio;
 	private ComboBox comboBoxDuracion;
+	private ComboBox comboBoxEstado;
 	private List<Integer> duracion;
 
 	private PacienteLazyProvider pacienteLazyProvider;
 	private ReferidorLazyProvider referidorLazyProvider;
 
 	private CitasManager manager;
-
+	
+	private boolean cambioEstado = false;
+	
 	public ModalAppointmentDlg( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, Cita oldCita, ModalParent parentWindow, String right )
 	{
 		super( ctx, parentWindow, modalOperation, oldCita, right );
@@ -112,11 +116,12 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		catch ( Throwable e1 )
 		{
 			newCita = new Cita();
+			newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
 		}
 
 		bi = new BeanItem<ImedigDto>( vo );
 
-		selectPaciente = new FiltrerAddSelect( getContext().getString( "modalAppointmentDlg.lbPaciente" ) );
+		selectPaciente = new FiltrerAddSelect( caption( "modalAppointmentDlg.lbPaciente" ) );
 		selectPaciente.setWidth( "100%" );
 		selectPaciente.setRequired( true );
 		selectPaciente.getButtonAdd().setVisible( false );
@@ -130,17 +135,17 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 		if ( Constants.TYPE_IMAGING_DEVICE.equals( instalacion.getTipo() ) )
 		{
-			editInstalacion = new TextField( getContext().getString( "modalAppointmentDlg.lbInstalacion.equipo" ) );
+			editInstalacion = new TextField( caption( "modalAppointmentDlg.lbInstalacion.equipo" ) );
 		}
 		else
 		{
-			editInstalacion = new TextField( getContext().getString( "modalAppointmentDlg.lbInstalacion.consulta" ) );
+			editInstalacion = new TextField( caption( "modalAppointmentDlg.lbInstalacion.consulta" ) );
 		}
 		editInstalacion.setValue( instalacion.getNombre() );
 		editInstalacion.setReadOnly( true );
 		editInstalacion.setWidth( "100%" );
 
-		selectReferidor = new FiltrerAddSelect( getContext().getString( "modalAppointmentDlg.lbReferidor" ) );
+		selectReferidor = new FiltrerAddSelect( caption( "modalAppointmentDlg.lbReferidor" ) );
 		selectReferidor.setWidth( "100%" );
 		selectReferidor.setRequired( true );
 		selectReferidor.setVisibleAdd( false );
@@ -152,7 +157,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		selectReferidor.setContainerDataSource( dataSourceReferidor );
 		selectReferidor.setPropertyDataSource( bi.getItemProperty( "referidor" ) );
 
-		comboTipo = new ComboBox( getContext().getString( "modalAppointmentDlg.lbTipo" ) );
+		comboTipo = new ComboBox( caption( "modalAppointmentDlg.lbTipo" ) );
 		comboTipo.setWidth( "70%" );
 		comboTipo.setFilteringMode( FilteringMode.CONTAINS );
 		comboTipo.setNullSelectionAllowed( false );
@@ -174,7 +179,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 		} );
 
-		dateFieldFecha = new DateField( getContext().getString( "modalAppointmentDlg.lbFecha" ), bi.getItemProperty( "fecha" ) );
+		dateFieldFecha = new DateField( caption( "modalAppointmentDlg.lbFecha" ), bi.getItemProperty( "fecha" ) );
 		dateFieldFecha.setDateFormat( "dd/MM/yyyy" );
 		dateFieldFecha.setResolution( Resolution.DAY );
 		dateFieldFecha.setRequired( true );
@@ -196,7 +201,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
 		timeInicio.setImmediate( true );
 
-		comboBoxDuracion = new ComboBox( getContext().getString( "modalAppointmentDlg.lbDuracion" ) );
+		comboBoxDuracion = new ComboBox( caption( "modalAppointmentDlg.lbDuracion" ) );
 		comboBoxDuracion.setWidth( "125px" );
 		comboBoxDuracion.setNullSelectionAllowed( false );
 		comboBoxDuracion.setNewItemsAllowed( false );
@@ -206,38 +211,88 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		formLayout.setMargin( false );
 
 		HorizontalLayout layoutTime = new HorizontalLayout( timeInicio, formLayout );
-		layoutTime.setCaption( getContext().getString( "modalAppointmentDlg.lbHoraInicio" ) );
+		layoutTime.setCaption( caption( "modalAppointmentDlg.lbHoraInicio" ) );
 		layoutTime.setSpacing( true );
+		
+		comboBoxEstado = new ComboBox( caption( "modalAppointmentDlg.lbEstado" ) );
+		comboBoxEstado.setNullSelectionAllowed( false );
+		comboBoxEstado.setNewItemsAllowed( false );
+		fillEstados(comboBoxEstado);
+		comboBoxEstado.setPropertyDataSource( bi.getItemProperty( "estado" ) );
+		comboBoxEstado.addValueChangeListener( new ValueChangeListener()
+		{
+			private static final long serialVersionUID = -1750614759248144130L;
 
-		FormLayout layout = new FormLayout( selectPaciente, editInstalacion, selectReferidor, comboTipo, dateFieldFecha, layoutTime );
+			@Override
+			public void valueChange( ValueChangeEvent event )
+			{
+				cambioEstado = true;
+			}
+		} );
+		if (orgDto == null){
+			comboBoxEstado.setVisible( false );
+		}
+
+		FormLayout layout = new FormLayout( selectPaciente, editInstalacion, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado );
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );
 
 		componentsContainer.addComponent( layout );
 
-		if (orgDto != null) {
+		if (orgDto != null ) {
 			selectPaciente.setReadOnly( true );
-			addCancelarCita();
+			if (newCita.getEstado() != Constants.APPOINTMENT_STATUS_ENDED) {
+				addCancelarCita();
+			}else{
+				bttnOperacion.setVisible( false );
+				bttnCancelar.setCaption( caption("words.close") );
+				readOnlyAll();
+			}
 		}
+		
+	}
+
+	private void readOnlyAll()
+	{
+		selectPaciente.setReadOnly( true );
+		selectReferidor.setReadOnly( true );
+		editInstalacion.setReadOnly( true );;
+		comboTipo.setReadOnly( true );
+		dateFieldFecha.setReadOnly( true );
+		timeInicio.setReadOnly( true );
+		comboBoxDuracion.setReadOnly( true );
+		comboBoxEstado.setReadOnly( true );
+	}
+
+	private void fillEstados( ComboBox comboBox )
+	{
+		if (newCita.getEstado() != Constants.APPOINTMENT_STATUS_EXECUTING){
+			comboBox.addItem( Constants.APPOINTMENT_STATUS_PLANING );
+			comboBox.setItemCaption( Constants.APPOINTMENT_STATUS_PLANING, caption("appointment.status."+Constants.APPOINTMENT_STATUS_PLANING) );
+		}
+		comboBox.addItem( Constants.APPOINTMENT_STATUS_EXECUTING );
+		comboBox.setItemCaption( Constants.APPOINTMENT_STATUS_EXECUTING, caption("appointment.status."+Constants.APPOINTMENT_STATUS_EXECUTING) );
+		comboBox.addItem( Constants.APPOINTMENT_STATUS_ENDED );
+		comboBox.setItemCaption( Constants.APPOINTMENT_STATUS_ENDED, caption("appointment.status."+Constants.APPOINTMENT_STATUS_ENDED) );
 	}
 
 	private void addCancelarCita()
 	{
-		Button button = new Button( getContext().getString( "modalAppointmentDlg.wndCaption.cancel" ) );
+		Button button = new Button( caption( "modalAppointmentDlg.wndCaption.cancel" ) );
 		button.setImmediate( true );
 		button.addStyleName( ValoTheme.BUTTON_DANGER );
 		operacionesContainer.addComponent( button );
 		button.addClickListener( new ClickListener()
 		{
-			private static final long serialVersionUID = -7170543331188736832L;
+			private static final long serialVersionUID = -5225985568656917973L;
 
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
-				ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( "modalAppointmentDlg.confirm.cancel" ), new ConfirmDialog.Listener()
+				ConfirmDialog.show( (UI)getContext().getData( "Application" ), caption( "modalAppointmentDlg.confirm.cancel" ), new ConfirmDialog.Listener()
 				{
-					private static final long serialVersionUID = -7797844014333609680L;
+					private static final long serialVersionUID = -5389849699030665587L;
 
 					public void onClose( ConfirmDialog dialog )
 					{
@@ -310,6 +365,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		result.setFecha( Utils.getDateHourFromLong( cita.getFecha() ) );
 		result.setFechainicio( Utils.getDateHourFromLong( cita.getFecha() ) );
 		result.setDuracion( calDuracion( Utils.getDateHourFromLong( cita.getFecha() ), Utils.getDateHourFromLong( cita.getFechafin() ) ) );
+		result.setEstado( cita.getEstado() );
 		try
 		{
 			TiposEstudiosManager tiposEstudiosManager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class );
@@ -353,6 +409,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		newCita.setTipo( vo.getTipo().getId() );
 		newCita.setReferidor( vo.getReferidor().getId() );
 		newCita.setFecha( Utils.getDateAsLong( vo.getFechainicio() ) );
+		newCita.setEstado( vo.getEstado() );
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( vo.getFechainicio() );
@@ -391,6 +448,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 				return false;
 
 			toDto();
+			
+			newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
 
 			manager.setRow( getContext(), null, newCita );
 
@@ -429,7 +488,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		Date today = new Date();
 		if ( today.after( datei ) )
 		{
-			Notification.show( getContext().getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
+			Notification.show( caption( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
 			return false;
 		}
 
@@ -452,6 +511,10 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			toDto();
 
 			manager.setRow( getContext(), (Cita)orgDto, newCita );
+			
+			if (cambioEstado){
+				verificarEstadosCitasPrevias();
+			}
 
 			return true;
 		}
@@ -461,6 +524,25 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		}
 
 		return false;
+	}
+
+	private void verificarEstadosCitasPrevias() throws Throwable
+	{
+		CitaQuery query = new CitaQuery();
+		query.setInstalacion( instalacion.getId() );
+		query.setFecha_hasta(newCita.getFecha() );
+		query.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
+		List<Cita> citas = manager.getRows( getContext(), query );
+		for ( Cita cita : citas )
+		{
+			if (cita.getId().equals( newCita.getId() ))
+				continue;
+			
+			Cita c = Utils.clone2( cita );
+			c.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
+			manager.setRow( getContext(), cita, c );
+		}
+		
 	}
 
 	@Override

@@ -520,7 +520,13 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		event.setStart( Utils.getDateHourFromLong( cita.getFecha() ) );
 		event.setEnd( Utils.getDateHourFromLong( cita.getFechafin() ) );
 		event.setData( cita );
-		event.setStyleName( "cita" );
+		
+		if (cita.getEstado() == Constants.APPOINTMENT_STATUS_PLANING)
+			event.setStyleName( "cita" );
+		else if (cita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING)
+			event.setStyleName( "ejecucion" );
+		else
+			event.setStyleName( "finalizada" );
 
 		return event;
 	}

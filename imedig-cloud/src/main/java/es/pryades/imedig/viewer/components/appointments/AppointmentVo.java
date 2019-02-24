@@ -20,5 +20,5 @@ public class AppointmentVo extends ImedigDto implements Serializable
 	private Date fecha;
 	private Date fechainicio;
 	private Integer duracion;
-	//private Date fechafin;
+	private Integer estado;
 }

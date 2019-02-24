@@ -334,3 +334,37 @@
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="cita"] .v-calendar-event-content {
 	background-color: #283033;
 }
+
+.imedig .v-calendar-event-month[class*="ejecucion"]:before {
+	color: #ffffff;
+}
+
+.imedig .v-calendar-event-all-day[class*="ejecucion"] {
+	background-color: transparent;
+	color: #ffffff;
+}
+
+.imedig .v-calendar-week-wrapper .v-calendar-event[class*="ejecucion"] {
+	color: #ffffff;
+}
+
+.imedig .v-calendar-week-wrapper .v-calendar-event[class*="ejecucion"] .v-calendar-event-content {
+	background-color: #283033;
+}
+
+.imedig .v-calendar-event-month[class*="finalizada"]:before {
+	color: #808080;
+}
+
+.imedig .v-calendar-event-all-day[class*="finalizada"] {
+	background-color: transparent;
+	color: #808080;
+}
+
+.imedig .v-calendar-week-wrapper .v-calendar-event[class*="finalizada"] {
+	color: #808080;
+}
+
+.imedig .v-calendar-week-wrapper .v-calendar-event[class*="finalizada"] .v-calendar-event-content {
+	background-color: #283033;
+}
