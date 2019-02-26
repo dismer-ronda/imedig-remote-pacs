@@ -12,11 +12,11 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextField;
 
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.ImedigDto;
-import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.TipoHorario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
@@ -27,13 +27,13 @@ import es.pryades.imedig.core.common.ModalParent;
  * @author hector.licea
  * 
  */
-public abstract class ModalNewInstalacion extends ModalWindowsCRUD
+public abstract class ModalNewRecurso extends ModalWindowsCRUD
 {
 	private static final long serialVersionUID = -3703048869668565205L;
 
-	private static final Logger LOG = Logger.getLogger( ModalNewInstalacion.class );
+	private static final Logger LOG = Logger.getLogger( ModalNewRecurso.class );
 
-	protected Instalacion newInstalacion;
+	protected Recurso newRecurso;
 
 	private TextField editNombre;
 	private TextField editAEtitle;
@@ -41,18 +41,18 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	private ComboBox comboBoxModalidad;
 	private ComboBox comboBoxHorario;
 
-	private InstalacionesManager instalacionesManager;
+	private RecursosManager recursosManager;
 	private TipoHorarioManager tipoHorarioManager;
 	
 	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 12, 15, 20, 30, 60 );
 	
-	public ModalNewInstalacion( ImedigContext ctx, Operation modalOperation, Instalacion instalacion, ModalParent parentWindow, String right )
+	public ModalNewRecurso( ImedigContext ctx, Operation modalOperation, Recurso recurso, ModalParent parentWindow, String right )
 	{
-		super( ctx, parentWindow, modalOperation, instalacion, right );
+		super( ctx, parentWindow, modalOperation, recurso, right );
 
 		setWidth( "750px" );
 
-		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
+		recursosManager = (RecursosManager)IOCManager.getInstanceOf( RecursosManager.class );
 		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
 
 		initComponents();
@@ -68,32 +68,32 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 
 		try
 		{
-			newInstalacion = (Instalacion)Utils.clone( (Instalacion)orgDto );
+			newRecurso = (Recurso)Utils.clone( (Recurso)orgDto );
 		}
 		catch ( Throwable e1 )
 		{
-			newInstalacion = new Instalacion();
-			newInstalacion.setTiempominimo( 10 );
+			newRecurso = new Recurso();
+			newRecurso.setTiempominimo( 10 );
 		}
 
-		bi = new BeanItem<ImedigDto>( newInstalacion );
+		bi = new BeanItem<ImedigDto>( newRecurso );
 
-		editNombre = new TextField( getContext().getString( "modalNewInst.lbNombre" ), bi.getItemProperty( "nombre" ) );
+		editNombre = new TextField( getContext().getString( "modalNewRecurso.lbNombre" ), bi.getItemProperty( "nombre" ) );
 		editNombre.setWidth( "100%" );
 		editNombre.setNullRepresentation( "" );
 
-		editAEtitle = new TextField( getContext().getString( "modalNewInst.lbAEtitle" ), bi.getItemProperty( "aetitle" ) );
+		editAEtitle = new TextField( getContext().getString( "modalNewRecurso.lbAEtitle" ), bi.getItemProperty( "aetitle" ) );
 		editAEtitle.setWidth( "100%" );
 		editAEtitle.setNullRepresentation( "" );
 
-		comboBoxModalidad = new ComboBox( getContext().getString( "modalNewInst.lbModalidad" ) );
+		comboBoxModalidad = new ComboBox( getContext().getString( "modalNewRecurso.lbModalidad" ) );
 		comboBoxModalidad.setPropertyDataSource( bi.getItemProperty( "modalidad" ) );
 		comboBoxModalidad.setWidth( "100%" );
 		comboBoxModalidad.setNewItemsAllowed( false );
 		comboBoxModalidad.setNullSelectionAllowed( true );
 		fillModalidad( comboBoxModalidad );
 		
-		comboBoxHorario = new ComboBox( getContext().getString( "modalNewInst.lbHorario" ) );
+		comboBoxHorario = new ComboBox( getContext().getString( "modalNewRecurso.lbHorario" ) );
 		comboBoxHorario.setPropertyDataSource( bi.getItemProperty( "tipo_horario" ) );
 		comboBoxHorario.setWidth( "100%" );
 		comboBoxHorario.setNewItemsAllowed( false );
@@ -103,7 +103,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 
 		StringToIntegerConverter converter = new StringToIntegerConverter();
 		
-		comboBoxTiempoMin = new ComboBox( getContext().getString( "modalNewInst.lbTiempoMinimo" ) );
+		comboBoxTiempoMin = new ComboBox( getContext().getString( "modalNewRecurso.lbTiempoMinimo" ) );
 		comboBoxTiempoMin.setWidth( "80px" );
 		comboBoxTiempoMin.setNullSelectionAllowed( false );
 		comboBoxTiempoMin.setNewItemsAllowed( false );
@@ -135,7 +135,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	private void fillHorarios( ComboBox comboBox )
 	{
 		TipoHorario query = new TipoHorario();
-		query.setTipo_instalacion( getTipo() );
+		query.setTipo_recurso( getTipo() );
 		try
 		{
 			List<TipoHorario> tipos = tipoHorarioManager.getRows( getContext(), query );
@@ -171,8 +171,8 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			newInstalacion.setTipo( getTipo() );
-			instalacionesManager.setRow( context, null, newInstalacion );
+			newRecurso.setTipo( getTipo() );
+			recursosManager.setRow( context, null, newRecurso );
 
 			return true;
 		}
@@ -190,8 +190,8 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			newInstalacion.setTipo( getTipo() );
-			instalacionesManager.setRow( context, (Instalacion)orgDto, newInstalacion );
+			newRecurso.setTipo( getTipo() );
+			recursosManager.setRow( context, (Recurso)orgDto, newRecurso );
 
 			return true;
 		}
@@ -207,7 +207,7 @@ public abstract class ModalNewInstalacion extends ModalWindowsCRUD
 	{
 		try
 		{
-			instalacionesManager.delRow( context, newInstalacion );
+			recursosManager.delRow( context, newRecurso );
 
 			return true;
 		}

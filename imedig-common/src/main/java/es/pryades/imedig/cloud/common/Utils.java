@@ -516,11 +516,31 @@ public class Utils implements Serializable
 
 		return calendar.getTime();
 	}
+	
+	public static Date getFirstSecondAsDate( Date date )
+	{
+		Calendar calendar = GregorianCalendar.getInstance( );
+		calendar.setTime( date );
+
+		calendar.set( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ), calendar.get( Calendar.DATE ), 0, 0, 0 );
+
+		return calendar.getTime();
+	}
 
 	public static Date getTodayLastSecondAsDate( String horario )
 	{
 		Calendar calendar = GregorianCalendar.getInstance( TimeZone.getTimeZone( horario ) );
 
+		calendar.set( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ), calendar.get( Calendar.DATE ), 23, 59, 59 );
+
+		return calendar.getTime();
+	}
+	
+	public static Date getLastSecondAsDate( Date date )
+	{
+		Calendar calendar = GregorianCalendar.getInstance( );
+		calendar.setTime( date );
+		
 		calendar.set( calendar.get( Calendar.YEAR ), calendar.get( Calendar.MONTH ), calendar.get( Calendar.DATE ), 23, 59, 59 );
 
 		return calendar.getTime();
@@ -1610,6 +1630,17 @@ public class Utils implements Serializable
 	{
 		return LocalTime.parse( time );
 	}
+	
+	public static Date getDateWithTime( Date date, LocalTime time )
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( date );
+		calendar.set( Calendar.HOUR_OF_DAY, time.getHourOfDay() );
+		calendar.set( Calendar.MINUTE, time.getMinuteOfHour());
+		//calendar.set( Calendar.SECOND, 0 );
+		
+		return calendar.getTime();
+	}
 
 //	public static Date getTime( String time )
 //	{
@@ -1939,31 +1970,6 @@ public class Utils implements Serializable
 		return cause;
 	}
 
-	/*
-	 * public static boolean evaluateCondition( String condition, Map<String,
-	 * Double> map, boolean exception ) throws Throwable { try { JexlEngine jexl
-	 * = new JexlEngine(); jexl.setStrict( true ); jexl.setSilent( false );
-	 * 
-	 * Expression e = jexl.createExpression( condition );
-	 * 
-	 * // Create a context and add data JexlContext jc = new MapContext();
-	 * 
-	 * Iterator it = map.entrySet().iterator(); while ( it.hasNext() ) {
-	 * Map.Entry pairs = (Map.Entry)it.next();
-	 * 
-	 * jc.set( (String)pairs.getKey(), pairs.getValue() ); }
-	 * 
-	 * // Now evaluate the expression, getting the result Object o = e.evaluate(
-	 * jc );
-	 * 
-	 * return (o instanceof Boolean) ? (Boolean)o : false; } catch ( Throwable e
-	 * ) { LOG.info( "exception evaluating " + condition + " " + e.getMessage()
-	 * );
-	 * 
-	 * if ( exception ) throw e; }
-	 * 
-	 * return false; }
-	 */
 	public static boolean isSameHour( Date prev, Date next )
 	{
 		if ( prev == null || next == null )
@@ -2051,9 +2057,12 @@ public class Utils implements Serializable
 		return calDate.getTime();
 	}
 
-	public static Integer getTime( Date date )
+	public static LocalTime getTime( Date date )
 	{
-		return Integer.valueOf( new SimpleDateFormat( "HHmm" ).format( date ) );
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setTime( date );
+		
+		return new LocalTime( calendar.get( Calendar.HOUR_OF_DAY ), calendar.get( Calendar.MINUTE ), 0 );
 	}
 
 	public static Date getTime( Integer date )
@@ -2636,5 +2645,37 @@ public class Utils implements Serializable
 			return source.substring( 0, source.length() - trail.length() );
 
 		return source;
+	}
+	
+	public static <T> T head( List<T> list )
+	{
+		if ( list == null || list.isEmpty() )
+			return null;
+
+		return list.get( 0 );
+	}
+
+	public static <T> T end( List<T> list )
+	{
+		if ( list == null || list.isEmpty() )
+			return null;
+
+		return list.get( list.size() - 1 );
+	}
+
+	public static <T> List<T> init( List<T> list )
+	{
+		if ( list.isEmpty() )
+			return list;
+
+		return list.subList( 0, list.size() - 1 );
+	}
+
+	public static <T> List<T> tail( List<T> list )
+	{
+		if ( list.isEmpty() )
+			return null;
+
+		return list.subList( 1, list.size() );
 	}
 }

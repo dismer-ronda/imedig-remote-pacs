@@ -144,7 +144,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
-				viewer.newCitation();
+				//viewer.newCitation();
 			}
 		} );
 		

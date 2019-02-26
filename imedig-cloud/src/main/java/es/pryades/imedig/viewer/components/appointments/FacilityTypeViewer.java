@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 
-import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import lombok.Getter;
 
@@ -27,14 +27,14 @@ public class FacilityTypeViewer extends VerticalLayout
 	
 	private TabSheet tabSheet;
 	
-	private InstalacionesManager instalacionesManager;
+	private RecursosManager recursosManager;
 	
 	public FacilityTypeViewer( ImedigContext ctx, Integer type)
 	{
 		this.ctx = ctx;
 		this.type = type;
 		
-		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );
+		recursosManager = (RecursosManager) IOCManager.getInstanceOf( RecursosManager.class );
 		
 		setSizeFull();
 		setMargin( true );
@@ -58,15 +58,15 @@ public class FacilityTypeViewer extends VerticalLayout
 	{
 		
 		List<AppointmentSchedulerViewer> viewers = new ArrayList<>();
-		Instalacion query = new Instalacion();
+		Recurso query = new Recurso();
 		query.setTipo( type );
-		int counter = instalacionesManager.getNumberOfRows( ctx, query );
+		int counter = recursosManager.getNumberOfRows( ctx, query );
 		
-		List<Instalacion> instalaciones = instalacionesManager.getRows( ctx, query );
+		List<Recurso> recursos = recursosManager.getRows( ctx, query );
 		
-		for ( Instalacion instalacion : instalaciones )
+		for ( Recurso recurso : recursos )
 		{
-			viewers.add( new AppointmentSchedulerViewer( ctx, instalacion ) );
+			viewers.add( new AppointmentSchedulerViewer( ctx, recurso ) );
 		}
 		
 		if (counter == 0) return;
@@ -90,7 +90,7 @@ public class FacilityTypeViewer extends VerticalLayout
 		tabSheet.setSizeFull();
 		for ( AppointmentSchedulerViewer viewer : viewers )
 		{
-			tabSheet.addTab( viewer,  viewer.getInstalacion().getNombre()+" ("+viewer.getInstalacion().getModalidad()+")");
+			tabSheet.addTab( viewer,  viewer.getRecurso().getNombre()+" ("+viewer.getRecurso().getModalidad()+")");
 		}
 		addComponent( tabSheet );
 	}

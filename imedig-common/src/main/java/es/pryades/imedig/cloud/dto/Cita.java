@@ -13,7 +13,7 @@ public class Cita extends ImedigDto
 	private Long fechafin;
 	private String uid;
 	private Integer paciente;
-    private Integer instalacion;
+    private Integer recurso;
     private Integer tipo;
     private Integer referidor;
     private Integer estado;

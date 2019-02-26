@@ -13,9 +13,9 @@ import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.ModalParent;
 import lombok.Getter;
@@ -43,7 +43,7 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 	
 	private TabSheet tabSheet;
 	
-	private InstalacionesManager instalacionesManager;
+	private RecursosManager recursosManager;
 	
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
@@ -58,7 +58,7 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 	public AppointmentsViewer( ImedigContext ctx )
 	{
 		this.ctx = ctx;
-		instalacionesManager = (InstalacionesManager) IOCManager.getInstanceOf( InstalacionesManager.class );
+		recursosManager = (RecursosManager) IOCManager.getInstanceOf( RecursosManager.class );
 		
 		setSizeFull();
 		setMargin( true );
@@ -81,12 +81,12 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 		int counter = 0;
 		
 		List<FacilityTypeViewer> viewers = new ArrayList<>();
-		Instalacion query = new Instalacion();
+		Recurso query = new Recurso();
 		
 		for ( Integer type : types )
 		{
 			query.setTipo( type );
-			int falicities = instalacionesManager.getNumberOfRows( ctx, query );
+			int falicities = recursosManager.getNumberOfRows( ctx, query );
 			
 			if (falicities == 0 ) continue;
 			counter++;

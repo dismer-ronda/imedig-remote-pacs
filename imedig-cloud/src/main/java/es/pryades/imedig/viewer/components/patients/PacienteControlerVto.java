@@ -18,12 +18,12 @@ import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.CitasManager;
-import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.Informe;
-import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.core.common.GenericControlerVto;
@@ -43,8 +43,8 @@ public class PacienteControlerVto extends GenericControlerVto
 
 	private static final String[] visibleCols =	{ "identificador", "nombre", "sexo", "edad", "citas"};
 	
-	private Map<Integer, Instalacion> cacheInstalaciones;
-	private InstalacionesManager instalacionesManager;
+	private Map<Integer, Recurso> cacheRecursos;
+	private RecursosManager recursosManager;
 	private CitasManager citasManager;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat( "dd/MM HH:mm" );
 	private static final SimpleDateFormat dayDateFormatter = new SimpleDateFormat( "dd/MM/yyyy" );
@@ -54,9 +54,9 @@ public class PacienteControlerVto extends GenericControlerVto
 	{
 		super( ctx );
 		
-		cacheInstalaciones = new HashMap<>();
+		cacheRecursos = new HashMap<>();
 		
-		instalacionesManager = (InstalacionesManager)IOCManager.getInstanceOf( InstalacionesManager.class );
+		recursosManager = (RecursosManager)IOCManager.getInstanceOf( RecursosManager.class );
 		citasManager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
 	}
 
@@ -275,10 +275,10 @@ public class PacienteControlerVto extends GenericControlerVto
 		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ));
 		String inicio = timeFormatter.format( Utils.getDateHourFromLong( cita.getFecha()));
 		String fin = timeFormatter.format( Utils.getDateHourFromLong( cita.getFechafin()));
-		String instalacion = getInstalacion( cita.getInstalacion() ).getNombre();
+		String recurso = getRecurso( cita.getRecurso() ).getNombre();
 		
 		StringBuilder s = new StringBuilder();
-		s.append( "<b>" ).append( getContext().getString( "words.facility") ).append( ": </b>" ).append( instalacion ).append( "<br/>" ).
+		s.append( "<b>" ).append( getContext().getString( "words.facility") ).append( ": </b>" ).append( recurso ).append( "<br/>" ).
 		  append( "<b>" ).append( getContext().getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "<br/>" ).
 		  append( "<b>" ).append( getContext().getString( "modalAppointmentDlg.lbHoraInicio") ).append( ": </b>" ).append( inicio ).append( "<br/>" ).
 		  append( "<b>" ).append( getContext().getString( "modalAppointmentDlg.lbHoraFin") ).append( ": </b>" ).append( fin );
@@ -303,27 +303,27 @@ public class PacienteControlerVto extends GenericControlerVto
 	}
 	
 	private String buidCaption(Cita cita ){
-		Instalacion instalacion = getInstalacion( cita.getInstalacion() );
-		return instalacion.getModalidad()+" " + dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
+		//Recurso recurso = getRecurso( cita.getRecurso() );
+		return /*recurso.getModalidad()+" " + */dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
 	}
 	
 	private FontIcon buidIcom(Cita cita ){
 		
-		if (cacheInstalaciones.get( cita.getInstalacion() ) == null){
+		if (cacheRecursos.get( cita.getRecurso() ) == null){
 			try
 			{
-				cacheInstalaciones.put( cita.getInstalacion(), (Instalacion)instalacionesManager.getRow( getContext(), cita.getInstalacion() ) );
+				cacheRecursos.put( cita.getRecurso(), (Recurso)recursosManager.getRow( getContext(), cita.getRecurso() ) );
 			}
 			catch ( Throwable e )
 			{
 			}
 		}
 		
-		Instalacion instalacion = cacheInstalaciones.get( cita.getInstalacion() );
+		Recurso recurso = cacheRecursos.get( cita.getRecurso() );
 		
-		if (!Constants.TYPE_IMAGING_DEVICE.equals( instalacion.getTipo() )) return FontIcoMoon.ROOT_CATEGORY;
+		if (!Constants.TYPE_IMAGING_DEVICE.equals( recurso.getTipo() )) return FontIcoMoon.ROOT_CATEGORY;
 		
-		switch ( instalacion.getModalidad() )
+		switch ( recurso.getModalidad() )
 		{
 			case "US":
 				return FontIcoMoon.ULTRASOUND;
@@ -341,18 +341,18 @@ public class PacienteControlerVto extends GenericControlerVto
 		}
 	}
 	
-	private Instalacion getInstalacion(Integer instalacionId){
-		if (cacheInstalaciones.get( instalacionId ) == null){
+	private Recurso getRecurso(Integer recursoId){
+		if (cacheRecursos.get( recursoId ) == null){
 			try
 			{
-				cacheInstalaciones.put( instalacionId, (Instalacion)instalacionesManager.getRow( getContext(), instalacionId ) );
+				cacheRecursos.put( recursoId, (Recurso)recursosManager.getRow( getContext(), recursoId ) );
 			}
 			catch ( Throwable e )
 			{
 			}
 		}
 		
-		return cacheInstalaciones.get( instalacionId );
+		return cacheRecursos.get( recursoId );
 	}
 
 }

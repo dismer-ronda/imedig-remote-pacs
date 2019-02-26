@@ -20,7 +20,7 @@ public class TipoHorarioControlerVto extends GenericControlerVto
 {
 	private static final long serialVersionUID = -8082703046594849640L;
 	
-	private static final String[] visibleCols =	{ "nombre", "tipoinstalacion", "tipohorario" };
+	private static final String[] visibleCols =	{ "nombre", "tiporecurso", "tipohorario" };
 	
 	public TipoHorarioControlerVto( ImedigContext ctx)
 	{
@@ -154,7 +154,7 @@ public class TipoHorarioControlerVto extends GenericControlerVto
 
 				result.setId( dto.getId() );
 				result.setNombre( dto.getNombre() );
-				result.setTipoinstalacion( getContext().getString( "facility.type."+dto.getTipo_instalacion()));
+				result.setTiporecurso( getContext().getString( "resource.type."+dto.getTipo_recurso()));
 				result.setTipohorario(getContext().getString( "modalNewTipoHorario.tipo."+dto.getTipo_horario()));
 			}
 			else

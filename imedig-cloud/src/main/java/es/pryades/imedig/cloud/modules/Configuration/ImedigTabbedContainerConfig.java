@@ -108,7 +108,7 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 					tabContentList.add( new TiposHorariosConfig( ctx ) );
 				}
 				
-				if ( ctx.hasRight( "configuracion.instalaciones" ) )
+				if ( ctx.hasRight( "configuracion.recursos" ) )
 				{
 					tabContentList.add( new EquiposConfig( ctx ) );
 				}

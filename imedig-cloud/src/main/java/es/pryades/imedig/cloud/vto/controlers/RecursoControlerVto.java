@@ -3,8 +3,8 @@ package es.pryades.imedig.cloud.vto.controlers;
 import java.util.HashMap;
 
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Instalacion;
-import es.pryades.imedig.cloud.vto.InstalacionVto;
+import es.pryades.imedig.cloud.dto.Recurso;
+import es.pryades.imedig.cloud.vto.RecursoVto;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
 import es.pryades.imedig.core.common.VtoFieldRef;
@@ -16,14 +16,14 @@ import es.pryades.imedig.core.common.VtoFieldRef;
  * 
  */
 @SuppressWarnings("rawtypes")
-public class InstalacionControlerVto extends GenericControlerVto
+public class RecursoControlerVto extends GenericControlerVto
 {
 	private static final long serialVersionUID = 6481184312348308369L;
 	
 	private static final String[] visibleCols =
 	{ "nombre", "aetitle", "modalidad"};
 
-	public InstalacionControlerVto( ImedigContext ctx)
+	public RecursoControlerVto( ImedigContext ctx)
 	{
 		super( ctx );
 	}
@@ -45,7 +45,7 @@ public class InstalacionControlerVto extends GenericControlerVto
 	 */
 	public static String[] getVisibleCols()
 	{
-		return InstalacionControlerVto.visibleCols;
+		return RecursoControlerVto.visibleCols;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class InstalacionControlerVto extends GenericControlerVto
 	@Override
 	public String[] getStaticVisibleCols()
 	{
-		return InstalacionControlerVto.visibleCols;
+		return RecursoControlerVto.visibleCols;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class InstalacionControlerVto extends GenericControlerVto
 	@Override
 	public Class getDtoObjectClass()
 	{
-		return Instalacion.class; 
+		return Recurso.class; 
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class InstalacionControlerVto extends GenericControlerVto
 	@Override
 	public Class getVtoObjClass()
 	{
-		return InstalacionVto.class;
+		return RecursoVto.class;
 	}
 
 	/**
@@ -145,24 +145,24 @@ public class InstalacionControlerVto extends GenericControlerVto
 	 */
 	public GenericVto generateVtoFromDto( Object dtoObj ) throws Throwable
 	{
-		InstalacionVto result = null;
+		RecursoVto result = null;
 
 		if ( dtoObj != null )
 		{
-			if ( dtoObj.getClass().equals( Instalacion.class ) )
+			if ( dtoObj.getClass().equals( Recurso.class ) )
 			{
-				result = new InstalacionVto();
+				result = new RecursoVto();
 
 				// ID
-				result.setId( ((Instalacion)dtoObj).getId() );
+				result.setId( ((Recurso)dtoObj).getId() );
 				// NOMBRE
-				result.setNombre( ((Instalacion)dtoObj).getNombre() );
+				result.setNombre( ((Recurso)dtoObj).getNombre() );
 				// AETITLE
-				result.setAetitle( ((Instalacion)dtoObj).getAetitle() );
+				result.setAetitle( ((Recurso)dtoObj).getAetitle() );
 				// MODALIDAD
-				result.setModalidad( ((Instalacion)dtoObj).getModalidad() );
+				result.setModalidad( ((Recurso)dtoObj).getModalidad() );
 				// TIPO
-				result.setTipo( ((Instalacion)dtoObj).getTipo() );
+				result.setTipo( ((Recurso)dtoObj).getTipo() );
 			}
 			else
 			{

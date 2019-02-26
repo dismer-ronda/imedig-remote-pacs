@@ -20,13 +20,14 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventResizeHand
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.ForwardHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.RangeSelectHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClickHandler;
+import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
-import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.PlanificacionHorario;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.TipoHorario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
@@ -40,19 +41,20 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 
 	private ImedigContext ctx;
 	@Getter
-	private Instalacion instalacion;
-	private AppointmentEventProvider eventProvider;
+	private Recurso recurso;
+	private CalendarEventProvider eventProvider;
 	Calendar citationsCalendar;
+	private AppointmentEventResource eventResource;
 	private CalendarPeriodPanel periodPanel;
 	private PlanificacionHorario planificacionHorario;
 	
 	private Integer firstHour;
 	private Integer lastHour;
 	
-	public AppointmentSchedulerViewer( ImedigContext ctx, Instalacion instalacion)
+	public AppointmentSchedulerViewer( ImedigContext ctx, Recurso recurso)
 	{
 		this.ctx = ctx;
-		this.instalacion = instalacion;
+		this.recurso = recurso;
 		
 		settingInstalationWorkingPlan();
 		
@@ -74,7 +76,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		try
 		{
 			TipoHorarioManager manager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
-			TipoHorario tipoHorario = (TipoHorario)manager.getRow( ctx, instalacion.getTipo_horario() );
+			TipoHorario tipoHorario = (TipoHorario)manager.getRow( ctx, recurso.getTipo_horario() );
 			
 			if (StringUtils.isBlank( tipoHorario.getDatos()) ) return new PlanificacionHorario();
 			return (PlanificacionHorario)Utils.toPojo( tipoHorario.getDatos(), PlanificacionHorario.class, false );
@@ -103,7 +105,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		
 	private void buildComponents()
 	{
-		
 		citationsCalendar = new Calendar();
 		citationsCalendar.setLocale( UI.getCurrent().getLocale() );
 		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
@@ -113,7 +114,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		citationsCalendar.setFirstVisibleHourOfDay( firstHour );
 		citationsCalendar.setLastVisibleHourOfDay( lastHour );
 		
-		eventProvider = new AppointmentEventProvider( ctx, instalacion, citationsCalendar );
+		eventResource = new AppointmentEventResource( ctx, recurso );
+		eventProvider = new AppointmentEventProvider1( citationsCalendar, eventResource );
 		citationsCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
@@ -155,11 +157,11 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		citationsCalendar.setEndDate( end );
 	}
 	
-	public void newCitation(){
-		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, Operation.OP_ADD, instalacion, null, this, "administracion.citas" );
-		dlg.setDate( getStartDate() );
-		dlg.showModalWindow();
-	}
+//	public void newCitation(){
+//		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, null, this, "administracion.citas" );
+//		dlg.setDate( getStartDate() );
+//		dlg.showModalWindow();
+//	}
 	
 	private Date getStartDate(){
 		Date start = citationsCalendar.getStartDate();
@@ -187,9 +189,15 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	{
 		AppointmentEvent citationEvent = (AppointmentEvent)event.getCalendarEvent();
 		Operation operation = citationEvent.getData() == null ? Operation.OP_ADD : Operation.OP_MODIFY;
-		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, operation, instalacion, citationEvent.getData(), this, "administracion.citas" );
-		dlg.setDate( citationEvent.getStart() );
-		dlg.setDuracionMin( calDuracionInMin( citationEvent.getStart(), citationEvent.getEnd() ) );
+		
+		ModalAppointmentDlg dlg = null;
+		if (operation.equals( Operation.OP_ADD )){
+			dlg = new ModalAppointmentDlg( ctx, operation, recurso, citationEvent.getStart(), this, "administracion.citas" );
+		}else{
+			dlg = new ModalAppointmentDlg( ctx, operation, recurso, citationEvent.getData(), this, "administracion.citas" );
+		}
+		
+		//dlg.setDuracionMin( calDuracionInMin( citationEvent.getStart(), citationEvent.getEnd() ) );
 		//dlg.setEndDate( citationEvent.getEnd() );
 		dlg.showModalWindow();
 	}

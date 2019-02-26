@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -16,6 +15,8 @@ import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.Query;
@@ -25,6 +26,7 @@ import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,7 +36,7 @@ import lombok.Setter;
  * 
  */
 @SuppressWarnings({"unchecked"})
-public class PatientsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener
+public class PatientsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener, ListenerAction
 {
 	private static final long serialVersionUID = -1246528047282752893L;
 
@@ -48,7 +50,8 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	
 	private TextField textNombre;
 	private TextField textIdentificador;
-	private ComboBox comboFecha;
+	private TableImedigPaged table;
+	//private ComboBox comboFecha;
 
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
@@ -66,6 +69,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		setMargin( true );
 		initComponents();
 		setEnabledAdd( true );
+		getContext().addListener( this );
 	}
 	
 	public String[] getVisibleCols()
@@ -80,13 +84,13 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public TableImedigPaged getTableRows()
 	{
-		TableImedigPaged imedigPaged = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new PacienteQuery() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
-		imedigPaged.getTable().setColumnWidth( "identificador", 250 );
-		imedigPaged.getTable().setColumnWidth( "nombre", 540 );
-		imedigPaged.getTable().setColumnWidth( "sexo", 135 );
-		imedigPaged.getTable().setColumnWidth( "edad", 80 );
+		table = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new PacienteQuery() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
+		table.getTable().setColumnWidth( "identificador", 250 );
+		table.getTable().setColumnWidth( "nombre", 540 );
+		table.getTable().setColumnWidth( "sexo", 135 );
+		table.getTable().setColumnWidth( "edad", 80 );
 		
-		return imedigPaged;
+		return table;
 	}
 	
 	public String getTabTitle()
@@ -166,28 +170,28 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		}
 	}
 	
-	private Component getQueryFecha()
-	{
-		comboFecha = new ComboBox(getContext().getString( "words.date" ));
-		comboFecha.setWidth( COMBO_WIDTH );
-		comboFecha.setNullSelectionAllowed( false );
-		comboFecha.setTextInputAllowed( false );
-		comboFecha.setPropertyDataSource( bi.getItemProperty( "fecha" ) );
-		comboFecha.addItem( 0 );
-		comboFecha.setItemCaption( 0, getContext().getString( "words.all" ) );
-		comboFecha.addItem( 1 );
-		comboFecha.setItemCaption( 1, getContext().getString( "words.today" ) );
-		comboFecha.addItem( 2 );
-		comboFecha.setItemCaption( 2, getContext().getString( "words.yesterday" ) );
-		comboFecha.addItem( 3 );
-		comboFecha.setItemCaption( 3, getContext().getString( "words.lastweek" ) );
-		comboFecha.addItem( 4 );
-		comboFecha.setItemCaption( 4, getContext().getString( "words.lastmonth" ) );
-		comboFecha.addItem( 5 );
-		comboFecha.setItemCaption( 5, getContext().getString( "words.lastyear" ) );
-		
-		return comboFecha;
-	}
+//	private Component getQueryFecha()
+//	{
+//		comboFecha = new ComboBox(getContext().getString( "words.date" ));
+//		comboFecha.setWidth( COMBO_WIDTH );
+//		comboFecha.setNullSelectionAllowed( false );
+//		comboFecha.setTextInputAllowed( false );
+//		comboFecha.setPropertyDataSource( bi.getItemProperty( "fecha" ) );
+//		comboFecha.addItem( 0 );
+//		comboFecha.setItemCaption( 0, getContext().getString( "words.all" ) );
+//		comboFecha.addItem( 1 );
+//		comboFecha.setItemCaption( 1, getContext().getString( "words.today" ) );
+//		comboFecha.addItem( 2 );
+//		comboFecha.setItemCaption( 2, getContext().getString( "words.yesterday" ) );
+//		comboFecha.addItem( 3 );
+//		comboFecha.setItemCaption( 3, getContext().getString( "words.lastweek" ) );
+//		comboFecha.addItem( 4 );
+//		comboFecha.setItemCaption( 4, getContext().getString( "words.lastmonth" ) );
+//		comboFecha.addItem( 5 );
+//		comboFecha.setItemCaption( 5, getContext().getString( "words.lastyear" ) );
+//		
+//		return comboFecha;
+//	}
 
 	
 	public Component getQueryNombre()
@@ -219,7 +223,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		
 		bi = new BeanItem<PatientsViewer>( this );
 		
-		HorizontalLayout layout = new HorizontalLayout( getQueryNombre(), getQueryIdentificador(), getQueryFecha() );
+		HorizontalLayout layout = new HorizontalLayout( getQueryNombre(), getQueryIdentificador()/*, getQueryFecha()*/ );
 		layout.setSpacing( true );
 		return layout;
 	}
@@ -262,5 +266,14 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		layout.addStyleName( ImedigTheme.FILTER_MARGIN );
 		return layout;
 	}
-	
+
+	@Override
+	public void doAction( Action action )
+	{
+		if (action instanceof UpdateAppointmentPatient) {
+			if (!action.getSource().equals( this )){
+				table.refreshVisibleContent();
+			}
+		}
+	}
 }

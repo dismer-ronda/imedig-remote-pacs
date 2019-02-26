@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper=true)
 @Data
-public class Instalacion extends ImedigDto
+public class Recurso extends ImedigDto
 {
 	private static final long serialVersionUID = 7328448028613778209L;
 	

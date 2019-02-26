@@ -41,9 +41,9 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 	protected TipoHorario newTipoHorario;
 
 	private TextField editNombre;
-	//TODO: Agregar cuando existan otros tipos de instalaciones
+	//TODO: Agregar cuando existan otros tipos de recursos
 	//1 - Equipos
-	//private OptionGroup optionTipoInstalacion;
+	//private OptionGroup optionTipoRecurso;
 	private OptionGroup optionTipo;
 	private Panel panelWorkingPlan;
 	private WorkingPlanComponent workingPlanComponent;
@@ -146,13 +146,13 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 		{
 			if ( !workingPlanComponent.isValid() )
 			{
-				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
+				Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
 				return false;
 			}
 
 			PlanificacionHorario datos = getInformacionHorario();
 			newTipoHorario.setDatos( Utils.toJson( datos ) );
-			newTipoHorario.setTipo_instalacion( getTipoInstalacion() );
+			newTipoHorario.setTipo_recurso( getTipoRecurso() );
 			tipoHorarioManager.setRow( context, null, newTipoHorario );
 
 			return true;
@@ -189,7 +189,7 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 		return null;
 	}
 
-	protected Integer getTipoInstalacion(){
+	protected Integer getTipoRecurso(){
 		return Constants.TYPE_IMAGING_DEVICE;
 	}
 
@@ -199,7 +199,7 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 		{
 			if ( !workingPlanComponent.isValid() )
 			{
-				Notification.show( getContext().getString( "modalNewInst.error.horario" ), Notification.Type.ERROR_MESSAGE );
+				Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
 				return false;
 			}
 

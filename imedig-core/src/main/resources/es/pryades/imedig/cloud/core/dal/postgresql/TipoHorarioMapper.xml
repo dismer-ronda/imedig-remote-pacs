@@ -7,8 +7,8 @@
 	    <if test="nombre != null">
 			AND UPPER(nombre) like UPPER('%${nombre}%')   
         </if>
-		<if test="tipo_instalacion != null">
-			AND tipo_instalacion = #{tipo_instalacion}   
+		<if test="tipo_recurso != null">
+			AND tipo_recurso = #{tipo_recurso}   
         </if>
         <if test="tipo_horario != null">
 			AND tipo_horario = #{tipo_horario}   
@@ -51,7 +51,7 @@
 		(
 			id,
 			nombre, 
-			tipo_instalacion,
+			tipo_recurso,
 			tipo_horario,
 			datos
 		)
@@ -59,7 +59,7 @@
 		(
 			#{id},
 			#{nombre},
-			#{tipo_instalacion},
+			#{tipo_recurso},
 			#{tipo_horario},
 			#{datos}
 		)
@@ -69,7 +69,7 @@
 		update susc_tipos_horarios
 		set
 			nombre=#{nombre},
-			tipo_instalacion=#{tipo_instalacion},
+			tipo_recurso=#{tipo_recurso},
 			tipo_horario=#{tipo_horario},
 			datos = #{datos}
 		where id = #{id}

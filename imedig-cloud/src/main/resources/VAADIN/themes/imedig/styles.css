@@ -13440,6 +13440,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .imedig .v-calendar-event-month[class*="ejecucion"]:before {
 	color: #ffffff;
+	animation: blinking 0.8s infinite;
 }
 
 .imedig .v-calendar-event-all-day[class*="ejecucion"] {
@@ -13448,7 +13449,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="ejecucion"] {
-	color: #ffffff;
+	color: #02925d;
 }
 
 .imedig .v-calendar-week-wrapper .v-calendar-event[class*="ejecucion"] .v-calendar-event-content {

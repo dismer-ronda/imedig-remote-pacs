@@ -1,8 +1,8 @@
 package es.pryades.imedig.cloud.vto.refs;
 
-import es.pryades.imedig.cloud.core.dal.InstalacionesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.dto.ImedigDto;
-import es.pryades.imedig.cloud.dto.Instalacion;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.Query;
 import es.pryades.imedig.core.common.VtoFieldRef;
 
@@ -12,16 +12,16 @@ import es.pryades.imedig.core.common.VtoFieldRef;
  *
  */
 @SuppressWarnings("rawtypes")
-public class InstalacionVtoFieldRef extends VtoFieldRef 
+public class RecursoVtoFieldRef extends VtoFieldRef 
 {
 	private static final long serialVersionUID = -3824740673260255817L;
 
-	public InstalacionVtoFieldRef()
+	public RecursoVtoFieldRef()
 	{
 		super();
 	}
 
-	public InstalacionVtoFieldRef(String fieldRefName,Class fieldRefNameClass, String destinyFieldRefName,String destinyFieldRefColName)
+	public RecursoVtoFieldRef(String fieldRefName,Class fieldRefNameClass, String destinyFieldRefName,String destinyFieldRefColName)
 	{
 		super(fieldRefName, fieldRefNameClass, destinyFieldRefName, destinyFieldRefColName);
 	}
@@ -47,10 +47,10 @@ public class InstalacionVtoFieldRef extends VtoFieldRef
 	public void setDestinyFieldRefColName(String destinyFieldRefColName){ this.destinyFieldRefColName = destinyFieldRefColName; }
 	
 	@Override
-	public ImedigDto getFieldDto() { return new Instalacion();};
+	public ImedigDto getFieldDto() { return new Recurso();};
 	@Override
-	public Query getFieldQuery() {return new Instalacion();}
+	public Query getFieldQuery() {return new Recurso();}
 	@Override
-	public Class getFieldManagerImp() {return InstalacionesManager.class;}
+	public Class getFieldManagerImp() {return RecursosManager.class;}
 	
 }

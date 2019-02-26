@@ -7,6 +7,6 @@ import es.pryades.imedig.core.common.ImedigManager;
 * @author hector.licea
 * @since 2.2.6.0
 */
-public interface InstalacionesManager extends ImedigManager
+public interface RecursosManager extends ImedigManager
 {
 }

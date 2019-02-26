@@ -8,6 +8,6 @@ import es.pryades.imedig.core.common.ImedigMapper;
 * @since 2.2.6.0
 */
 
-public interface InstalacionMapper extends ImedigMapper
+public interface RecursoMapper extends ImedigMapper
 {
 }

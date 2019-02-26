@@ -59,7 +59,7 @@ public class Constants implements Serializable
 	public static final String SEX_FEMALE = "F";
 	public static final String SEX_OTHER = "O";
 	
-	//Tipo instalaciones
+	//Tipo recursos
 	public static final Integer TYPE_IMAGING_DEVICE = 1;
 	
 	//Perfiles de los usuarion

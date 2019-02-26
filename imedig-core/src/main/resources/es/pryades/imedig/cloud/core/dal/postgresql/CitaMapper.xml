@@ -10,8 +10,8 @@
 		<if test="paciente != null">
 			AND paciente = #{paciente}   
         </if>
-		<if test="instalacion != null">
-			AND instalacion = #{instalacion}   
+		<if test="recurso != null">
+			AND recurso = #{recurso}   
         </if>
 		<if test="tipo != null">
 			AND tipo = #{tipo}   
@@ -75,7 +75,7 @@
 			fechafin,
 			uid, 
 			paciente,
-			instalacion,
+			recurso,
 			tipo,
 			referidor,
 			estado
@@ -87,7 +87,7 @@
 			#{fechafin},
 			#{uid},
 			#{paciente},
-			#{instalacion},
+			#{recurso},
 			#{tipo},
 			#{referidor},
 			#{estado}
@@ -101,7 +101,7 @@
 			fechafin=#{fechafin},
 			uid=#{uid},
 			paciente=#{paciente},
-			instalacion=#{instalacion},
+			recurso=#{recurso},
 			tipo=#{tipo},
 			referidor=#{referidor},
 			estado=#{estado}

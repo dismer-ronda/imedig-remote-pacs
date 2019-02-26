@@ -21,7 +21,7 @@ public class TipoHorarioVto extends GenericVto
 	private static final long serialVersionUID = 1284069443520322772L;
 	
 	private String  nombre;
-	private String tipoinstalacion;
+	private String tiporecurso;
 	private String tipohorario;
 	
 	public TipoHorarioVto()

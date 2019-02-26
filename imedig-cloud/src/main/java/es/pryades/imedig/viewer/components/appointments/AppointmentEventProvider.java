@@ -27,9 +27,9 @@ import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.DayPlan;
-import es.pryades.imedig.cloud.dto.Instalacion;
 import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.PlanificacionHorario;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.TimeRange;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
 import es.pryades.imedig.cloud.dto.TipoHorario;
@@ -40,7 +40,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 {
 	private static final long serialVersionUID = 16654819655615842L;
 
-	private Instalacion instalacion;
+	private Recurso recurso;
 	private ImedigContext ctx;
 	private CitasManager citasManager;
 	private TiposEstudiosManager tiposEstudiosManager;
@@ -62,10 +62,10 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	private int timeField = Calendar.MINUTE;
 	private int amount = 10;
 
-	public AppointmentEventProvider( ImedigContext ctx, Instalacion instalacion, com.vaadin.ui.Calendar citationsCalendar )
+	public AppointmentEventProvider( ImedigContext ctx, Recurso recurso, com.vaadin.ui.Calendar citationsCalendar )
 	{
 		this.ctx = ctx;
-		this.instalacion = instalacion;
+		this.recurso = recurso;
 		this.citationsCalendar = citationsCalendar;
 
 		citasManager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
@@ -80,7 +80,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	{
 		planificacionHorario = getPlanificacionHorarioFromJson();
 		
-		amount = instalacion.getTiempominimo();
+		amount = recurso.getTiempominimo();
 		mapWorking = new HashMap<>();
 		breaksByDay = new HashMap<>();
 		
@@ -177,7 +177,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		try
 		{
 			tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
-			tipoHorario = (TipoHorario)tipoHorarioManager.getRow( ctx, instalacion.getTipo_horario() );
+			tipoHorario = (TipoHorario)tipoHorarioManager.getRow( ctx, recurso.getTipo_horario() );
 			
 			if (StringUtils.isBlank( tipoHorario.getDatos()) ) return new PlanificacionHorario();
 			return (PlanificacionHorario)Utils.toPojo( tipoHorario.getDatos(), PlanificacionHorario.class, false );
@@ -192,7 +192,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	public List<CalendarEvent> getEvents( Date startDate, Date endDate )
 	{
 		CitaQuery query = new CitaQuery();
-		query.setInstalacion( instalacion.getId() );
+		query.setRecurso( recurso.getId() );
 		query.setFecha_desde( Utils.getDateAsLong( startDate ) );
 		query.setFecha_hasta( Utils.getDateAsLong( endDate ) );
 
@@ -540,7 +540,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 		StringBuilder s = new StringBuilder();
 		s.append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbIdentificador") ).append( ": </b>" ).append( paciente.getUid() ).append( "<br/>" ).
 		  append( "<b>" ).append( ctx.getString( "modalNewPaciente.lbNombre") ).append( ": </b>" ).append( paciente.getNombreCompleto() ).append( "<br/>" ).
-		  append( "<b>" ).append( ctx.getString( "words.facility") ).append( ": </b>" ).append( instalacion.getNombre() ).append( "<br/>" ).
+		  append( "<b>" ).append( ctx.getString( "words.facility") ).append( ": </b>" ).append( recurso.getNombre() ).append( "<br/>" ).
 		  append( "<b>" ).append( ctx.getString( "modalAppointmentDlg.lbTipo") ).append( ": </b>" ).append( tipoEstudio.getNombre() ).append( "<br/>" ).
 		  append( "<b>" ).append( ctx.getString( "words.date") ).append( ": </b>" ).append( fecha ).append( "  " ).
 		  append( "<b>" ).append( ctx.getString( "words.time") ).append( ": </b>" ).append( inicio ).append( " - " ).append( fin );
