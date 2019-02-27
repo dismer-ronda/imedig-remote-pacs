@@ -115,7 +115,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		citationsCalendar.setLastVisibleHourOfDay( lastHour );
 		
 		eventResource = new AppointmentEventResource( ctx, recurso );
-		eventProvider = new AppointmentEventProvider1( citationsCalendar, eventResource );
+		//eventProvider = new AppointmentEventProvider( citationsCalendar, eventResource );
+		eventProvider = new AppointmentEventProvider( ctx, recurso, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);

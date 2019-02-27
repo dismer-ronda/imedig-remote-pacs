@@ -102,7 +102,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		
 		groupTipo = new OptionGroup( getContext().getString( "modalNewStudyType.lbTipo" ) );
 		groupTipo.addItem( 1 );
-		groupTipo.setItemCaption( 1, getContext().getString( "facility.type.1" ) );
+		groupTipo.setItemCaption( 1, getContext().getString( "resource.type.1" ) );
 		groupTipo.setPropertyDataSource( bi.getItemProperty( "tipo" ) );
 		groupTipo.setRequired( true );
 		groupTipo.setValue( 1 );

@@ -334,12 +334,14 @@ public class AppointmentEventResource implements Serializable
 		citasTime = Utils.tail( citasTime );
 		
 		Iterator<TimeRange<LocalTime>> it = detail.iterator();
-		
-		TimeRange<LocalTime> timeRange = (TimeRange<LocalTime>)it.next();
-		do{
+		TimeRange<LocalTime> timeRange = null;
+		while ( it.hasNext() )
+		{
+			if (timeRange == null) timeRange = it.next();
+			
 			if (timeRange instanceof BreakTimeRange){
 				temp.add( new BreakTimeRange( timeRange.getStart(), timeRange.getEnd() ) );
-				timeRange = (TimeRange<LocalTime>)it.next();
+				timeRange = null;
 			}else if (citaTime != null && timeRange.getStart().equals( citaTime.getStart() )){
 				temp.add( new InUseTimeRange(citaTime.getStart(), citaTime.getEnd() ) );
 				while(it.hasNext() && citaTime != null && citaTime.getEnd().isAfter( timeRange.getStart() )){
@@ -349,9 +351,9 @@ public class AppointmentEventResource implements Serializable
 				citasTime = Utils.tail( citasTime );
 			}else{
 				temp.add( new FreeTimeRange(timeRange.getStart(), timeRange.getEnd() ) );
-				timeRange = (TimeRange<LocalTime>)it.next();
+				timeRange = null;
 			}
-		}while ( it.hasNext() );
+		}
 		
 		return calculeFreeTime( temp );
 	}

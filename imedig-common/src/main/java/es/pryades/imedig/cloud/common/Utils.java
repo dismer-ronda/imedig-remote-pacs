@@ -2177,9 +2177,11 @@ public class Utils implements Serializable
         int min = hour % 60;
         hour = hour / 60;
         
+        if (hour == 0) return String.format( "%02dmin", min);
+        
         if (min == 0) return String.format( "%dh", hour);
         
-        return String.format( "%dh, %dmin", hour, min );
+        return String.format( "%dh, %02dmin", hour, min );
 	}
 
 	public static String elapseTimeFromMin( Integer minutes )

@@ -13126,7 +13126,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .bg_red {
-	background-color: #E51400;
+	background-color: #ED473B;
 }
 
 .bg_orange {
@@ -13174,7 +13174,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .color_red {
-	color: #E51400;
+	color: #ED473B;
 }
 
 .color_orange {
@@ -13203,6 +13203,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .color_light_blue {
 	color: #97D0FC;
+}
+
+.label_error {
+	color: #ED473B;
+	font-size: 14px;
+	line-height: 16px;
 }
 
 .bg_thumnails0 {

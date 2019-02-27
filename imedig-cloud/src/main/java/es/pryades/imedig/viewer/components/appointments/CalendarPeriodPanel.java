@@ -26,7 +26,6 @@ import com.vaadin.ui.components.calendar.CalendarComponentEvents.ForwardHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClick;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClickHandler;
 import com.vaadin.ui.components.calendar.handler.BasicBackwardHandler;
-import com.vaadin.ui.components.calendar.handler.BasicDateClickHandler;
 import com.vaadin.ui.components.calendar.handler.BasicForwardHandler;
 import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
 import com.vaadin.ui.themes.ValoTheme;
@@ -54,7 +53,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private static final int PERIOD_WEEKLY = 2;
 	
 	private AppointmentSchedulerViewer viewer;
-	private BasicDateClickHandler basicDateClickHandler;
 	private BasicWeekClickHandler basicWeekClickHandler;
 	private BasicForwardHandler basicForwardHandler;
 	private BasicBackwardHandler basicBackwardHandler;
@@ -73,7 +71,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		addComponent( insideLayout );
 		setComponentAlignment( insideLayout, Alignment.MIDDLE_LEFT );
 		
-		basicDateClickHandler = new BasicDateClickHandler();
 		basicWeekClickHandler = new BasicWeekClickHandler();
 		basicForwardHandler = new BasicForwardHandler();
 		basicBackwardHandler = new BasicBackwardHandler();
@@ -209,6 +206,8 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	private void buildWeeklyComponents()
 	{
 		weeklyLayout = new HorizontalLayout();
+		buildDiaryComponents();
+		weeklyLayout.addComponent( dateFieldDay );
 	}
 
 
@@ -226,12 +225,9 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
-				diaryView();
+				weeklyView();
 			}
 		} );
-		
-//		diaryLayout = new HorizontalLayout( dateFieldDay );
-//		diaryLayout.setSpacing( true );
 	}
 
 
@@ -276,15 +272,13 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 	private void weeklyView()
 	{
-		if (lastWeek == null){
-			Calendar calendar =  GregorianCalendar.getInstance();
-			calendar.setTime( new Date() );
-			lastYear = calendar.get( Calendar.YEAR);
-			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
-		}
+		Calendar calendar =  GregorianCalendar.getInstance();
+		calendar.setFirstDayOfWeek( Calendar.MONDAY );
+		calendar.setTime( dateFieldDay.getValue() );
+		lastYear = calendar.get( Calendar.YEAR);
+		lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
 		
-		WeekClick weekEvent = new WeekClick( viewer.citationsCalendar, lastWeek, lastYear );
-		weekClick( weekEvent );
+		weekClick( new WeekClick( viewer.citationsCalendar, lastWeek, lastYear ) );
 	}
 
 
@@ -303,7 +297,6 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	
 	private void visibleViewComponent(){
 		Integer period = (Integer)optionView.getValue();
-		//diaryLayout.setVisible( period.equals( PERIOD_DIARY ) );
 		weeklyLayout.setVisible( period.equals( PERIOD_WEEKLY ) );
 		monthlyLayout.setVisible( period.equals( PERIOD_MONTHLY ) );
 	}
@@ -339,11 +332,16 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 	@Override
 	public void dateClick( DateClickEvent event )
 	{
-		return;
-//		optionView.setValue( PERIOD_DIARY );
-//		dateFieldDay.setValue( event.getDate() );
-//		
-//		basicDateClickHandler.dateClick( event );
+		Calendar calendar = GregorianCalendar.getInstance();
+		calendar.setFirstDayOfWeek( Calendar.MONDAY );
+		calendar.setTime( event.getDate() );
+		
+		lastWeek = calendar.get( Calendar.WEEK_OF_YEAR );
+		lastYear = calendar.get( Calendar.YEAR );
+		
+		optionView.setValue( PERIOD_WEEKLY );
+		basicWeekClickHandler.weekClick(new WeekClick( viewer.citationsCalendar, lastWeek, lastYear ) );
+		dateFieldDay.setValue( event.getDate() );
 	}
 
 	@Override

@@ -26,6 +26,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -77,6 +78,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	private ComboBox timeInicio;
 	private ComboBox comboBoxDuracion;
 	private ComboBox comboBoxEstado;
+	private Label errorLabel;
 	private List<Integer> duracion;
 
 	private PacienteLazyProvider pacienteLazyProvider;
@@ -228,6 +230,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			public void valueChange( ValueChangeEvent event )
 			{
 				updateHoraInicio();
+				fillDuracion();
 			}
 		} );
 
@@ -235,7 +238,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		timeInicio.setRequired( true );
 		timeInicio.setWidth( "95px" );
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
-		timeInicio.setImmediate( true );
+		//timeInicio.setImmediate( true );
 		fillTimeInicio();
 		timeInicio.addValueChangeListener( new ValueChangeListener()
 		{
@@ -245,21 +248,31 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			public void valueChange( ValueChangeEvent event )
 			{
 				fillDuracion();
+				if ( vo.getTipo() == null) return;
+				
 				vo.setDuracion( getProximaDuracion( vo.getTipo().getDuracion() ) );
 				comboBoxDuracion.markAsDirty();
 			}
 		} );
 
+		errorLabel = new Label( getContext().getString( "modalAppointmentDlg.error.no.time" ) );
+		errorLabel.addStyleName( "label_error" );
+		errorLabel.setVisible( false );
+		errorLabel.setWidth( "290px" );
+
 		comboBoxDuracion = new ComboBox( caption( "modalAppointmentDlg.lbDuracion" ) );
 		comboBoxDuracion.setWidth( "125px" );
 		comboBoxDuracion.setNullSelectionAllowed( false );
 		comboBoxDuracion.setNewItemsAllowed( false );
+		//comboBoxDuracion.addValidator( new NullValidator( "No puede ser null", false ) );
 		fillDuracion();
 		comboBoxDuracion.setPropertyDataSource( bi.getItemProperty( "duracion" ) );
+		comboBoxDuracion.setImmediate( true );
 		FormLayout formLayout = new FormLayout( comboBoxDuracion );
 		formLayout.setMargin( false );
+		//comboBoxDuracion.addValidator( new NullValidator( getContext().getString( "modalAppointmentDlg.error.no.time" ), false ) );
 
-		HorizontalLayout layoutTime = new HorizontalLayout( timeInicio, formLayout );
+		HorizontalLayout layoutTime = new HorizontalLayout( timeInicio, formLayout, errorLabel );
 		layoutTime.setCaption( caption( "modalAppointmentDlg.lbHoraInicio" ) );
 		layoutTime.setSpacing( true );
 
@@ -282,8 +295,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		{
 			comboBoxEstado.setVisible( false );
 		}
-
-		FormLayout layout = new FormLayout( selectPaciente, editRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado );
+		
+		FormLayout layout = new FormLayout( selectPaciente, editRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado);
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );
@@ -395,9 +408,12 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 		Integer maxDuracion = duracion.get( duracion.size()-1 );
 		
-		if (vo.getFechainicio()!= null){
-			maxDuracion = vo.getFechainicio().getValue(); 
+		if (vo.getFechainicio()== null){
+			errorLabel.setVisible( true );
+			return;
 		}
+		
+		maxDuracion = vo.getFechainicio().getValue(); 
 				
 		for ( Integer item : duracion )
 		{
@@ -412,16 +428,18 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 				addMinute( comboBoxDuracion, item );
 			}
 		}
+		
+		if (errorLabel == null) return;
+		
+		if (comboBoxDuracion.getContainerDataSource().getItemIds().isEmpty()){
+			errorLabel.setVisible( true );
+		}else{
+			errorLabel.setVisible( false );
+		}
 	}
 
 	private static void addMinute( ComboBox comboBox, Integer min )
 	{
-		if ( min < 61 )
-		{
-			comboBox.addItem( min );
-			return;
-		}
-
 		String caption = Utils.elapseTimeFromMin( min );
 		comboBox.addItem( min );
 		comboBox.setItemCaption( min, caption );

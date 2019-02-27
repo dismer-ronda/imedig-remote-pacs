@@ -115,7 +115,7 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 		tabSheet.setSizeFull();
 		for ( FacilityTypeViewer viewer : viewers )
 		{
-			tabSheet.addTab( viewer, ctx.getString( "facility.type."+viewer.getType() ) );
+			tabSheet.addTab( viewer, ctx.getString( "resource.type."+viewer.getType() ) );
 		}
 		
 		

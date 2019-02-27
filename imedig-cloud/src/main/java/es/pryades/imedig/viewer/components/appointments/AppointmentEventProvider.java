@@ -323,12 +323,16 @@ public class AppointmentEventProvider implements CalendarEventProvider
 	{
 
 		List<CalendarEvent> result = new ArrayList<>();
+		List<CalendarEvent> toremove = new ArrayList<>();
 
 		mainCalendar.setTime( start );
 
 		Date start1 = start;
 		Date end1 = incNextTimePeriod();
-		CalendarEvent event = head( events );
+
+		List<CalendarEvent> tmp = new ArrayList<>(events);
+		CalendarEvent event = head( tmp );
+		
 		Date today = new Date();
 
 		while ( start1.before( end ) )
@@ -336,9 +340,10 @@ public class AppointmentEventProvider implements CalendarEventProvider
 
 			if ( inside( event, start1, end1 ) )
 			{
+				toremove.add( event );
 				start1 = addEvent( result, event, start1, end1 );
-				events = tail( events );
-				event = head( events );
+				tmp = tail( tmp );
+				event = head( tmp );
 
 				while ( start1.after( end1 ) )
 				{
@@ -362,6 +367,11 @@ public class AppointmentEventProvider implements CalendarEventProvider
 					end1 = incNextTimePeriod();
 				}
 			}
+		}
+		
+		for ( CalendarEvent ev : toremove )
+		{
+			events.remove( ev );
 		}
 
 		return result;
