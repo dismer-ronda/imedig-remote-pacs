@@ -248,6 +248,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		timeInicio.setRequired( true );
 		timeInicio.setWidth( "95px" );
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
+		timeInicio.setNullSelectionAllowed( false );
 		//timeInicio.setImmediate( true );
 		fillTimeInicio();
 		timeInicio.addValueChangeListener( new ValueChangeListener()
@@ -346,6 +347,12 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		{
 			if (now != null && now.isAfter( free.getKey() )) continue;
 			
+			timeInicio.addItem( free );
+			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
+		}
+		
+		if (orgDto != null && timeInicio.getItem( vo.getFechainicio() ) == null){
+			KeyValue<LocalTime, Integer> free = new KeyValue<>( vo.getFechainicio().getKey(), 0 );
 			timeInicio.addItem( free );
 			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
 		}
@@ -688,10 +695,16 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		}
 
 		Date today = new Date();
-		if ( today.after( vo.getFecha() ) )
-		{
-			Notification.show( getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
-			return false;
+		if (orgDto == null){
+			if (today.after( vo.getFecha() )){
+				Notification.show( getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
+				return false;
+			}
+		}else{
+			if (vo.getEstado() == Constants.APPOINTMENT_STATUS_PLANING && today.after( vo.getFecha() )){
+				Notification.show( getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
+				return false;
+			}
 		}
 
 		return true;

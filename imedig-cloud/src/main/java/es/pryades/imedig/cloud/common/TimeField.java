@@ -57,8 +57,6 @@ public class TimeField extends CustomField<LocalTime>
 	@Override
 	public void setValue( LocalTime value )
 	{
-		//super.setValue( value );
-
 		setHours( value.getHourOfDay() );
 		setMinutes( value.getMinuteOfHour() );
 	}
@@ -388,6 +386,18 @@ public class TimeField extends CustomField<LocalTime>
 
 		this.maxHours = maxHours;
 		updateFields();
+	}
+	
+	public void setStartLimit(LocalTime time){
+		setHourMin( time.getHourOfDay() );
+	}
+
+	public void setEndLimit(LocalTime time){
+		if (time.getMinuteOfHour() == 0){
+			setHourMax( time.getHourOfDay()-1 );
+		}else{
+			setHourMax( time.getHourOfDay() );
+		}
 	}
 
 	@Override

@@ -44,7 +44,7 @@ public abstract class ModalNewRecurso extends ModalWindowsCRUD
 	private RecursosManager recursosManager;
 	private TipoHorarioManager tipoHorarioManager;
 	
-	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 12, 15, 20, 30, 60 );
+	private static final List<Integer> NUMBERS = Arrays.asList( 5, 10, 15, 20, 30, 60 );
 	
 	public ModalNewRecurso( ImedigContext ctx, Operation modalOperation, Recurso recurso, ModalParent parentWindow, String right )
 	{

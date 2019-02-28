@@ -23,8 +23,10 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.OverlappingTimeValidator;
 import es.pryades.imedig.cloud.common.TimeAfterRangeValidator;
 import es.pryades.imedig.cloud.common.TimeField;
+import es.pryades.imedig.cloud.common.TimeLimitRangeValidator;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.TimeRange;
 
@@ -39,11 +41,16 @@ public class BreakComponent extends HorizontalLayout
 	private static final LocalTime DEFAULT_START = LocalTime.parse( "12:00" );
 	private static final LocalTime DEFAULT_END = LocalTime.parse( "13:00" );
 	
-	public BreakComponent(ImedigContext ctx,  int day )
+	private LocalTime startLimit;
+	private LocalTime endLimit;
+	
+	public BreakComponent(ImedigContext ctx,  int day, LocalTime startLimit, LocalTime endLimit )
 	{
 		super();
 		this.ctx = ctx;
 		this.day = day;
+		this.startLimit = startLimit;
+		this.endLimit = endLimit;
 		
 		setSpacing( true );
 		setMargin( false );
@@ -156,6 +163,37 @@ public class BreakComponent extends HorizontalLayout
 		}
 		
 	}
+	
+	public void setStartLimit( LocalTime startLimit )
+	{
+		this.startLimit = startLimit;
+		
+		for ( Component component : breaksContent )
+		{
+			((BreakDetail)component).updateStartLimit();
+		}
+		
+	}
+
+	public void setEndLimit( LocalTime endLimit )
+	{
+		this.endLimit = endLimit;
+		
+		for ( Component component : breaksContent )
+		{
+			((BreakDetail)component).updateEndLimit();
+		}
+	}
+	
+	private void verificarSobreposicion(){
+		List<TimeRange<LocalTime>> ranges = new ArrayList<>();
+		
+		for ( Component component : breaksContent )
+		{
+			((BreakDetail)component).validar( new ArrayList<>( ranges ) );
+			ranges.add( ((BreakDetail)component).rangeTime());
+		}
+	}
 
 	private class BreakDetail extends HorizontalLayout{
 
@@ -164,6 +202,8 @@ public class BreakComponent extends HorizontalLayout
 		Button remove;
 		TimeField start;
 		TimeField end;
+		TimeLimitRangeValidator limitRangeValidator; 
+		OverlappingTimeValidator overlappingValidator;
 		
 		public BreakDetail()
 		{
@@ -207,17 +247,38 @@ public class BreakComponent extends HorizontalLayout
 				}
 			} );
 			
+			limitRangeValidator = new TimeLimitRangeValidator( startLimit, endLimit, ctx.getString( "modalNewTipoHorario.limit.error" ) ); 
+			overlappingValidator = new OverlappingTimeValidator( new ArrayList<TimeRange<LocalTime>>(), ctx.getString( "modalNewTipoHorario.error.breaks.overlapping" ) );
 			start = new TimeField();
 			start.setCaption( ctx.getString( "words.start" ) );
 			start.setValue( DEFAULT_START );
-			
+			start.setStartLimit( startLimit );
+			start.setEndLimit( endLimit );
+			start.addValidator( limitRangeValidator );
+			start.addValidator( overlappingValidator );
 			end = new TimeField();
 			end.setValidationVisible( true );
 			end.setCaption( ctx.getString( "words.end" ) );
 			end.setValue( DEFAULT_END );
-			Validator validatorEnd = new TimeAfterRangeValidator( start, ctx.getString( "words.daterange.error" ) );
+			end.setStartLimit( startLimit );
+			end.setEndLimit( endLimit );
+			Validator validatorEnd = new TimeAfterRangeValidator( start, ctx.getString( "words.timerange.error" ) );
 			end.addValidator( validatorEnd );
-			final ValueChangeListener changeListener = new ValueChangeListener()
+			end.addValidator( limitRangeValidator );
+			end.addValidator( overlappingValidator );
+			
+			final ValueChangeListener changeListener1 = new ValueChangeListener()
+			{
+				private static final long serialVersionUID = 46676985918961579L;
+
+				@Override
+				public void valueChange( ValueChangeEvent event )
+				{
+					verificarSobreposicion();
+				}
+			};
+			
+			final ValueChangeListener changeListener2 = new ValueChangeListener()
 			{
 				private static final long serialVersionUID = 46676985918961579L;
 
@@ -233,8 +294,10 @@ public class BreakComponent extends HorizontalLayout
 				}
 			};
 			
-			start.addValueChangeListener( changeListener );
-			end.addValueChangeListener( changeListener );
+			start.addValueChangeListener( changeListener1 );
+			start.addValueChangeListener( changeListener2 );
+			end.addValueChangeListener( changeListener1 );
+			end.addValueChangeListener( changeListener2 );
 			
 			FormLayout s = new FormLayout( start );
 			s.setMargin( false );
@@ -249,6 +312,7 @@ public class BreakComponent extends HorizontalLayout
 		private void removeThis()
 		{
 			breaksContent.removeComponent( this );
+			verificarSobreposicion();
 		}
 		
 		
@@ -256,6 +320,10 @@ public class BreakComponent extends HorizontalLayout
 			String start = this.start.getValue().toString( "HH:mm" ) ;
 			String end = this.end.getValue().toString( "HH:mm" ) ;
 			return  new TimeRange<>( start, end );
+		}
+		
+		public TimeRange<LocalTime> rangeTime(){
+			return  new TimeRange<>( this.start.getValue(), this.end.getValue() );
 		}
 		
 		/**
@@ -287,113 +355,43 @@ public class BreakComponent extends HorizontalLayout
 					|| (localStart.isBefore( rangeEnd ) && localEnd.isAfter( rangeEnd ));//Si el final del rango está entre el inicio y final local
 			
 		}
-	}
+		
+		public void validar(List<TimeRange<LocalTime>> ranges){
+			overlappingValidator.setRanges( ranges );
+			validateStartEnd();
+		}
+		
+		public void updateStartLimit(){
+			limitRangeValidator.setStartLimit( startLimit );
+			start.setStartLimit( startLimit );
+			end.setStartLimit( startLimit );
+			
+			validateStartEnd();
+		}
 
-//	private class BreakDetail extends HorizontalLayout{
-//
-//		private static final long serialVersionUID = 130076493031179709L;
-//
-//		Button remove;
-//		TextField start;
-//		TextField end;
-//		Validator validator  = new TimeValidador();
-//		
-//		public BreakDetail()
-//		{
-//			super();
-//			setSpacing( true );
-//			this.buildComponents();
-//			
-//			start.focus();
-//		}
-//		
-//		public boolean isValid(){
-//			return start.isValid() && end.isValid() && Utils.isValidTimeRange( start.getValue(), end.getValue() );
-//		}
-//
-//		private void buildComponents()
-//		{
-//			remove = new Button( FontAwesome.CLOSE );
-//			remove.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-//			remove.addStyleName( ValoTheme.BUTTON_DANGER );
-//			remove.addStyleName( ValoTheme.BUTTON_TINY );
-//			remove.addStyleName( "action" );
-//			remove.setDescription( ctx.getString( "words.break.remove" ) );
-//			remove.addClickListener( new ClickListener()
-//			{
-//				private static final long serialVersionUID = 4406224508319507501L;
-//
-//				@Override
-//				public void buttonClick( ClickEvent event )
-//				{
-//					removeThis();
-//				}
-//			} );
-//			
-//			start = UtilsUI.createTimeImput( null, null );
-//			start.addValidator( validator );
-//			start.setCaption( ctx.getString( "words.start" ) );
-//			start.setWidth( "60px" );
-//			start.addStyleName( ValoTheme.TEXTFIELD_SMALL );
-//			start.setValue( DEFAULT_START );
-//			
-//			end = UtilsUI.createTimeImput( null, null );
-//			end.addValidator( validator );
-//			end.setCaption( ctx.getString( "words.end" ) );
-//			end.setWidth( "60px" );
-//			end.addStyleName( ValoTheme.TEXTFIELD_SMALL );
-//			end.setValue( DEFAULT_END );
-//			
-//			FormLayout s = new FormLayout( start );
-//			s.setMargin( false );
-//			FormLayout e = new FormLayout( end );
-//			e.setMargin( false );
-//			addComponents( remove, s, e );
-//			setComponentAlignment( remove, Alignment.MIDDLE_CENTER );
-//			setComponentAlignment( s, Alignment.MIDDLE_CENTER );
-//			setComponentAlignment( e, Alignment.MIDDLE_CENTER );
-//		}
-//
-//		private void removeThis()
-//		{
-//			breaksContent.removeComponent( this );
-//		}
-//		
-//		
-//		public TimeRange<String> range(){
-//			String start = this.start.getValue() ;
-//			String end = this.end.getValue() ;
-//			return  new TimeRange<>( start, end );
-//		}
-//		
-//		/**
-//		 * Validar si no se solapa el valor de los rangos de horas con otros rangos
-//		 * @param ranges
-//		 * @return false en caso que se solape con alguno
-//		 */
-//		public boolean isValidRange(List<TimeRange<String>> ranges){
-//			if (!isValid()) return false;
-//			for ( TimeRange<String> timeRange : ranges )
-//			{
-//				if (isInside( timeRange )) return false;
-//			}
-//			
-//			return true;
-//		}
-//		
-//		private boolean isInside(TimeRange<String> range){
-//			LocalTime rangeStart = LocalTime.parse( range.getStart() );
-//			LocalTime rangeEnd = LocalTime.parse( range.getEnd() );
-//			
-//			LocalTime localStart = LocalTime.parse( start.getValue() );
-//			LocalTime localEnd = LocalTime.parse( end.getValue() );
-//			
-//			//Para conocer si está dentro de un intervalo
-//			return localStart.equals( rangeStart ) //Si el inicio local es el mismo que el inicio del rango 
-//					|| localEnd.equals( rangeEnd ) //Si el final local es el mismo que el final del rango
-//					|| (localStart.isBefore( rangeStart ) && localEnd.isAfter( rangeStart ))//Si el inicio del rango está entre el inicio y final local
-//					|| (localStart.isBefore( rangeEnd ) && localEnd.isAfter( rangeEnd ));//Si el final del rango está entre el inicio y final local
-//			
-//		}
-//	}
+		public void updateEndLimit(){
+			limitRangeValidator.setEndLimit( endLimit );
+			start.setEndLimit( endLimit );
+			end.setEndLimit( endLimit );
+			
+			validateStartEnd();
+		}
+
+		private void validateStartEnd(){
+			start.setValidationVisible(false);
+			try {
+				start.validate();
+			} catch (InvalidValueException e) {
+				start.setValidationVisible(true);
+			}
+			
+			end.setValidationVisible(false);
+			try {
+				end.validate();
+			} catch (InvalidValueException e) {
+				end.setValidationVisible(true);
+			}
+			
+		}
+	}
 }

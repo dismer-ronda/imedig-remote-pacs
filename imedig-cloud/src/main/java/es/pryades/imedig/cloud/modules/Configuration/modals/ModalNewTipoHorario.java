@@ -191,13 +191,13 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 	private boolean isValid(){
 		if ( !workingPlanComponent.isValid() )
 		{
-			Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
+			Notification.show( getContext().getString( "modalNewTipoHorario.error.horario" ), Notification.Type.ERROR_MESSAGE );
 			return false;
 		}
 		
 		if ( !workingPlanComponent.isValidRanges() )
 		{
-			Notification.show( getContext().getString( "modalNewRecurso.error.breaks" ), Notification.Type.ERROR_MESSAGE );
+			Notification.show( getContext().getString( "modalNewTipoHorario.error.breaks" ), Notification.Type.ERROR_MESSAGE );
 			return false;
 		}
 		

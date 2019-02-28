@@ -6,6 +6,8 @@ import com.vaadin.data.validator.AbstractValidator;
 
 public class TimeAfterRangeValidator extends AbstractValidator<LocalTime>
 {
+	private static final long serialVersionUID = -7695865359986503462L;
+	
 	private final TimeField prevTimeField;
 	
 	public TimeAfterRangeValidator(TimeField prev, String message)

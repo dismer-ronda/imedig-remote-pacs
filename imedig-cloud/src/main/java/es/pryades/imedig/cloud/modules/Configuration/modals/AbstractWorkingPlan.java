@@ -94,7 +94,7 @@ public abstract class AbstractWorkingPlan extends GridLayout
 		addComponent( l, COL_END, row );
 		
 		fieldEnd.setValidationVisible( true );
-		Validator validatorEnd = new TimeAfterRangeValidator( fieldStart, ctx.getString( "words.daterange.error" ) );
+		Validator validatorEnd = new TimeAfterRangeValidator( fieldStart, ctx.getString( "words.timerange.error" ) );
 		fieldEnd.addValidator( validatorEnd );
 		final ValueChangeListener changeListener = new ValueChangeListener()
 		{
@@ -115,7 +115,7 @@ public abstract class AbstractWorkingPlan extends GridLayout
 		fieldStart.addValueChangeListener( changeListener );
 		fieldEnd.addValueChangeListener( changeListener );
 
-		BreakComponent breakComponent = new BreakComponent( ctx, day );
+		BreakComponent breakComponent = new BreakComponent( ctx, day, LocalTime.parse( DEFAULT_START ), LocalTime.parse( DEFAULT_END ) );
 		addComponent( breakComponent, COL_BREAK, row );
 
 		setComponentAlignment( fieldStart, Alignment.TOP_CENTER );
@@ -309,11 +309,9 @@ public abstract class AbstractWorkingPlan extends GridLayout
 
 		private void settingListeners()
 		{
-			//start.addValidator( validator );
-			//end.addValidator( validator );
-
 			checkBox.addValueChangeListener( new ValueChangeListener()
 			{
+				private static final long serialVersionUID = -9079820774956125746L;
 
 				@Override
 				public void valueChange( ValueChangeEvent event )
@@ -325,6 +323,28 @@ public abstract class AbstractWorkingPlan extends GridLayout
 					if (checkBox.getValue()) {
 						start.focus();
 					}
+				}
+			} );
+			
+			start.addValueChangeListener( new ValueChangeListener()
+			{
+				private static final long serialVersionUID = 8577189278369434910L;
+
+				@Override
+				public void valueChange( ValueChangeEvent event )
+				{
+					breaks.setStartLimit( start.getValue() );
+				}
+			} );
+			
+			end.addValueChangeListener( new ValueChangeListener()
+			{
+				private static final long serialVersionUID = 8577189278369434910L;
+
+				@Override
+				public void valueChange( ValueChangeEvent event )
+				{
+					breaks.setEndLimit( end.getValue() );
 				}
 			} );
 		}

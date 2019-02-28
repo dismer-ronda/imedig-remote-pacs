@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(of={"key"})
 public class KeyValue<K,V> implements Serializable
 {
 	private static final long serialVersionUID = -4432776075968001778L;
@@ -19,6 +19,10 @@ public class KeyValue<K,V> implements Serializable
 	public KeyValue(K key, V value)
 	{
 		this.key = key;
+		this.value = value;
+	}
+	
+	public void setValue(V value){
 		this.value = value;
 	}
 

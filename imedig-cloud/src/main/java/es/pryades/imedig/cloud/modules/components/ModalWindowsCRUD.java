@@ -36,6 +36,8 @@ public abstract class ModalWindowsCRUD extends Window
 
 	protected VerticalLayout componentsContainer;
 	protected HorizontalLayout operacionesContainer;
+	protected HorizontalLayout operacionesLeft;
+	protected HorizontalLayout operacionesRight;
 
 	protected Button bttnOperacion;
 	protected Button bttnCancelar;
@@ -114,8 +116,17 @@ public abstract class ModalWindowsCRUD extends Window
 		componentsContainer.setMargin( false );
 		componentsContainer.setSpacing( true );
 
-		operacionesContainer = new HorizontalLayout();
+		operacionesLeft = new HorizontalLayout();
+		operacionesLeft.setSpacing( true );
+
+		operacionesRight = new HorizontalLayout();
+		operacionesRight.setSpacing( true );
+
+		operacionesContainer = new HorizontalLayout(operacionesLeft, operacionesRight);
 		operacionesContainer.setSpacing( true );
+		operacionesContainer.setWidth( "100%" );
+		operacionesContainer.setComponentAlignment( operacionesLeft, Alignment.MIDDLE_LEFT );
+		operacionesContainer.setComponentAlignment( operacionesRight, Alignment.MIDDLE_RIGHT );
 
 		String opCaption = operation.equals( Operation.OP_VIEW ) ? "close" : getOpName();
 		
@@ -131,16 +142,16 @@ public abstract class ModalWindowsCRUD extends Window
 		else
 			bttnOperacion.focus();
 
-		operacionesContainer.addComponent( bttnOperacion );
+		operacionesRight.addComponent( bttnOperacion );
 		if ( !operation.equals( Operation.OP_VIEW ) )
-			operacionesContainer.addComponent( bttnCancelar );
-		operacionesContainer.setComponentAlignment( bttnOperacion, Alignment.BOTTOM_RIGHT );
+			operacionesRight.addComponent( bttnCancelar );
+		operacionesRight.setComponentAlignment( bttnOperacion, Alignment.BOTTOM_RIGHT );
 		if ( !operation.equals( Operation.OP_VIEW ) )
-			operacionesContainer.setComponentAlignment( bttnCancelar, Alignment.BOTTOM_RIGHT );
+			operacionesRight.setComponentAlignment( bttnCancelar, Alignment.BOTTOM_RIGHT );
 
 		layout.addComponent( componentsContainer );
 		layout.addComponent( operacionesContainer );
-		layout.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
+		//layout.setComponentAlignment( operacionesContainer, Alignment.BOTTOM_RIGHT );
 		layout.setExpandRatio( operacionesContainer, 1.0f );
 		
 		switch ( operation )
