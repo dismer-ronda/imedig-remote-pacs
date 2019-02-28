@@ -71,8 +71,6 @@ public class AppointmentEventResource implements Serializable
 	private PacientesManager pacientesManager;
 	private TipoHorarioManager tipoHorarioManager;
 
-	private Date start;
-	private Date end;
 	private Map<Integer, TimeRange<LocalTime>> workingPlanByDay;
 	private Map<Integer, List<TimeRange<LocalTime>>> breaksByDay;
 	private Map<Integer, List<TimeRange<LocalTime>>> detailWorkinPlanByDay;
@@ -82,8 +80,6 @@ public class AppointmentEventResource implements Serializable
 
 	private TipoHorario tipoHorario;
 	private PlanificacionHorario planificacionHorario;
-	
-	
 
 	public AppointmentEventResource( ImedigContext ctx, Recurso recurso )
 	{
@@ -101,9 +97,6 @@ public class AppointmentEventResource implements Serializable
 
 	public List<CalendarEvent> getMonthlyEvents( Date startDate, Date endDate )
 	{
-		start = startDate;
-		end = endDate;
-		
 		mapEvents.clear();
 
 		try
@@ -120,9 +113,6 @@ public class AppointmentEventResource implements Serializable
 
 	public List<CalendarEvent> getWeeklyEvents( Date startDate, Date endDate )
 	{
-		start = startDate;
-		end = endDate;
-		
 		mapEvents.clear();
 
 		try
@@ -525,7 +515,7 @@ public class AppointmentEventResource implements Serializable
 			}
 			else
 			{
-				if (end.after( today ) || end1.after( today )){
+				if (start1.after( today ) && (end.after( today ) || end1.after( today ))){
 					if (end1.after( end )){
 						result.add( freeEvent( start1, end ) );
 					}else{

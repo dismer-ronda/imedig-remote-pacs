@@ -353,7 +353,7 @@ public class AppointmentEventProvider implements CalendarEventProvider
 			}
 			else
 			{
-				if (end.after( today ) || end1.after( today )){
+				if (start1.after( today ) && (end.after( today ) || end1.after( today ))){
 					if (end1.after( end )){
 						result.add( freeEvent( start1, end ) );
 					}else{

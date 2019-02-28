@@ -278,6 +278,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		lastYear = calendar.get( Calendar.YEAR);
 		lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
 		
+		viewer.weeklyView();
 		weekClick( new WeekClick( viewer.citationsCalendar, lastWeek, lastYear ) );
 	}
 
@@ -292,7 +293,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		Date start = UtilsCalendar.getFirstDayMonth( calendar.getTime() );
 		Date end = UtilsCalendar.getLastDayMonth( calendar.getTime() );
 		
-		viewer.setDates( start, end );
+		viewer.monthlyView( start, end );
 	}
 	
 	private void visibleViewComponent(){
@@ -385,6 +386,8 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		}else{
 			Calendar calendar =  GregorianCalendar.getInstance();
 			calendar.setTime( start );
+			calendar.setFirstDayOfWeek( Calendar.MONDAY );
+			
 			calendar.add( Calendar.WEEK_OF_YEAR, amount );
 			lastYear = calendar.get( Calendar.YEAR);
 			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);

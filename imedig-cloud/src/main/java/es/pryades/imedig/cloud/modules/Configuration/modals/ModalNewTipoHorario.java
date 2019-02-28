@@ -1,4 +1,4 @@
-package es.pryades.imedig.cloud.modules.Configuration.modals;
+                    package es.pryades.imedig.cloud.modules.Configuration.modals;
 
 import java.util.List;
 
@@ -125,7 +125,8 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 			}
 		} );
 		optionTipo.setPropertyDataSource( bi.getItemProperty( "tipo_horario" ) );
-
+		
+		editNombre.focus();
 	}
 
 	@Override
@@ -144,11 +145,7 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 	{
 		try
 		{
-			if ( !workingPlanComponent.isValid() )
-			{
-				Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
-				return false;
-			}
+			if ( !isValid() ) return false;
 
 			PlanificacionHorario datos = getInformacionHorario();
 			newTipoHorario.setDatos( Utils.toJson( datos ) );
@@ -192,16 +189,28 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 	protected Integer getTipoRecurso(){
 		return Constants.TYPE_IMAGING_DEVICE;
 	}
+	
+	private boolean isValid(){
+		if ( !workingPlanComponent.isValid() )
+		{
+			Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
+			return false;
+		}
+		
+		if ( !workingPlanComponent.isValidRanges() )
+		{
+			Notification.show( getContext().getString( "modalNewRecurso.error.breaks" ), Notification.Type.ERROR_MESSAGE );
+			return false;
+		}
+		
+		return true;
+	}
 
 	protected boolean onModify()
 	{
 		try
 		{
-			if ( !workingPlanComponent.isValid() )
-			{
-				Notification.show( getContext().getString( "modalNewRecurso.error.horario" ), Notification.Type.ERROR_MESSAGE );
-				return false;
-			}
+			if ( !isValid() ) return false;
 
 			PlanificacionHorario datos = getInformacionHorario();
 			newTipoHorario.setDatos( Utils.toJson( datos ) );

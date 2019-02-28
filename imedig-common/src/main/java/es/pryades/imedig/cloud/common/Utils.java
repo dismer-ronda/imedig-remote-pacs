@@ -2064,6 +2064,11 @@ public class Utils implements Serializable
 		
 		return new LocalTime( calendar.get( Calendar.HOUR_OF_DAY ), calendar.get( Calendar.MINUTE ), 0 );
 	}
+	
+	public static LocalTime currentTime( )
+	{
+		return getTime( new Date() );
+	}
 
 	public static Date getTime( Integer date )
 	{
@@ -2679,5 +2684,10 @@ public class Utils implements Serializable
 			return null;
 
 		return list.subList( 1, list.size() );
+	}
+
+	public static boolean isToday( Date fecha )
+	{
+		return isSameDay( fecha, new Date() );
 	}
 }

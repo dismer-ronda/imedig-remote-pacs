@@ -65,6 +65,12 @@ public class FiltrerAddSelect extends CustomField<Object>
 	}
 
 	@Override
+	public void focus()
+	{
+		comboBox.focus();
+	}
+	
+	@Override
 	protected Component initContent()
 	{
 		return layout;

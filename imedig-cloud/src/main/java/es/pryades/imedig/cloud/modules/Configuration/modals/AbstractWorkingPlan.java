@@ -41,8 +41,6 @@ public abstract class AbstractWorkingPlan extends GridLayout
 
 	private Validator validator = new TimeValidador();
 
-	//private static final List<Integer> week = Arrays.asList( Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY );
-
 	private final List<Integer> days;
 
 	public AbstractWorkingPlan( ImedigContext ctx, List<DayPlan<String>> diaryPlan )
@@ -201,6 +199,19 @@ public abstract class AbstractWorkingPlan extends GridLayout
 
 		return true;
 	}
+	
+	public boolean isValidRanges()
+	{
+		for ( Integer day : days )
+		{
+			if ( !diaryComponents.get( day ).isValidBreaksRanges() )
+				return false;
+		}
+
+		return true;
+	}
+
+
 
 	public List<DayPlan<String>> getWeekPlan()
 	{
@@ -236,6 +247,11 @@ public abstract class AbstractWorkingPlan extends GridLayout
 			this.breaks = breaks;
 
 			settingListeners();
+		}
+
+		private boolean isValidBreaksRanges()
+		{
+			return breaks.isValidBreaksRanges();
 		}
 
 		public boolean isValid()
@@ -285,5 +301,4 @@ public abstract class AbstractWorkingPlan extends GridLayout
 			} );
 		}
 	}
-
 }

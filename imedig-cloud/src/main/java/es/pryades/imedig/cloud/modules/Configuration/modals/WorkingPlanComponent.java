@@ -75,6 +75,10 @@ public class WorkingPlanComponent extends VerticalLayout
 		return selected.isValid();
 	}
 	
+	public boolean isValidRanges(){
+		return selected.isValidRanges();
+	}
+	
 	public List<DayPlan<String>> getWeekPlan(){
 		return selected.getWeekPlan();
 	}

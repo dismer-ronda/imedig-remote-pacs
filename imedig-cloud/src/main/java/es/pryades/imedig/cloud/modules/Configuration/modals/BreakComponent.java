@@ -1,7 +1,11 @@
 package es.pryades.imedig.cloud.modules.Configuration.modals;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import org.joda.time.LocalTime;
 
 import com.vaadin.data.Validator;
 import com.vaadin.server.FontAwesome;
@@ -91,6 +95,19 @@ public class BreakComponent extends HorizontalLayout
 		return true;
 	}
 	
+	public boolean isValidBreaksRanges(){
+		
+		List<TimeRange<String>> ranges = new ArrayList<>();
+		
+		for ( Component component : breaksContent )
+		{
+			if (!((BreakDetail)component).isValidRange( ranges )) return false;
+			ranges.add( ((BreakDetail)component).range() );
+		}
+
+		return true;
+	}
+	
 	
 	public List<TimeRange<String>> getBreaksTime(){
 		if (breaksContent.getComponentCount() == 0) return new ArrayList<>();
@@ -99,12 +116,24 @@ public class BreakComponent extends HorizontalLayout
 		
 		for ( Component component : breaksContent )
 		{
-			String start = ((BreakDetail)component).start.getValue() ;
-			String end = ((BreakDetail)component).end.getValue() ;
-			TimeRange<String> range = new TimeRange<>( start, end );
+			TimeRange<String> range = ((BreakDetail)component).range();
 			
-			if (!result.contains( range )) result.add( new TimeRange<String>( start, end ) );
+			if (!result.contains( range )) result.add( range );
 		}
+		
+		Comparator<TimeRange<String>> comparator = new Comparator<TimeRange<String>>()
+		{
+
+			@Override
+			public int compare( TimeRange<String> o1, TimeRange<String> o2 )
+			{
+				LocalTime start1 = LocalTime.parse( o1.getStart() );
+				LocalTime start2 = LocalTime.parse( o2.getStart() );
+				return start1.compareTo( start2 );
+			}
+		};
+		
+		Collections.sort( result, comparator );
 		
 		return result;
 	}
@@ -193,6 +222,43 @@ public class BreakComponent extends HorizontalLayout
 		private void removeThis()
 		{
 			breaksContent.removeComponent( this );
+		}
+		
+		
+		public TimeRange<String> range(){
+			String start = this.start.getValue() ;
+			String end = this.end.getValue() ;
+			return  new TimeRange<>( start, end );
+		}
+		
+		/**
+		 * Validar si no se solapa el valor de los rangos de horas con otros rangos
+		 * @param ranges
+		 * @return false en caso que se solape con alguno
+		 */
+		public boolean isValidRange(List<TimeRange<String>> ranges){
+			if (!isValid()) return false;
+			for ( TimeRange<String> timeRange : ranges )
+			{
+				if (isInside( timeRange )) return false;
+			}
+			
+			return true;
+		}
+		
+		private boolean isInside(TimeRange<String> range){
+			LocalTime rangeStart = LocalTime.parse( range.getStart() );
+			LocalTime rangeEnd = LocalTime.parse( range.getEnd() );
+			
+			LocalTime localStart = LocalTime.parse( start.getValue() );
+			LocalTime localEnd = LocalTime.parse( end.getValue() );
+			
+			//Para conocer si está dentro de un intervalo
+			return localStart.equals( rangeStart ) //Si el inicio local es el mismo que el inicio del rango 
+					|| localEnd.equals( rangeEnd ) //Si el final local es el mismo que el final del rango
+					|| (localStart.isBefore( rangeStart ) && localEnd.isAfter( rangeStart ))//Si el inicio del rango está entre el inicio y final local
+					|| (localStart.isBefore( rangeEnd ) && localEnd.isAfter( rangeEnd ));//Si el final del rango está entre el inicio y final local
+			
 		}
 	}
 }

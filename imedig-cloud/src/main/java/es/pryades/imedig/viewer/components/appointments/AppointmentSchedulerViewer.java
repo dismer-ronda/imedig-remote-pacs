@@ -3,15 +3,16 @@ package es.pryades.imedig.viewer.components.appointments;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.Calendar.TimeFormat;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.BackwardHandler;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
@@ -50,6 +51,9 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	
 	private Integer firstHour;
 	private Integer lastHour;
+	
+	private static final String heightpx = "1100px";
+	private static final String heightper = "100%";
 	
 	public AppointmentSchedulerViewer( ImedigContext ctx, Recurso recurso)
 	{
@@ -115,7 +119,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		citationsCalendar.setLastVisibleHourOfDay( lastHour );
 		
 		eventResource = new AppointmentEventResource( ctx, recurso );
-		//eventProvider = new AppointmentEventProvider( citationsCalendar, eventResource );
 		eventProvider = new AppointmentEventProvider( ctx, recurso, citationsCalendar );
 		citationsCalendar.setEventProvider( eventProvider );
 
@@ -123,13 +126,11 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		addComponent( periodPanel );		
 
 		settingHandlers();
+		settingInitWeek();
  		
-		//java.util.Calendar cal = new GregorianCalendar().getInstance();
-		//cal.setTime( new Date() );
-		//cal.add( java.util.Calendar.MONTH, 1 );
-		//ciationsCalendar.setEndDate( UtilsCalendar.getLastDayMonth( cal.getTime() ) );
 		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( "1100px" );
+		citationsCalendar.setHeight( heightpx );
+
 		Panel panel = new Panel();
 		panel.setSizeFull();
 		VerticalLayout content = new VerticalLayout( citationsCalendar );
@@ -140,7 +141,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		addComponent( panel );
 		setExpandRatio( panel, 1.0f );
 	}
-
+	
 	private void settingHandlers()
 	{
 		citationsCalendar.setHandler( (DateClickHandler)periodPanel );
@@ -153,42 +154,45 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		citationsCalendar.setHandler( (RangeSelectHandler)null);
 	}
 	
-	public void setDates(Date start, Date end){
+	private void settingInitWeek(){
+		periodPanel.dateClick( new DateClickEvent( citationsCalendar, new Date() ) );
+	}
+
+	public void monthlyView(Date start, Date end){
+		citationsCalendar.setHeight( heightper );
+		setDates( start, end );
+	}
+	
+	public void weeklyView(){
+		citationsCalendar.setHeight( heightpx );
+	}
+	
+	private void setDates(Date start, Date end){
 		citationsCalendar.setStartDate( start );
 		citationsCalendar.setEndDate( end );
 	}
 	
-//	public void newCitation(){
-//		ModalAppointmentDlg dlg = new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, null, this, "administracion.citas" );
-//		dlg.setDate( getStartDate() );
-//		dlg.showModalWindow();
-//	}
-	
-	private Date getStartDate(){
-		Date start = citationsCalendar.getStartDate();
-		Date end = citationsCalendar.getEndDate();
-		Date today = new Date();
-		
-		if (end.before( today )) return today;
-		
-		if (today.before( end ) && !today.before( start )) return today;
-		
-		if (DateUtils.isSameDay( today, end )) return today;
-		
-		return start;
-	}
-
 	@Override
 	public void refreshVisibleContent()
 	{
 		citationsCalendar.markAsDirty();
-		
 	}
 
 	@Override
 	public void eventClick( EventClick event )
 	{
 		AppointmentEvent citationEvent = (AppointmentEvent)event.getCalendarEvent();
+		Date today = new Date();
+		
+		if (citationEvent.getData() == null && today.after( citationEvent.getStart() )){
+			Notification.show( ctx.getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
+			return;
+		}
+		
+		if (citationEvent.getData() != null && today.after( citationEvent.getStart() ) && !Utils.isSameDay( today, citationEvent.getStart())){
+			return;
+		}
+		
 		Operation operation = citationEvent.getData() == null ? Operation.OP_ADD : Operation.OP_MODIFY;
 		
 		ModalAppointmentDlg dlg = null;
@@ -197,19 +201,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		}else{
 			dlg = new ModalAppointmentDlg( ctx, operation, recurso, citationEvent.getData(), this, "administracion.citas" );
 		}
-		
-		//dlg.setDuracionMin( calDuracionInMin( citationEvent.getStart(), citationEvent.getEnd() ) );
-		//dlg.setEndDate( citationEvent.getEnd() );
 		dlg.showModalWindow();
-	}
-
-	private Integer calDuracionInMin( Date from, Date to )
-	{
-		Long mili = to.getTime() - from.getTime(); // diferencia de tiempo en
-													// milisegundos
-		Long seg = mili / 1000;// llevarlo a segundo
-		Long min = seg / 60; // llevarlo a minutos
-
-		return min.intValue();
 	}
 }

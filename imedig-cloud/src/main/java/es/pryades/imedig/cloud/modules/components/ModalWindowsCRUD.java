@@ -294,7 +294,7 @@ public abstract class ModalWindowsCRUD extends Window
 		} );
 	}
 
-	protected String caption(String key){
+	protected String getString(String key){
 		return getContext().getString( key );
 	}
 	
