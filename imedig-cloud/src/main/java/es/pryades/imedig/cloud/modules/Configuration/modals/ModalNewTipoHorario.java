@@ -54,7 +54,7 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 	{
 		super( ctx, parentWindow, modalOperation, tipoHorario, right );
 
-		setWidth( "750px" );
+		setWidth( "1000px" );
 
 		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
 
@@ -107,9 +107,7 @@ public class ModalNewTipoHorario extends ModalWindowsCRUD
 			plan = datos.getDiaryPlan();
 		}
 		workingPlanComponent = new WorkingPlanComponent( getContext(), plan );
-		workingPlanComponent.setWidth( "100%" );
 		panelWorkingPlan.setContent( workingPlanComponent );
-		// panel.addStyleName( ValoTheme.PANEL_BORDERLESS );
 		componentsContainer.addComponent( panelWorkingPlan );
 		
 		optionTipo.setValue( Constants.SCHEDULER_ALL_EQUALS );

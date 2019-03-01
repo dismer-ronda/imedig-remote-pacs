@@ -1625,6 +1625,11 @@ public class Utils implements Serializable
 
 		return false;
 	}
+	
+	public static boolean isValidTimeRange( LocalTime start, LocalTime end )
+	{
+			return start.isBefore( end );
+	}
 
 	public static LocalTime getTime( String time )
 	{

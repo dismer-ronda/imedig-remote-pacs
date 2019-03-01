@@ -7,18 +7,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.joda.time.LocalTime;
+
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.Validator;
+import com.vaadin.data.Validator.InvalidValueException;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 
-import es.pryades.imedig.cloud.common.TimeValidador;
+import es.pryades.imedig.cloud.common.TimeAfterRangeValidator;
+import es.pryades.imedig.cloud.common.TimeField;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.cloud.common.UtilsUI;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DayPlan;
 import es.pryades.imedig.cloud.dto.TimeRange;
@@ -36,10 +39,11 @@ public abstract class AbstractWorkingPlan extends GridLayout
 	private static final int COL_END = 2;
 	private static final int COL_BREAK = 3;
 
+	private static final String TIME_FORMAT = "HH:mm";
 	private static final String DEFAULT_START = "08:00";
 	private static final String DEFAULT_END = "18:00";
 
-	private Validator validator = new TimeValidador();
+	//private Validator validator = new TimeValidador();
 
 	private final List<Integer> days;
 
@@ -75,22 +79,47 @@ public abstract class AbstractWorkingPlan extends GridLayout
 	{
 		CheckBox checkBox = getCheckBox( day );
 
-		TextField fieldStart = UtilsUI.createTimeImput( null, null );
-		fieldStart.setWidth( "60px" );
-		fieldStart.setValue( DEFAULT_START );
-		TextField fieldEnd = UtilsUI.createTimeImput( null, null );
+		TimeField fieldStart = new TimeField();
+		fieldStart.setValue( LocalTime.parse( DEFAULT_START ) );
+		final TimeField fieldEnd = new TimeField();
 		fieldEnd.setWidth( "60px" );
-		fieldEnd.setValue( DEFAULT_END );
+		fieldEnd.setValue( LocalTime.parse(DEFAULT_END) );
+		fieldEnd.setCaption( "" );
+		FormLayout l = new FormLayout( fieldEnd );
+		l.setMargin( false );
+		l.setWidth( "-1px" );
 
 		addComponent( checkBox, COL_DAY, row );
 		addComponent( fieldStart, COL_START, row );
-		addComponent( fieldEnd, COL_END, row );
+		addComponent( l, COL_END, row );
+		
+		fieldEnd.setValidationVisible( true );
+		Validator validatorEnd = new TimeAfterRangeValidator( fieldStart, ctx.getString( "words.daterange.error" ) );
+		fieldEnd.addValidator( validatorEnd );
+		final ValueChangeListener changeListener = new ValueChangeListener()
+		{
+			private static final long serialVersionUID = 46676985918961579L;
+
+			@Override
+			public void valueChange( ValueChangeEvent event )
+			{
+				fieldEnd.setValidationVisible(false);
+				try {
+					fieldEnd.validate();
+				} catch (InvalidValueException e) {
+					fieldEnd.setValidationVisible(true);
+				}
+			}
+		};
+		
+		fieldStart.addValueChangeListener( changeListener );
+		fieldEnd.addValueChangeListener( changeListener );
 
 		BreakComponent breakComponent = new BreakComponent( ctx, day );
 		addComponent( breakComponent, COL_BREAK, row );
 
 		setComponentAlignment( fieldStart, Alignment.TOP_CENTER );
-		setComponentAlignment( fieldEnd, Alignment.TOP_CENTER );
+		setComponentAlignment( l, Alignment.TOP_CENTER );
 		setComponentAlignment( breakComponent, Alignment.TOP_CENTER );
 
 		diaryComponents.put( day, new DiaryComponents( day, checkBox, fieldStart, fieldEnd, breakComponent ) );
@@ -108,7 +137,7 @@ public abstract class AbstractWorkingPlan extends GridLayout
 		return checkBox;
 	}
 	
-	private void settingPlanValuesValue( int day, CheckBox checkBox, TextField fieldStart, TextField fieldEnd, BreakComponent breakComponent )
+	private void settingPlanValuesValue( int day, CheckBox checkBox, TimeField fieldStart, TimeField fieldEnd, BreakComponent breakComponent )
 	{
 		DayPlan<String> plan = getDayPlan( day );
 
@@ -119,8 +148,8 @@ public abstract class AbstractWorkingPlan extends GridLayout
 		}
 
 		checkBox.setValue( true );
-		fieldStart.setValue( plan.getWorkingTime().getStart() );
-		fieldEnd.setValue( plan.getWorkingTime().getEnd() );
+		fieldStart.setValue( LocalTime.parse( plan.getWorkingTime().getStart()) );
+		fieldEnd.setValue( LocalTime.parse( plan.getWorkingTime().getEnd()) );
 		breakComponent.setBreaks( plan.getBreaks() );
 	}
 
@@ -157,10 +186,10 @@ public abstract class AbstractWorkingPlan extends GridLayout
 		setComponentAlignment( labelEnd, Alignment.TOP_CENTER );
 		setComponentAlignment( labelBreak, Alignment.TOP_CENTER );
 
-		setColumnExpandRatio( COL_DAY, 0.15f );
-		setColumnExpandRatio( COL_START, 0.1f );
-		setColumnExpandRatio( COL_END, 0.1f );
-		setColumnExpandRatio( COL_BREAK, 0.65f );
+		setColumnExpandRatio( COL_DAY, 1 );
+		setColumnExpandRatio( COL_START, 2 );
+		setColumnExpandRatio( COL_END, 3 );
+		setColumnExpandRatio( COL_BREAK, 5 );
 
 	}
 
@@ -234,11 +263,11 @@ public abstract class AbstractWorkingPlan extends GridLayout
 
 		int day;
 		CheckBox checkBox;
-		TextField start;
-		TextField end;
+		TimeField start;
+		TimeField end;
 		BreakComponent breaks;
 
-		public DiaryComponents( int day, CheckBox checkBox, TextField start, TextField end, BreakComponent breaks )
+		public DiaryComponents( int day, CheckBox checkBox, TimeField start, TimeField end, BreakComponent breaks )
 		{
 			this.day = day;
 			this.checkBox = checkBox;
@@ -273,15 +302,15 @@ public abstract class AbstractWorkingPlan extends GridLayout
 			DayPlan<String> plan = new DayPlan<>();
 			plan.setBreaks( breaks.getBreaksTime() );
 			plan.setDay( day );
-			plan.setWorkingTime( new TimeRange<String>( start.getValue(), end.getValue() ) );
+			plan.setWorkingTime( new TimeRange<String>( start.getValue().toString( TIME_FORMAT ), end.getValue().toString( TIME_FORMAT ) ) );
 
 			return plan;
 		}
 
 		private void settingListeners()
 		{
-			start.addValidator( validator );
-			end.addValidator( validator );
+			//start.addValidator( validator );
+			//end.addValidator( validator );
 
 			checkBox.addValueChangeListener( new ValueChangeListener()
 			{
@@ -295,7 +324,6 @@ public abstract class AbstractWorkingPlan extends GridLayout
 					
 					if (checkBox.getValue()) {
 						start.focus();
-						start.selectAll();
 					}
 				}
 			} );
