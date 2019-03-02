@@ -731,7 +731,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			{
 				verificarEstadosCitasPrevias();
 			}
-
+			getContext().sendAction( new UpdateAppointmentPatient( this ) );
+			
 			return true;
 		}
 		catch ( Throwable e )
@@ -767,6 +768,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		try
 		{
 			manager.delRow( getContext(), orgDto );
+			getContext().sendAction( new UpdateAppointmentPatient( this ) );
 
 			return true;
 		}
