@@ -204,7 +204,9 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 			bttnDeleteListener();
 		}
 
-		cellOppLayoutLeft = new HorizontalLayout();
+		HorizontalLayout space = new HorizontalLayout();
+		space.setWidthUndefined();
+		cellOppLayoutLeft = new HorizontalLayout(space);
 		cellOppLayoutLeft.setSpacing( true );
 		cellOppLayoutLeft.setMargin( false );
 
@@ -212,16 +214,22 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		cellOppLayoutCenter.setSpacing( true );
 		cellOppLayoutCenter.setMargin( false );
 
+		space = new HorizontalLayout();
+		space.setWidthUndefined();
 		cellOppLayoutRight = new HorizontalLayout();
 		cellOppLayoutRight.setSpacing( true );
-		cellOppLayoutRight.setMargin( false );
+		cellOppLayoutRight.setMargin( false );/*new MarginInfo( false, true, true, false ) */
+		HorizontalLayout right = new HorizontalLayout(cellOppLayoutRight, space);
+		right.setSpacing( true );
+		right.setMargin( false );
 
-		oppLayout = new HorizontalLayout(cellOppLayoutLeft, cellOppLayoutCenter, cellOppLayoutRight);
+		oppLayout = new HorizontalLayout(cellOppLayoutLeft, cellOppLayoutCenter, right);
 		oppLayout.setMargin( false );
 		oppLayout.setWidth( "100%" );
+		oppLayout.setHeight( "38px" );
 		oppLayout.setComponentAlignment( cellOppLayoutLeft, Alignment.MIDDLE_LEFT );
 		oppLayout.setComponentAlignment( cellOppLayoutCenter, Alignment.MIDDLE_CENTER );
-		oppLayout.setComponentAlignment( cellOppLayoutRight, Alignment.MIDDLE_RIGHT );
+		oppLayout.setComponentAlignment( right, Alignment.MIDDLE_RIGHT );
 
 		
 		if ( isAddAvailable() || isModifyAvailable() || isDeleteAvailable() || isExtrasAvailable() )

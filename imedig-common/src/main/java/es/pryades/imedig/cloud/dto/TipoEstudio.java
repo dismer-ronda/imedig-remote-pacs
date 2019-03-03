@@ -11,6 +11,7 @@ public class TipoEstudio extends ImedigDto
 	
 	private String nombre;
     private Integer duracion;
+    private String modalidad;
     private Integer tipo;
     
     @Override

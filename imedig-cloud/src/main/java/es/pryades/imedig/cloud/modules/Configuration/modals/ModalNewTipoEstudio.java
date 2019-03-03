@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -13,6 +15,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.TextField;
 
+import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
@@ -43,6 +46,7 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 	private ComboBox comboBoxHoras;
 	private ComboBox comboBoxMinutos;
 	private OptionGroup groupTipo;
+	private ComboBox comboBoxModalidad;
 	
 	private static final List<Integer> HOURS = Arrays.asList( 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 	private List<Integer> MINUTES;
@@ -105,8 +109,27 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		groupTipo.setItemCaption( 1, getContext().getString( "resource.type.1" ) );
 		groupTipo.setPropertyDataSource( bi.getItemProperty( "tipo" ) );
 		groupTipo.setRequired( true );
-		groupTipo.setValue( 1 );
+		groupTipo.setValue( Constants.TYPE_IMAGING_DEVICE );
+		groupTipo.addValueChangeListener( new ValueChangeListener()
+		{
+			private static final long serialVersionUID = 8964479749018558410L;
+
+			@Override
+			public void valueChange( ValueChangeEvent event )
+			{
+				if (!Constants.TYPE_IMAGING_DEVICE.equals( newTipoEstudio.getTipo()))
+					comboBoxModalidad.setVisible( false );
+				
+			}
+		} );
 		
+		comboBoxModalidad = new ComboBox( getContext().getString( "modalNewRecurso.lbModalidad" ) );
+		comboBoxModalidad.setPropertyDataSource( bi.getItemProperty( "modalidad" ) );
+		comboBoxModalidad.setWidth( "100%" );
+		comboBoxModalidad.setNewItemsAllowed( false );
+		comboBoxModalidad.setNullSelectionAllowed( true );
+		comboBoxModalidad.setRequired( true );
+		fillModalidad( comboBoxModalidad );
 
 		comboBoxHoras = new ComboBox( getContext().getString( "words.hours" ) );
 		comboBoxHoras.setWidth( "80px" );
@@ -138,13 +161,27 @@ public final class ModalNewTipoEstudio extends ModalWindowsCRUD
 		HorizontalLayout timeLayout = new HorizontalLayout(hoursLayout, minLayout);
 		timeLayout.setSpacing( true );
 		timeLayout.setCaption( getContext().getString( "modalNewStudyType.lbDuracion" ) );
-		FormLayout layout = new FormLayout(editNombre, groupTipo, timeLayout);
+		FormLayout layout = new FormLayout(editNombre, groupTipo, comboBoxModalidad, timeLayout);
 		
 		layout.setMargin( false );
 		layout.setWidth( "100%" );
 		layout.setSpacing( true );
 		
 		componentsContainer.addComponent( layout );
+		
+	}
+
+	private void fillModalidad( ComboBox comboBox )
+	{
+		String modList = context.getString( "QueryForm.Modalities" );
+
+		String modalities[] = modList.split( "," );
+
+		for ( String modality : modalities )
+		{
+			comboBox.addItem( modality );
+			comboBox.setItemCaption( modality, modality +" - "+getContext().getString( "words.modality."+modality ) );
+		}
 		
 	}
 

@@ -10,6 +10,9 @@
         <if test="tipo != null">
 			AND tipo = #{tipo} 
         </if>
+        <if test="modalidad != null">
+			AND modalidad = #{modalidad} 
+        </if>
 	</sql>
 	
 	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">

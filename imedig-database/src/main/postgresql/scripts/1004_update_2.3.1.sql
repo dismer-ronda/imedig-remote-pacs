@@ -58,7 +58,8 @@ create table susc_tipos_estudios (
     id integer not null,
     nombre varchar(64) not null,   					-- Nombre del tipo de estudio
     duracion integer not null,						-- Duración de la prueba en minutos
-	tipo integer NOT NULL,							-- Tipo de instalación 1 - equipo...
+    modalidad character varying(2),
+	tipo integer NOT NULL,							-- Tipo de recurso 1 - equipo...
     constraint pk_tipos_estudios primary key(id),
 	constraint uk_tipos_estudios_nombre unique(nombre)
     );

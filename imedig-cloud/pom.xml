@@ -13,7 +13,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>7.7.13</vaadin.version>
+		<vaadin.version>7.7.16</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<dcm4che-version>2.0.26</dcm4che-version>
 		<fullscreen.addon.version>1.0.0</fullscreen.addon.version>

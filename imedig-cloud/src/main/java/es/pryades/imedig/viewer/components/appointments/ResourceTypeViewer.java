@@ -14,11 +14,11 @@ import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import lombok.Getter;
 
-public class FacilityTypeViewer extends VerticalLayout
+public class ResourceTypeViewer extends VerticalLayout
 {
 	private static final long serialVersionUID = 979303127906951967L;
 	
-	private static final Logger LOG = Logger.getLogger( FacilityTypeViewer.class );
+	private static final Logger LOG = Logger.getLogger( ResourceTypeViewer.class );
 	
 	private ImedigContext ctx;
 	
@@ -29,7 +29,7 @@ public class FacilityTypeViewer extends VerticalLayout
 	
 	private RecursosManager recursosManager;
 	
-	public FacilityTypeViewer( ImedigContext ctx, Integer type)
+	public ResourceTypeViewer( ImedigContext ctx, Integer type)
 	{
 		this.ctx = ctx;
 		this.type = type;
@@ -45,7 +45,7 @@ public class FacilityTypeViewer extends VerticalLayout
 	{
 		try
 		{
-			buildFacilities();
+			buildResources();
 		}
 		catch ( Throwable e )
 		{
@@ -54,7 +54,7 @@ public class FacilityTypeViewer extends VerticalLayout
 		
 	}
 	
-	private void buildFacilities() throws Throwable
+	private void buildResources() throws Throwable
 	{
 		
 		List<AppointmentSchedulerViewer> viewers = new ArrayList<>();
@@ -71,20 +71,20 @@ public class FacilityTypeViewer extends VerticalLayout
 		
 		if (counter == 0) return;
 		if (counter == 1) {
-			addFacilities(viewers.get( 0 ));
+			addResources(viewers.get( 0 ));
 		}else{
-			addFacilities(viewers);
+			addResources(viewers);
 		}
 		
 	}
 
-	private void addFacilities( AppointmentSchedulerViewer facilityTypeViewer )
+	private void addResources( AppointmentSchedulerViewer resourceTypeViewer )
 	{
-		addComponent( facilityTypeViewer );
+		addComponent( resourceTypeViewer );
 		
 	}
 
-	private void addFacilities( List<AppointmentSchedulerViewer> viewers )
+	private void addResources( List<AppointmentSchedulerViewer> viewers )
 	{
 		tabSheet = new TabSheet();
 		tabSheet.setSizeFull();

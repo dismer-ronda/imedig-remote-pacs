@@ -117,7 +117,7 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 
 				for ( FilteredContent item : tabContentList )
 				{
-					item.setSizeFull();
+					//item.setSizeFull();
 					tabsheet.addTab( item );
 					tabsheet.getTab( item ).setCaption( item.getTabTitle() );
 				}
@@ -139,8 +139,8 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 	{
 		this.initComponents();
 
-		content.setWidth( "100%" );
-		content.setHeight( "100%" );
+		//content.setWidth( "100%" );
+		//content.setHeight( "100%" );
 		//content.setMargin( true );
 		content.setSpacing( false );
 		content.setSizeFull();
@@ -148,12 +148,12 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 		tabsheet.setSizeFull();
 
 		content.addComponent( tabsheet );
-		content.setExpandRatio( tabsheet, 1.0f );
+		//content.setExpandRatio( tabsheet, 1.0f );
 
 		getMainLayout().removeAllComponents();
 		getMainLayout().addComponent( content );
 
-		((VerticalLayout)getMainLayout()).setHeight( "100%" );
-		((VerticalLayout)getMainLayout()).setExpandRatio( content, 1.0f );
+		//((VerticalLayout)getMainLayout()).setHeight( "100%" );
+		//((VerticalLayout)getMainLayout()).setExpandRatio( content, 1.0f );
 	}
 }

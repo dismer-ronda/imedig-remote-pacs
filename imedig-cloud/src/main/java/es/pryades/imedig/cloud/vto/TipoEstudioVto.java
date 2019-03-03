@@ -22,6 +22,7 @@ public class TipoEstudioVto extends GenericVto
 	
 	private String  nombre;
 	private Integer duracion;
+	private String modalidad;
 	private Integer tipo;
 	
 	public TipoEstudioVto()

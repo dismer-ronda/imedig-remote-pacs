@@ -39,6 +39,7 @@ public class ConfigurationDlg extends Window
 		mainLayout.setHeight( "100%" );
 		mainLayout.setMargin( true );
 		mainLayout.setSpacing( true );
+		mainLayout.setId( "main.config.layout" );
 
 		setContent( mainLayout );
 		

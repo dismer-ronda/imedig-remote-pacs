@@ -79,6 +79,12 @@ public class LeftToolBar extends HorizontalLayout {
 		toolbox.setSpacing( true );
 		
 		VerticalLayout group = new VerticalLayout();
+		group.setSizeUndefined();
+		group.setMargin( false );
+		group.setSpacing( false );
+		//toolbox.addComponent( group );
+		
+		group = new VerticalLayout(group);
 		group.addComponent( buttonClose = getButton( FontAwesome.CLOSE, "close", "ViewerWnd.Close" ));
 		toolbox.addComponent( group );
 		

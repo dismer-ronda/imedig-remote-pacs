@@ -702,6 +702,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 	{
 		TipoEstudio query = new TipoEstudio();
 		query.setTipo( recurso.getTipo() );
+		query.setModalidad( recurso.getModalidad() );
 		TiposEstudiosManager manager = (TiposEstudiosManager)IOCManager.getInstanceOf( TiposEstudiosManager.class );
 
 		try

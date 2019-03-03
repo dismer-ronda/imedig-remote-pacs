@@ -135,6 +135,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		panel.setSizeFull();
 		VerticalLayout content = new VerticalLayout( citationsCalendar );
 		content.setWidth( "100%" );
+		//content.setHeight( "100%" );
 		content.setMargin( new MarginInfo( false, true, false, false ) );
 		panel.setContent( content );
 		panel.addStyleName( ValoTheme.PANEL_BORDERLESS );

@@ -21,7 +21,7 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 	private static final long serialVersionUID = -6978872843411881934L;
 	
 	private static final String[] visibleCols =
-	{ "nombre", "duracion" };
+	{ "nombre", "modalidad", "duracion" };
 
 	public TipoEstudioControlerVto( ImedigContext ctx)
 	{
@@ -174,6 +174,8 @@ public class TipoEstudioControlerVto extends GenericControlerVto
 				Integer vtoTipo = ((TipoEstudio)dtoObj).getTipo();
 				result.setTipo( vtoTipo );
 				// -- TIPO
+				
+				result.setModalidad( ((TipoEstudio)dtoObj).getModalidad() );
 			}
 			else
 			{

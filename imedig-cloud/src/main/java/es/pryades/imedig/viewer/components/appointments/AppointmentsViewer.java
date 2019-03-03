@@ -68,7 +68,7 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 	private void buildComponents(){
 		try
 		{
-			buildFacilityType();
+			buildResourcesType();
 		}
 		catch ( Throwable e )
 		{
@@ -76,11 +76,11 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 		}
 	}
 
-	private void buildFacilityType() throws Throwable
+	private void buildResourcesType() throws Throwable
 	{
 		int counter = 0;
 		
-		List<FacilityTypeViewer> viewers = new ArrayList<>();
+		List<ResourceTypeViewer> viewers = new ArrayList<>();
 		Recurso query = new Recurso();
 		
 		for ( Integer type : types )
@@ -91,29 +91,29 @@ public class AppointmentsViewer extends VerticalLayout implements ModalParent, P
 			if (falicities == 0 ) continue;
 			counter++;
 			
-			viewers.add( new FacilityTypeViewer( ctx, type ) );
+			viewers.add( new ResourceTypeViewer( ctx, type ) );
 		}
 		
 		if (counter == 0) return;
 		if (counter == 1) {
-			addFacilitiesType(viewers.get( 0 ));
+			addResourcesType(viewers.get( 0 ));
 		}else{
-			addFacilitiesType(viewers);
+			addResourcesType(viewers);
 		}
 		
 	}
 
-	private void addFacilitiesType( FacilityTypeViewer facilityTypeViewer )
+	private void addResourcesType( ResourceTypeViewer resourceTypeViewer )
 	{
-		addComponent( facilityTypeViewer );
+		addComponent( resourceTypeViewer );
 		
 	}
 
-	private void addFacilitiesType( List<FacilityTypeViewer> viewers )
+	private void addResourcesType( List<ResourceTypeViewer> viewers )
 	{
 		tabSheet = new TabSheet();
 		tabSheet.setSizeFull();
-		for ( FacilityTypeViewer viewer : viewers )
+		for ( ResourceTypeViewer viewer : viewers )
 		{
 			tabSheet.addTab( viewer, ctx.getString( "resource.type."+viewer.getType() ) );
 		}
