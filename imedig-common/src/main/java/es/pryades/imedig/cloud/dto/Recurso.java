@@ -15,4 +15,9 @@ public class Recurso extends ImedigDto
     private Integer tipo;
     private Integer tiempominimo;
     private Integer tipo_horario;
+    
+    @Override
+    public String toString(){
+    	return nombre;
+    }
 }

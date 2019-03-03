@@ -27,7 +27,6 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -42,6 +41,7 @@ import es.pryades.imedig.cloud.common.lazy.SearchCriteria;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.PacientesManager;
+import es.pryades.imedig.cloud.core.dal.RecursosManager;
 import es.pryades.imedig.cloud.core.dal.TiposEstudiosManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.Cita;
@@ -57,7 +57,7 @@ import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
 
-public class ModalAppointmentDlg extends ModalWindowsCRUD
+public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 {
 
 	private static final long serialVersionUID = -831617884634887703L;
@@ -70,7 +70,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 	private FiltrerAddSelect selectPaciente;
 	private FiltrerAddSelect selectReferidor;
-	private TextField editRecurso;
+	private ComboBox comboRecurso;
 	private ComboBox comboTipo;
 	private DateField dateFieldFecha;
 	// private TimeField2 timeInicio;
@@ -118,6 +118,20 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		init();
 		initComponents();
 	}
+	
+//	public ModalAppointmentDlg( ImedigContext ctx, Operation modalOperation, Paciente paciente, Date date, ModalParent parentWindow, String right )
+//	{
+//		super( ctx, parentWindow, modalOperation, null, right );
+//
+//		if ( date == null )
+//			throw new NullPointerException( "Fecha nula" );
+//
+//		this.recurso = recurso;
+//		this.date = date;
+//
+//		init();
+//		initComponents();
+//	}
 
 	private void init()
 	{
@@ -130,6 +144,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 	private void generarDuracion()
 	{
+		if (recurso == null) return;
+		
 		duracion = new ArrayList<>();
 
 		for ( int i = 1; i <= 10; i++ )
@@ -161,26 +177,55 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		selectPaciente = new FiltrerAddSelect( getString( "modalAppointmentDlg.lbPaciente" ) );
 		selectPaciente.setWidth( "100%" );
 		selectPaciente.setRequired( true );
-		selectPaciente.getButtonAdd().setVisible( false );
-
 		pacienteLazyProvider = new PacienteLazyProvider( getContext() );
 		LazyContainer dataSourcePaciente = new LazyContainer( Paciente.class, pacienteLazyProvider, new SearchCriteria() );
 		dataSourcePaciente.setMinFilterLength( 0 );
 		selectPaciente.setItemCaptionPropertyId( "nombreCompletoConIdentificador" );
 		selectPaciente.setContainerDataSource( dataSourcePaciente );
 		selectPaciente.setPropertyDataSource( bi.getItemProperty( "paciente" ) );
-
-		if ( Constants.TYPE_IMAGING_DEVICE.equals( recurso.getTipo() ) )
+		selectPaciente.getButtonAdd().addClickListener( new ClickListener()
 		{
-			editRecurso = new TextField( getString( "modalAppointmentDlg.lbRecurso.equipo" ) );
+			private static final long serialVersionUID = 6646662136591844468L;
+
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				new PacienteAppointmentDlg( context, Operation.OP_ADD, null, ModalAppointmentDlg.this, "configuracion.pacientes" ).showModalWindow();
+			}
+		} );
+
+		if (recurso == null){
+			comboRecurso = new ComboBox( getString( "modalAppointmentDlg.lbRecurso.equipo" ));
+		}else if ( Constants.TYPE_IMAGING_DEVICE.equals( recurso.getTipo() ) )
+		{
+			comboRecurso = new ComboBox( getString( "modalAppointmentDlg.lbRecurso.equipo" ));
 		}
 		else
 		{
-			editRecurso = new TextField( getString( "modalAppointmentDlg.lbRecurso.consulta" ) );
+			comboRecurso = new ComboBox( getString( "modalAppointmentDlg.lbRecurso.consulta" ) );
 		}
-		editRecurso.setValue( recurso.getNombre() );
-		editRecurso.setReadOnly( true );
-		editRecurso.setWidth( "100%" );
+		comboRecurso.setWidth( "100%" );
+		comboRecurso.setPropertyDataSource( bi.getItemProperty( "recurso" ) );
+		comboRecurso.setNullSelectionAllowed( false );
+		comboRecurso.setNewItemsAllowed( false );
+		comboRecurso.setFilteringMode( FilteringMode.CONTAINS );
+		comboRecurso.setRequired( true );
+		fillRecursos(Constants.TYPE_IMAGING_DEVICE);
+		if (recurso != null){
+			comboRecurso.setReadOnly( true );
+		}
+		comboRecurso.addValueChangeListener( new ValueChangeListener()
+		{
+			private static final long serialVersionUID = -5261438380912080072L;
+
+			@Override
+			public void valueChange( ValueChangeEvent event )
+			{
+				eventResource.setResource( vo.getRecurso() );
+				generarDuracion();
+				fillDuracion();
+			}
+		} );
 
 		selectReferidor = new FiltrerAddSelect( getString( "modalAppointmentDlg.lbReferidor" ) );
 		selectReferidor.setWidth( "100%" );
@@ -305,7 +350,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			comboBoxEstado.setVisible( false );
 		}
 		
-		FormLayout layout = new FormLayout( selectPaciente, editRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado);
+		FormLayout layout = new FormLayout( selectPaciente, comboRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado);
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );
@@ -330,6 +375,30 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 		selectPaciente.focus();
 	}
 
+	private void fillRecursos(Integer type)
+	{
+		if (recurso != null){
+			comboRecurso.addItem( recurso );
+			return;
+		}
+		
+		try
+		{
+			Recurso query = new Recurso();
+			query.setTipo( type );
+			RecursosManager manager = (RecursosManager)IOCManager.getInstanceOf( RecursosManager.class );
+			List<Recurso> recursos;
+			recursos = manager.getRows( getContext(), query );
+			for ( Recurso recurso : recursos )
+			{
+				comboRecurso.addItem( recurso );
+			}
+		}
+		catch ( Throwable e )
+		{
+		}
+	}
+
 	private void fillTimeInicio()
 	{
 		timeInicio.getContainerDataSource().removeAllItems();
@@ -351,7 +420,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
 		}
 		
-		if (orgDto != null && timeInicio.getItem( vo.getFechainicio() ) == null){
+		if (orgDto != null && vo.getFechainicio() != null && timeInicio.getItem( vo.getFechainicio() ) == null){
 			KeyValue<LocalTime, Integer> free = new KeyValue<>( vo.getFechainicio().getKey(), 0 );
 			timeInicio.addItem( free );
 			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
@@ -362,7 +431,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	{
 		selectPaciente.setReadOnly( true );
 		selectReferidor.setReadOnly( true );
-		editRecurso.setReadOnly( true );
+		comboRecurso.setReadOnly( true );
 		comboTipo.setReadOnly( true );
 		dateFieldFecha.setReadOnly( true );
 		timeInicio.setReadOnly( true );
@@ -473,6 +542,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	{
 		AppointmentVo result = new AppointmentVo();
 
+		result.setRecurso( recurso );
 		if ( cita == null )
 		{
 			result.setFecha( date );
@@ -712,7 +782,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 
 	private boolean isValidRequired()
 	{
-		return vo.getPaciente() != null && vo.getReferidor() != null && vo.getTipo() != null && vo.getFecha() != null && vo.getFechainicio() != null && vo.getDuracion() != null;
+		return vo.getPaciente() != null && vo.getReferidor() != null && vo.getTipo() != null && vo.getRecurso() != null && vo.getFecha() != null && vo.getFechainicio() != null && vo.getDuracion() != null;
 	}
 
 	@Override
@@ -790,5 +860,25 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD
 	protected String getWindowResourceKey()
 	{
 		return "modalAppointmentDlg";
+	}
+	
+	void updatePaciente(Paciente paciente){
+		setPaciente( paciente );
+		getContext().sendAction( new UpdateAppointmentPatient( this ) );
+	}
+
+	public void setPaciente(Paciente paciente){
+		vo.setPaciente( paciente );
+		selectPaciente.getComboBox().markAsDirty();
+		
+		selectPaciente.setReadOnly( true );
+	}
+
+	@Override
+	public void refreshVisibleContent()
+	{
+		//selectPaciente.getComboBox().
+		//getContext().sendAction( new UpdateAppointmentPatient( this ) );
+		
 	}
 }

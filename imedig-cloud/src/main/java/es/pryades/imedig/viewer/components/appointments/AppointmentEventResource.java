@@ -92,11 +92,25 @@ public class AppointmentEventResource implements Serializable
 		tipoHorarioManager = (TipoHorarioManager)IOCManager.getInstanceOf( TipoHorarioManager.class );
 
 		mapEvents = new HashMap<>();
+		
+		if (recurso != null){
+			extractResourceWorkinPlan();
+		}
+	}
+	
+	public void setResource(Recurso recurso){
+		if (recurso == null) return;
+		this.recurso = recurso;
+		
 		extractResourceWorkinPlan();
 	}
 
 	public List<CalendarEvent> getMonthlyEvents( Date startDate, Date endDate )
 	{
+		if (recurso == null){
+			return new ArrayList<>();
+		}
+		
 		mapEvents.clear();
 
 		try
@@ -113,6 +127,10 @@ public class AppointmentEventResource implements Serializable
 
 	public List<CalendarEvent> getWeeklyEvents( Date startDate, Date endDate )
 	{
+		if (recurso == null){
+			return new ArrayList<>();
+		}
+		
 		mapEvents.clear();
 
 		try
@@ -305,6 +323,9 @@ public class AppointmentEventResource implements Serializable
 	}
 
 	public List<KeyValue<LocalTime, Integer>> getFreeTimes(Date date){
+		if (recurso == null){
+			return new ArrayList<>();
+		}
 		
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( date );

@@ -8,6 +8,7 @@ import org.joda.time.LocalTime;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.KeyValue;
 import es.pryades.imedig.cloud.dto.Paciente;
+import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.TipoEstudio;
 import es.pryades.imedig.cloud.dto.Usuario;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class AppointmentVo extends ImedigDto implements Serializable
 	
 	private Paciente paciente;
 	private Usuario referidor;
+	private Recurso recurso;
 	private TipoEstudio tipo;
 	private Date fecha;
 	private KeyValue<LocalTime, Integer> fechainicio;

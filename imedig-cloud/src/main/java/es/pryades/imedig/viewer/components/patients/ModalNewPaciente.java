@@ -30,7 +30,7 @@ import es.pryades.imedig.viewer.components.converters.DateToIntegerConverter;
  * @author hector.licea
  * 
  */
-public final class ModalNewPaciente extends ModalWindowsCRUD
+public class ModalNewPaciente extends ModalWindowsCRUD
 {
 	private static final long serialVersionUID = 87756269648630442L;
 
@@ -181,6 +181,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		editNombre.focus();
 	}
 
+	@Override
 	protected boolean onAdd()
 	{
 		try
@@ -199,6 +200,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		return false;
 	}
 
+	@Override
 	protected boolean onModify()
 	{
 		try
@@ -215,6 +217,7 @@ public final class ModalNewPaciente extends ModalWindowsCRUD
 		return false;
 	}
 
+	@Override
 	protected boolean onDelete()
 	{
 		try

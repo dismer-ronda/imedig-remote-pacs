@@ -191,13 +191,11 @@ public abstract class ModalWindowsCRUD extends Window
 	public void showModalWindow()
 	{
 		UI.getCurrent().addWindow( this );
-		//((UI)getContext().getData( "Application" )).addWindow( this );
 	}
 
 	public void closeModalWindow( boolean refresh )
 	{
 		UI.getCurrent().removeWindow( this );
-		//((UI)getContext().getData( "Application" )).removeWindow( this );
 		
 		if ( modalParent != null && refresh )
 			modalParent.refreshVisibleContent();
@@ -207,9 +205,6 @@ public abstract class ModalWindowsCRUD extends Window
 	{
 		bttnCancelar.addClickListener( new Button.ClickListener()
 		{
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 7591024099361245222L;
 
 			public void buttonClick( ClickEvent event )

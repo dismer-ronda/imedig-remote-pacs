@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.FontIcon;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -26,9 +29,11 @@ import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
+import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.GenericControlerVto;
 import es.pryades.imedig.core.common.GenericVto;
 import es.pryades.imedig.core.common.VtoFieldRef;
+import es.pryades.imedig.viewer.components.appointments.ModalAppointmentDlg;
 
 /**
  * 
@@ -253,24 +258,63 @@ public class PacienteControlerVto extends GenericControlerVto
 		
 		List<Cita> citas = getCitas( paciente.getId() );
 		
-		Integer counter = 1;
+		ClickListener clickListener = getClickListener();
+
 		for ( Cita cita : citas )
 		{
 			Button btn = new Button( buidCaption( cita ) );
+			btn.addClickListener( clickListener );
+			btn.setData( cita );
 			btn.addStyleName( "citation" );
 			btn.addStyleName( ValoTheme.BUTTON_TINY );
 			btn.setDescription( getDescription( cita ) );
 			layout.addComponent( btn );
 		}
 		
-//		Button btn = new Button( FontAwesome.PLUS );
-//		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-//		btn.addStyleName( ValoTheme.BUTTON_TINY );
-//		btn.addStyleName( "action" );
-//		layout.addComponent( btn );
+		Button btn = new Button( FontAwesome.PLUS );
+		btn.setData( paciente );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btn.addStyleName( ValoTheme.BUTTON_TINY );
+		btn.addStyleName( "action" );
+		btn.addClickListener( getCitaClickListener() );
+		//layout.addComponent( btn );
 		return layout;
 	}
 	
+	private ClickListener getClickListener()
+	{
+		return new ClickListener()
+		{
+			private static final long serialVersionUID = 5598412488953236164L;
+
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				Cita cita = (Cita)event.getButton().getData();
+				Recurso recurso = getRecurso( cita.getRecurso() );
+				
+				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_MODIFY, recurso, cita, null, "administracion.citas" );
+				dlg.showModalWindow();
+			}
+		};
+	}
+
+	private ClickListener getCitaClickListener()
+	{
+		return new ClickListener()
+		{
+			private static final long serialVersionUID = 4712618422749745067L;
+
+			@Override
+			public void buttonClick( ClickEvent event )
+			{
+				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_ADD, null, new Date(), null, "administracion.citas" );
+				dlg.setPaciente( (Paciente)event.getButton().getData() );
+				dlg.showModalWindow();
+			}
+		};
+	}
+
 	private String getDescription(Cita cita){
 		String fecha = dayDateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ));
 		String inicio = timeFormatter.format( Utils.getDateHourFromLong( cita.getFecha()));

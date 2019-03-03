@@ -60,7 +60,7 @@ public class FiltrerAddSelect extends CustomField<Object>
 	public void setReadOnly( boolean readOnly )
 	{
 		comboBox.setReadOnly( readOnly );
-		buttonAdd.setReadOnly( readOnly );
+		buttonAdd.setEnabled( !readOnly );
 		super.setReadOnly( readOnly );
 	}
 
@@ -108,5 +108,9 @@ public class FiltrerAddSelect extends CustomField<Object>
 	
 	public void setContainerDataSource(Container newDataSource) {
 		comboBox.setContainerDataSource(newDataSource);
+	}
+	
+	public void addItem(Object itemId){
+		comboBox.addItem( itemId );
 	}
 }
