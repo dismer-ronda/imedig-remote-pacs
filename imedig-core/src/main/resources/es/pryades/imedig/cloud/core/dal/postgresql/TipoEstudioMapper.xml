@@ -52,14 +52,16 @@
 			id,
 			nombre, 
 			duracion,
-			tipo
+			tipo,
+			modalidad
 		)
 		values
 		(
 			#{id},
 			#{nombre},
 			#{duracion},
-			#{tipo}
+			#{tipo},
+			#{modalidad}
 		)
 	</insert>
 
@@ -68,7 +70,8 @@
 		set
 			nombre=#{nombre},
 			duracion=#{duracion},
-			tipo=#{tipo}
+			tipo=#{tipo},
+			modalidad=#{modalidad}
 		where id = #{id}
 	</update>
 
