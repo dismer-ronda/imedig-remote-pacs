@@ -273,8 +273,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
-				updateHoraInicio();
-				fillDuracion();
+				updateHoraInicio(true);
+				//fillDuracion();
 			}
 		} );
 		
@@ -294,8 +294,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		timeInicio.setWidth( "95px" );
 		timeInicio.setPropertyDataSource( bi.getItemProperty( "fechainicio" ) );
 		timeInicio.setNullSelectionAllowed( false );
-		//timeInicio.setImmediate( true );
-		fillTimeInicio();
+		fillTimeInicio(false);
+		timeInicio.setImmediate( true );
 		timeInicio.addValueChangeListener( new ValueChangeListener()
 		{
 			private static final long serialVersionUID = -1750614759248144130L;
@@ -303,13 +303,10 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
-				fillDuracion();
-				if ( vo.getTipo() == null) return;
-				
-				vo.setDuracion( getProximaDuracion( vo.getTipo().getDuracion() ) );
-				comboBoxDuracion.markAsDirty();
+				actualizaDuracion();
 			}
 		} );
+		
 
 //		errorLabel = new Label( getContext().getString( "modalAppointmentDlg.error.no.time" ) );
 //		errorLabel.addStyleName( "label_error" );
@@ -374,6 +371,14 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		
 		selectPaciente.focus();
 	}
+	
+	private void actualizaDuracion(){
+		fillDuracion();
+		if ( vo.getTipo() == null) return;
+		
+		vo.setDuracion( getProximaDuracion( vo.getTipo().getDuracion() ) );
+		comboBoxDuracion.markAsDirty();
+	}
 
 	private void fillRecursos(Integer type)
 	{
@@ -399,7 +404,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		}
 	}
 
-	private void fillTimeInicio()
+	private void fillTimeInicio(boolean cambioDeFecha)
 	{
 		timeInicio.getContainerDataSource().removeAllItems();
 
@@ -420,7 +425,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
 		}
 		
-		if (orgDto != null && vo.getFechainicio() != null && timeInicio.getItem( vo.getFechainicio() ) == null){
+		if (!cambioDeFecha && orgDto != null && vo.getFechainicio() != null && timeInicio.getItem( vo.getFechainicio() ) == null){
 			KeyValue<LocalTime, Integer> free = new KeyValue<>( vo.getFechainicio().getKey(), 0 );
 			timeInicio.addItem( free );
 			timeInicio.setItemCaption( free, free.getKey().toString( "HH:mm" ) );
@@ -652,10 +657,12 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		return min.intValue();
 	}
 
-	private void updateHoraInicio()
+	private void updateHoraInicio(boolean cambioDeFecha)
 	{
 		freeTimes = eventResource.getFreeTimes( vo.getFecha() );
-		fillTimeInicio();
+		KeyValue<LocalTime, Integer> actual = vo.getFechainicio();
+		
+		fillTimeInicio(cambioDeFecha);
 		vo.setFechainicio( null );
 		if ( freeTimes.isEmpty() )
 		{
@@ -675,10 +682,17 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			}
 			else
 			{
-				vo.setFechainicio( freeTimes.get( 0 ) );
+				if (freeTimes.contains( actual )){
+					vo.setFechainicio( freeTimes.get( freeTimes.indexOf( actual ) ) );
+					actualizaDuracion();
+				}else{
+					vo.setFechainicio( freeTimes.get( 0 ) );
+				}
 			}
 		}
+		timeInicio.setValue( vo.getFechainicio() );
 		timeInicio.markAsDirty();
+		
 	}
 
 	private void toDto()

@@ -3,6 +3,8 @@ package es.pryades.imedig.viewer.components.appointments;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
 
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Calendar;
@@ -51,8 +53,9 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	
 	private Integer firstHour;
 	private Integer lastHour;
+	private Integer calendarHeight= 1000;
 	
-	private static final String heightpx = "1100px";
+	private static final Integer DEFAULT_HEIGHT = 1000;
 	private static final String heightper = "100%";
 	
 	public AppointmentSchedulerViewer( ImedigContext ctx, Recurso recurso)
@@ -60,19 +63,28 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		this.ctx = ctx;
 		this.recurso = recurso;
 		
-		settingInstalationWorkingPlan();
+		settingResourceWorkingPlan();
 		
 		setSizeFull();
 		setMargin( true );
 		buildComponents();
 	}
 
-	private void settingInstalationWorkingPlan()
+	private void settingResourceWorkingPlan()
 	{
 		planificacionHorario = getPlanificacionHorarioFromJson();
 
 		firstHour = findFirstHour();
 		lastHour = findLastHour();
+		
+		LocalTime start = new LocalTime( firstHour, 0, 0 );
+		LocalTime end = new LocalTime( lastHour, 0, 0 );
+		Integer min = Minutes.minutesBetween( start, end ).getMinutes();
+		Integer spaces = min/recurso.getTiempominimo();
+		calendarHeight = spaces*35;
+		if (calendarHeight < DEFAULT_HEIGHT){
+			calendarHeight = DEFAULT_HEIGHT;
+		}
 	}
 	
 	private PlanificacionHorario getPlanificacionHorarioFromJson()
@@ -129,7 +141,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		settingInitWeek();
  		
 		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( heightpx );
+		citationsCalendar.setHeight( calendarHeight+"px" );
 
 		Panel panel = new Panel();
 		panel.setSizeFull();
@@ -165,7 +177,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	}
 	
 	public void weeklyView(){
-		citationsCalendar.setHeight( heightpx );
+		citationsCalendar.setHeight( calendarHeight+"px" );
 	}
 	
 	private void setDates(Date start, Date end){
