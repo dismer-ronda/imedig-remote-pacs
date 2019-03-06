@@ -359,7 +359,16 @@ public class AppointmentEventProvider implements CalendarEventProvider
 					}else{
 						result.add( freeEvent( start1, end1 ) );
 					}
+				}else if (start1.before( today ) && end1.before( today )){
+					result.add( oldEvent( start1, end1 ) );
 				}
+				/*if (start1.after( today ) && (end.after( today ) || end1.after( today ))){
+					if (end1.after( end )){
+						result.add( freeEvent( start1, end ) );
+					}else{
+						result.add( freeEvent( start1, end1 ) );
+					}
+				}*/
 				start1 = end1;
 				end1 = incNextTimePeriod();
 				while ( start1.after( end1 ) )
@@ -560,13 +569,24 @@ public class AppointmentEventProvider implements CalendarEventProvider
 
 	private CalendarEvent freeEvent( Date start, Date end )
 	{
-
-		AppointmentEvent event = new AppointmentEvent();
-		event.setStart( start );
-		event.setEnd( end );
-		event.setStyleName( "free" );
-
-		return event;
+		return new FreeEvent( start, end );
+//		AppointmentEvent event = new AppointmentEvent();
+//		event.setStart( start );
+//		event.setEnd( end );
+//		event.setStyleName( "free" );
+//
+//		return event;
+	}
+	
+	private CalendarEvent oldEvent( Date start, Date end )
+	{
+		return new OldEvent( start, end );
+//		AppointmentEvent event = new AppointmentEvent();
+//		event.setStart( start );
+//		event.setEnd( end );
+//		event.setStyleName( "old" );
+//
+//		return event;
 	}
 
 	private static <T> T head( List<T> list )
