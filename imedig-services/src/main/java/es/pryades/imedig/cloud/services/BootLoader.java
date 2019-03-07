@@ -40,7 +40,7 @@ public class BootLoader extends Thread implements Serializable
 	    	
 	    		RemoveStudiesProcessor.startProcessor();
 	    		BackupProcessor.startProcessor();
-	    		WorklistProcessor.startProcessor();
+	    		//WorklistProcessor.startProcessor();
 	    		
 		    	break;
 			}

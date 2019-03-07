@@ -51,7 +51,7 @@ public class InitServlet extends HttpServlet
 		
 		RemoveStudiesProcessor.stopProcessor();
 		BackupProcessor.stopProcessor();
-		WorklistProcessor.stopProcessor();
+		//WorklistProcessor.stopProcessor();
 
 		String prefix = getClass().getSimpleName() +" destroy() ";
 	    ServletContext ctx = getServletContext();
