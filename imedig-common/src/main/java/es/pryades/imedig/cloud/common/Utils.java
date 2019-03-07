@@ -495,9 +495,33 @@ public class Utils implements Serializable
 		return (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
 	}
 
+	public static long getTodayFirstSecondAsLong()
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
+
+		int day = calendar.get( Calendar.DATE );
+		int month = calendar.get( Calendar.MONTH ) + 1;
+		int year = calendar.get( Calendar.YEAR );
+
+		return (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
+	}
+
 	public static long getTomorrowFirstSecondAsLong( String horario )
 	{
 		Calendar calendar = GregorianCalendar.getInstance( TimeZone.getTimeZone( horario ) );
+
+		calendar.add( Calendar.DATE, 1 );
+
+		int day = calendar.get( Calendar.DATE );
+		int month = calendar.get( Calendar.MONTH ) + 1;
+		int year = calendar.get( Calendar.YEAR );
+
+		return (long)day * 1000000 + (long)month * 100000000L + (long)year * 10000000000L;
+	}
+
+	public static long getTomorrowFirstSecondAsLong()
+	{
+		Calendar calendar = GregorianCalendar.getInstance();
 
 		calendar.add( Calendar.DATE, 1 );
 

@@ -50,6 +50,8 @@ public class InitServlet extends HttpServlet
 		LOG.info( "destroy servlet called" );
 		
 		RemoveStudiesProcessor.stopProcessor();
+		BackupProcessor.stopProcessor();
+		WorklistProcessor.stopProcessor();
 
 		String prefix = getClass().getSimpleName() +" destroy() ";
 	    ServletContext ctx = getServletContext();

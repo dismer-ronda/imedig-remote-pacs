@@ -61,7 +61,7 @@ public class RemoveStudiesProcessor extends TimerTask implements Serializable
 
 		timer.schedule( this, wait, repeat );
 
-		LOG.info( "----- started. Waiting " + wait/1000 + " seconds" );
+		LOG.info( "----- started. Waiting " + wait/60000 + " minutes" );
 	}
 	
 	private void stopRequest()
@@ -127,6 +127,8 @@ public class RemoveStudiesProcessor extends TimerTask implements Serializable
 	@Override
 	public void run()
 	{
+		LOG.info( "timer started" );
+
 		try 
 		{
 			StorageConfiguration storageConfiguration = readStorageConfiguration();
@@ -153,9 +155,9 @@ public class RemoveStudiesProcessor extends TimerTask implements Serializable
 	            Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" moveStudyToTrash " + studyUID );
 	        }
 			
-			LOG.info( "--------- deleting patients without studies" );
+			LOG.info( "--------- deleting patients without studies and appointments" );
 
-			set = statement.executeQuery( "select patient.pk, patient.pat_id, patient.pat_name from patient where not exists (select 1 from study where study.patient_fk = patient.pk)" );
+			set = statement.executeQuery( "select patient.pk, patient.pat_id, patient.pat_name from patient where not exists (select 1 from study where study.patient_fk = patient.pk) and not exists (select 1 from mwl_item where mwl_item.patient_fk = patient.pk)" );
 			
 			while ( set.next() ) 
 			{

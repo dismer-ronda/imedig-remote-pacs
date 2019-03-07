@@ -13,6 +13,8 @@ import es.pryades.imedig.core.common.ImedigManagerImpl;
 */
 public abstract class ImedigPacsManagerImpl extends ImedigManagerImpl
 {
+	private static final long serialVersionUID = 9067823213090627318L;
+
 	public ImedigPacsManagerImpl( Class mapperClass, Class dtoClass, Logger logger )
 	{
 		super( mapperClass, dtoClass, logger );
