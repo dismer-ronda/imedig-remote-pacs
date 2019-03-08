@@ -92,6 +92,8 @@ public class ImedigException extends Exception
 	public static final int LOGIN_FAIL = -1500;
 	public static final int LOGIN_BLOCKED = -1501;
 	public static final int LOGIN_PASSWORD_CHANGED = -1502;
+	
+	public static final int PACS_WORKLIST_ERROR = -1600;
 
 	public ImedigException( Throwable e, Logger LOG){
 		this( e, LOG, UNKNOWN );

@@ -815,6 +815,29 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			if ( cambioEstado )
 			{
 				verificarEstadosCitasPrevias();
+				
+				if (Constants.TYPE_IMAGING_DEVICE.equals( recurso.getTipo() ) && newCita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING && ((Cita)orgDto).getEstado()!= Constants.APPOINTMENT_STATUS_EXECUTING){
+					ConfirmDialog.show( UI.getCurrent() , getString( "modalAppointmentDlg.confirm.appointment.worklist" ), new ConfirmDialog.Listener()
+					{
+						private static final long serialVersionUID = -6788803735853446128L;
+
+						public void onClose( ConfirmDialog dialog )
+						{
+							if ( dialog.isConfirmed() )
+							{
+								try
+								{
+									manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+								}
+								catch ( Throwable e )
+								{
+									showErrorMessage( new ImedigException( e, LOG, ImedigException.PACS_WORKLIST_ERROR ) );
+								}
+							}
+						}
+					} );
+				}
+				
 			}
 			getContext().sendAction( new UpdateAppointmentPatient( this ) );
 			
