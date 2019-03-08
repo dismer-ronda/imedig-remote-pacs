@@ -184,9 +184,12 @@ public class CitasManagerImpl extends ImedigCloudManagerImpl implements CitasMan
 		OBR|1|1|2|1100|||||||||||||||%REQ_PROCID%|%SPS_ID%||||%MODALITY%||||||||||%PERFOMING_TECH%
 		ZDS|%STUDY_UID%^%EXECUTING_AE%^%EXECUTING_NAME%
 		*/
-
+		
 		Calendar now = Utils.getCalendarNow();
 		
+		if ( cita.getId() == null )
+			cita.setId( Utils.getCalendarTimeAsInt( now ) );
+
 		Paciente paciente = getPaciente( ctx, cita.getPaciente() );
 		Usuario referidor = getUsuario( ctx, cita.getReferidor() );
 		TipoEstudio tipo = getTipoEstudio( ctx, cita.getTipo() );

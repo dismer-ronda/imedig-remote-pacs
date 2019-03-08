@@ -1641,9 +1641,8 @@ public class Utils implements Serializable
 
 			return d1.before( d2 );
 		}
-		catch ( ParseException e )
+		catch ( Throwable e )
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
