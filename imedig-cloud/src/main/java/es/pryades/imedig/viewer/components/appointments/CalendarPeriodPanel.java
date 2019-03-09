@@ -110,15 +110,16 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 				changeView();
 			}
 		} );*/
-		//buildAddButton();
-
+		
 		buildMonthlyComponents();
 		buildWeeklyComponents();
+		buildAddButton();
 		//buildDiaryComponents();
 		
-		insideLayout.addComponents( monthlyLayout, weeklyLayout/*, diaryLayout*/ );
+		insideLayout.addComponents( monthlyLayout, weeklyLayout, buttonAddEvent );
 		insideLayout.setComponentAlignment( monthlyLayout, Alignment.BOTTOM_LEFT );
 		insideLayout.setComponentAlignment( weeklyLayout, Alignment.BOTTOM_LEFT );
+		insideLayout.setComponentAlignment( buttonAddEvent, Alignment.BOTTOM_LEFT );
 		//insideLayout.setComponentAlignment( diaryLayout, Alignment.BOTTOM_LEFT );
 		//changeView();
 		optionView.setValue( PERIOD_MONTHLY );
@@ -127,12 +128,12 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 	private void buildAddButton()
 	{
-		buttonAddEvent = new Button( FontAwesome.CLOCK_O );
-		buttonAddEvent.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		buttonAddEvent = new Button( ctx.getString( "words.appointments.out.calendar" ), FontAwesome.CLOCK_O );
+		//buttonAddEvent.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
 		buttonAddEvent.addStyleName( ValoTheme.BUTTON_PRIMARY );
-		buttonAddEvent.setDescription( ctx.getString( "words.appointments.add" ) );
-		insideLayout.addComponent( buttonAddEvent );
-		insideLayout.setComponentAlignment( buttonAddEvent, Alignment.BOTTOM_LEFT );
+		buttonAddEvent.setDescription( ctx.getString( "words.appointments.add.worklist" ) );
+		//insideLayout.addComponent( buttonAddEvent );
+		//insideLayout.setComponentAlignment( buttonAddEvent, Alignment.BOTTOM_LEFT );
 		
 		buttonAddEvent.addClickListener( new ClickListener()
 		{
@@ -141,7 +142,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
-				//viewer.newCitation();
+				viewer.addNewOutOfCalendarAppointment();
 			}
 		} );
 		

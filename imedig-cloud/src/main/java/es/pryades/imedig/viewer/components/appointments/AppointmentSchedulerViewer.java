@@ -222,4 +222,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		}
 		dlg.showModalWindow();
 	}
+	
+	public void addNewOutOfCalendarAppointment(){
+		new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, new Date(), this, "administracion.citas", true ).showModalWindow();
+	}
 }
