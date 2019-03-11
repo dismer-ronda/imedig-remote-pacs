@@ -761,6 +761,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			if (outOfCalendar){
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
 				manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+				verificarEstadosCitasPrevias();
 			}else{
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
 
