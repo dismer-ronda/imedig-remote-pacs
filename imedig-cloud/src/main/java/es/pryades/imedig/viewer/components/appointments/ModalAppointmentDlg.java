@@ -902,7 +902,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 	{
 		CitaQuery query = new CitaQuery();
 		query.setRecurso( recurso.getId() );
-		query.setFecha_hasta( newCita.getFecha() );
 		query.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
 		List<Cita> citas = manager.getRows( getContext(), query );
 		for ( Cita cita : citas )
@@ -914,7 +913,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			c.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
 			manager.setRow( getContext(), cita, c );
 		}
-
 	}
 
 	@Override
