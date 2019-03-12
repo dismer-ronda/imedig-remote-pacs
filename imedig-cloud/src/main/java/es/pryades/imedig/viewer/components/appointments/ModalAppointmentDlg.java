@@ -248,10 +248,20 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			@Override
 			public void valueChange( ValueChangeEvent event )
 			{
-				if (outOfCalendar) return;
-				fillDuracion();
+				if (outOfCalendar){
+					fillDuracionOutOfCalendar();
+				}else{
+					fillDuracion();
+				}
 				vo.setDuracion( getProximaDuracion( vo.getTipo().getDuracion() ) );
-				comboBoxDuracion.markAsDirty();
+				
+				if (!comboBoxDuracion.isReadOnly()){
+					comboBoxDuracion.markAsDirty();
+				}else{
+					comboBoxDuracion.setReadOnly( false );
+					comboBoxDuracion.markAsDirty();
+					comboBoxDuracion.setReadOnly( true );
+				}
 			}
 
 		} );
@@ -542,6 +552,27 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			Notification.show( getContext().getString( "modalAppointmentDlg.error.no.time"), Notification.Type.ERROR_MESSAGE );
 		}
 	}
+	
+	private void fillDuracionOutOfCalendar()
+	{
+		comboBoxDuracion.getContainerDataSource().removeAllItems();
+
+		for ( Integer item : duracion )
+		{
+			if ( vo.getTipo() == null )
+			{
+				addMinute( comboBoxDuracion, item );
+			}
+			else if ( vo.getTipo().getDuracion() <= item )
+			{
+				addMinute( comboBoxDuracion, item );
+			}
+		}
+		
+		if (vo.getTipo() != null && comboBoxDuracion.getContainerDataSource().getItemIds().isEmpty()){
+			Notification.show( getContext().getString( "modalAppointmentDlg.error.no.time"), Notification.Type.ERROR_MESSAGE );
+		}
+	}
 
 	private static void addMinute( ComboBox comboBox, Integer min )
 	{
@@ -708,21 +739,13 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		newCita.setRecurso( recurso.getId() );
 		newCita.setTipo( vo.getTipo().getId() );
 		newCita.setReferidor( vo.getReferidor().getId() );
-		if (outOfCalendar){
-			newCita.setFecha( Utils.getDateAsLong( Utils.getDateWithTime( new Date(), vo.getFechainicio().getKey() ) ) );
-		}else{
-			newCita.setFecha( Utils.getDateAsLong( Utils.getDateWithTime( vo.getFecha(), vo.getFechainicio().getKey() ) ) );
-		}
-
+		newCita.setFecha( Utils.getDateAsLong( Utils.getDateWithTime( vo.getFecha(), vo.getFechainicio().getKey() ) ) );
+		
 		newCita.setEstado( vo.getEstado() );
 
 		Calendar calendar = GregorianCalendar.getInstance();
 		calendar.setTime( Utils.getDateWithTime( vo.getFecha(), vo.getFechainicio().getKey() ) );
-		if (outOfCalendar){
-			calendar.add( Calendar.MINUTE, vo.getFechainicio().getValue() );
-		}else{
-			calendar.add( Calendar.MINUTE, vo.getDuracion() );
-		}
+		calendar.add( Calendar.MINUTE, vo.getDuracion() );
 		newCita.setFechafin( Utils.getDateAsLong( calendar.getTime() ) );
 		newCita.setUid( "UID" );
 	}
@@ -760,7 +783,25 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			
 			if (outOfCalendar){
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
-				manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+				ConfirmDialog.show( UI.getCurrent() , getString( "modalAppointmentDlg.confirm.appointment.worklist.outcalendar" ), new ConfirmDialog.Listener()
+				{
+					private static final long serialVersionUID = -1649199248924829162L;
+
+					public void onClose( ConfirmDialog dialog )
+					{
+						if ( dialog.isConfirmed() )
+						{
+							try
+							{
+								manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+							}
+							catch ( Throwable e )
+							{
+								showErrorMessage( new ImedigException( e, LOG, ImedigException.PACS_WORKLIST_ERROR ) );
+							}
+						}
+					}
+				} );
 				verificarEstadosCitasPrevias();
 			}else{
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
@@ -835,7 +876,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 
 	private boolean isValidRequired()
 	{
-		return vo.getPaciente() != null && vo.getReferidor() != null && vo.getTipo() != null && vo.getRecurso() != null && vo.getFecha() != null && vo.getFechainicio() != null && (vo.getDuracion() != null || outOfCalendar);
+		return vo.getPaciente() != null && vo.getReferidor() != null && vo.getTipo() != null && vo.getRecurso() != null && vo.getFecha() != null && vo.getFechainicio() != null && vo.getDuracion() != null;
 	}
 
 	@Override

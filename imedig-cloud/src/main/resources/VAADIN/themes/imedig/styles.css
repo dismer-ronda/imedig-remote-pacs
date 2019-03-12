@@ -13244,6 +13244,10 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: auto;
 }
 
+.toolbox-content .v-verticallayout {
+	margin-top: 3px;
+}
+
 .selected {
 	color: #02925d !important;
 }
@@ -13341,15 +13345,22 @@ div.v-layout.v-horizontal.v-widget {
 
 .fullscreen {
 	z-index: 30;
-	font-size: 22px;
+	font-size: 20px;
 	float: right;
 }
 
 .fullscreen .v-button {
 	z-index: 30;
-	margin: 3px;
+	margin: 1px;
+	padding: 5px;
+	width: 50px;
 	float: right;
+	line-height: 0.7;
 	background-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+.fullscreen .v-button-caption {
+	font-size: 10px !important;
 }
 
 .fullscreen .v-button:focus:after {

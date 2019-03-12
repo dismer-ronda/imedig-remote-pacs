@@ -90,7 +90,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	private Button btnSelected;
 	private Button buttonPatients;
-	private Button buttonCitas;
+	private Button buttonAppointments;
 	private Button buttonImages;
 	private Button buttonStudies;
 	private Button buttonReports;
@@ -105,7 +105,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private ImedigContext context;
 
 	private PatientsViewer patientViewer;
-	private AppointmentsViewer citationsViewer;
+	private AppointmentsViewer appointmentsViewer;
 	private ViewerWnd imageViewer;
 	private ReportsViewer reportsViewer;
 	private QueryViewer queryViewer;
@@ -270,14 +270,15 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	protected Button btnFullScreen;
 	protected Button btnPatients;
-	protected Button btnCitations;
+	protected Button btnAppointments;
 	protected Button btnStudies;
 	protected Button btnImages;
 	protected Button btnReports;
+	protected Button floatSelected;
 	private static final String ID_FULLSCREEN = "btn.fullscreen";
 	
 	private void buildFullScreenButtons(ComponentContainer layout){
-		btnFullScreen = buildBtnFloat( ID_FULLSCREEN, context.getString( "words.fullscreen" ) );
+		btnFullScreen = buildBtnFloat( ID_FULLSCREEN, context.getString( "words.fullscreen" ), false );
 		btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
 		
 		FullScreenExtension extension = new FullScreenExtension();
@@ -294,7 +295,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 					btnImages.setVisible( true );
 					btnReports.setVisible( true );
 					btnPatients.setVisible( true );
-					btnCitations.setVisible( true );
+					btnAppointments.setVisible( true );
                 } else {
                 	context.sendAction( new ExitFullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
@@ -303,12 +304,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 					btnImages.setVisible( false );
 					btnReports.setVisible( false );
 					btnPatients.setVisible( false );
-					btnCitations.setVisible( false );
+					btnAppointments.setVisible( false );
                 }
             }
         });
 
-        btnStudies = buildBtnFloat( "btn.studies.float", context.getString( "words.studies" ) );
+        btnStudies = buildBtnFloat( "btn.studies.float", context.getString( "words.studies" ), true );
         btnStudies.setIcon( FontAwesome.SEARCH );
         btnStudies.setVisible( false );
         btnStudies.addClickListener( new ClickListener()
@@ -320,7 +321,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 				buttonStudies.click();
 			}
 		} );
-        btnImages = buildBtnFloat( "btn.images.float", context.getString( "words.images" ) );
+        btnImages = buildBtnFloat( "btn.images.float", context.getString( "words.images" ), true );
         btnImages.setIcon( FontIcoMoon.ROOT_CATEGORY );
         btnImages.setVisible( false );
         btnImages.addClickListener( new ClickListener(){
@@ -332,7 +333,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 				buttonImages.click();
 			}
 		} );
-        btnReports = buildBtnFloat( "btn.reports.float", context.getString( "words.reports" ) );
+        btnReports = buildBtnFloat( "btn.reports.float", context.getString( "words.reports" ), true );
         btnReports.setIcon(FontAwesome.FILE_TEXT);
         btnReports.setVisible( false );
         btnReports.addClickListener( new ClickListener(){
@@ -345,7 +346,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
         
-        btnPatients = buildBtnFloat( "btn.patiens.float", context.getString( "words.patients" ) );
+        btnPatients = buildBtnFloat( "btn.patiens.float", context.getString( "words.patients" ), true );
         btnPatients.setIcon(FontIcoMoon.PATIENT);
         btnPatients.setVisible( false );
         btnPatients.addClickListener( new ClickListener(){
@@ -358,33 +359,36 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
         
-        btnCitations = buildBtnFloat( "btn.cattions.float", context.getString( "words.appointments" ) );
-        btnCitations.setIcon(FontAwesome.CALENDAR);
-        btnCitations.setVisible( false );
-        btnCitations.addClickListener( new ClickListener(){
+        btnAppointments = buildBtnFloat( "btn.cattions.float", context.getString( "words.appointments" ), true );
+        btnAppointments.setIcon(FontAwesome.CALENDAR);
+        btnAppointments.setVisible( false );
+        btnAppointments.addClickListener( new ClickListener(){
 
 			private static final long serialVersionUID = -951616351416582941L;
 
 			@Override
 			public void buttonClick( ClickEvent event ){
-				buttonCitas.click();
+				buttonAppointments.click();
 			}
 		} );
         
-		CssLayout hide = new CssLayout( btnFullScreen, btnPatients, btnCitations, btnStudies, btnImages, btnReports );
+		CssLayout hide = new CssLayout( btnFullScreen, btnPatients, btnAppointments, btnStudies, btnImages, btnReports );
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "-1px" );
 		hide.setWidth( "0px" );
 		layout.addComponent( hide );
 	}
 	
-	private static Button buildBtnFloat(String id, String description){
+	private static Button buildBtnFloat(String id, String description, boolean showcaption){
 		Button btn = new Button( );
 		btn.setIcon( FontIcoMoon.WINDOW_MAXIMIZE  );
 		btn.setImmediate( true );
-		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		//btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+		btn.addStyleName( ValoTheme.BUTTON_ICON_ALIGN_TOP);
 		btn.addStyleName( ValoTheme.BUTTON_BORDERLESS );
 		btn.setId( id );
+		if (showcaption) btn.setCaption( description );
+		
 		btn.setDescription( description );
 		
 		return btn;
@@ -455,16 +459,16 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 		
-		buttonCitas= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
-		buttonCitas.setDescription( context.getString( "words.appointments.view" ) );
-		setStyleButtonBar( buttonCitas );
-		buttonCitas.addClickListener( new Button.ClickListener()
+		buttonAppointments= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
+		buttonAppointments.setDescription( context.getString( "words.appointments.view" ) );
+		setStyleButtonBar( buttonAppointments );
+		buttonAppointments.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = -9001228234723748388L;
 
 			public void buttonClick( ClickEvent event )
 			{
-				showCitations();
+				showAppointments();
 			}
 		} );
 		
@@ -508,7 +512,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
 
-		selectButtonsBar.addComponents( buttonPatients, buttonCitas, buttonStudies, buttonImages, buttonReports );
+		selectButtonsBar.addComponents( buttonPatients, buttonAppointments, buttonStudies, buttonImages, buttonReports );
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -633,27 +637,21 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}
 	}
 	
-	public void showCitations()
+	public void showAppointments()
 	{
-		if (btnSelected != null){
-			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-		}
-		btnSelected = buttonCitas;
-		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		removeSelectedStyle();
+		settingSelectedButton( buttonAppointments, btnAppointments );
 		
 		contents.removeAllComponents();
-		if (citationsViewer == null){
-			citationsViewer = new AppointmentsViewer( context);
+		if (appointmentsViewer == null){
+			appointmentsViewer = new AppointmentsViewer( context);
 		}
-		contents.addComponent( citationsViewer );
+		contents.addComponent( appointmentsViewer );
 	}
 
 	public void showPatiens(){
-		if (btnSelected != null){
-			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-		}
-		btnSelected = buttonPatients;
-		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		removeSelectedStyle();
+		settingSelectedButton( buttonPatients, btnPatients );
 		
 		contents.removeAllComponents();
 		if (patientViewer == null){
@@ -664,11 +662,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	public void showImages()
 	{
-		if (btnSelected != null){
-			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-		}
-		btnSelected = buttonImages;
-		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		removeSelectedStyle();
+		settingSelectedButton( buttonImages, btnImages );
 		
 		contents.removeAllComponents();
 		if (imageViewer == null){
@@ -677,14 +672,29 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.addComponent( imageViewer );
 	}
 	
-	public void showQueryStudies()
-	{
+	private void removeSelectedStyle(){
 		if (btnSelected != null){
 			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
 		}
-		btnSelected = buttonStudies;
-		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
 		
+		if (floatSelected != null){
+			floatSelected.removeStyleName( ImedigTheme.BUTTON_SELECTED );
+		}
+	}
+
+	private void settingSelectedButton(Button btnTool, Button btnFloat){
+		btnSelected = btnTool;
+		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+
+		floatSelected = btnFloat;
+		floatSelected.addStyleName( ImedigTheme.BUTTON_SELECTED );
+	}
+
+	public void showQueryStudies()
+	{
+		removeSelectedStyle();
+		settingSelectedButton( buttonStudies, btnStudies );
+
 		contents.removeAllComponents();
 		if (queryViewer == null){
 			queryViewer = new QueryViewer( context, getUser( getUsuario( getContext() ) ) );
@@ -771,11 +781,8 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	
 	private void showReports(boolean defaultSearch)
 	{
-		if (btnSelected != null){
-			btnSelected.removeStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
-		}
-		btnSelected = buttonReports;
-		btnSelected.addStyleName( ImedigTheme.BUTTON_MENU_SELECTED );
+		removeSelectedStyle();
+		settingSelectedButton( buttonReports, btnReports );
 
 		contents.removeAllComponents();
 		
