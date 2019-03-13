@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.dto.query;
 
+import java.util.List;
+
 import es.pryades.imedig.cloud.dto.Cita;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,4 +14,5 @@ public class CitaQuery extends Cita
 	
 	private Long fecha_desde;
 	private Long fecha_hasta;
+	private List<Integer> estados;
 }

@@ -20,10 +20,13 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.steinwedel.messagebox.ButtonId;
 import de.steinwedel.messagebox.Icon;
@@ -35,6 +38,8 @@ import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
 import es.pryades.imedig.cloud.core.dal.InformesManager;
@@ -55,6 +60,8 @@ import es.pryades.imedig.cloud.vto.refs.InformeVtoFieldRef;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -64,7 +71,7 @@ import lombok.Setter;
  * 
  */
 @SuppressWarnings({"unchecked"})
-public class ReportsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener, MessageBoxListener
+public class ReportsViewer extends FilteredContent implements ModalParent, Property.ValueChangeListener, MessageBoxListener, ListenerAction
 {
 	private static final long serialVersionUID = -3588907063210926036L;
 
@@ -100,6 +107,8 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 	
 	private boolean defaultSearch;
 	private boolean showMessage;
+	
+	private HorizontalLayout layoutCaption;
 
 	/**
 	 * 
@@ -117,12 +126,30 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		this.showMessage = defaultSearch;
 		
 		setSizeFull();
-		setMargin( true );
 		initComponents();
 		
 		if (showMessage){
 			showNotification();
 		}
+	}
+	
+	@Override
+	public void initComponents()
+	{
+		Label label = new Label( getContext().getString( "words.reports" ) );
+		label.addStyleName( ValoTheme.LABEL_LARGE );
+		layoutCaption = new HorizontalLayout( label );
+		layoutCaption.addStyleName( ImedigTheme.MENU_LAYOUT );
+		layoutCaption.setMargin( true );
+		layoutCaption.setWidth( "100%" );
+		layoutCaption.setVisible( false );
+		addComponent( layoutCaption );
+		super.initComponents();
+		mainLayout.setMargin( true );
+	}
+	
+	public void showCaption(){
+		layoutCaption.setVisible( true );
 	}
 	
 	public String[] getVisibleCols()
@@ -953,5 +980,15 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		);
 	
 		dlg.showModalWindow();
+	}
+
+	@Override
+	public void doAction( Action action )
+	{
+		if (action instanceof FullScreen) {
+			layoutCaption.setVisible( true );
+		}else if (action instanceof ExitFullScreen) {
+			layoutCaption.setVisible( false );
+		}
 	}
 }

@@ -782,7 +782,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			toDto();
 			
 			if (outOfCalendar){
-				newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
 				ConfirmDialog.show( UI.getCurrent() , getString( "modalAppointmentDlg.confirm.appointment.worklist.outcalendar" ), new ConfirmDialog.Listener()
 				{
 					private static final long serialVersionUID = -1649199248924829162L;
@@ -793,7 +792,9 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 						{
 							try
 							{
+								newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
 								manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+								verificarEstadosCitasPrevias();
 							}
 							catch ( Throwable e )
 							{
@@ -802,7 +803,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 						}
 					}
 				} );
-				verificarEstadosCitasPrevias();
+				
 			}else{
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
 
@@ -889,12 +890,8 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 
 			toDto();
 
-			manager.setRow( getContext(), (Cita)orgDto, newCita );
-
 			if ( isCambioEstado() )
 			{
-				verificarEstadosCitasPrevias();
-				
 				if (Constants.TYPE_IMAGING_DEVICE.equals( recurso.getTipo() ) && newCita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING){
 					ConfirmDialog.show( UI.getCurrent() , getString( "modalAppointmentDlg.confirm.appointment.worklist" ), new ConfirmDialog.Listener()
 					{
@@ -906,7 +903,9 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 							{
 								try
 								{
+									manager.setRow( getContext(), (Cita)orgDto, newCita );
 									manager.transferAppointmentWorklist( getContext(), newCita, recurso );
+									verificarEstadosCitasPrevias();
 								}
 								catch ( Throwable e )
 								{
@@ -915,9 +914,14 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 							}
 						}
 					} );
+				}else{
+					manager.setRow( getContext(), (Cita)orgDto, newCita );
 				}
 				
+			}else{
+				manager.setRow( getContext(), (Cita)orgDto, newCita );
 			}
+			
 			getContext().sendAction( new UpdateAppointmentPatient( this ) );
 			
 			return true;

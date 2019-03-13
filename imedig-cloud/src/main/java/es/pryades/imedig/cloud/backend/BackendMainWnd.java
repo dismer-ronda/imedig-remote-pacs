@@ -112,6 +112,10 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 	private DetalleCentro detalleCentro;
 	@Getter 
 	private InformeImagen imagen;
+	
+	private boolean fullScreen = false;
+	
+	private boolean hasImage = false;
 
 	public BackendMainWnd( ImedigContext ctx )
 	{
@@ -287,12 +291,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
             @Override
             public void onChange(boolean fullscreen) {
+            	BackendMainWnd.this.fullScreen = fullscreen;
                 if (fullscreen) {
                 	context.sendAction( new FullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
 					btnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
 					btnStudies.setVisible( true );
-					btnImages.setVisible( true );
+					if (hasImage) btnImages.setVisible( true );
 					btnReports.setVisible( true );
 					btnPatients.setVisible( true );
 					btnAppointments.setVisible( true );
@@ -645,6 +650,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.removeAllComponents();
 		if (appointmentsViewer == null){
 			appointmentsViewer = new AppointmentsViewer( context);
+			if (fullScreen) appointmentsViewer.showCaption();
 		}
 		contents.addComponent( appointmentsViewer );
 	}
@@ -656,6 +662,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.removeAllComponents();
 		if (patientViewer == null){
 			patientViewer = new PatientsViewer( context);
+			if (fullScreen) patientViewer.showCaption();
 		}
 		contents.addComponent( patientViewer );
 	}
@@ -698,6 +705,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		contents.removeAllComponents();
 		if (queryViewer == null){
 			queryViewer = new QueryViewer( context, getUser( getUsuario( getContext() ) ) );
+			if (fullScreen) queryViewer.showCaption();
 		}
 		contents.addComponent( queryViewer );
 	}
@@ -788,6 +796,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		
 		if (reportsViewer == null){
 			reportsViewer = new ReportsViewer( getContext(), defaultSearch );
+			if (fullScreen) reportsViewer.showCaption();
 		}
 		
 		contents.addComponent( reportsViewer );
@@ -890,9 +899,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			showReports(false);
 			reportsViewer.refreshVisibleContent();
 		}else if (action instanceof OpenStudies){
+			hasImage = true;
 			showImages();
+			if (fullScreen) btnImages.setVisible( true );
 		}else if (action instanceof QueryStudies){
+			hasImage = false;
 			showQueryStudies();
+			if (fullScreen) btnImages.setVisible( false );
 		}
 	}
 	

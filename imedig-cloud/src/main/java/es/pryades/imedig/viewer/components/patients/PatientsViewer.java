@@ -9,7 +9,9 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
@@ -26,6 +28,8 @@ import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.core.common.QueryFilterRef;
 import es.pryades.imedig.core.common.TableImedigPaged;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,6 +59,8 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	private static final String COMBO_WIDTH = "200px";
 	private static final String TEXT_WIDTH = "200px";
+	
+	private HorizontalLayout layoutCaption;
 
 	/**
 	 * 
@@ -66,10 +72,28 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		super( ctx );
 		
 		setSizeFull();
-		setMargin( true );
 		initComponents();
 		setEnabledAdd( true );
 		getContext().addListener( this );
+	}
+	
+	@Override
+	public void initComponents()
+	{
+		Label label = new Label( getContext().getString( "words.patients" ) );
+		label.addStyleName( ValoTheme.LABEL_LARGE );
+		layoutCaption = new HorizontalLayout( label );
+		layoutCaption.addStyleName( ImedigTheme.MENU_LAYOUT );
+		layoutCaption.setMargin( true );
+		layoutCaption.setWidth( "100%" );
+		layoutCaption.setVisible( false );
+		addComponent( layoutCaption );
+		super.initComponents();
+		mainLayout.setMargin( true );
+	}
+	
+	public void showCaption(){
+		layoutCaption.setVisible( true );
 	}
 	
 	public String[] getVisibleCols()
@@ -210,6 +234,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		return textIdentificador;
 	}
 
+	
 
 	@Override
 	public Component getQueryComponent()
@@ -225,6 +250,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		
 		HorizontalLayout layout = new HorizontalLayout( getQueryNombre(), getQueryIdentificador()/*, getQueryFecha()*/ );
 		layout.setSpacing( true );
+		layout.setMargin( new MarginInfo( false, true, false, true ) );
 		return layout;
 	}
 
@@ -274,6 +300,10 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 			if (!action.getSource().equals( this )){
 				table.refreshVisibleContent();
 			}
+		}else if (action instanceof FullScreen) {
+			layoutCaption.setVisible( true );
+		}else if (action instanceof ExitFullScreen) {
+			layoutCaption.setVisible( false );
 		}
 	}
 }

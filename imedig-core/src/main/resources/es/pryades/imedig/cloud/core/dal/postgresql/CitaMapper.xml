@@ -19,6 +19,9 @@
         <if test="estado != null">
 			AND estado = #{estado}   
         </if>
+        <if test="estados != null">
+			AND estado in <foreach collection="estados" item="item" open="(" close=")" separator=",">#{item}</foreach>
+        </if>
 		<if test="fecha_desde != null">
 			AND fecha &gt;= #{fecha_desde}   
         </if>

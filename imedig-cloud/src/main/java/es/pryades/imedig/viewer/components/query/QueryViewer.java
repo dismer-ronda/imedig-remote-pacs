@@ -45,9 +45,12 @@ import de.steinwedel.messagebox.Icon;
 import de.steinwedel.messagebox.MessageBox;
 import de.steinwedel.messagebox.MessageBoxListener;
 import es.pryades.imedig.cloud.common.AppUtils;
+import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.MessageBoxUtils;
 import es.pryades.imedig.cloud.common.Settings;
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesInformesManager;
 import es.pryades.imedig.cloud.core.dal.InformesImagenesManager;
@@ -65,13 +68,15 @@ import es.pryades.imedig.cloud.modules.Reports.ModalNewInforme;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.actions.ExitFullScreen;
+import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.OpenStudies;
 import es.pryades.imedig.viewer.components.PageTable;
 import es.pryades.imedig.viewer.datas.QueryTableItem;
 
 public class QueryViewer extends VerticalLayout implements PageTable.PaginatorListener, SelectedStudyListener, 
 															ModalParent, Upload.SucceededListener, Upload.FailedListener, 
-															Upload.Receiver, Upload.StartedListener, MessageBoxListener
+															Upload.Receiver, Upload.StartedListener, MessageBoxListener, ListenerAction
 {
 
 	private static final Logger LOG = Logger.getLogger( QueryViewer.class );
@@ -100,6 +105,9 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 	
 	private QueryTableItem itemSelected = null;
 	
+	private HorizontalLayout layoutCaption;
+	private VerticalLayout mainLayout;
+	
 	private ByteArrayOutputStream reportStream;
 
 	public static final Integer PAGE_SIZE = 20;
@@ -108,8 +116,9 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		this.context = context;
 		this.user = user;
 
+		this.context.addListener( this );
 		setSizeFull();
-		setMargin( true );
+		//setMargin( true );
 		setSpacing( true );
 		buildComponents();
 		btnQuery.click();
@@ -117,9 +126,33 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 
 	private void buildComponents()
 	{
+		initCaption();
+		
+		mainLayout = new VerticalLayout();
+		mainLayout.setSpacing( true );
+		mainLayout.setMargin( true );
+		mainLayout.setSizeFull();
+		addComponent( mainLayout );
+		setExpandRatio( mainLayout, 1 );
 		buildFiltros();
 		buildTable();
 		buildFooter();
+	}
+	
+	private void initCaption()
+	{
+		Label label = new Label( context.getString( "words.studies" ) );
+		label.addStyleName( ValoTheme.LABEL_LARGE );
+		layoutCaption = new HorizontalLayout( label );
+		layoutCaption.addStyleName( ImedigTheme.MENU_LAYOUT );
+		layoutCaption.setMargin( true );
+		layoutCaption.setWidth( "100%" );
+		layoutCaption.setVisible( false );
+		addComponent( layoutCaption );
+	}
+	
+	public void showCaption(){
+		layoutCaption.setVisible( true );
 	}
 
 	private void buildFiltros()
@@ -143,8 +176,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		Component buttons = filterButtons();
 		layout.addComponent( buttons );
 		layout.setComponentAlignment( buttons, Alignment.BOTTOM_CENTER );
-		addComponent( layout );
-		setComponentAlignment( layout, Alignment.TOP_LEFT );
+		mainLayout.addComponent( layout );
+		mainLayout.setComponentAlignment( layout, Alignment.TOP_LEFT );
 	}
 
 	private void initTypeList()
@@ -357,8 +390,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			}
 		} );
 
-		addComponents( tableEstudies );
-		setExpandRatio( tableEstudies, 1.0f );
+		mainLayout.addComponents( tableEstudies );
+		mainLayout.setExpandRatio( tableEstudies, 1.0f );
 	}
 
 	private boolean hasStudiesSelected()
@@ -453,7 +486,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		footer.setMargin( false );
 		footer.setWidth( "100%" );
 
-		addComponent( footer );
+		mainLayout.addComponent( footer );
 	}
 
 	private void viewReportSelectedStudy( final DetalleInforme informe ){
@@ -743,6 +776,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 				continue;
 
 			result.add( item.getStudy().getStudyInstanceUID() );
+			item.getSelected().setValue( false );
 		}
 
 		return result;
@@ -948,5 +982,15 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		}
 		
 		new ModalNewInforme( context, Operation.OP_MODIFY, informe, images, null, right ).showModalWindow();
+	}
+
+	@Override
+	public void doAction( Action action )
+	{
+		if (action instanceof FullScreen) {
+			layoutCaption.setVisible( true );
+		}else if (action instanceof ExitFullScreen) {
+			layoutCaption.setVisible( false );
+		}
 	}
 }

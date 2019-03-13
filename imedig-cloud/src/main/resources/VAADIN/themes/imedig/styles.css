@@ -13244,8 +13244,8 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: auto;
 }
 
-.toolbox-content .v-verticallayout {
-	margin-top: 3px;
+.toolbox-content .v-verticallayout-toolbox {
+	padding-top: 2px;
 }
 
 .selected {

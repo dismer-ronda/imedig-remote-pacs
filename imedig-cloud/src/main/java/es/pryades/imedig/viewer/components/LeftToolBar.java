@@ -76,6 +76,7 @@ public class LeftToolBar extends HorizontalLayout {
 
 	private void buildButtons() {
 		VerticalLayout toolbox = new VerticalLayout();
+		toolbox.addStyleName( "toolbox" );
 		toolbox.setSpacing( true );
 		
 		VerticalLayout group = new VerticalLayout();

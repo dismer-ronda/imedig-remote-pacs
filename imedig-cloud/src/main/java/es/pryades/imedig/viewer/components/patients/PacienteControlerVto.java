@@ -2,6 +2,7 @@ package es.pryades.imedig.viewer.components.patients;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -336,8 +337,9 @@ public class PacienteControlerVto extends GenericControlerVto
 			CitaQuery query = new CitaQuery();
 			query.setPaciente( pacienteId );
 			query.setFecha_desde( Utils.getHourFirstSecondAsLong( new Date() ) );
+			query.setEstados( Arrays.asList( Constants.APPOINTMENT_STATUS_PLANING,  Constants.APPOINTMENT_STATUS_EXECUTING ) );
 			query.setPageNumber( 1 );
-			query.setPageSize( 4 );
+			query.setPageSize( 5 );
 			return citasManager.getRows( getContext(), query );
 		}
 		catch ( Throwable e )
@@ -347,8 +349,7 @@ public class PacienteControlerVto extends GenericControlerVto
 	}
 	
 	private String buidCaption(Cita cita ){
-		//Recurso recurso = getRecurso( cita.getRecurso() );
-		return /*recurso.getModalidad()+" " + */dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
+		return dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
 	}
 	
 	private FontIcon buidIcom(Cita cita ){

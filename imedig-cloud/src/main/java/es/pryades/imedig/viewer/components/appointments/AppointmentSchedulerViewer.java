@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
+import com.github.wolfie.refresher.Refresher;
+import com.github.wolfie.refresher.Refresher.RefreshListener;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Calendar;
 import com.vaadin.ui.Calendar.TimeFormat;
@@ -59,6 +61,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	private static final Integer DEFAULT_HEIGHT = 1000;
 	private static final String heightper = "600px";
 	
+	private Refresher refresher; 
+	
 	public AppointmentSchedulerViewer( ImedigContext ctx, Recurso recurso)
 	{
 		this.ctx = ctx;
@@ -69,6 +73,22 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		setSizeFull();
 		setMargin( true );
 		buildComponents();
+		
+		refresher = new Refresher();
+		refresher.addListener( new RefreshListener()
+		{
+			private static final long serialVersionUID = 4145558158898588682L;
+
+			@Override
+			public void refresh( Refresher source )
+			{
+				citationsCalendar.markAsDirty();
+			}
+		} );
+
+		refresher.setRefreshInterval( recurso.getTiempominimo() * 60 * 1000 );
+
+		addExtension( refresher );
 	}
 
 	private void settingResourceWorkingPlan()
