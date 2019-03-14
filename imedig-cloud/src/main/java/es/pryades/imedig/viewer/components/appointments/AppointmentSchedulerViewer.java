@@ -87,7 +87,6 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 			public void refresh( Refresher source )
 			{
 				appointmentCalendar.markAsDirty();
-				System.out.println( "------  Refresacando: "+ AppointmentSchedulerViewer.this.recurso );
 			}
 		} );
 
