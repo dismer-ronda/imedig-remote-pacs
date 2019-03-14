@@ -39,6 +39,7 @@ public class TableImedig extends VerticalLayout implements Serializable
 	private static final Logger LOG = Logger.getLogger( TableImedig.class ); 
 	
 	// INI -- Vaading Components
+	@Getter
 	protected Table table = new Table();
 	
 	protected HorizontalLayout tableContainer;

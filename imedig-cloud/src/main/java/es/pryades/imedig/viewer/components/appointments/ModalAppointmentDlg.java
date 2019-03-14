@@ -56,6 +56,7 @@ import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
+import es.pryades.imedig.viewer.actions.UpdatePatient;
 
 public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 {
@@ -793,8 +794,9 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 							try
 							{
 								newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
+								finalizarCitasPreviasEnEjecucion();
+								getContext().sendAction( new UpdateAppointmentPatient( this, recurso ) );
 								manager.transferAppointmentWorklist( getContext(), newCita, recurso );
-								verificarEstadosCitasPrevias();
 							}
 							catch ( Throwable e )
 							{
@@ -807,9 +809,9 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			}else{
 				newCita.setEstado( Constants.APPOINTMENT_STATUS_PLANING );
 
-				manager.setRow( getContext(), null, newCita );
-
-				getContext().sendAction( new UpdateAppointmentPatient( this ) );
+				actualizar( null, newCita, false );
+				//manager.setRow( getContext(), null, newCita );
+				//getContext().sendAction( new UpdateAppointmentPatient( this, recurso ) );
 			}
 
 			return true;
@@ -903,9 +905,11 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 							{
 								try
 								{
-									manager.setRow( getContext(), (Cita)orgDto, newCita );
+									actualizar( (Cita)orgDto, newCita, true );
 									manager.transferAppointmentWorklist( getContext(), newCita, recurso );
-									verificarEstadosCitasPrevias();
+									//manager.setRow( getContext(), (Cita)orgDto, newCita );
+									//finalizarCitasPreviasEnEjecucion();
+									//getContext().sendAction( new UpdateAppointmentPatient( this ) );
 								}
 								catch ( Throwable e )
 								{
@@ -915,14 +919,14 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 						}
 					} );
 				}else{
-					manager.setRow( getContext(), (Cita)orgDto, newCita );
+					//manager.setRow( getContext(), (Cita)orgDto, newCita );
+					actualizar( (Cita)orgDto, newCita, false );
 				}
 				
 			}else{
-				manager.setRow( getContext(), (Cita)orgDto, newCita );
+				//manager.setRow( getContext(), (Cita)orgDto, newCita );
+				actualizar( (Cita)orgDto, newCita, false );
 			}
-			
-			getContext().sendAction( new UpdateAppointmentPatient( this ) );
 			
 			return true;
 		}
@@ -934,6 +938,14 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		return false;
 	}
 	
+	private void actualizar(Cita old, Cita newrow, boolean finalizar) throws Throwable{
+		manager.setRow( getContext(), old, newrow );
+		
+		if (finalizar) finalizarCitasPreviasEnEjecucion();
+		
+		getContext().sendAction( new UpdateAppointmentPatient( this, recurso ) );
+	}
+	
 	private boolean isCambioEstado(){
 		if (orgDto == null) return false;
 		
@@ -943,7 +955,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		return false;
 	}
 
-	private void verificarEstadosCitasPrevias() throws Throwable
+	private void finalizarCitasPreviasEnEjecucion() throws Throwable
 	{
 		CitaQuery query = new CitaQuery();
 		query.setRecurso( recurso.getId() );
@@ -966,7 +978,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		try
 		{
 			manager.delRow( getContext(), orgDto );
-			getContext().sendAction( new UpdateAppointmentPatient( this ) );
+			getContext().sendAction( new UpdateAppointmentPatient( this, recurso ) );
 
 			return true;
 		}
@@ -992,7 +1004,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 	
 	void updatePaciente(Paciente paciente){
 		setPaciente( paciente );
-		getContext().sendAction( new UpdateAppointmentPatient( this ) );
+		getContext().sendAction( new UpdatePatient( this ) );
 	}
 
 	public void setPaciente(Paciente paciente){
@@ -1005,8 +1017,6 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 	@Override
 	public void refreshVisibleContent()
 	{
-		//selectPaciente.getComboBox().
-		//getContext().sendAction( new UpdateAppointmentPatient( this ) );
 		
 	}
 }

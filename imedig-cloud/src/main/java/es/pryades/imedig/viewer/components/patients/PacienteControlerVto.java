@@ -6,10 +6,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.FontIcon;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -19,7 +17,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.AppUtils;
 import es.pryades.imedig.cloud.common.Constants;
-import es.pryades.imedig.cloud.common.FontIcoMoon;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.RecursosManager;
@@ -49,7 +46,6 @@ public class PacienteControlerVto extends GenericControlerVto
 
 	private static final String[] visibleCols =	{ "identificador", "nombre", "sexo", "edad", "citas"};
 	
-	private Map<Integer, Recurso> cacheRecursos;
 	private RecursosManager recursosManager;
 	private CitasManager citasManager;
 	private static final SimpleDateFormat dateFormatter = new SimpleDateFormat( "dd/MM HH:mm" );
@@ -59,8 +55,6 @@ public class PacienteControlerVto extends GenericControlerVto
 	public PacienteControlerVto( ImedigContext ctx )
 	{
 		super( ctx );
-		
-		cacheRecursos = new HashMap<>();
 		
 		recursosManager = (RecursosManager)IOCManager.getInstanceOf( RecursosManager.class );
 		citasManager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
@@ -352,7 +346,7 @@ public class PacienteControlerVto extends GenericControlerVto
 		return dateFormatter.format( Utils.getDateHourFromLong( cita.getFecha() ) );
 	}
 	
-	private FontIcon buidIcom(Cita cita ){
+	/*private FontIcon buidIcom(Cita cita ){
 		
 		if (cacheRecursos.get( cita.getRecurso() ) == null){
 			try
@@ -384,20 +378,19 @@ public class PacienteControlerVto extends GenericControlerVto
 			default:
 				return FontIcoMoon.ROOT_CATEGORY;
 		}
-	}
+	}*/
 	
 	private Recurso getRecurso(Integer recursoId){
-		if (cacheRecursos.get( recursoId ) == null){
-			try
-			{
-				cacheRecursos.put( recursoId, (Recurso)recursosManager.getRow( getContext(), recursoId ) );
-			}
-			catch ( Throwable e )
-			{
-			}
+		try
+		{
+			return (Recurso)recursosManager.getRow( getContext(), recursoId );
+		}
+		catch ( Throwable e )
+		{
+			
 		}
 		
-		return cacheRecursos.get( recursoId );
+		return null;
 	}
 
 }

@@ -30,6 +30,8 @@ import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
+import es.pryades.imedig.cloud.core.action.Action;
+import es.pryades.imedig.cloud.core.action.ListenerAction;
 import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.PlanificacionHorario;
@@ -38,9 +40,10 @@ import es.pryades.imedig.cloud.dto.TipoHorario;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
+import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
 import lombok.Getter;
 
-public class AppointmentSchedulerViewer extends VerticalLayout implements ModalParent, EventClickHandler
+public class AppointmentSchedulerViewer extends VerticalLayout implements ModalParent, EventClickHandler, ListenerAction
 {
 	
 	private static final long serialVersionUID = 1683377378764769059L;
@@ -49,7 +52,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	@Getter
 	private Recurso recurso;
 	private CalendarEventProvider eventProvider;
-	Calendar citationsCalendar;
+	Calendar appointmentCalendar;
 	//private AppointmentEventResource eventResource;
 	private CalendarPeriodPanel periodPanel;
 	private PlanificacionHorario planificacionHorario;
@@ -68,6 +71,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		this.ctx = ctx;
 		this.recurso = recurso;
 		
+		ctx.addListener( this );
 		settingResourceWorkingPlan();
 		
 		setSizeFull();
@@ -82,7 +86,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 			@Override
 			public void refresh( Refresher source )
 			{
-				citationsCalendar.markAsDirty();
+				appointmentCalendar.markAsDirty();
+				System.out.println( "------  Refresacando: "+ AppointmentSchedulerViewer.this.recurso );
 			}
 		} );
 
@@ -142,18 +147,18 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		
 	private void buildComponents()
 	{
-		citationsCalendar = new Calendar();
-		citationsCalendar.setLocale( UI.getCurrent().getLocale() );
-		citationsCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
-		citationsCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
-		citationsCalendar.setTimeFormat( TimeFormat.Format24H );
-		citationsCalendar.setEventCaptionAsHtml( true );
-		citationsCalendar.setFirstVisibleHourOfDay( firstHour );
-		citationsCalendar.setLastVisibleHourOfDay( lastHour );
+		appointmentCalendar = new Calendar();
+		appointmentCalendar.setLocale( UI.getCurrent().getLocale() );
+		appointmentCalendar.setFirstDayOfWeek( java.util.Calendar.MONDAY );
+		appointmentCalendar.setWeeklyCaptionFormat( "dd/MM/yyyy" );
+		appointmentCalendar.setTimeFormat( TimeFormat.Format24H );
+		appointmentCalendar.setEventCaptionAsHtml( true );
+		appointmentCalendar.setFirstVisibleHourOfDay( firstHour );
+		appointmentCalendar.setLastVisibleHourOfDay( lastHour );
 		
 		//eventResource = new AppointmentEventResource( ctx, recurso );
-		eventProvider = new AppointmentEventProvider( ctx, recurso, citationsCalendar );
-		citationsCalendar.setEventProvider( eventProvider );
+		eventProvider = new AppointmentEventProvider( ctx, recurso, appointmentCalendar );
+		appointmentCalendar.setEventProvider( eventProvider );
 
 		periodPanel = new CalendarPeriodPanel( ctx , this);
 		addComponent( periodPanel );		
@@ -161,12 +166,12 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		settingHandlers();
 		settingInitWeek();
  		
-		citationsCalendar.setWidth( "100%" );
-		citationsCalendar.setHeight( calendarHeight+"px" );
+		appointmentCalendar.setWidth( "100%" );
+		appointmentCalendar.setHeight( calendarHeight+"px" );
 
 		Panel panel = new Panel();
 		panel.setSizeFull();
-		VerticalLayout content = new VerticalLayout( citationsCalendar );
+		VerticalLayout content = new VerticalLayout( appointmentCalendar );
 		content.setWidth( "100%" );
 		//content.setHeight( "100%" );
 		content.setMargin( new MarginInfo( false, true, false, false ) );
@@ -178,38 +183,38 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	
 	private void settingHandlers()
 	{
-		citationsCalendar.setHandler( (DateClickHandler)periodPanel );
-		citationsCalendar.setHandler( (WeekClickHandler)periodPanel );
-		citationsCalendar.setHandler( (ForwardHandler)periodPanel );
-		citationsCalendar.setHandler( (BackwardHandler)periodPanel );
-		citationsCalendar.setHandler( (EventClickHandler)this);
-		citationsCalendar.setHandler( (EventMoveHandler)null);
-		citationsCalendar.setHandler( (EventResizeHandler)null);
-		citationsCalendar.setHandler( (RangeSelectHandler)null);
+		appointmentCalendar.setHandler( (DateClickHandler)periodPanel );
+		appointmentCalendar.setHandler( (WeekClickHandler)periodPanel );
+		appointmentCalendar.setHandler( (ForwardHandler)periodPanel );
+		appointmentCalendar.setHandler( (BackwardHandler)periodPanel );
+		appointmentCalendar.setHandler( (EventClickHandler)this);
+		appointmentCalendar.setHandler( (EventMoveHandler)null);
+		appointmentCalendar.setHandler( (EventResizeHandler)null);
+		appointmentCalendar.setHandler( (RangeSelectHandler)null);
 	}
 	
 	private void settingInitWeek(){
-		periodPanel.dateClick( new DateClickEvent( citationsCalendar, new Date() ) );
+		periodPanel.dateClick( new DateClickEvent( appointmentCalendar, new Date() ) );
 	}
 
 	public void monthlyView(Date start, Date end){
-		citationsCalendar.setHeight( heightper );
+		appointmentCalendar.setHeight( heightper );
 		setDates( start, end );
 	}
 	
 	public void weeklyView(){
-		citationsCalendar.setHeight( calendarHeight+"px" );
+		appointmentCalendar.setHeight( calendarHeight+"px" );
 	}
 	
 	private void setDates(Date start, Date end){
-		citationsCalendar.setStartDate( start );
-		citationsCalendar.setEndDate( end );
+		appointmentCalendar.setStartDate( start );
+		appointmentCalendar.setEndDate( end );
 	}
 	
 	@Override
 	public void refreshVisibleContent()
 	{
-		citationsCalendar.markAsDirty();
+		//citationsCalendar.markAsDirty();
 	}
 
 	@Override
@@ -243,7 +248,25 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		dlg.showModalWindow();
 	}
 	
+	
+	
 	public void addNewOutOfCalendarAppointment(){
 		new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, new Date(), this, "administracion.citas", true ).showModalWindow();
+	}
+
+	@Override
+	public void doAction( Action action )
+	{
+		if (action instanceof UpdateAppointmentPatient) {
+			UpdateAppointmentPatient uap = (UpdateAppointmentPatient)action;
+			if (uap.getData().getId().equals( recurso.getId() )){
+				appointmentCalendar.markAsDirty();
+			}
+		}
+	}
+	
+	public void refreshCalendario()
+	{
+		appointmentCalendar.markAsDirty();
 	}
 }

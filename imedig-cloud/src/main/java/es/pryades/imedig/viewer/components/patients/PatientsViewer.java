@@ -31,6 +31,7 @@ import es.pryades.imedig.core.common.TableImedigPaged;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
 import es.pryades.imedig.viewer.actions.UpdateAppointmentPatient;
+import es.pryades.imedig.viewer.actions.UpdatePatient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -296,7 +297,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public void doAction( Action action )
 	{
-		if (action instanceof UpdateAppointmentPatient) {
+		if (action instanceof UpdateAppointmentPatient || action instanceof UpdatePatient) {
 			if (!action.getSource().equals( this )){
 				table.refreshVisibleContent();
 			}

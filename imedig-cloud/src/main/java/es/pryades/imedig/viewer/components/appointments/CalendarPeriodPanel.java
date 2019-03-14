@@ -267,7 +267,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 
 	private void diaryView()
 	{
-		dateClick(new DateClickEvent( viewer.citationsCalendar, dateFieldDay.getValue() ));
+		dateClick(new DateClickEvent( viewer.appointmentCalendar, dateFieldDay.getValue() ));
 	}
 
 
@@ -280,7 +280,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
 		
 		viewer.weeklyView();
-		weekClick( new WeekClick( viewer.citationsCalendar, lastWeek, lastYear ) );
+		weekClick( new WeekClick( viewer.appointmentCalendar, lastWeek, lastYear ) );
 	}
 
 
@@ -342,7 +342,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 		lastYear = calendar.get( Calendar.YEAR );
 		
 		optionView.setValue( PERIOD_WEEKLY );
-		basicWeekClickHandler.weekClick(new WeekClick( viewer.citationsCalendar, lastWeek, lastYear ) );
+		basicWeekClickHandler.weekClick(new WeekClick( viewer.appointmentCalendar, lastWeek, lastYear ) );
 		dateFieldDay.setValue( event.getDate() );
 	}
 
@@ -392,7 +392,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			calendar.add( Calendar.WEEK_OF_YEAR, amount );
 			lastYear = calendar.get( Calendar.YEAR);
 			lastWeek = calendar.get( Calendar.WEEK_OF_YEAR);
-			WeekClick weekEvent = new WeekClick( viewer.citationsCalendar, lastWeek, lastYear );
+			WeekClick weekEvent = new WeekClick( viewer.appointmentCalendar, lastWeek, lastYear );
 			weekClick( weekEvent );
 		}
 	}
