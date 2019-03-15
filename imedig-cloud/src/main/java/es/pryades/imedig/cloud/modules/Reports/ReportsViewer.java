@@ -131,6 +131,8 @@ public class ReportsViewer extends FilteredContent implements ModalParent, Prope
 		if (showMessage){
 			showNotification();
 		}
+		
+		ctx.addListener( this );
 	}
 	
 	@Override

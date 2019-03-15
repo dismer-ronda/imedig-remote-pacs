@@ -99,7 +99,7 @@ public abstract class FilteredContent extends VerticalLayout implements Property
 		{
 			rowQuery = new HorizontalLayout();
 			rowQuery.setSpacing( true );
-			rowQuery.setMargin( new MarginInfo( true, false, false, false ) );
+			rowQuery.setMargin( new MarginInfo( true, false, false, true ) );
 			//rowQuery.setWidth( "100%" );
 			rowQuery.addComponent( component );
 			rowQuery.addComponent( btnApply );

@@ -479,7 +479,9 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		
 		buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
 		buttonImages.setDescription( context.getString( "words.image.view" ) );
+		
 		setStyleButtonBar( buttonImages );
+		buttonImages.setVisible( false );
 		buttonImages.addClickListener( new Button.ClickListener()
 		{
 			private static final long serialVersionUID = 6196485721108489326L;
@@ -901,10 +903,12 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		}else if (action instanceof OpenStudies){
 			hasImage = true;
 			showImages();
+			buttonImages.setVisible( true );
 			if (fullScreen) btnImages.setVisible( true );
 		}else if (action instanceof QueryStudies){
 			hasImage = false;
 			showQueryStudies();
+			buttonImages.setVisible( false );
 			if (fullScreen) btnImages.setVisible( false );
 		}
 	}

@@ -91,6 +91,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 		addComponent( layoutCaption );
 		super.initComponents();
 		mainLayout.setMargin( true );
+		rowQuery.setMargin( new MarginInfo( true, false, false, false ) );
 	}
 	
 	public void showCaption(){
