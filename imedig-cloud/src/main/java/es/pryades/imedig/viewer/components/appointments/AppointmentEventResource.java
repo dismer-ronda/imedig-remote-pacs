@@ -297,6 +297,8 @@ public class AppointmentEventResource implements Serializable
 			
 			while(start.isBefore( wPlan.getEnd() )){
 				LocalTime end = start.plusMinutes( amount );
+				//Esto se pregunta por si llegó a las 00:00:00
+				if (end.isBefore( start )) end = wPlan.getEnd(); 
 				
 				if (isInsideTime( end, breakTime )){
 					end = breakTime.getStart();
