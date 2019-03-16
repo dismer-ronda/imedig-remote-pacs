@@ -13513,3 +13513,8 @@ div.v-layout.v-horizontal.v-widget {
 .v-calendar-week-wrapper .v-calendar-event[class*="old"] .v-calendar-event-content {
 	background-color: transparent;
 }
+
+.v-calendar-event-caption {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
