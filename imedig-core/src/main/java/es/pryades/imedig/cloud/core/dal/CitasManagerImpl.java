@@ -1,5 +1,6 @@
 package es.pryades.imedig.cloud.core.dal;
 
+import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -194,7 +195,9 @@ public class CitasManagerImpl extends ImedigCloudManagerImpl implements CitasMan
 		Usuario referidor = getUsuario( ctx, cita.getReferidor() );
 		TipoEstudio tipo = getTipoEstudio( ctx, cita.getTipo() );
 
-		String template = Utils.readFile( "/opt/imedig/conf/worklist.hl7" );
+		URL url = Thread.currentThread().getContextClassLoader().getResource( "worklist.hl7" );
+			
+		String template = Utils.readFile( url.getPath() );
 		
 		String hl7 = template.
 		replaceAll( "%CALLING_AE%", "IMEDIG_VIEWER" ).
@@ -218,7 +221,7 @@ public class CitasManagerImpl extends ImedigCloudManagerImpl implements CitasMan
 		replaceAll( "%EXECUTING_NAME%", recurso.getNombre() );
 		
 		String fileName = "/tmp/" + Utils.getUUID();
-		Utils.writeFile( fileName, hl7  );
+		Utils.writeFile( fileName, hl7, "ISO-8859-1" );
 		
 		LOG.info( "***************" );
 		LOG.info( hl7 );

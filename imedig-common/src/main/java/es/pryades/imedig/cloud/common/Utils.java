@@ -50,6 +50,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang3.SerializationUtils;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalTime;
@@ -2307,7 +2308,7 @@ public class Utils implements Serializable
 				if ( !content.isEmpty() )
 					content += "\n";
 
-				content += line;
+				content += new String( line.getBytes(),"UTF-8" );
 			}
 
 			bufferedReader.close();
@@ -2326,6 +2327,26 @@ public class Utils implements Serializable
 		try
 		{
 			FileWriter writer = new FileWriter( filename );
+
+			BufferedWriter bufferedWriter = new BufferedWriter( writer );
+
+			bufferedWriter.write( text );
+			// bufferedWriter.newLine();
+
+			bufferedWriter.close();
+		}
+		catch ( IOException e )
+		{
+			LOG.info( filename );
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeFile( String filename, String text, String encoding )
+	{
+		try
+		{
+			FileWriterWithEncoding writer = new FileWriterWithEncoding( filename, encoding );
 
 			BufferedWriter bufferedWriter = new BufferedWriter( writer );
 

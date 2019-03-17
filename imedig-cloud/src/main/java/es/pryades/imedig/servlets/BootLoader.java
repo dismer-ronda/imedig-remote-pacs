@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 
 import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.common.Utils;
-import es.pryades.imedig.core.common.LicenseManager;
 import es.pryades.imedig.core.common.Settings;
 import es.pryades.imedig.wado.query.QueryManager;
 import es.pryades.imedig.wado.resources.CacheManager;
@@ -68,9 +67,6 @@ public class BootLoader extends Thread implements Serializable
 			try 
 			{
 				Settings.Init();
-
-	        	if ( LicenseManager.LICENSE_ENABLED )
-					LicenseManager.Init();
 
 	        	CacheManager.Init();
 				QueryManager.Init();

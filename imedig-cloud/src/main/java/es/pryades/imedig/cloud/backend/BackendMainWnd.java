@@ -19,6 +19,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
@@ -54,6 +55,7 @@ import es.pryades.imedig.cloud.modules.Administration.AdministrationDlg;
 import es.pryades.imedig.cloud.modules.Configuration.ConfigurationDlg;
 import es.pryades.imedig.cloud.modules.Reports.ReportsViewer;
 import es.pryades.imedig.cloud.modules.Reports.ShowExternalUrlDlg;
+import es.pryades.imedig.core.common.LicenseManager;
 import es.pryades.imedig.core.common.ModalParent;
 import es.pryades.imedig.viewer.actions.ExitFullScreen;
 import es.pryades.imedig.viewer.actions.FullScreen;
@@ -451,75 +453,87 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
 		buttonsBar.addComponent( buttonManual );
 		
-		buttonPatients= new Button( context.getString( "words.patients" ) , FontIcoMoon.PATIENT);
-		buttonPatients.setDescription( context.getString( "words.patients.view" ) );
-		setStyleButtonBar( buttonPatients );
-		buttonPatients.addClickListener( new Button.ClickListener()
+		if ( LicenseManager.getInstance().hasBasicRights() )
 		{
-			private static final long serialVersionUID = 2267293731045479204L;
-
-			public void buttonClick( ClickEvent event )
+			buttonPatients= new Button( context.getString( "words.patients" ) , FontIcoMoon.PATIENT);
+			buttonPatients.setDescription( context.getString( "words.patients.view" ) );
+			setStyleButtonBar( buttonPatients );
+			buttonPatients.addClickListener( new Button.ClickListener()
 			{
-				showPatiens();
-			}
-		} );
+				private static final long serialVersionUID = 2267293731045479204L;
+	
+				public void buttonClick( ClickEvent event )
+				{
+					showPatiens();
+				}
+			} );
+
+			selectButtonsBar.addComponent( buttonPatients );
+		}
 		
-		buttonAppointments= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
-		buttonAppointments.setDescription( context.getString( "words.appointments.view" ) );
-		setStyleButtonBar( buttonAppointments );
-		buttonAppointments.addClickListener( new Button.ClickListener()
+		if ( LicenseManager.getInstance().hasCitationsRights() )
 		{
-			private static final long serialVersionUID = -9001228234723748388L;
-
-			public void buttonClick( ClickEvent event )
+			buttonAppointments= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
+			buttonAppointments.setDescription( context.getString( "words.appointments.view" ) );
+			setStyleButtonBar( buttonAppointments );
+			buttonAppointments.addClickListener( new Button.ClickListener()
 			{
-				showAppointments();
-			}
-		} );
+				private static final long serialVersionUID = -9001228234723748388L;
+	
+				public void buttonClick( ClickEvent event )
+				{
+					showAppointments();
+				}
+			} );
+			
+			selectButtonsBar.addComponent( buttonAppointments );
+		}
 		
-		buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
-		buttonImages.setDescription( context.getString( "words.image.view" ) );
-		
-		setStyleButtonBar( buttonImages );
-		buttonImages.setVisible( false );
-		buttonImages.addClickListener( new Button.ClickListener()
+		if ( LicenseManager.getInstance().hasBasicRights() )
 		{
-			private static final long serialVersionUID = 6196485721108489326L;
-
-			public void buttonClick( ClickEvent event )
+			buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
+			buttonImages.setDescription( context.getString( "words.image.view" ) );
+			
+			setStyleButtonBar( buttonImages );
+			buttonImages.setVisible( false );
+			buttonImages.addClickListener( new Button.ClickListener()
 			{
-				showImages();
-			}
-		} );
-		
-		
-		buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
-		buttonReports.setDescription( context.getString( "words.reports" ) );
-		setStyleButtonBar( buttonReports );
-		buttonReports.addClickListener( new Button.ClickListener()
-		{
-			private static final long serialVersionUID = 3827413316030851767L;
+				private static final long serialVersionUID = 6196485721108489326L;
+	
+				public void buttonClick( ClickEvent event )
+				{
+					showImages();
+				}
+			} );
 
-			public void buttonClick( ClickEvent event )
+			buttonReports = new Button( context.getString( "words.reports" ) , FontAwesome.FILE_TEXT);
+			buttonReports.setDescription( context.getString( "words.reports" ) );
+			setStyleButtonBar( buttonReports );
+			buttonReports.addClickListener( new Button.ClickListener()
 			{
-				showReports();
-			}
-		} );
+				private static final long serialVersionUID = 3827413316030851767L;
+	
+				public void buttonClick( ClickEvent event )
+				{
+					showReports();
+				}
+			} );
 		
-		buttonStudies = new Button( context.getString( "words.studies" ) , FontAwesome.SEARCH);
-		buttonStudies.setDescription( context.getString( "words.studies" ) );
-		setStyleButtonBar( buttonStudies );
-		buttonStudies.addClickListener( new Button.ClickListener()
-		{
-			private static final long serialVersionUID = 3827413316030851767L;
-
-			public void buttonClick( ClickEvent event )
+			buttonStudies = new Button( context.getString( "words.studies" ) , FontAwesome.SEARCH);
+			buttonStudies.setDescription( context.getString( "words.studies" ) );
+			setStyleButtonBar( buttonStudies );
+			buttonStudies.addClickListener( new Button.ClickListener()
 			{
-				showQueryStudies();
-			}
-		} );
+				private static final long serialVersionUID = 3827413316030851767L;
+	
+				public void buttonClick( ClickEvent event )
+				{
+					showQueryStudies();
+				}
+			} );
 
-		selectButtonsBar.addComponents( buttonPatients, buttonAppointments, buttonStudies, buttonImages, buttonReports );
+			selectButtonsBar.addComponents( buttonStudies, buttonImages, buttonReports );
+		}
 
 		if ( getContext().hasRight( AUTH_CONFIGURACION ) )
 		{
@@ -746,6 +760,9 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private void showMainApp()
 	{
+		if ( !LicenseManager.getInstance().isValid() )
+			Notification.show( getContext().getString( "error.license" ), Notification.Type.ERROR_MESSAGE );
+		
 		try
 		{
 			showLogoLayout();

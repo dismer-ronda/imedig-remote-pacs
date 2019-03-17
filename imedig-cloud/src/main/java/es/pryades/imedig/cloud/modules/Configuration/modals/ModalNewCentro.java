@@ -9,7 +9,6 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 import es.pryades.imedig.cloud.common.ImedigException;
@@ -27,6 +26,7 @@ import es.pryades.imedig.cloud.dto.Moneda;
 import es.pryades.imedig.cloud.dto.query.ImagenQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD;
+import es.pryades.imedig.core.common.LicenseManager;
 import es.pryades.imedig.core.common.ModalParent;
 
 /**
@@ -44,9 +44,9 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 
 	private TextField editCentroNombre;
 	private TextField editCentroDescripcion;
-	private TextArea editCentroDireccion;
-	private TextArea editCentroContactos;
-	private TextField editCentroCoordenadas;
+	private TextField editCentroDireccion;
+//	private TextArea editCentroContactos;
+//	private TextField editCentroCoordenadas;
 	private ComboBox comboBoxCentroImagen;
 	private TextField editCentroOrden;
 	private ComboBox comboBoxCentroHorario;
@@ -75,10 +75,15 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 		try
 		{
 			newCentro = (DetalleCentro) Utils.clone( (DetalleCentro) orgDto );
+			
+			if ( newCentro.getDireccion().isEmpty() )
+				newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );
 		}
 		catch ( Throwable e1 )
 		{
 			newCentro = new DetalleCentro();
+			
+			newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );
 		}
 
 		bi = new BeanItem<ImedigDto>( newCentro );
@@ -91,19 +96,18 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 		editCentroDescripcion.setWidth( "100%" );
 		editCentroDescripcion.setNullRepresentation( "" );
 
-		editCentroDireccion = new TextArea( getContext().getString( "modalNewCenter.lbCentroDireccion" ), bi.getItemProperty( "direccion" ) );
+		editCentroDireccion = new TextField( getContext().getString( "modalNewCenter.lbCentroDireccion" ), bi.getItemProperty( "direccion" ) );
 		editCentroDireccion.setWidth( "100%" );
-		editCentroDireccion.setRows( 3 );
 		editCentroDireccion.setNullRepresentation( "" );
 
-		editCentroContactos = new TextArea( getContext().getString( "modalNewCenter.lbCentroContactos" ), bi.getItemProperty( "contactos" ) );
+		/*editCentroContactos = new TextArea( getContext().getString( "modalNewCenter.lbCentroContactos" ), bi.getItemProperty( "contactos" ) );
 		editCentroContactos.setWidth( "100%" );
 		editCentroContactos.setRows( 3 );
 		editCentroContactos.setNullRepresentation( "" );
 
 		editCentroCoordenadas = new TextField( getContext().getString( "modalNewCenter.lbCentroCoordenadas" ), bi.getItemProperty( "coordenadas" ) );
 		editCentroCoordenadas.setWidth( "100%" );
-		editCentroCoordenadas.setNullRepresentation( "" );
+		editCentroCoordenadas.setNullRepresentation( "" );*/
 
 		comboBoxCentroImagen = new ComboBox(getContext().getString( "modalNewCenter.lbCentroImagen" ));
 		comboBoxCentroImagen.setWidth( "100%" );
@@ -134,10 +138,10 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 
 		fillComboBoxes();
 
-		FormLayout left = new FormLayout(editCentroSerie, editCentroNombre, comboBoxCentroImagen, comboBoxCentroHorario, editCentroDireccion);
+		FormLayout left = new FormLayout(editCentroSerie, editCentroNombre, comboBoxCentroImagen, comboBoxCentroHorario/*, editCentroDireccion*/);
 		left.setMargin( false );
 		
-		FormLayout right = new FormLayout(editCentroOrden, editCentroDescripcion, editCentroCoordenadas, comboBoxCentroMoneda, editCentroContactos);
+		FormLayout right = new FormLayout(editCentroOrden, editCentroDescripcion, /*editCentroCoordenadas,*/ comboBoxCentroMoneda/*, editCentroContactos*/);
 		right.setMargin( false );
 		HorizontalLayout top = new HorizontalLayout( left, right );
 		top.setWidth( "100%" );
@@ -149,13 +153,14 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 		editCentroNombre.setTabIndex( index++ );
 		editCentroDescripcion.setTabIndex( index++ );
 		comboBoxCentroImagen.setTabIndex( index++ );
-		editCentroCoordenadas.setTabIndex( index++ );
+		//editCentroCoordenadas.setTabIndex( index++ );
 		comboBoxCentroHorario.setTabIndex( index++ );
 		comboBoxCentroMoneda.setTabIndex( index++ );
 		editCentroDireccion.setTabIndex( index++ );
-		editCentroContactos.setTabIndex( index++ );
+		//editCentroContactos.setTabIndex( index++ );
 
 		componentsContainer.addComponent( top );
+		componentsContainer.addComponent( editCentroDireccion );
 	}
 
 	@Override
@@ -198,6 +203,8 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 			CentrosManager centroMan = (CentrosManager) IOCManager.getInstanceOf( CentrosManager.class );
 
 			centroMan.setRow( context, (DetalleCentro) orgDto, newCentro );
+			
+			LicenseManager.getInstance().setLicenseCode( newCentro.getDireccion() );
 
 			return true;
 		}

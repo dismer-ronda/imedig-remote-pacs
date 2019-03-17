@@ -11,8 +11,12 @@ import org.apache.velocity.app.Velocity;
 import com.vaadin.server.VaadinServlet;
 
 import es.pryades.imedig.cloud.common.Settings;
+import es.pryades.imedig.cloud.core.dal.CentrosManager;
 import es.pryades.imedig.cloud.core.dal.ibatis.ClientDalManager;
+import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Centro;
 import es.pryades.imedig.cloud.ioc.IOCManager;
+import es.pryades.imedig.core.common.LicenseManager;
 import es.pryades.imedig.pacs.dal.ibatis.PacsDalManager;
 
 public class BackendServlet extends VaadinServlet
@@ -30,14 +34,24 @@ public class BackendServlet extends VaadinServlet
 
 			IOCManager.Init();
 
+        	if ( LicenseManager.LICENSE_ENABLED )
+				LicenseManager.Init();
+
 			ClientDalManager.Init( Settings.DB_engine, Settings.DB_driver, Settings.DB_url, Settings.DB_user, Settings.DB_password );
 			PacsDalManager.Init( Settings.PACS_DB_driver, Settings.PACS_DB_url, Settings.PACS_DB_user, Settings.PACS_DB_password );
 
 			Properties p = new Properties();
 			p.setProperty( "runtime.log.logsystem.class", "org.apache.velocity.runtime.log.NullLogSystem" );
 			Velocity.init( p );
+			
+			ImedigContext ctx = new ImedigContext();
+
+			CentrosManager centrosManager = (CentrosManager)IOCManager.getInstanceOf( CentrosManager.class );
+			Centro centro = (Centro)centrosManager.getRow( ctx, 1 );
+			
+			LicenseManager.getInstance().setLicenseCode( centro.getDireccion() );
 		}
-		catch ( Exception e )
+		catch ( Throwable e )
 		{
 			e.printStackTrace();
 		}
