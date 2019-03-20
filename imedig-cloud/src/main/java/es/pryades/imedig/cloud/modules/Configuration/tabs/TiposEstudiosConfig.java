@@ -70,19 +70,19 @@ public class TiposEstudiosConfig extends FilteredContentCloseable implements Mod
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_MODIFY, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_MODIFY, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios.modificar" ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_ADD, null, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_ADD, null, TiposEstudiosConfig.this, "configuracion.tipos.estudios.adicionar" ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_DELETE, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_DELETE, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios.borrar" ).showModalWindow();
 	}
 
 	@Override

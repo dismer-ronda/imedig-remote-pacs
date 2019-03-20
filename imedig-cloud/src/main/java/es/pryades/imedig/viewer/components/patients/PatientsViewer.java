@@ -128,8 +128,8 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( false );
+		setEnabledModify( row != null && getContext().hasRight( "configuracion.pacientes.modificar" ));
+		setEnabledDelete( row != null && getContext().hasRight( "configuracion.pacientes.borrar" ) );
 	}
 
 	@Override
@@ -154,12 +154,12 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewPaciente( context, Operation.OP_MODIFY, (Paciente)row, this, "configuracion.pacientes" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_MODIFY, (Paciente)row, this, "configuracion.pacientes.modificar" ).showModalWindow();
 	}
 
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewPaciente( context, Operation.OP_DELETE, (Paciente)row, this, "configuracion.pacientes" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_DELETE, (Paciente)row, this, "configuracion.pacientes.borrar" ).showModalWindow();
 	}
 	
 	public void setDateFilter( InformeQuery queryObj )
@@ -259,7 +259,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewPaciente( context, Operation.OP_ADD, null, this, "configuracion.pacientes" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_ADD, null, this, "configuracion.pacientes.adicionar" ).showModalWindow();
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight( "configuracion.pacientes.borrar" );
 	}
 
 	@Override

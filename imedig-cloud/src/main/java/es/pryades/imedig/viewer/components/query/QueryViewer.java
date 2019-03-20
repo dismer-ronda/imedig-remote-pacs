@@ -435,6 +435,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			@Override
 			public void buttonClick( ClickEvent event ){
 				context.sendAction( new OpenStudies( this, getSeletedStudies() ) );
+				clearSeletedStudies();
 			}
 		} );
 
@@ -776,10 +777,19 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 				continue;
 
 			result.add( item.getStudy().getStudyInstanceUID() );
-			item.getSelected().setValue( false );
+			//item.getSelected().setValue( false );
 		}
 
 		return result;
+	}
+	
+	private void clearSeletedStudies(){
+		for ( QueryTableItem item : container.getItemIds() ){
+			if ( !item.getSelected().getValue() )
+				continue;
+
+			item.getSelected().setValue( false );
+		}
 	}
 
 	

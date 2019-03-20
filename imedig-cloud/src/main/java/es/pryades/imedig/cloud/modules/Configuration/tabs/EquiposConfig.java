@@ -73,19 +73,19 @@ public class EquiposConfig extends FilteredContentCloseable implements ModalPare
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewEquipo( context, Operation.OP_MODIFY, (Recurso)row, EquiposConfig.this, "configuracion.recursos" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_MODIFY, (Recurso)row, EquiposConfig.this, "configuracion.recursos.modificar" ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewEquipo( context, Operation.OP_ADD, null, EquiposConfig.this, "configuracion.recursos" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_ADD, null, EquiposConfig.this, "configuracion.recursos.adicionar" ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewEquipo( context, Operation.OP_DELETE, (Recurso)row, EquiposConfig.this, "configuracion.recursos" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_DELETE, (Recurso)row, EquiposConfig.this, "configuracion.recursos.borrar" ).showModalWindow();
 	}
 
 	@Override

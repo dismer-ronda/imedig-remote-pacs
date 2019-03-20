@@ -76,7 +76,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 	private DateField dateFieldFecha;
 	private ComboBox timeInicio;
 	private ComboBox comboBoxDuracion;
-	private ComboBox comboBoxEstado;
+	//private ComboBox comboBoxEstado;
 	private List<Integer> duracion;
 	
 	private PacienteLazyProvider pacienteLazyProvider;
@@ -185,9 +185,12 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
-				new PacienteAppointmentDlg( context, Operation.OP_ADD, null, ModalAppointmentDlg.this, "configuracion.pacientes" ).showModalWindow();
+				new PacienteAppointmentDlg( context, Operation.OP_ADD, null, ModalAppointmentDlg.this, "configuracion.pacientes.adicionar" ).showModalWindow();
 			}
 		} );
+		
+		if (!getContext().hasRight( "configuracion.pacientes.adicionar" )) 
+			selectPaciente.getButtonAdd().setEnabled( false );
 
 		if (recurso == null){
 			comboRecurso = new ComboBox( getString( "modalAppointmentDlg.lbRecurso.equipo" ));
@@ -333,17 +336,17 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		layoutTime.setCaption( getString( "modalAppointmentDlg.lbHoraInicio" ) );
 		layoutTime.setSpacing( true );
 
-		comboBoxEstado = new ComboBox( getString( "modalAppointmentDlg.lbEstado" ) );
-		comboBoxEstado.setNullSelectionAllowed( false );
-		comboBoxEstado.setNewItemsAllowed( false );
-		fillEstados( comboBoxEstado );
-		comboBoxEstado.setPropertyDataSource( bi.getItemProperty( "estado" ) );
-		if ( orgDto == null || !Utils.isToday(vo.getFecha()))
-		{
-			comboBoxEstado.setVisible( false );
-		}
+//		comboBoxEstado = new ComboBox( getString( "modalAppointmentDlg.lbEstado" ) );
+//		comboBoxEstado.setNullSelectionAllowed( false );
+//		comboBoxEstado.setNewItemsAllowed( false );
+//		fillEstados( comboBoxEstado );
+//		comboBoxEstado.setPropertyDataSource( bi.getItemProperty( "estado" ) );
+//		if ( orgDto == null || !Utils.isToday(vo.getFecha()))
+//		{
+//			comboBoxEstado.setVisible( false );
+//		}
 		
-		FormLayout layout = new FormLayout( selectPaciente, comboRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime, comboBoxEstado);
+		FormLayout layout = new FormLayout( selectPaciente, comboRecurso, selectReferidor, comboTipo, dateFieldFecha, layoutTime);
 		layout.setMargin( true );
 		layout.setSpacing( true );
 		layout.setWidth( "100%" );
@@ -364,9 +367,9 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 					bttnCancelar.setCaption( getString( "words.close" ) );
 				}
 				readOnlyAll();
-				if (newCita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING){
-					comboBoxEstado.setReadOnly( false );
-				}
+//				if (newCita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING){
+//					comboBoxEstado.setReadOnly( false );
+//				}
 			}
 		}
 		
@@ -457,7 +460,7 @@ public class ModalAppointmentDlg extends ModalWindowsCRUD implements ModalParent
 		dateFieldFecha.setReadOnly( true );
 		timeInicio.setReadOnly( true );
 		comboBoxDuracion.setReadOnly( true );
-		comboBoxEstado.setReadOnly( true );
+		//comboBoxEstado.setReadOnly( true );
 	}
 
 	private void fillEstados( ComboBox comboBox )

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -258,7 +257,8 @@ public class PacienteControlerVto extends GenericControlerVto
 		for ( Cita cita : citas )
 		{
 			Button btn = new Button( buidCaption( cita ) );
-			btn.addClickListener( clickListener );
+			if (getContext().hasRight( "administracion.citas.modificar")) btn.addClickListener( clickListener );
+			
 			btn.setData( cita );
 			btn.addStyleName( "citation" );
 			btn.addStyleName( ValoTheme.BUTTON_TINY );
@@ -266,13 +266,12 @@ public class PacienteControlerVto extends GenericControlerVto
 			layout.addComponent( btn );
 		}
 		
-		Button btn = new Button( FontAwesome.PLUS );
-		btn.setData( paciente );
-		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
-		btn.addStyleName( ValoTheme.BUTTON_TINY );
-		btn.addStyleName( "action" );
-		btn.addClickListener( getCitaClickListener() );
-		//layout.addComponent( btn );
+//		Button btn = new Button( FontAwesome.PLUS );
+//		btn.setData( paciente );
+//		btn.addStyleName( ValoTheme.BUTTON_ICON_ONLY );
+//		btn.addStyleName( ValoTheme.BUTTON_TINY );
+//		btn.addStyleName( "action" );
+		
 		return layout;
 	}
 	
@@ -288,7 +287,7 @@ public class PacienteControlerVto extends GenericControlerVto
 				Cita cita = (Cita)event.getButton().getData();
 				Recurso recurso = getRecurso( cita.getRecurso() );
 				
-				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_MODIFY, recurso, cita, null, "administracion.citas" );
+				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_MODIFY, recurso, cita, null, "administracion.citas.modificar" );
 				dlg.showModalWindow();
 			}
 		};
@@ -303,7 +302,7 @@ public class PacienteControlerVto extends GenericControlerVto
 			@Override
 			public void buttonClick( ClickEvent event )
 			{
-				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_ADD, null, new Date(), null, "administracion.citas" );
+				ModalAppointmentDlg dlg = new ModalAppointmentDlg( getContext(), Operation.OP_ADD, null, new Date(), null, "administracion.citas.adicionar" );
 				dlg.setPaciente( (Paciente)event.getButton().getData() );
 				dlg.showModalWindow();
 			}

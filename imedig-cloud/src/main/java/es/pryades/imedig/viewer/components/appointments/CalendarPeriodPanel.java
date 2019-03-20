@@ -146,6 +146,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			}
 		} );
 		
+		if (!ctx.hasRight( "administracion.citas.adicionar" )) buttonAddEvent.setEnabled( false );
 	}
 
 	private void buildMonthlyComponents()

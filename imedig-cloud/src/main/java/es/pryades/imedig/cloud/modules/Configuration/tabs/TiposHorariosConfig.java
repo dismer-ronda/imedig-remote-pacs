@@ -70,19 +70,19 @@ public class TiposHorariosConfig extends FilteredContentCloseable implements Mod
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewTipoHorario( context, Operation.OP_MODIFY, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_MODIFY, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios.modificar" ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewTipoHorario( context, Operation.OP_ADD, null, TiposHorariosConfig.this, "configuracion.tipos.horarios" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_ADD, null, TiposHorariosConfig.this, "configuracion.tipos.horarios.adicionar" ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewTipoHorario( context, Operation.OP_DELETE, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_DELETE, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios.borrar" ).showModalWindow();
 	}
 
 	@Override

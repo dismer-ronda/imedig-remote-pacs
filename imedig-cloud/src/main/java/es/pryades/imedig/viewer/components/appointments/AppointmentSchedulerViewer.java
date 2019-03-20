@@ -1,10 +1,13 @@
 package es.pryades.imedig.viewer.components.appointments;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
+import org.vaadin.dialogs.ConfirmDialog;
 
 import com.github.wolfie.refresher.Refresher;
 import com.github.wolfie.refresher.Refresher.RefreshListener;
@@ -29,14 +32,18 @@ import com.vaadin.ui.components.calendar.event.CalendarEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.themes.ValoTheme;
 
+import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.action.Action;
 import es.pryades.imedig.cloud.core.action.ListenerAction;
+import es.pryades.imedig.cloud.core.dal.CitasManager;
 import es.pryades.imedig.cloud.core.dal.TipoHorarioManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.cloud.dto.Cita;
 import es.pryades.imedig.cloud.dto.PlanificacionHorario;
 import es.pryades.imedig.cloud.dto.Recurso;
 import es.pryades.imedig.cloud.dto.TipoHorario;
+import es.pryades.imedig.cloud.dto.query.CitaQuery;
 import es.pryades.imedig.cloud.ioc.IOCManager;
 import es.pryades.imedig.cloud.modules.components.ModalWindowsCRUD.Operation;
 import es.pryades.imedig.core.common.ModalParent;
@@ -45,6 +52,7 @@ import lombok.Getter;
 
 public class AppointmentSchedulerViewer extends VerticalLayout implements ModalParent, EventClickHandler, ListenerAction
 {
+	private static final Logger LOG = Logger.getLogger( AppointmentSchedulerViewer.class );
 	
 	private static final long serialVersionUID = 1683377378764769059L;
 
@@ -66,6 +74,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 	
 	private Refresher refresher; 
 	
+	private CitasManager manager;
+	
 	public AppointmentSchedulerViewer( ImedigContext ctx, Recurso recurso)
 	{
 		this.ctx = ctx;
@@ -77,6 +87,8 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		setSizeFull();
 		setMargin( true );
 		buildComponents();
+
+		manager = (CitasManager)IOCManager.getInstanceOf( CitasManager.class );
 		
 		refresher = new Refresher();
 		refresher.addListener( new RefreshListener()
@@ -223,11 +235,13 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		CalendarEvent e = event.getCalendarEvent();
 		Date today = new Date();
 		
+		if (!hasAllAccess()) return;
+		
 		if (e instanceof OldEvent){
 			return;
 		}
 		
-		if (e instanceof FreeEvent && today.after( e.getStart() )){
+		if (e instanceof FreeEvent && today.after( e.getStart()) && ctx.hasRight( "administracion.citas.adicionar" )){
 			Notification.show( ctx.getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
 			return;
 		}
@@ -238,21 +252,131 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		
 		//Operation operation = citationEvent.getData() == null ? Operation.OP_ADD : Operation.OP_MODIFY;
 		
-		ModalAppointmentDlg dlg = null;
-		if (e instanceof FreeEvent){
-			dlg = new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, e.getStart(), this, "administracion.citas" );
-		}else if (e instanceof AppointmentEvent){
-			dlg = new ModalAppointmentDlg( ctx, Operation.OP_MODIFY, recurso, ((AppointmentEvent)e).getData(), this, "administracion.citas" );
+		if (e instanceof FreeEvent && ctx.hasRight( "administracion.citas.adicionar" )){
+			new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, e.getStart(), this, "administracion.citas.adicionar" ).showModalWindow();;
+		}else if (e instanceof AppointmentEvent && hasAllAccess()){
+			verifyAppointmentEvent(((AppointmentEvent)e).getData());
 		}
-		dlg.showModalWindow();
 	}
 	
-	
-	
-	public void addNewOutOfCalendarAppointment(){
-		new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, new Date(), this, "administracion.citas", true ).showModalWindow();
+	private boolean hasAllAccess(){
+		return ctx.hasRight( "administracion.citas.adicionar" ) ||
+				ctx.hasRight( "administracion.citas.modificar" ) ||
+				ctx.hasRight( "administracion.citas.borrar" );
 	}
 
+	private boolean hasAccessToModify(){
+		return ctx.hasRight( "administracion.citas.modificar" ) ||
+			   ctx.hasRight( "administracion.citas.borrar" );
+	}
+
+	private void verifyAppointmentEvent( Cita cita )
+	{
+		if (cita.getEstado() == Constants.APPOINTMENT_STATUS_EXECUTING){
+			finishAppointment(cita);
+		} else if (cita.getEstado() == Constants.APPOINTMENT_STATUS_PLANING){
+			if (Utils.isToday( Utils.getDateHourFromLong(cita.getFecha() ) ))
+				verifyAppointmentToday(cita);
+			else
+				modifyAppointment(cita);
+		}
+	}
+
+	private void finishAppointment( final Cita cita )
+	{
+		ConfirmDialog.show( UI.getCurrent(), ctx.getString( "modalAppointmentDlg.confirm.appointment.finish" ), new ConfirmDialog.Listener()
+		{
+			private static final long serialVersionUID = -6296511902240116944L;
+
+			public void onClose( ConfirmDialog dialog )
+			{
+				if ( !dialog.isConfirmed() ) return;
+				
+				Cita newCita = Utils.clone2( cita );
+				newCita.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
+				
+				try
+				{
+					updateAppointment( cita, newCita, false );
+					appointmentCalendar.markAsDirty();
+				}
+				catch ( Throwable e )
+				{
+					LOG.error( "Error finalizando cita", e );
+					Notification.show( ctx.getString( "modalAppointmentDlg.error.finish" ), Notification.Type.ERROR_MESSAGE );;
+				}
+			}
+		} );
+		
+	}
+	
+	private void verifyAppointmentToday( final Cita cita )
+	{
+		ConfirmDialog.show( UI.getCurrent(), ctx.getString( "modalAppointmentDlg.confirm.appointment.worklist" ), new ConfirmDialog.Listener()
+		{
+			private static final long serialVersionUID = -9006139714904606392L;
+
+			public void onClose( ConfirmDialog dialog )
+			{
+				if ( !dialog.isConfirmed() ) {
+					modifyAppointment( cita );
+					return;
+				};
+				
+				Cita newCita = Utils.clone2( cita );
+				newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
+				
+				try
+				{
+					updateAppointment( cita, newCita, true );
+					manager.transferAppointmentWorklist( ctx, newCita, recurso );
+					appointmentCalendar.markAsDirty();
+				}
+				catch ( Throwable e )
+				{
+					LOG.error( "Error modificando cita", e );
+					Notification.show( ctx.getString( "modalAppointmentDlg.error.modifying" ), Notification.Type.ERROR_MESSAGE );;
+				}
+			}
+		} );
+		
+	}
+
+	private void modifyAppointment( Cita cita )
+	{
+		new ModalAppointmentDlg( ctx, Operation.OP_MODIFY, recurso, cita, this, "administracion.citas.modificar" ).showModalWindow();
+	}
+
+
+	public void addNewOutOfCalendarAppointment(){
+		new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, new Date(), this, "administracion.citas.adicionar", true ).showModalWindow();
+	}
+	
+	private void updateAppointment(Cita old, Cita newrow, boolean finalizar) throws Throwable{
+		manager.setRow( ctx, old, newrow );
+		
+		if (finalizar) finalizarCitasPreviasEnEjecucion(newrow);
+		
+		ctx.sendAction( new UpdateAppointmentPatient( this, recurso ) );
+	}
+
+	private void finalizarCitasPreviasEnEjecucion(Cita newCita) throws Throwable
+	{
+		CitaQuery query = new CitaQuery();
+		query.setRecurso( recurso.getId() );
+		query.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
+		List<Cita> citas = manager.getRows( ctx, query );
+		for ( Cita cita : citas )
+		{
+			if ( cita.getId().equals( newCita.getId() ) )
+				continue;
+
+			Cita c = Utils.clone2( cita );
+			c.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
+			manager.setRow( ctx, cita, c );
+		}
+	}
+	
 	@Override
 	public void doAction( Action action )
 	{
