@@ -90,18 +90,22 @@ insert into susc_derechos (id, codigo, descripcion) values (25, 'configuracion.t
 insert into susc_derechos (id, codigo, descripcion) values (26, 'configuracion.tipos.estudios.adicionar','Adicionar tipo de estudios');
 insert into susc_derechos (id, codigo, descripcion) values (27, 'configuracion.tipos.estudios.modificar','Modificar tipo de estudios');
 insert into susc_derechos (id, codigo, descripcion) values (28, 'configuracion.tipos.estudios.borrar','Borrar tipo de estudios');
+
 insert into susc_derechos (id, codigo, descripcion) values (29, 'configuracion.recursos','Mantenimiento de catálogos de recursos');
 insert into susc_derechos (id, codigo, descripcion) values (30, 'configuracion.recursos.adicionar','Adicionar recurso');
 insert into susc_derechos (id, codigo, descripcion) values (31, 'configuracion.recursos.modificar','Modificar recurso');
 insert into susc_derechos (id, codigo, descripcion) values (32, 'configuracion.recursos.borrar','Borrar recurso');
+
 insert into susc_derechos (id, codigo, descripcion) values (33, 'configuracion.pacientes','Mantenimiento a pacientes');
 insert into susc_derechos (id, codigo, descripcion) values (34, 'configuracion.pacientes.adicionar','Adicionar paciente');
 insert into susc_derechos (id, codigo, descripcion) values (35, 'configuracion.pacientes.modificar','Modificar paciente');
 insert into susc_derechos (id, codigo, descripcion) values (36, 'configuracion.pacientes.borrar','Borrar paciente');
+
 insert into susc_derechos (id, codigo, descripcion) values (37, 'administracion.citas','Mantenimiento de citas');
 insert into susc_derechos (id, codigo, descripcion) values (38, 'administracion.citas.adicionar','Adicionar cita');
 insert into susc_derechos (id, codigo, descripcion) values (39, 'administracion.citas.modificar','Modificar cita');
 insert into susc_derechos (id, codigo, descripcion) values (40, 'administracion.citas.borrar','Borrar cita');
+
 insert into susc_derechos (id, codigo, descripcion) values (41, 'configuracion.tipos.horarios','Configuracion de tipos de horarios');
 insert into susc_derechos (id, codigo, descripcion) values (42, 'configuracion.tipos.horarios.adicionar','Adicionar tipo de horario');
 insert into susc_derechos (id, codigo, descripcion) values (43, 'configuracion.tipos.horarios.modificar','Modificar tipo de horario');
@@ -135,63 +139,62 @@ insert into susc_perfiles_derechos (perfil, derecho) values (1, 42);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 43);
 insert into susc_perfiles_derechos (perfil, derecho) values (1, 44);
 
---Perfil Médico:
+--Perfil Administrador de centros: todos los derechos
 --tipo de estudios
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 25);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 26);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 27);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 28);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 25);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 26);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 27);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 28);
 --configuracion de recursos
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 29);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 30);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 31);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 32);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 29);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 30);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 31);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 32);
 --pacientes
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 33);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 34);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 35);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 33);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 34);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 35);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 36);
+--citas
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 37);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 38);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 39);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 40);
+--tipos de horarios
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 41);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 42);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 43);
+insert into susc_perfiles_derechos (perfil, derecho) values (4, 44);
+
+--Perfil Médico:
 --citas
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 37);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 38);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 39);
 insert into susc_perfiles_derechos (perfil, derecho) values (2, 40);
---tipos de horarios
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 41);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 42);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 43);
-insert into susc_perfiles_derechos (perfil, derecho) values (2, 44);
 
 --Perfil Imagenólogo:
---tipo de estudios
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 25);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 26);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 27);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 28);
---configuracion de recursos
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 29);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 30);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 31);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 32);
---pacientes
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 33);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 34);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 35);
 --citas
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 37);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 38);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 39);
 insert into susc_perfiles_derechos (perfil, derecho) values (3, 40);
---tipos de horarios
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 41);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 42);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 43);
-insert into susc_perfiles_derechos (perfil, derecho) values (3, 44);
-
 
 --Perfil Estudiante:
 --pacientes
 insert into susc_perfiles_derechos (perfil, derecho) values (5, 33);
 --citas
 insert into susc_perfiles_derechos (perfil, derecho) values (5, 37);
+
+--Perfil administrativo:
+--pacientes
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 33);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 34);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 35);
+--citas
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 37);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 38);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 39);
+insert into susc_perfiles_derechos (perfil, derecho) values (6, 40);
 
 
