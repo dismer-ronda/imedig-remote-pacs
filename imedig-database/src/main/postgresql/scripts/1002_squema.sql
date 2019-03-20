@@ -205,6 +205,89 @@ create table susc_informes_imagenes (
     constraint pk_informes_imagenes primary key(id),
     constraint fk_informes_imagenes_informe foreign key (informe) references susc_informes(id)
     ); 
+    
+-- paciente 
+create table susc_pacientes (
+    id integer not null,
+    uid varchar(64) not null,    					-- identificador unico
+    email varchar(128),    							-- email al que se envian notificaciones
+    nombre varchar(50) not null,   				    -- nombre del paciente
+    apellido1 varchar(50) not null,   				-- primer apellido del paciente
+    apellido2 varchar(50),   						-- segundo apellido del paciente
+	fecha_nacimiento integer not null,				-- fecha de nacimiento
+	sexo varchar(1) not null,						-- sexo 
+	telefono varchar(20),							-- telefono del paciente
+	movil varchar(20),								-- numero del movil del paciente
+	
+    constraint pk_pacientes primary key(id),
+	constraint uk_pacientes_uid unique(uid),
+	constraint uk_pacientes_email unique(email)
+    );
+create index ix_pacientes_uid on susc_pacientes(uid);
+create index ix_pacientes_email on susc_pacientes(email);
+create index ix_pacientes_sexo on susc_pacientes(sexo);
+
+-- tipos de horarios
+create table susc_tipos_horarios (
+    id integer not null,
+    nombre varchar(64) not null,            -- Nombre del tipo de horario
+    tipo_recurso integer NOT NULL,          -- Tipo de recurso 1 - equipo...
+    tipo_horario integer NOT NULL,          -- Tipo de horario 0 - todos los dias iguales, 1-Horario comun de Lunes a Viernes, Shorario para sabdo  y domingo
+    datos text,                             -- JSON con el horario de trabajo según el tipo de horario seleccionado y el tipo de recurso
+
+    constraint pk_tipos_horarios primary key(id),
+    constraint uk_tipos_horarios_nombre unique(nombre)
+    );
+
+-- recursos:
+create table susc_recursos (
+    id integer not null,
+    nombre varchar(64) not null,                  -- Nombre del recurso
+    aetitle varchar(64) not null,                 -- Aetitle
+    modalidad character varying(2),
+    tipo integer NOT NULL,                        -- Tipo de recurso 1 - equipo...
+    tiempominimo integer NOT NULL,                -- Tiempo m inimo de demora de una consulta
+    tipo_horario integer,                         -- referencia al tipo de horario de trabajo que se aplica
+
+    constraint pk_recursos primary key(id),
+    constraint uk_recursos_aetitle unique(aetitle),
+    constraint uk_recursos_nombre unique(nombre),
+
+    constraint fk_recursos_tipo_horario foreign key (tipo_horario) references susc_tipos_horarios(id) on delete cascade
+    );
+create index ix_recursos_modalidad on susc_recursos(modalidad);
+
+-- tipos de estudios
+create table susc_tipos_estudios (
+    id integer not null,
+    nombre varchar(64) not null,   					-- Nombre del tipo de estudio
+    duracion integer not null,						-- Duración de la prueba en minutos
+    modalidad character varying(2),
+	tipo integer NOT NULL,							-- Tipo de recurso 1 - equipo...
+    constraint pk_tipos_estudios primary key(id),
+	constraint uk_tipos_estudios_nombre unique(nombre)
+    );
+
+-- planificacion de citas
+create table susc_citas (
+    id integer not null,
+
+    fecha bigint not null,							-- fecha/hora de inicio de la prueba
+    fechafin bigint not null,						-- fecha/hora de fin de la prueba
+    uid varchar(64) not null,   					-- uuid del estudio
+
+    paciente integer not null,						-- paciente al que se le realiza la prueba
+    recurso integer not null,					    -- recurso en el que se realiza la prueba
+    tipo integer not null, 							-- tipo de estudio
+    referidor integer,   							-- referidor de estudio
+    estado integer NOT NULL,						-- 0-planificada, 1- En ejecuión, 3-terminada
+    
+    constraint pk_estudios primary key(id),
+    constraint fk_estudios_paciente foreign key (paciente) references susc_pacientes(id) on delete cascade,
+    constraint fk_estudios_recurso foreign key (recurso) references susc_recursos(id) on delete cascade,
+    constraint fk_estudios_referidor foreign key (referidor) references susc_usuarios(id) on delete cascade,
+    constraint fk_estudios_tipo foreign key (tipo) references susc_tipos_estudios(id) on delete cascade
+    ); 
 
 --//@UNDO
 -- SQL to undo the change goes here.
