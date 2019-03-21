@@ -161,6 +161,27 @@ create table susc_informes_plantillas (
     constraint fk_informes_pantillas_centro foreign key (centro) references susc_centros(id)
     ); 
 
+-- paciente 
+create table susc_pacientes (
+    id integer not null,
+    uid varchar(64) not null,    					-- identificador unico
+    email varchar(128),    							-- email al que se envian notificaciones
+    nombre varchar(50) not null,   				    -- nombre del paciente
+    apellido1 varchar(50) not null,   				-- primer apellido del paciente
+    apellido2 varchar(50),   						-- segundo apellido del paciente
+	fecha_nacimiento integer not null,				-- fecha de nacimiento
+	sexo varchar(1) not null,						-- sexo 
+	telefono varchar(20),							-- telefono del paciente
+	movil varchar(20),								-- numero del movil del paciente
+	
+    constraint pk_pacientes primary key(id),
+	constraint uk_pacientes_uid unique(uid),
+	constraint uk_pacientes_email unique(email)
+    );
+create index ix_pacientes_uid on susc_pacientes(uid);
+create index ix_pacientes_email on susc_pacientes(email);
+create index ix_pacientes_sexo on susc_pacientes(sexo);
+
 -- informes de estudios
 create table susc_informes (
     id integer not null,
@@ -180,9 +201,11 @@ create table susc_informes (
 	pdf bytea, 										-- informe en PDF
     estado integer not null default 0,				-- estado de aprobación del informe: 0 - solicitado, 1 - no aprobado, 2 - aprobado
     protegido integer not null default 0,			-- Proteger el informe solo para el referidor
+	refpaciente integer;							-- referencia al paciente al que pertenece el informe
     
     constraint pk_informes primary key(id),
     constraint fk_informes_centro foreign key (centro) references susc_centros(id),
+    constraint fk_informes_refpaciente foreign key (refpaciente) references susc_pacientes(id),
     constraint fk_informes_informa foreign key (informa) references susc_usuarios(id)
     ); 
 create index ix_informes_fecha on susc_informes(fecha);
@@ -206,27 +229,6 @@ create table susc_informes_imagenes (
     constraint fk_informes_imagenes_informe foreign key (informe) references susc_informes(id)
     ); 
     
--- paciente 
-create table susc_pacientes (
-    id integer not null,
-    uid varchar(64) not null,    					-- identificador unico
-    email varchar(128),    							-- email al que se envian notificaciones
-    nombre varchar(50) not null,   				    -- nombre del paciente
-    apellido1 varchar(50) not null,   				-- primer apellido del paciente
-    apellido2 varchar(50),   						-- segundo apellido del paciente
-	fecha_nacimiento integer not null,				-- fecha de nacimiento
-	sexo varchar(1) not null,						-- sexo 
-	telefono varchar(20),							-- telefono del paciente
-	movil varchar(20),								-- numero del movil del paciente
-	
-    constraint pk_pacientes primary key(id),
-	constraint uk_pacientes_uid unique(uid),
-	constraint uk_pacientes_email unique(email)
-    );
-create index ix_pacientes_uid on susc_pacientes(uid);
-create index ix_pacientes_email on susc_pacientes(email);
-create index ix_pacientes_sexo on susc_pacientes(sexo);
-
 -- tipos de horarios
 create table susc_tipos_horarios (
     id integer not null,

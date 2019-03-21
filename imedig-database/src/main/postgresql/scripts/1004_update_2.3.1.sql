@@ -199,3 +199,4 @@ insert into susc_perfiles_derechos (perfil, derecho) values (6, 40);
 
 --Nueva columna a informes
 ALTER TABLE susc_informes ADD COLUMN refpaciente integer;
+ALTER TABLE susc_informes ADD constraint fk_informes_refpaciente foreign key (refpaciente) references susc_pacientes(id);
