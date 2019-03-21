@@ -1,5 +1,9 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_HORARIOS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_HORARIOS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_HORARIOS_MOD;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
@@ -64,25 +68,25 @@ public class TiposHorariosConfig extends FilteredContentCloseable implements Mod
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null );
+		setEnabledModify( row != null && getContext().hasRight(DERECHO_CONFIG_TIPOS_HORARIOS_MOD));
+		setEnabledDelete( row != null && getContext().hasRight(DERECHO_CONFIG_TIPOS_HORARIOS_DEL));
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewTipoHorario( context, Operation.OP_MODIFY, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios.modificar" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_MODIFY, (TipoHorario)row, TiposHorariosConfig.this, DERECHO_CONFIG_TIPOS_HORARIOS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewTipoHorario( context, Operation.OP_ADD, null, TiposHorariosConfig.this, "configuracion.tipos.horarios.adicionar" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_ADD, null, TiposHorariosConfig.this, DERECHO_CONFIG_TIPOS_HORARIOS_ADD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewTipoHorario( context, Operation.OP_DELETE, (TipoHorario)row, TiposHorariosConfig.this, "configuracion.tipos.horarios.borrar" ).showModalWindow();
+		new ModalNewTipoHorario( context, Operation.OP_DELETE, (TipoHorario)row, TiposHorariosConfig.this, DERECHO_CONFIG_TIPOS_HORARIOS_DEL ).showModalWindow();
 	}
 
 	@Override
@@ -100,18 +104,18 @@ public class TiposHorariosConfig extends FilteredContentCloseable implements Mod
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_TIPOS_HORARIOS_ADD);
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_TIPOS_HORARIOS_MOD);
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_TIPOS_HORARIOS_DEL);
 	}
 }

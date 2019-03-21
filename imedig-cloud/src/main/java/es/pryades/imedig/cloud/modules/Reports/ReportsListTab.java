@@ -1,5 +1,10 @@
 package es.pryades.imedig.cloud.modules.Reports;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_APROBAR;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_CREAR;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_SOLICITAR;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_TERMINAR;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -209,10 +214,10 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 
 	private boolean canViewReport( DetalleInforme informe )
 	{
-		if ( informe.solicitado() && getContext().hasRight( "informes.solicitar" ) )
+		if ( informe.solicitado() && getContext().hasRight( DERECHO_INFORMES_SOLICITAR ) )
 			return true;
 
-		if ( getContext().hasRight( "informes.aprobar" ) )
+		if ( getContext().hasRight( DERECHO_INFORMES_APROBAR ) )
 			return true;
 
 		if ( informe.aprobado() || informe.terminado() )
@@ -231,20 +236,20 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 		if ( informe.aprobado() || informe.terminado() )
 			return false;
 		
-		if ( informe.solicitado() && getContext().hasRight( "informes.solicitar" ) )
+		if ( informe.solicitado() && getContext().hasRight( DERECHO_INFORMES_SOLICITAR ) )
 			return true;
 		
-		return informe.getInforma().equals( getContext().getUsuario().getId() ) || getContext().hasRight( "informes.aprobar" );
+		return informe.getInforma().equals( getContext().getUsuario().getId() ) || getContext().hasRight( DERECHO_INFORMES_APROBAR );
 	}
 
 	private boolean canApproveReport( DetalleInforme informe )
 	{
-		return !informe.aprobado() && !informe.terminado() && getContext().hasRight( "informes.aprobar" );
+		return !informe.aprobado() && !informe.terminado() && getContext().hasRight( DERECHO_INFORMES_APROBAR );
 	}
 
 	private boolean canFinishReport( DetalleInforme informe )
 	{
-		return informe.aprobado() && getContext().hasRight( "informes.terminar" );
+		return informe.aprobado() && getContext().hasRight( DERECHO_INFORMES_TERMINAR );
 	}
 
 	private void bttnViewReportListener()
@@ -270,7 +275,7 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 		InformeImagen query = new InformeImagen();
 		query.setInforme( informe.getId() );
 		
-		String right = getContext().hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+		String right = getContext().hasRight( DERECHO_INFORMES_CREAR ) ? DERECHO_INFORMES_CREAR : DERECHO_INFORMES_SOLICITAR;
 		
 		List<InformeImagen> images;
 		
@@ -864,13 +869,13 @@ public class ReportsListTab extends FilteredContent implements ModalParent, Prop
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_INFORMES_CREAR) || getContext().hasRight(DERECHO_INFORMES_SOLICITAR);
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_INFORMES_CREAR) ;
 	}
 
 	@Override

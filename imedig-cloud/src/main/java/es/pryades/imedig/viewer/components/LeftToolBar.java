@@ -1,5 +1,7 @@
 package es.pryades.imedig.viewer.components;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_SOLICITAR;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -102,7 +104,7 @@ public class LeftToolBar extends HorizontalLayout {
 		group = new VerticalLayout();
 		group.addComponent( buttonDownload = getButton( FontAwesome.DOWNLOAD, "download", "words.download" ));
 		
-		if ( context.hasRight( "informes.solicitar" ) )
+		if ( context.hasRight( DERECHO_INFORMES_SOLICITAR ) )
 		{
 			group.addComponent( buttonReport = getButton( FontAwesome.FILE_PDF_O, "report", "words.report.request" ));
 			

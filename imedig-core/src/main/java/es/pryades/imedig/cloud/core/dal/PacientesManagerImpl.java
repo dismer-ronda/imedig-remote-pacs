@@ -75,4 +75,17 @@ public class PacientesManagerImpl extends ImedigCloudManagerImpl implements Paci
 		return rows;
 	}
 
+	@Override
+	public Paciente getPaciente( ImedigContext ctx, String uid ) throws Throwable
+	{
+		PacienteQuery query = new PacienteQuery();
+		query.setUid( uid );
+		
+		List<Paciente> pacientes = getRows( ctx, query );
+		
+		if (pacientes.isEmpty()) return null;
+		
+		return pacientes.get( 0 );
+	}
+
 }

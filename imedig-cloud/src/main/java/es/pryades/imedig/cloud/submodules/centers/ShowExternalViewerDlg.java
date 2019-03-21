@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.submodules.centers;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_CREAR;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -120,7 +122,7 @@ public final class ShowExternalViewerDlg extends Window implements ModalParent
 
 		bttnClose = new Button( getContext().getString( "words.close" ) );
 		bttnClose.addStyleName( "zi30" );
-		if ( getContext().hasRight( "informes.crear" ) )
+		if ( getContext().hasRight( DERECHO_INFORMES_CREAR ) )
 		{
 			
 			if ( request ) {

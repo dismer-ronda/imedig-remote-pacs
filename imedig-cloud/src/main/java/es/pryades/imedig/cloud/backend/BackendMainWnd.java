@@ -298,11 +298,17 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
                 	context.sendAction( new FullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
 					btnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-					btnStudies.setVisible( true );
+					if (LicenseManager.getInstance().hasBasicRights()) btnStudies.setVisible( true );
 					if (hasImage) btnImages.setVisible( true );
-					btnReports.setVisible( true );
-					btnPatients.setVisible( true );
-					btnAppointments.setVisible( true );
+					if (LicenseManager.getInstance().hasBasicRights()) btnReports.setVisible( true );
+					if (LicenseManager.getInstance().hasBasicRights()) btnPatients.setVisible( true );
+					if (LicenseManager.getInstance().hasCitationsRights()) btnAppointments.setVisible( true );
+					
+					/*if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnPatients );
+		 hide.addComponent( btnAppointments );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnStudies );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnImages );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnReports );*/
                 } else {
                 	context.sendAction( new ExitFullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_MAXIMIZE );
@@ -379,7 +385,13 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			}
 		} );
         
-		CssLayout hide = new CssLayout( btnFullScreen, btnPatients, btnAppointments, btnStudies, btnImages, btnReports );
+		CssLayout hide = new CssLayout( btnFullScreen);
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnPatients );
+		if (LicenseManager.getInstance().hasCitationsRights()) hide.addComponent( btnAppointments );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnStudies );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnImages );
+		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnReports );
+
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "-1px" );
 		hide.setWidth( "0px" );

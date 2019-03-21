@@ -1,5 +1,8 @@
 package es.pryades.imedig.viewer.components;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_CREAR;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_SOLICITAR;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -569,7 +572,7 @@ public class ViewerWnd extends CssLayout implements ListenerAction, ImageResourc
 		InformeImagen query = new InformeImagen();
 		query.setInforme( informe.getId() );
 		
-		String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+		String right = context.hasRight( DERECHO_INFORMES_CREAR ) ? DERECHO_INFORMES_CREAR : DERECHO_INFORMES_SOLICITAR;
 		
 		List<InformeImagen> images;
 		

@@ -197,4 +197,5 @@ insert into susc_perfiles_derechos (perfil, derecho) values (6, 38);
 insert into susc_perfiles_derechos (perfil, derecho) values (6, 39);
 insert into susc_perfiles_derechos (perfil, derecho) values (6, 40);
 
-
+--Nueva columna a informes
+ALTER TABLE susc_informes ADD COLUMN refpaciente integer;

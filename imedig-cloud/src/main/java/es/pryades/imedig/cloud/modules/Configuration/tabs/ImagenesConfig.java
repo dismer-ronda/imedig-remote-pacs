@@ -1,5 +1,10 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_IMAGENES_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_IMAGENES_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_IMAGENES_MOD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TODO;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
@@ -60,8 +65,8 @@ public class ImagenesConfig extends FilteredContentCloseable implements ModalPar
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null );
+		setEnabledModify( row != null && getContext().hasRight( DERECHO_CONFIG_IMAGENES_MOD ));
+		setEnabledDelete( row != null && getContext().hasRight( DERECHO_CONFIG_IMAGENES_DEL ));
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class ImagenesConfig extends FilteredContentCloseable implements ModalPar
 	{
 		ImagenQuery query = new ImagenQuery();
 		
-		if ( !context.hasRight( "configuracion.todo" ) )
+		if ( !context.hasRight( DERECHO_CONFIG_TODO ) )
 			query.setUsuario( context.getUsuario().getId() );
 
 		return query;
@@ -84,35 +89,35 @@ public class ImagenesConfig extends FilteredContentCloseable implements ModalPar
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewImage( context, Operation.OP_ADD, null, ImagenesConfig.this, "configuracion.imagenes.adicionar" ).showModalWindow();
+		new ModalNewImage( context, Operation.OP_ADD, null, ImagenesConfig.this, DERECHO_CONFIG_IMAGENES_ADD ).showModalWindow();
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewImage( context, Operation.OP_MODIFY, (Imagen)row, ImagenesConfig.this, "configuracion.imagenes.modificar" ).showModalWindow();
+		new ModalNewImage( context, Operation.OP_MODIFY, (Imagen)row, ImagenesConfig.this, DERECHO_CONFIG_IMAGENES_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewImage( context, Operation.OP_DELETE, (Imagen)row, ImagenesConfig.this, "configuracion.imagenes.borrar" ).showModalWindow();
+		new ModalNewImage( context, Operation.OP_DELETE, (Imagen)row, ImagenesConfig.this, DERECHO_CONFIG_IMAGENES_DEL ).showModalWindow();
 	}
 
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_IMAGENES_ADD );
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_IMAGENES_MOD );
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_IMAGENES_DEL );
 	}
 }

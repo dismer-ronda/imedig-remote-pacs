@@ -1,5 +1,10 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_INFORMES_PLATILLAS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_INFORMES_PLATILLAS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_INFORMES_PLATILLAS_MOD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TODO;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
@@ -60,8 +65,8 @@ public class InformesPlantillasConfig extends FilteredContentCloseable implement
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null && getNumberOfRows() > 1 );
+		setEnabledModify( row != null && getContext().hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS_MOD ));
+		setEnabledDelete( row != null && getNumberOfRows() > 1 && getContext().hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS_DEL ));
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class InformesPlantillasConfig extends FilteredContentCloseable implement
 	{
 		InformePlantillaQuery query = new InformePlantillaQuery();
 		
-		if ( !context.hasRight( "configuracion.todo" ) )
+		if ( !context.hasRight( DERECHO_CONFIG_TODO ) )
 			query.setUsuario( context.getUsuario().getId() );
 
 		return query;
@@ -84,35 +89,35 @@ public class InformesPlantillasConfig extends FilteredContentCloseable implement
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewInformePlantilla( context, Operation.OP_ADD, null, InformesPlantillasConfig.this, "configuracion.informes.plantillas.adicionar" ).showModalWindow();
+		new ModalNewInformePlantilla( context, Operation.OP_ADD, null, InformesPlantillasConfig.this, DERECHO_CONFIG_INFORMES_PLATILLAS_ADD ).showModalWindow();
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewInformePlantilla( context, Operation.OP_MODIFY, (InformePlantilla)row, InformesPlantillasConfig.this, "configuracion.informes.plantillas.modificar" ).showModalWindow();
+		new ModalNewInformePlantilla( context, Operation.OP_MODIFY, (InformePlantilla)row, InformesPlantillasConfig.this, DERECHO_CONFIG_INFORMES_PLATILLAS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewInformePlantilla( context, Operation.OP_DELETE, (InformePlantilla)row, InformesPlantillasConfig.this, "configuracion.informes.plantillas.borrar" ).showModalWindow();
+		new ModalNewInformePlantilla( context, Operation.OP_DELETE, (InformePlantilla)row, InformesPlantillasConfig.this, DERECHO_CONFIG_INFORMES_PLATILLAS_DEL ).showModalWindow();
 	}
 
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS_ADD );
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS_MOD );
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS_DEL );
 	}
 }

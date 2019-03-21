@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.backend;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_LOGIN;
+
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
@@ -382,7 +384,7 @@ public class LoginPanel extends VerticalLayout
 			query.setId( autorizacion.getPerfil() );
 			ctx.setDerechos( perfManager.getRows( ctx, query ) );
 
-			if ( ctx.hasRight( "login" ) )
+			if ( ctx.hasRight( DERECHO_LOGIN ) )
 			{
 				loginWnd.showMainWindow();
 			}

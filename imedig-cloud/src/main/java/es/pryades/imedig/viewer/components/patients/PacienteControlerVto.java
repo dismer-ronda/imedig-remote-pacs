@@ -1,5 +1,7 @@
 package es.pryades.imedig.viewer.components.patients;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CITAS_MOD;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -257,7 +259,7 @@ public class PacienteControlerVto extends GenericControlerVto
 		for ( Cita cita : citas )
 		{
 			Button btn = new Button( buidCaption( cita ) );
-			if (getContext().hasRight( "administracion.citas.modificar")) btn.addClickListener( clickListener );
+			if (getContext().hasRight( DERECHO_CITAS_MOD )) btn.addClickListener( clickListener );
 			
 			btn.setData( cita );
 			btn.addStyleName( "citation" );

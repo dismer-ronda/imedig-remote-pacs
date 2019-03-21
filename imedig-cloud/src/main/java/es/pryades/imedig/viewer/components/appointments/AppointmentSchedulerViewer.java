@@ -1,5 +1,9 @@
 package es.pryades.imedig.viewer.components.appointments;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CITAS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CITAS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CITAS_MOD;
+
 import java.util.Date;
 import java.util.List;
 
@@ -241,7 +245,7 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 			return;
 		}
 		
-		if (e instanceof FreeEvent && today.after( e.getStart()) && ctx.hasRight( "administracion.citas.adicionar" )){
+		if (e instanceof FreeEvent && today.after( e.getStart()) && ctx.hasRight( DERECHO_CITAS_ADD )){
 			Notification.show( ctx.getString( "modalAppointmentDlg.error.today" ), Notification.Type.ERROR_MESSAGE );
 			return;
 		}
@@ -252,22 +256,22 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 		
 		//Operation operation = citationEvent.getData() == null ? Operation.OP_ADD : Operation.OP_MODIFY;
 		
-		if (e instanceof FreeEvent && ctx.hasRight( "administracion.citas.adicionar" )){
-			new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, e.getStart(), this, "administracion.citas.adicionar" ).showModalWindow();;
+		if (e instanceof FreeEvent && ctx.hasRight( DERECHO_CITAS_ADD )){
+			new ModalAppointmentDlg( ctx, Operation.OP_ADD, recurso, e.getStart(), this, DERECHO_CITAS_ADD ).showModalWindow();;
 		}else if (e instanceof AppointmentEvent && hasAllAccess()){
 			verifyAppointmentEvent(((AppointmentEvent)e).getData());
 		}
 	}
 	
 	private boolean hasAllAccess(){
-		return ctx.hasRight( "administracion.citas.adicionar" ) ||
-				ctx.hasRight( "administracion.citas.modificar" ) ||
-				ctx.hasRight( "administracion.citas.borrar" );
+		return ctx.hasRight( DERECHO_CITAS_ADD ) ||
+				ctx.hasRight( DERECHO_CITAS_MOD ) ||
+				ctx.hasRight( DERECHO_CITAS_DEL );
 	}
 
 	private boolean hasAccessToModify(){
-		return ctx.hasRight( "administracion.citas.modificar" ) ||
-			   ctx.hasRight( "administracion.citas.borrar" );
+		return ctx.hasRight( DERECHO_CITAS_MOD ) ||
+			   ctx.hasRight( DERECHO_CITAS_DEL );
 	}
 
 	private void verifyAppointmentEvent( Cita cita )
@@ -284,62 +288,70 @@ public class AppointmentSchedulerViewer extends VerticalLayout implements ModalP
 
 	private void finishAppointment( final Cita cita )
 	{
-		ConfirmDialog.show( UI.getCurrent(), ctx.getString( "modalAppointmentDlg.confirm.appointment.finish" ), new ConfirmDialog.Listener()
-		{
-			private static final long serialVersionUID = -6296511902240116944L;
+		ConfirmDialog.show( UI.getCurrent(), 
+				ctx.getString( "words.confirm" ), 
+				ctx.getString( "modalAppointmentDlg.confirm.appointment.finish" ), 
+				ctx.getString( "Generic.Yes" ), 
+				ctx.getString( "Generic.No" ), 
+				new ConfirmDialog.Listener()
+				{
+					private static final long serialVersionUID = -6296511902240116944L;
 
-			public void onClose( ConfirmDialog dialog )
-			{
-				if ( !dialog.isConfirmed() ) return;
-				
-				Cita newCita = Utils.clone2( cita );
-				newCita.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
-				
-				try
-				{
-					updateAppointment( cita, newCita, false );
-					appointmentCalendar.markAsDirty();
-				}
-				catch ( Throwable e )
-				{
-					LOG.error( "Error finalizando cita", e );
-					Notification.show( ctx.getString( "modalAppointmentDlg.error.finish" ), Notification.Type.ERROR_MESSAGE );;
-				}
-			}
-		} );
-		
+					public void onClose( ConfirmDialog dialog )
+					{
+						if ( !dialog.isConfirmed() ) return;
+						
+						Cita newCita = Utils.clone2( cita );
+						newCita.setEstado( Constants.APPOINTMENT_STATUS_ENDED );
+						
+						try
+						{
+							updateAppointment( cita, newCita, false );
+							appointmentCalendar.markAsDirty();
+						}
+						catch ( Throwable e )
+						{
+							LOG.error( "Error finalizando cita", e );
+							Notification.show( ctx.getString( "modalAppointmentDlg.error.finish" ), Notification.Type.ERROR_MESSAGE );;
+						}
+					}
+				});
 	}
 	
 	private void verifyAppointmentToday( final Cita cita )
 	{
-		ConfirmDialog.show( UI.getCurrent(), ctx.getString( "modalAppointmentDlg.confirm.appointment.worklist" ), new ConfirmDialog.Listener()
-		{
-			private static final long serialVersionUID = -9006139714904606392L;
+		ConfirmDialog.show( UI.getCurrent(), 
+				ctx.getString( "words.confirm" ), 
+				ctx.getString( "modalAppointmentDlg.confirm.appointment.worklist" ), 
+				ctx.getString( "Generic.Yes" ), 
+				ctx.getString( "Generic.No" ), 
+				new ConfirmDialog.Listener()
+				{
+					private static final long serialVersionUID = -9006139714904606392L;
 
-			public void onClose( ConfirmDialog dialog )
-			{
-				if ( !dialog.isConfirmed() ) {
-					modifyAppointment( cita );
-					return;
-				};
-				
-				Cita newCita = Utils.clone2( cita );
-				newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
-				
-				try
-				{
-					updateAppointment( cita, newCita, true );
-					manager.transferAppointmentWorklist( ctx, newCita, recurso );
-					appointmentCalendar.markAsDirty();
-				}
-				catch ( Throwable e )
-				{
-					LOG.error( "Error modificando cita", e );
-					Notification.show( ctx.getString( "modalAppointmentDlg.error.modifying" ), Notification.Type.ERROR_MESSAGE );;
-				}
-			}
-		} );
-		
+					public void onClose( ConfirmDialog dialog )
+					{
+						if ( !dialog.isConfirmed() ) {
+							modifyAppointment( cita );
+							return;
+						};
+						
+						Cita newCita = Utils.clone2( cita );
+						newCita.setEstado( Constants.APPOINTMENT_STATUS_EXECUTING );
+						
+						try
+						{
+							updateAppointment( cita, newCita, true );
+							manager.transferAppointmentWorklist( ctx, newCita, recurso );
+							appointmentCalendar.markAsDirty();
+						}
+						catch ( Throwable e )
+						{
+							LOG.error( "Error modificando cita", e );
+							Notification.show( ctx.getString( "modalAppointmentDlg.error.modifying" ), Notification.Type.ERROR_MESSAGE );;
+						}
+					}
+				});
 	}
 
 	private void modifyAppointment( Cita cita )

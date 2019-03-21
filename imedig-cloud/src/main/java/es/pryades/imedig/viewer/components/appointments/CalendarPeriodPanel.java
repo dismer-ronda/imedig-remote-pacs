@@ -1,5 +1,7 @@
 package es.pryades.imedig.viewer.components.appointments;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CITAS_ADD;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -146,7 +148,7 @@ public class CalendarPeriodPanel extends HorizontalLayout implements WeekClickHa
 			}
 		} );
 		
-		if (!ctx.hasRight( "administracion.citas.adicionar" )) buttonAddEvent.setEnabled( false );
+		if (!ctx.hasRight( DERECHO_CITAS_ADD )) buttonAddEvent.setEnabled( false );
 	}
 
 	private void buildMonthlyComponents()

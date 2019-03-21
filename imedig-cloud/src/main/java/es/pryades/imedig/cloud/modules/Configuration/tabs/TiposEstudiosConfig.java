@@ -1,5 +1,9 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_ESTUDIOS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_ESTUDIOS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_ESTUDIOS_MOD;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
@@ -64,25 +68,25 @@ public class TiposEstudiosConfig extends FilteredContentCloseable implements Mod
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null );
+		setEnabledModify( row != null && getContext().hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS_MOD ) );
+		setEnabledDelete( row != null && getContext().hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS_DEL ));
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_MODIFY, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios.modificar" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_MODIFY, (TipoEstudio)row, TiposEstudiosConfig.this, DERECHO_CONFIG_TIPOS_ESTUDIOS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_ADD, null, TiposEstudiosConfig.this, "configuracion.tipos.estudios.adicionar" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_ADD, null, TiposEstudiosConfig.this, DERECHO_CONFIG_TIPOS_ESTUDIOS_ADD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewTipoEstudio( context, Operation.OP_DELETE, (TipoEstudio)row, TiposEstudiosConfig.this, "configuracion.tipos.estudios.borrar" ).showModalWindow();
+		new ModalNewTipoEstudio( context, Operation.OP_DELETE, (TipoEstudio)row, TiposEstudiosConfig.this, DERECHO_CONFIG_TIPOS_ESTUDIOS_DEL ).showModalWindow();
 	}
 
 	@Override
@@ -100,18 +104,18 @@ public class TiposEstudiosConfig extends FilteredContentCloseable implements Mod
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS_ADD );
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS_MOD );
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS_DEL );
 	}
 }

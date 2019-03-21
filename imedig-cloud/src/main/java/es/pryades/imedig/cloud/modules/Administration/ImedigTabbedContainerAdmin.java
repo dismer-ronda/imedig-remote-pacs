@@ -1,10 +1,9 @@
 package es.pryades.imedig.cloud.modules.Administration;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_ADMINISTRACION_ACCESO;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
 
 import org.apache.log4j.Logger;
 
@@ -17,6 +16,8 @@ import es.pryades.imedig.cloud.common.ImedigException;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.modules.Administration.tabs.AccesosAdmin;
 import es.pryades.imedig.cloud.modules.Administration.tabs.AdminContent;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Dismer Ronda
@@ -80,7 +81,7 @@ public class ImedigTabbedContainerAdmin implements TabSheet.SelectedTabChangeLis
 				// adding tabs
 
 				// Accesos Admin Tab
-				if ( ctx.hasRight( "administracion.acceso" ) )
+				if ( ctx.hasRight( DERECHO_ADMINISTRACION_ACCESO ) )
 				{ // cambiar a administracion.costos
 					tabContentList.add( new AccesosAdmin( ctx ) );
 				}

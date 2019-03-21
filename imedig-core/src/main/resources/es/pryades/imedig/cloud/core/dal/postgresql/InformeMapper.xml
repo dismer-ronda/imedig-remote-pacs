@@ -3,12 +3,8 @@
 
 <mapper namespace="es.pryades.imedig.cloud.core.dal.ibatis.InformeMapper">
 
-	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
-		
-		select count(1) from susc_informes
-		
-		<where>
-			<if test="centro != null">
+	<sql id="where">
+		<if test="centro != null">
 				AND centro = #{centro}  
 	        </if>
 			<if test="desde != null">
@@ -41,13 +37,21 @@
 			<if test="estado != null">
 				AND estado = #{estado}  
 	        </if>
+	        <if test="refpaciente != null">
+				AND refpaciente = #{refpaciente}  
+	        </if>
 			<if test="centros != null">
 				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
 	        </if>
 			<if test="list_claves != null">
 				<foreach collection="list_claves" item="item" separator=" "> AND claves like '%${item}%'</foreach>
 	        </if>
-		</where>
+	</sql>
+	
+	<select id="getNumberOfRows" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="int">
+		
+		select count(1) from susc_informes
+		<where><include refid="where"/></where>
 	</select>
 
 	<select id="getPage" parameterType="es.pryades.imedig.cloud.dto.Query" resultType="es.pryades.imedig.cloud.dto.Informe">
@@ -69,53 +73,12 @@
 			icd10cm,
 			refiere,
 			estado,
-			protegido
+			protegido,
+			refpaciente
 			
 		from
 			susc_informes
-		
-		<where>
-			<if test="centro != null">
-				AND centro = #{centro}  
-	        </if>
-			<if test="desde != null">
-				AND fecha &gt;= #{desde}  
-	        </if>
-			<if test="hasta != null">
-				AND fecha &lt;= #{hasta}
-	        </if>
-			<if test="paciente_id != null">
-				AND (paciente_id = #{paciente_id} OR paciente_nombre like '${paciente_id}%')   
-	        </if>
-			<if test="estudio_id != null">
-				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
-	        </if>
-	        <if test="estudio_uid != null">
-				AND estudio_uid = #{estudio_uid}   
-	        </if>
-			<if test="modalidad != null">
-				AND modalidad = #{modalidad}  
-	        </if>
-			<if test="informa != null">
-				AND informa = #{informa}  
-	        </if>
-			<if test="refiere != null">
-				AND refiere = #{refiere}  
-	        </if>
-			<if test="icd10cm != null">
-				AND icd10cm = #{icd10cm}  
-	        </if>
-			<if test="estado != null">
-				AND estado = #{estado}  
-	        </if>
-			<if test="centros != null">
-				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
-	        </if>
-			<if test="list_claves != null">
-				<foreach collection="list_claves" item="item" separator=" "> AND claves like '%${item}%'</foreach>
-	        </if>
-		</where>
-		
+		<where><include refid="where"/></where>		
 		order by fecha desc
 
 		LIMIT #{pageSize} OFFSET (#{pageSize} * (#{pageNumber} - 1))
@@ -139,49 +102,12 @@
 			icd10cm,
 			refiere,
 			estado,
-			protegido
+			protegido,
+			refpaciente
 
 		from
 			susc_informes
-
-		<where>
-			<if test="centro != null">
-				AND centro = #{centro}  
-	        </if>
-			<if test="desde != null">
-				AND fecha &gt;= #{desde}  
-	        </if>
-			<if test="hasta != null">
-				AND fecha &lt;= #{hasta}
-	        </if>
-			<if test="paciente_id != null">
-				AND (paciente_id = #{paciente_id} OR paciente_nombre like '${paciente_id}%')   
-	        </if>
-			<if test="estudio_id != null">
-				AND (estudio_id = #{estudio_id} OR estudio_acceso = #{estudio_id})   
-	        </if>
-	        <if test="estudio_uid != null">
-				AND estudio_uid = #{estudio_uid}   
-	        </if>
-			<if test="modalidad != null">
-				AND modalidad = #{modalidad}  
-	        </if>
-			<if test="informa != null">
-				AND informa = #{informa}  
-	        </if>
-			<if test="refiere != null">
-				AND refiere = #{refiere}  
-	        </if>
-			<if test="icd10cm != null">
-				AND icd10cm = #{icd10cm}  
-	        </if>
-			<if test="estado != null">
-				AND estado = #{estado}  
-	        </if>
-			<if test="centros != null">
-				AND centro in <foreach collection="centros" item="item" open="(" close=")" separator=",">#{item.id}</foreach>
-	        </if>
-		</where>
+		<where><include refid="where"/></where>
 		order by fecha desc
 	</select>
 
@@ -238,7 +164,8 @@
 			pdf,
 			refiere,
 			estado,
-			protegido
+			protegido,
+			refpaciente
 		)
 		values
 		(
@@ -258,7 +185,8 @@
 			#{pdf},
 			#{refiere},
 			#{estado},
-			#{protegido}
+			#{protegido},
+			#{refpaciente}
 		)
 	</insert>
 
@@ -282,7 +210,8 @@
 				pdf=#{pdf},
 	        </if>
 			estado=#{estado},
-			protegido=#{protegido}
+			protegido=#{protegido},
+			refpaciente=#{refpaciente}
 		where id = #{id}
 	</update>
 

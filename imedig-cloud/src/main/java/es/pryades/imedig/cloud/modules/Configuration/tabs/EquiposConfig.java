@@ -4,6 +4,10 @@ import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_RECURSOS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_RECURSOS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_RECURSOS_MOD;
+
 import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContentCloseable;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
@@ -67,25 +71,25 @@ public class EquiposConfig extends FilteredContentCloseable implements ModalPare
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null );
+		setEnabledModify( row != null && getContext().hasRight( DERECHO_CONFIG_RECURSOS_MOD ));
+		setEnabledDelete( row != null && getContext().hasRight( DERECHO_CONFIG_RECURSOS_DEL ));
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewEquipo( context, Operation.OP_MODIFY, (Recurso)row, EquiposConfig.this, "configuracion.recursos.modificar" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_MODIFY, (Recurso)row, EquiposConfig.this, DERECHO_CONFIG_RECURSOS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewEquipo( context, Operation.OP_ADD, null, EquiposConfig.this, "configuracion.recursos.adicionar" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_ADD, null, EquiposConfig.this, DERECHO_CONFIG_RECURSOS_ADD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewEquipo( context, Operation.OP_DELETE, (Recurso)row, EquiposConfig.this, "configuracion.recursos.borrar" ).showModalWindow();
+		new ModalNewEquipo( context, Operation.OP_DELETE, (Recurso)row, EquiposConfig.this, DERECHO_CONFIG_RECURSOS_DEL).showModalWindow();
 	}
 
 	@Override
@@ -105,18 +109,18 @@ public class EquiposConfig extends FilteredContentCloseable implements ModalPare
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_RECURSOS_ADD );
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_RECURSOS_MOD );
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_RECURSOS_DEL );
 	}
 }

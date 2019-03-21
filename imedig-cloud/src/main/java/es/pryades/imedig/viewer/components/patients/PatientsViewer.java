@@ -1,5 +1,10 @@
 package es.pryades.imedig.viewer.components.patients;
 
+import static es.pryades.imedig.cloud.common.Constants.DEFAULT_PAGE_SIZE;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_PACIENTES_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_PACIENTES_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_PACIENTES_MOD;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -13,7 +18,6 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
-import es.pryades.imedig.cloud.common.Constants;
 import es.pryades.imedig.cloud.common.FilteredContent;
 import es.pryades.imedig.cloud.common.ImedigTheme;
 import es.pryades.imedig.cloud.common.Utils;
@@ -110,7 +114,7 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public TableImedigPaged getTableRows()
 	{
-		table = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new PacienteQuery() ), getContext(), Constants.DEFAULT_PAGE_SIZE );
+		table = new TableImedigPaged( PacienteVto.class, new PacienteVto(), new PacienteVtoFieldRef(), new QueryFilterRef( new PacienteQuery() ), getContext(), DEFAULT_PAGE_SIZE );
 		table.getTable().setColumnWidth( "identificador", 250 );
 		table.getTable().setColumnWidth( "nombre", 540 );
 		table.getTable().setColumnWidth( "sexo", 135 );
@@ -128,8 +132,8 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null && getContext().hasRight( "configuracion.pacientes.modificar" ));
-		setEnabledDelete( row != null && getContext().hasRight( "configuracion.pacientes.borrar" ) );
+		setEnabledModify( row != null && getContext().hasRight( DERECHO_CONFIG_PACIENTES_MOD));
+		setEnabledDelete( row != null && getContext().hasRight( DERECHO_CONFIG_PACIENTES_DEL ) );
 	}
 
 	@Override
@@ -154,12 +158,12 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewPaciente( context, Operation.OP_MODIFY, (Paciente)row, this, "configuracion.pacientes.modificar" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_MODIFY, (Paciente)row, this, DERECHO_CONFIG_PACIENTES_MOD ).showModalWindow();
 	}
 
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewPaciente( context, Operation.OP_DELETE, (Paciente)row, this, "configuracion.pacientes.borrar" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_DELETE, (Paciente)row, this, DERECHO_CONFIG_PACIENTES_DEL ).showModalWindow();
 	}
 	
 	public void setDateFilter( InformeQuery queryObj )
@@ -259,25 +263,25 @@ public class PatientsViewer extends FilteredContent implements ModalParent, Prop
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewPaciente( context, Operation.OP_ADD, null, this, "configuracion.pacientes.adicionar" ).showModalWindow();
+		new ModalNewPaciente( context, Operation.OP_ADD, null, this, DERECHO_CONFIG_PACIENTES_ADD ).showModalWindow();
 	}
 
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_PACIENTES_ADD );
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_PACIENTES_MOD );
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return getContext().hasRight( "configuracion.pacientes.borrar" );
+		return getContext().hasRight( DERECHO_CONFIG_PACIENTES_DEL );
 	}
 
 	@Override

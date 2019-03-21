@@ -1,5 +1,10 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TODO;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_USUARIOS_ADD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_USUARIOS_DEL;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_USUARIOS_MOD;
+
 import com.vaadin.ui.Component;
 
 import es.pryades.imedig.cloud.common.Constants;
@@ -55,8 +60,8 @@ public class UsuariosConfig extends FilteredContentCloseable implements ModalPar
 	@Override
 	public void onSelectedRow( Object row  )
 	{
-		setEnabledModify( row != null );
-		setEnabledDelete( row != null );
+		setEnabledModify( row != null && getContext().hasRight(DERECHO_CONFIG_USUARIOS_MOD));
+		setEnabledDelete( row != null && getContext().hasRight(DERECHO_CONFIG_USUARIOS_DEL));
 	}
 
 	@Override
@@ -64,7 +69,7 @@ public class UsuariosConfig extends FilteredContentCloseable implements ModalPar
 	{
 		UsuarioQuery query = new UsuarioQuery();
 		
-		if ( !context.hasRight( "configuracion.todo" ) )
+		if ( !context.hasRight( DERECHO_CONFIG_TODO ) )
 			query.setCentros( context.getCentros() );
 
 		return query;
@@ -79,35 +84,35 @@ public class UsuariosConfig extends FilteredContentCloseable implements ModalPar
 	@Override
 	public void onAddRow()
 	{
-		new ModalNewUsuario( context, Operation.OP_ADD, null, UsuariosConfig.this, "configuracion.usuarios.adicionar" ).showModalWindow();
+		new ModalNewUsuario( context, Operation.OP_ADD, null, UsuariosConfig.this, DERECHO_CONFIG_USUARIOS_ADD ).showModalWindow();
 	}
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewUsuario( context, Operation.OP_MODIFY, (Usuario)row, UsuariosConfig.this, "configuracion.usuarios.modificar" ).showModalWindow();
+		new ModalNewUsuario( context, Operation.OP_MODIFY, (Usuario)row, UsuariosConfig.this, DERECHO_CONFIG_USUARIOS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public void onDeleteRow( Object row )
 	{
-		new ModalNewUsuario( context, Operation.OP_DELETE, (Usuario)row, UsuariosConfig.this, "configuracion.usuarios.borrar" ).showModalWindow();
+		new ModalNewUsuario( context, Operation.OP_DELETE, (Usuario)row, UsuariosConfig.this, DERECHO_CONFIG_USUARIOS_DEL ).showModalWindow();
 	}
 
 	@Override
 	public boolean isAddAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_USUARIOS_ADD);
 	}
 
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_USUARIOS_MOD);
 	}
 	
 	@Override
 	public boolean isDeleteAvailable()
 	{
-		return true;
+		return getContext().hasRight(DERECHO_CONFIG_USUARIOS_DEL);
 	}
 }

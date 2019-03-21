@@ -1,5 +1,13 @@
 package es.pryades.imedig.cloud.modules.Configuration;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_CENTROS;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_IMAGENES;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_INFORMES_PLATILLAS;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_RECURSOS;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_ESTUDIOS;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TIPOS_HORARIOS;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_USUARIOS;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,36 +87,36 @@ public class ImedigTabbedContainerConfig implements TabSheet.SelectedTabChangeLi
 			{
 				tabContentList = new ArrayList<FilteredContent>();
 
-				if ( ctx.hasRight( "configuracion.centros" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_CENTROS ) )
 				{
 					tabContentList.add( new CentrosConfig( ctx ) );
 				}
 
-				if ( ctx.hasRight( "configuracion.imagenes" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_IMAGENES) )
 				{
 					tabContentList.add( new ImagenesConfig( ctx ) );
 				}
 
-				if ( ctx.hasRight( "configuracion.usuarios" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_USUARIOS ) )
 				{
 					tabContentList.add( new UsuariosConfig( ctx ) );
 				}
 
-				if ( ctx.hasRight( "configuracion.informes.plantillas" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_INFORMES_PLATILLAS ) )
 				{
 					tabContentList.add( new InformesPlantillasConfig( ctx ) );
 				}
 
-				if ( ctx.hasRight( "configuracion.tipos.estudios" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_TIPOS_ESTUDIOS ) )
 				{
 					tabContentList.add( new TiposEstudiosConfig( ctx ) );
 				}
-				if ( ctx.hasRight( "configuracion.tipos.horarios" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_TIPOS_HORARIOS ) )
 				{
 					tabContentList.add( new TiposHorariosConfig( ctx ) );
 				}
 				
-				if ( ctx.hasRight( "configuracion.recursos" ) )
+				if ( ctx.hasRight( DERECHO_CONFIG_RECURSOS) )
 				{
 					tabContentList.add( new EquiposConfig( ctx ) );
 				}

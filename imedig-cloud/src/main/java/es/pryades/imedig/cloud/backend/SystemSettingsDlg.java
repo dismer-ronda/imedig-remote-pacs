@@ -306,17 +306,21 @@ public class SystemSettingsDlg extends Window implements ModalParent
 
 	private void rebootServer()
 	{
-		ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( "SystemSettingsDlg.reboot.confirm" ),
-	        new ConfirmDialog.Listener() 
-			{
-				private static final long serialVersionUID = -7633483104056821026L;
+		ConfirmDialog.show( UI.getCurrent(), 
+				context.getString( "words.confirm" ), 
+				getContext().getString( "SystemSettingsDlg.reboot.confirm" ), 
+				context.getString( "Generic.Yes" ), 
+				context.getString( "Generic.No" ), 
+				new ConfirmDialog.Listener() 
+				{
+					private static final long serialVersionUID = -7633483104056821026L;
 
-				public void onClose(ConfirmDialog dialog) 
-	            {
-	                if ( dialog.isConfirmed() ) 
-	                	Utils.cmdExec( "reboot" );
-	            }
-	        });
+					public void onClose(ConfirmDialog dialog) 
+		            {
+		                if ( dialog.isConfirmed() ) 
+		                	Utils.cmdExec( "reboot" );
+		            }
+		        });
 	}
 
 	private void setupStorage()

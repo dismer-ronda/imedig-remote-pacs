@@ -1,5 +1,8 @@
 package es.pryades.imedig.cloud.modules.Configuration.tabs;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_CENTROS_MOD;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TODO;
+
 import org.apache.log4j.Logger;
 
 import com.vaadin.ui.Component;
@@ -70,14 +73,14 @@ public class CentrosConfig extends FilteredContentCloseable implements ModalPare
 
 	public void onModifyRow( Object row )
 	{
-		new ModalNewCentro( context, Operation.OP_MODIFY, (DetalleCentro)row, CentrosConfig.this, "configuracion.centros.modificar" ).showModalWindow();
+		new ModalNewCentro( context, Operation.OP_MODIFY, (DetalleCentro)row, CentrosConfig.this, DERECHO_CONFIG_CENTROS_MOD ).showModalWindow();
 	}
 
 	@Override
 	public Query getQueryObject()
 	{
 		CentroQuery query = new CentroQuery();
-		if ( !context.hasRight( "configuracion.todo" ) )
+		if ( !context.hasRight( DERECHO_CONFIG_TODO ) )
 			query.setUsuario( context.getUsuario().getId() );
 
 		return query;
@@ -102,6 +105,6 @@ public class CentrosConfig extends FilteredContentCloseable implements ModalPare
 	@Override
 	public boolean isModifyAvailable()
 	{
-		return true;
+		return getContext().hasRight( DERECHO_CONFIG_CENTROS_MOD );
 	}
 }

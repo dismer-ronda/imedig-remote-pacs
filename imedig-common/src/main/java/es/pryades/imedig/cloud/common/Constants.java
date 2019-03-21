@@ -79,5 +79,57 @@ public class Constants implements Serializable
 	public static final int APPOINTMENT_STATUS_PLANING = 0; //Estado planificadas
 	public static final int APPOINTMENT_STATUS_EXECUTING = 1;//En ejecución
 	public static final int APPOINTMENT_STATUS_ENDED = 2;//Terminada
+	
+	//Derechos
+	public static final String DERECHO_LOGIN = "login";
+	public static final String DERECHO_CONFIG = "configuracion";
+	public static final String DERECHO_CONFIG_TODO = "configuracion.todo";
+	public static final String DERECHO_CONFIG_IMAGENES = "configuracion.imagenes";
+	public static final String DERECHO_CONFIG_IMAGENES_ADD = "configuracion.imagenes.adicionar";
+	public static final String DERECHO_CONFIG_IMAGENES_MOD = "configuracion.imagenes.modificar";
+	public static final String DERECHO_CONFIG_IMAGENES_DEL = "configuracion.imagenes.borrar";
+	public static final String DERECHO_CONFIG_CENTROS = "configuracion.centros";
+	public static final String DERECHO_CONFIG_CENTROS_ADD = "configuracion.centros.adicionar";
+	public static final String DERECHO_CONFIG_CENTROS_MOD = "configuracion.centros.modificar";
+	public static final String DERECHO_CONFIG_CENTROS_DEL = "configuracion.centros.borrar";
+	public static final String DERECHO_CONFIG_USUARIOS = "configuracion.usuarios";
+	public static final String DERECHO_CONFIG_USUARIOS_ADD = "configuracion.usuarios.adicionar";
+	public static final String DERECHO_CONFIG_USUARIOS_MOD = "configuracion.usuarios.modificar";
+	public static final String DERECHO_CONFIG_USUARIOS_DEL = "configuracion.usuarios.borrar";
+	public static final String DERECHO_ADMINISTRACION_ACCESO = "administracion.acceso";
+	public static final String DERECHO_INFORMES_CREAR = "informes.crear";
+	public static final String DERECHO_INFORMES_APROBAR = "informes.aprobar";
+	public static final String DERECHO_INFORMES_SOLICITAR = "informes.solicitar";
+	public static final String DERECHO_INFORMES_TERMINAR = "informes.terminar";
+	public static final String DERECHO_CONFIG_INFORMES_PLATILLAS = "configuracion.informes.plantillas";
+	public static final String DERECHO_CONFIG_INFORMES_PLATILLAS_ADD = "configuracion.informes.plantillas.adicionar";
+	public static final String DERECHO_CONFIG_INFORMES_PLATILLAS_MOD = "configuracion.informes.plantillas.modificar";
+	public static final String DERECHO_CONFIG_INFORMES_PLATILLAS_DEL = "configuracion.informes.plantillas.borrar";
+	public static final String DERECHO_CONFIG_TIPOS_ESTUDIOS = "configuracion.tipos.estudios";
+	public static final String DERECHO_CONFIG_TIPOS_ESTUDIOS_ADD = "configuracion.tipos.estudios.adicionar";
+	public static final String DERECHO_CONFIG_TIPOS_ESTUDIOS_MOD = "configuracion.tipos.estudios.modificar";
+	public static final String DERECHO_CONFIG_TIPOS_ESTUDIOS_DEL = "configuracion.tipos.estudios.borrar";
+	public static final String DERECHO_CONFIG_TIPOS_RECURSOS = "configuracion.recursos";
+	public static final String DERECHO_CONFIG_TIPOS_RECURSOS_ADD = "configuracion.recursos.adicionar";
+	public static final String DERECHO_CONFIG_TIPOS_RECURSOS_MOD = "configuracion.recursos.modificar";
+	public static final String DERECHO_CONFIG_TIPOS_RECURSOS_DEL = "configuracion.recursos.borrar";
+	public static final String DERECHO_CONFIG_PACIENTES = "configuracion.pacientes";
+	public static final String DERECHO_CONFIG_PACIENTES_ADD ="configuracion.pacientes.adicionar";
+	public static final String DERECHO_CONFIG_PACIENTES_MOD = "configuracion.pacientes.modificar";
+	public static final String DERECHO_CONFIG_PACIENTES_DEL = "configuracion.pacientes.borrar";
+	public static final String DERECHO_CITAS = "administracion.citas";
+	public static final String DERECHO_CITAS_ADD = "administracion.citas.adicionar";
+	public static final String DERECHO_CITAS_MOD = "administracion.citas.modificar";
+	public static final String DERECHO_CITAS_DEL = "administracion.citas.borrar";
+	public static final String DERECHO_CONFIG_TIPOS_HORARIOS = "configuracion.tipos.horarios";
+	public static final String DERECHO_CONFIG_TIPOS_HORARIOS_ADD = "configuracion.tipos.horarios.adicionar";
+	public static final String DERECHO_CONFIG_TIPOS_HORARIOS_MOD = "configuracion.tipos.horarios.modificar";
+	public static final String DERECHO_CONFIG_TIPOS_HORARIOS_DEL = "configuracion.tipos.horarios.borrar";
+	public static final String DERECHO_CONFIG_RECURSOS = "configuracion.recursos";
+	public static final String DERECHO_CONFIG_RECURSOS_ADD = "configuracion.recursos.adicionar";
+	public static final String DERECHO_CONFIG_RECURSOS_MOD = "configuracion.recursos.modificar";
+	public static final String DERECHO_CONFIG_RECURSOS_DEL =  "configuracion.recursos.borrar";
+
+	
 		
 }

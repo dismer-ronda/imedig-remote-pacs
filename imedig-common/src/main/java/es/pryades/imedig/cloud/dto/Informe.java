@@ -1,12 +1,12 @@
 package es.pryades.imedig.cloud.dto;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.PrettyXmlSerializer;
 import org.htmlcleaner.TagNode;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
 *
@@ -41,6 +41,7 @@ public class Informe extends ImedigDto
 	Integer estado;
 	byte[] pdf;
 	Integer protegido;
+	Integer refpaciente;
 	
 	public String getTextoAsXml()
 	{

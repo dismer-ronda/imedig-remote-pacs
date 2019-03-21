@@ -1,5 +1,8 @@
 package es.pryades.imedig.viewer.components.query;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_CREAR;
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_SOLICITAR;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -465,6 +468,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			}
 		} );
 
+		if (!context.hasRight( DERECHO_INFORMES_CREAR )) btnReport.setVisible( false );
+		
 		btnUpload = new Upload( null, this );
 		btnUpload.setImmediate( true );
 		btnUpload.setButtonCaption( context.getString( "QueryForm.Upload.Report" ) );
@@ -472,6 +477,8 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		btnUpload.addStartedListener( this );
 		btnUpload.addSucceededListener( this );
 		btnUpload.addFailedListener( this );
+		if (!context.hasRight( DERECHO_INFORMES_CREAR )) btnUpload.setVisible( false );
+		
 		HorizontalLayout left = buildHorizontalLayout();
 		left.addComponents( btnOpenStudy, btnViewReport, btnReport, btnUpload );
 		HorizontalLayout right = buildHorizontalLayout();
@@ -498,7 +505,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 			InformeImagen query = new InformeImagen();
 			query.setInforme( informe.getId() );
 
-			String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+			String right = context.hasRight( DERECHO_INFORMES_CREAR ) ? DERECHO_INFORMES_CREAR : DERECHO_INFORMES_SOLICITAR;
 
 			List<InformeImagen> images;
 
@@ -979,7 +986,7 @@ public class QueryViewer extends VerticalLayout implements PageTable.PaginatorLi
 		InformeImagen query = new InformeImagen();
 		query.setInforme( informe.getId() );
 		
-		String right = context.hasRight( "informes.crear" ) ? "informes.crear" : "informes.solicitar";
+		String right = context.hasRight( DERECHO_INFORMES_CREAR ) ? DERECHO_INFORMES_CREAR : DERECHO_INFORMES_SOLICITAR;
 		
 		List<InformeImagen> images;
 		

@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.modules.Configuration.modals;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_CONFIG_TODO;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -331,7 +333,7 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 		{
 			CentroQuery centroQuery = new CentroQuery();
 			
-			if ( !context.hasRight( "configuracion.todo" ) )
+			if ( !context.hasRight( DERECHO_CONFIG_TODO ) )
 				centroQuery.setUsuario( context.getUsuario().getId() );
 
 			List centros = centrosManager.getRows( context, centroQuery );
@@ -392,7 +394,7 @@ public class ModalNewUsuario extends ModalWindowsCRUD
 
 				for ( Perfil perfil : perfiles )
 				{
-					if ( perfil.getId().equals( 1 ) && !context.hasRight( "configuracion.todo" ) )
+					if ( perfil.getId().equals( 1 ) && !context.hasRight( DERECHO_CONFIG_TODO ) )
 						continue;
 
 					comboPerfiles.addItem( perfil.getId() );

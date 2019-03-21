@@ -1,5 +1,7 @@
 package es.pryades.imedig.cloud.modules.Reports;
 
+import static es.pryades.imedig.cloud.common.Constants.DERECHO_INFORMES_CREAR;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,12 +30,14 @@ import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.bll.UsuariosManager;
 import es.pryades.imedig.cloud.core.dal.DetallesCentrosManager;
 import es.pryades.imedig.cloud.core.dal.InformesManager;
+import es.pryades.imedig.cloud.core.dal.PacientesManager;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.cloud.dto.DetalleCentro;
 import es.pryades.imedig.cloud.dto.DetalleInforme;
 import es.pryades.imedig.cloud.dto.ImedigDto;
 import es.pryades.imedig.cloud.dto.Informe;
 import es.pryades.imedig.cloud.dto.InformeImagen;
+import es.pryades.imedig.cloud.dto.Paciente;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.cloud.dto.query.UsuarioQuery;
 import es.pryades.imedig.cloud.dto.viewer.ReportInfo;
@@ -59,6 +63,8 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 
 	protected DetalleInforme newInforme;
 	
+	private Paciente paciente;
+	
 	@Setter protected List<InformeImagen> imagenes;
 
 	protected List<CheckBox> cbs;
@@ -78,6 +84,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 
 	private InformesManager informesManager;
 	private UsuariosManager usuariosManager;
+	private PacientesManager pacientesManager;
 	
 	private boolean request;
 	
@@ -121,12 +128,14 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 
 		informesManager = (InformesManager) IOCManager.getInstanceOf( InformesManager.class );
 		usuariosManager = (UsuariosManager) IOCManager.getInstanceOf( UsuariosManager.class );
+		pacientesManager = (PacientesManager) IOCManager.getInstanceOf( PacientesManager.class );
 
 		request = operation.equals( Operation.OP_ADD );
 		
 		try
 		{
 			newInforme = (DetalleInforme) Utils.clone( (DetalleInforme) orgDto );
+			paciente = pacientesManager.getPaciente( getContext(), newInforme.getPaciente_id() );
 		}
 		catch ( Throwable e1 )
 		{
@@ -299,6 +308,9 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 			newInforme.setFecha( Utils.getTodayAsLong( newInforme.getHorario_nombre() ) );
 			newInforme.setTexto( (String)editTexto.getValue() );
 			newInforme.setProtegido( ((Boolean)checkProtegido.getValue()).booleanValue() ? 1 : 0 );
+			if (paciente != null){
+				newInforme.setRefpaciente( paciente.getId() );
+			}
 			
 			informesManager.addReport( context, newInforme, getSelectedImages() );
 
@@ -322,7 +334,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 			newInforme.setTexto( (String)editTexto.getValue() );
 			newInforme.setProtegido( ((Boolean)checkProtegido.getValue()).booleanValue() ? 1 : 0 );
 			
-			if ( getContext().hasRight( "informes.crear" ) )
+			if ( getContext().hasRight( DERECHO_INFORMES_CREAR) )
 			{
 				newInforme.setEstado( 1 );
 				newInforme.setInforma( getContext().getUsuario().getId() );
@@ -511,7 +523,7 @@ public final class ModalNewInforme extends ModalWindowsCRUD
 	@Override
 	public void closeModalWindow( boolean refresh ){
 		super.closeModalWindow( refresh );
-		
+
 		if (refresh) context.sendAction( new ShowReportsListAction( this ));
 	}
 }

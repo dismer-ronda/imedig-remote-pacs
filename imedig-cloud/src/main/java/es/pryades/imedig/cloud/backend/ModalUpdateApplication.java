@@ -4,8 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import lombok.Getter;
-
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 
@@ -29,6 +27,7 @@ import es.pryades.imedig.cloud.common.DialogLabel;
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
 import es.pryades.imedig.core.common.ModalParent;
+import lombok.Getter;
 
 /**
  * 
@@ -210,8 +209,12 @@ public class ModalUpdateApplication extends Window implements Upload.SucceededLi
 
 			LOG.info( "fichero importado "  + event.getFilename() );
 			
-			ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( "modalUpdateApplication.confirm" ),
-			        new ConfirmDialog.Listener() 
+			ConfirmDialog.show( UI.getCurrent(), 
+					context.getString( "words.confirm" ), 
+					getContext().getString( "modalUpdateApplication.confirm" ), 
+					context.getString( "Generic.Yes" ), 
+					context.getString( "Generic.No" ), 
+					new ConfirmDialog.Listener() 
 					{
 						private static final long serialVersionUID = -3142429497962370163L;
 
@@ -222,7 +225,7 @@ public class ModalUpdateApplication extends Window implements Upload.SucceededLi
 			                else
 			                	cancelUpdate(); 
 			            }
-			        });
+			        } );
 		} 
 		catch (Throwable e) 
 		{

@@ -258,22 +258,26 @@ public abstract class ModalWindowsCRUD extends Window
 					Notification.show( getContext().getString( "error.more.rights" ), Notification.Type.ERROR_MESSAGE );
 				else
 				{
-					ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( getWindowResourceKey() + ".confirm.delete" ),
-			        new ConfirmDialog.Listener() 
-					{
-						private static final long serialVersionUID = -3142429497962370163L;
+					ConfirmDialog.show( UI.getCurrent(), 
+							context.getString( "words.confirm" ), 
+							getContext().getString( getWindowResourceKey() + ".confirm.delete" ), 
+							context.getString( "Generic.Yes" ), 
+							context.getString( "Generic.No" ), 
+							new ConfirmDialog.Listener() 
+							{
+								private static final long serialVersionUID = -3142429497962370163L;
 
-						public void onClose(ConfirmDialog dialog) 
-			            {
-			                if ( dialog.isConfirmed() ) 
-			                {
-								if ( onDelete() )
-								{
-									closeModalWindow( true, true );
-								}
-			                } 
-			            }
-			        });
+								public void onClose(ConfirmDialog dialog) 
+					            {
+					                if ( dialog.isConfirmed() ) 
+					                {
+										if ( onDelete() )
+										{
+											closeModalWindow( true, true );
+										}
+					                } 
+					            }
+					        });
 				}
 			}
 		} );

@@ -152,25 +152,28 @@ public class StudiesListTab extends FilteredContentCloseable implements ModalPar
 
 	public void onDeleteRow( final Object row )
 	{
-		ConfirmDialog.show( (UI)getContext().getData( "Application" ), getContext().getString( getResouceKey() + ".confirm.delete" ),
-        new ConfirmDialog.Listener() 
-		{
-			private static final long serialVersionUID = -3142429497962370163L;
+		ConfirmDialog.show( UI.getCurrent(), 
+				context.getString( "words.confirm" ), 
+				getContext().getString( getResouceKey() + ".confirm.delete" ), 
+				context.getString( "Generic.Yes" ), 
+				context.getString( "Generic.No" ), 
+				new ConfirmDialog.Listener() 
+				{
+					private static final long serialVersionUID = -3142429497962370163L;
 
-			public void onClose(ConfirmDialog dialog) 
-            {
-                if ( dialog.isConfirmed() ) 
-                {
-            		Study study = (Study)row;
-            		
-                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" moveStudyToTrash " + study.getStudy_iuid() );
-                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
+					public void onClose(ConfirmDialog dialog) 
+		            {
+		                if ( dialog.isConfirmed() ) 
+		                {
+		            		Study study = (Study)row;
+		            		
+		                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" moveStudyToTrash " + study.getStudy_iuid() );
+		                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
 
-                    refreshVisibleContent();
-                } 
-            }
-        });
-		
+		                    refreshVisibleContent();
+		                } 
+		            }
+		        });
 	}
 	
 	public void setDateFilter( StudyQuery queryObj )
