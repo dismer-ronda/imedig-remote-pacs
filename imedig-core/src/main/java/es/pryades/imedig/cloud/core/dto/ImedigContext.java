@@ -22,8 +22,6 @@ import es.pryades.imedig.cloud.dto.Parametros;
 import es.pryades.imedig.cloud.dto.Usuario;
 import es.pryades.imedig.pacs.dal.ibatis.PacsDalManager;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * @author Dismer Ronda
@@ -192,7 +190,8 @@ public class ImedigContext implements Serializable
 		if (action == null) return;
 		
 		synchronized (listeners) {
-			for ( ListenerAction listener : listeners )
+			Set<ListenerAction> temp = new HashSet<>( listeners );
+			for ( ListenerAction listener : temp )
 				listener.doAction( action );
 		}
 	}
