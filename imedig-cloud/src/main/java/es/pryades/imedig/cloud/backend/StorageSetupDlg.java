@@ -369,6 +369,8 @@ public class StorageSetupDlg extends Window implements ModalParent
 			Notification.show( context.getString( "StorageSetupDlg.error.create" ), Notification.Type.ERROR_MESSAGE );
 		else
 		{
+			Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin setattrs \"dcm4chee.archive:service=FileSystemMgt,group=ONLINE_STORAGE\" MinimumFreeDiskSpace " + storageConfiguration.getMinimunFreeDiskSpace() );
+
 			if ( storageConfiguration.getEnableExternalStorage().booleanValue() )
 				Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin setattrs \"dcm4chee.archive:service=FileMove\" SourceFileSystemGroupID ONLINE_STORAGE DestinationFileSystemGroupID NEARLINE_STORAGE MoveStudyIfNotAccessedFor " + storageConfiguration.getMoveStudyIfNotAccessedFor() );
 			else
