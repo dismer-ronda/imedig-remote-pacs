@@ -45,7 +45,7 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 
 	private static final Logger LOG = Logger.getLogger( BackendApplication.class );
 	
-	private static final String VERSION = "2.3.1";
+	private static final String VERSION = "2.3.2";
 	
 	private BackendMainWnd window;
 
@@ -272,4 +272,5 @@ public class BackendApplication extends UI //implements HttpServletRequestListen
 		return VERSION;
 		//return this.getClass().getPackage().getImplementationVersion();
 	}
+
 }

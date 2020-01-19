@@ -120,11 +120,18 @@ public class LicenseManager implements Serializable
 	    while ( interfaces.hasMoreElements() ) 
 	    {
 		    NetworkInterface ni = (NetworkInterface) interfaces.nextElement();
-	
+		    
 		    byte[] maca = ni.getHardwareAddress();
 	
-		    if ( maca != null )
-		    	addresses.add( Long.parseLong( Utils.convertToHex( maca ), 16 ) );
+		    if ( maca != null && !ni.getDisplayName().contains( "docker" ) )
+		    {
+		    	String hex = Utils.convertToHex( maca );
+		    	Long l = Long.parseLong( hex, 16 );
+
+		    	addresses.add( l );
+		    	
+			    LOG.info( "NIC " + ni.getDisplayName() + " MAC address hex " + hex );
+		    }
 	    }
 	    
 	    return addresses;
@@ -239,6 +246,44 @@ public class LicenseManager implements Serializable
 		return false;
     }
     
+    public boolean importLicenseCode( String code ) 
+    {
+		try
+		{
+			long buffer[] = bytesToBuffer( Cryptor.decrypt( Utils.convertFromHex( code.getBytes() ), PASSWORD ) );
+	    	
+			long sum = 0;
+			for ( int i = 0; i < LICENSE_SIZE-1; i++ )
+				sum += buffer[i];
+
+			if ( buffer[LICENSE_SIZE-1] != sum )
+			{
+				LOG.error( "License error: invalid checksum" );
+				return false;
+			}
+
+			if ( buffer[1] < 3 || buffer[1] > LICENSE_SIZE - 2 )
+			{
+				LOG.error( "License error: invalid format" );
+				return false;
+			}
+			
+			setExpiration( buffer[0] );
+	    	setId( buffer[2] );
+	    	setRights( buffer[(int)buffer[1]] );
+	    	
+	    	LOG.info( "License code imported successfully" );
+			
+			return true;
+		}
+		catch ( Throwable e )
+		{
+			e.printStackTrace();
+		}
+		
+		return false;
+    }
+
     public boolean isExpired()
     {
     	if ( getExpiration() != -1 )
@@ -296,18 +341,25 @@ public class LicenseManager implements Serializable
 		{
 			LicenseManager.Init();
 			
-			LicenseManager.getInstance().setLicenseCode( "CFCD9B2D32E52EFF111940D684EC5B2EA21BCAFEA77F9D86F9A58B66BCD3218FE768C9FD5E777B3D347D584BAF235A278C949EE82DA51047" );
-			
-			LicenseManager.getInstance().setBasicRights();
-			LicenseManager.getInstance().setWorklistRights();
-			LicenseManager.getInstance().setCitationsRights();
-			LicenseManager.getInstance().addExpiration( 365 );
-			
-			System.out.println( "Expiration = " + LicenseManager.getInstance().getExpiration() );
-			System.out.println( "Rights = " + Long.toHexString( LicenseManager.getInstance().getRights() ) );
-			System.out.println( "Id = " + Long.toHexString( LicenseManager.getInstance().getId() ) );
-			System.out.println( LicenseManager.getInstance().getLicenseCode() );
-			System.out.println();
+			if ( LicenseManager.getInstance().importLicenseCode( "8082AD2F7887C9F00ED15EDEA53D2041AFD5845531B4BC462715FFF6C5F54C9DF9A58B66BCD3218F0068B0ED59EF21C98C949EE82DA51047" ) )
+			{
+				System.out.println( "Expiration = " + LicenseManager.getInstance().getExpiration() );
+				System.out.println( "Rights = " + Long.toHexString( LicenseManager.getInstance().getRights() ) );
+				System.out.println( "Id = " + Long.toHexString( LicenseManager.getInstance().getId() ) );
+				System.out.println( LicenseManager.getInstance().getLicenseCode() );
+				System.out.println();
+
+				LicenseManager.getInstance().setBasicRights();
+				LicenseManager.getInstance().setWorklistRights();
+				LicenseManager.getInstance().setCitationsRights();
+				LicenseManager.getInstance().addExpiration( 5 * 365 );
+				
+				System.out.println( "Expiration = " + LicenseManager.getInstance().getExpiration() );
+				System.out.println( "Rights = " + Long.toHexString( LicenseManager.getInstance().getRights() ) );
+				System.out.println( "Id = " + Long.toHexString( LicenseManager.getInstance().getId() ) );
+				System.out.println( LicenseManager.getInstance().getLicenseCode() );
+				System.out.println();
+			}
 		}
 		catch ( Throwable e )
 		{

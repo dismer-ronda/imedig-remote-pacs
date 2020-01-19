@@ -810,7 +810,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private void showManual()
 	{
-		new ShowExternalUrlDlg( getContext(), context.getString( "words.user.manual" ), getContext().getData( "Url" ) + "VAADIN/manual-usuario.pdf" ).showModalWindow();
+		new ShowExternalUrlDlg( getContext(), context.getString( "words.user.manual" ), getContext().getData( "Url" ) + "/VAADIN/manual-usuario.pdf" ).showModalWindow();
 	}
 
 	private void showReports()

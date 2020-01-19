@@ -484,57 +484,54 @@ public class UsuariosManagerImpl extends ImedigManagerImpl implements UsuariosMa
 	    return "";
 	}
 	
+	/*
+	 * auth_param basic program /usr/lib/squid3/basic_ldap_auth -R -b "DC=hcqho,DC=sld,DC=cu" -D "cn=Administrador,cn=Users,DC=hcqho,DC=sld,DC=cu" -w "xxxxx*" -f sAMAccountName=%s -h 192.168.1.9:389
+	 * 
+	 */
 	@SuppressWarnings({ "unchecked" })
 	public void validateLdapUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
 	{
-		try 
-		{
-		    String ldapMask = Utils.getEnviroment( "LDAP_MASK" );
-		    String ldapServer = Utils.getEnviroment( "LDAP_SERVER" );
-		    
-		    if ( ldapMask.isEmpty() || ldapServer.isEmpty() )
-		    	throw new Exception( "No ldap auth parameters set" );
+	    String ldapMask = Utils.getEnviroment( "LDAP_MASK" );
+	    String ldapServer = Utils.getEnviroment( "LDAP_SERVER" );
+	    
+	    if ( ldapMask.isEmpty() || ldapServer.isEmpty() )
+	    	throw new Exception( "No ldap auth parameters set" );
 
-			Hashtable env = new Hashtable(11);
-			env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
-			env.put( Context.PROVIDER_URL, ldapServer );
+		Hashtable env = new Hashtable(11);
+		env.put( Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory" );
+		env.put( Context.PROVIDER_URL, ldapServer );
 
-			String dn = ldapMask.replaceAll( "%login%", login );
-			
-			// Authenticate as S. User and password "mysecret"
-			env.put( Context.SECURITY_AUTHENTICATION, "simple" );
-			env.put( Context.SECURITY_PRINCIPAL, dn );
-			env.put( Context.SECURITY_CREDENTIALS, password );
+		String dn = ldapMask.replaceAll( "%login%", login );
+		
+		// Authenticate as S. User and password "mysecret"
+		env.put( Context.SECURITY_AUTHENTICATION, "simple" );
+		env.put( Context.SECURITY_PRINCIPAL, dn );
+		env.put( Context.SECURITY_CREDENTIALS, password );
 
-		    // Create initial context
-		    DirContext dctx = new InitialDirContext(env);
-		    
-		    Attributes attrs = dctx.getAttributes( dn );
-		    
-		    Usuario user = new Usuario();
-		    user.setLogin( login );
-		    user.setEmail( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_EMAIL" ) ) );
-		    //user.setNombre( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_NAME" ) ) );
-		    //user.setApe1( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_SURNAME" ) ) );
-		    //user.setTitulo( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_TITLE" ) ) );
-		    user.setLogin( login );
-		    user.setPwd( password );
-		    user.setCambio( Utils.getTodayAsInt() );
-		    user.setIntentos( 0 );
-		    user.setEstado( Usuario.PASS_OK );
-		    user.setPerfil( Perfil.PROFILE_STUDENT );
-		    user.setFiltro( "*" );
-		    user.setQuery( "4" );
-		    user.setCompresion( "image/png" );
+	    // Create initial context
+	    DirContext dctx = new InitialDirContext(env);
+	    
+	    Attributes attrs = dctx.getAttributes( dn );
+	    
+	    Usuario user = new Usuario();
+	    user.setLogin( login );
+	    user.setEmail( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_EMAIL" ) ) );
+	    //user.setNombre( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_NAME" ) ) );
+	    //user.setApe1( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_SURNAME" ) ) );
+	    //user.setTitulo( getLdapAttribute( attrs, Utils.getEnviroment( "LDAP_TITLE" ) ) );
+	    user.setLogin( login );
+	    user.setPwd( password );
+	    user.setCambio( Utils.getTodayAsInt() );
+	    user.setIntentos( 0 );
+	    user.setEstado( Usuario.PASS_OK );
+	    user.setPerfil( Perfil.PROFILE_STUDENT );
+	    user.setFiltro( "*" );
+	    user.setQuery( "4" );
+	    user.setCompresion( "image/png" );
 
-		    ctx.setUsuario( user );
-		    
-		    dctx.close();
-		} 
-		catch ( NamingException e ) 
-		{
-		    e.printStackTrace();
-		}		
+	    ctx.setUsuario( user );
+	    
+	    dctx.close();
 	}
 
 	public void validateUser( ImedigContext ctx, String login, String password, String subject, String text, boolean mail ) throws Throwable
