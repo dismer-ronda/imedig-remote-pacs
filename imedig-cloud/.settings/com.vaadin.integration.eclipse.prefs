@@ -1,3 +1,4 @@
+com.vaadin.integration.eclipse.mavenLatestVersionsUpgrade=["7.7.17"]
 com.vaadin.integration.eclipse.previousCompileAction=widgetset
 com.vaadin.integration.eclipse.widgetsetCompilationEta=32263
 com.vaadin.integration.eclipse.widgetsetDirty=false
