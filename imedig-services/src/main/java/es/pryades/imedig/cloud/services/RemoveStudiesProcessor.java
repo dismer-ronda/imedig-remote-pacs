@@ -170,7 +170,9 @@ public class RemoveStudiesProcessor extends TimerTask implements Serializable
 	            Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" movePatientToTrash " + pk );
 	        }
 
-            Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
+			Calendar now = Utils.getCalendarNow();
+			if ( now.get( Calendar.HOUR_OF_DAY ) == 0 )
+				Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
 
             conn.close();
 		} 

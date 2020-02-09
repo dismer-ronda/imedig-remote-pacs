@@ -168,7 +168,9 @@ public class StudiesListTab extends FilteredContentCloseable implements ModalPar
 		            		Study study = (Study)row;
 		            		
 		                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" moveStudyToTrash " + study.getStudy_iuid() );
-		                    Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
+		                    
+		                    // Con la base de datos muy grande esta llamada demora mucho, mejor no hacerla y hacer una al día a las 23:59
+		                    // Utils.cmdExec( "/opt/dcm4chee/bin/twiddle.sh -u admin -p admin invoke \"dcm4chee.archive:service=ContentEditService\" emptyTrash" );
 
 		                    refreshVisibleContent();
 		                } 
