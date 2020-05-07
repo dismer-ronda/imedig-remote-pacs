@@ -298,11 +298,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
                 	context.sendAction( new FullScreen( this ) );
 					btnFullScreen.setIcon( FontIcoMoon.WINDOW_RESTORE );
 					btnFullScreen.setDescription( context.getString( "words.restore.fullscreen" ) );
-					if (LicenseManager.getInstance().hasBasicRights()) btnStudies.setVisible( true );
+					if (LicenseManager.getInstance().getLicense().hasBasicRights()) btnStudies.setVisible( true );
 					if (hasImage) btnImages.setVisible( true );
-					if (LicenseManager.getInstance().hasBasicRights()) btnReports.setVisible( true );
-					if (LicenseManager.getInstance().hasBasicRights()) btnPatients.setVisible( true );
-					if (LicenseManager.getInstance().hasCitationsRights()) btnAppointments.setVisible( true );
+					if (LicenseManager.getInstance().getLicense().hasBasicRights()) btnReports.setVisible( true );
+					if (LicenseManager.getInstance().getLicense().hasBasicRights()) btnPatients.setVisible( true );
+					if (LicenseManager.getInstance().getLicense().hasCitationsRights()) btnAppointments.setVisible( true );
 					
 					/*if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnPatients );
 		 hide.addComponent( btnAppointments );
@@ -386,11 +386,11 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
         
 		CssLayout hide = new CssLayout( btnFullScreen);
-		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnPatients );
-		if (LicenseManager.getInstance().hasCitationsRights()) hide.addComponent( btnAppointments );
-		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnStudies );
-		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnImages );
-		if (LicenseManager.getInstance().hasBasicRights()) hide.addComponent( btnReports );
+		if (LicenseManager.getInstance().getLicense().hasBasicRights()) hide.addComponent( btnPatients );
+		if (LicenseManager.getInstance().getLicense().hasCitationsRights()) hide.addComponent( btnAppointments );
+		if (LicenseManager.getInstance().getLicense().hasBasicRights()) hide.addComponent( btnStudies );
+		if (LicenseManager.getInstance().getLicense().hasBasicRights()) hide.addComponent( btnImages );
+		if (LicenseManager.getInstance().getLicense().hasBasicRights()) hide.addComponent( btnReports );
 
 		hide.addStyleName( ImedigTheme.FULLSCREEN_INDICATOR );
 		hide.setHeight( "-1px" );
@@ -465,7 +465,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 		} );
 		buttonsBar.addComponent( buttonManual );
 		
-		if ( LicenseManager.getInstance().hasBasicRights() )
+		if ( LicenseManager.getInstance().getLicense().hasBasicRights() )
 		{
 			buttonPatients= new Button( context.getString( "words.patients" ) , FontIcoMoon.PATIENT);
 			buttonPatients.setDescription( context.getString( "words.patients.view" ) );
@@ -483,7 +483,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			selectButtonsBar.addComponent( buttonPatients );
 		}
 		
-		if ( LicenseManager.getInstance().hasCitationsRights() )
+		if ( LicenseManager.getInstance().getLicense().hasCitationsRights() )
 		{
 			buttonAppointments= new Button( context.getString( "words.appointments" ) , FontAwesome.CALENDAR);
 			buttonAppointments.setDescription( context.getString( "words.appointments.view" ) );
@@ -501,7 +501,7 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 			selectButtonsBar.addComponent( buttonAppointments );
 		}
 		
-		if ( LicenseManager.getInstance().hasBasicRights() )
+		if ( LicenseManager.getInstance().getLicense().hasBasicRights() )
 		{
 			buttonImages= new Button( context.getString( "words.images" ) , FontIcoMoon.ROOT_CATEGORY);
 			buttonImages.setDescription( context.getString( "words.image.view" ) );
@@ -772,7 +772,9 @@ public class BackendMainWnd extends VerticalLayout implements ModalParent,Listen
 
 	private void showMainApp()
 	{
-		if ( !LicenseManager.getInstance().isValid() )
+		LicenseManager.getInstance().initLicense();
+
+		if ( !LicenseManager.getInstance().getLicense().isValid() )
 			Notification.show( getContext().getString( "error.license" ), Notification.Type.ERROR_MESSAGE );
 		
 		try
