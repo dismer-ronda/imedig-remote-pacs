@@ -191,14 +191,14 @@ public class SystemSettingsDlg extends Window implements ModalParent
 				}
 			}
 		} );
-		rowLicense.addComponent( bttn );
         rowLicense.addComponent( license );
+		rowLicense.addComponent( bttn );
         rowLicense.setExpandRatio( license, 1.0f );
         
-		layoutSettings.addComponent( rowLicense );
 		layoutSettings.addComponent( new Label( getContext().getString( "SystemSettingsDlg.config.label" ) ) );
 		layoutSettings.addComponent( rowButtons );
 		layoutSettings.addComponent( settings );
+		layoutSettings.addComponent( rowLicense );
 		layoutSettings.setExpandRatio( settings, 1.0f );
 
 		workSpace.addComponent( layoutSettings );
