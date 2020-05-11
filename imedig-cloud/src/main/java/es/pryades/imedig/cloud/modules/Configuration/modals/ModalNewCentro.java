@@ -76,14 +76,14 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 		{
 			newCentro = (DetalleCentro) Utils.clone( (DetalleCentro) orgDto );
 			
-			if ( newCentro.getDireccion().isEmpty() )
-				newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );
+			/*if ( newCentro.getDireccion().isEmpty() )
+				newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );*/
 		}
 		catch ( Throwable e1 )
 		{
 			newCentro = new DetalleCentro();
 			
-			newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );
+			//newCentro.setDireccion( LicenseManager.getInstance().getLicenseCode() );
 		}
 
 		bi = new BeanItem<ImedigDto>( newCentro );
@@ -204,7 +204,7 @@ public final class ModalNewCentro extends ModalWindowsCRUD
 
 			centroMan.setRow( context, (DetalleCentro) orgDto, newCentro );
 			
-			LicenseManager.getInstance().setLicenseCode( newCentro.getDireccion() );
+			//LicenseManager.getInstance().setLicenseCode( newCentro.getDireccion() );
 
 			return true;
 		}

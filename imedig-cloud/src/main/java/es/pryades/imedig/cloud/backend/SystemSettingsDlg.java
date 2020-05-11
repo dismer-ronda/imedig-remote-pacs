@@ -14,6 +14,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -21,6 +22,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import es.pryades.imedig.cloud.common.Utils;
 import es.pryades.imedig.cloud.core.dto.ImedigContext;
+import es.pryades.imedig.core.common.LicenseManager;
 import es.pryades.imedig.core.common.ModalParent;
 import lombok.Getter;
 
@@ -37,6 +39,7 @@ public class SystemSettingsDlg extends Window implements ModalParent
 	private VerticalLayout workSpace;
 
 	private TextArea settings;
+	private TextField license;
 	
 	@Getter
 	private ImedigContext context;
@@ -116,8 +119,10 @@ public class SystemSettingsDlg extends Window implements ModalParent
         settings.setValue( Utils.readFile( "/opt/network/interfaces" ) );
         settings.setSizeFull();
 
-		layoutSettings.addComponent( new Label( getContext().getString( "SystemSettingsDlg.config.label" ) ) );
-		
+        license = new TextField();
+        license.setValue( LicenseManager.getInstance().getLicense().getLicenseCode() );
+        license.setSizeFull();
+
         HorizontalLayout rowButtons = new HorizontalLayout();
         rowButtons.setSpacing( true );
         
@@ -159,8 +164,41 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		} );
 		rowButtons.addComponent( bttn );
 
+        HorizontalLayout rowLicense = new HorizontalLayout();
+        rowLicense.setSpacing( true );
+        rowLicense.setWidth( "100%" );
+        
+        bttn = new Button( getContext().getString( "SystemSettingsDlg.setLicense" ) );
+		bttn.addClickListener(new Button.ClickListener()
+		{
+			private static final long serialVersionUID = 507605970879641156L;
+
+			public void buttonClick( ClickEvent event )
+			{
+				try 
+				{
+					if ( LicenseManager.getInstance().getLicense().setLicenseCode( license.getValue() ) )
+					{
+						if ( !LicenseManager.getInstance().getLicense().writeLicense() )
+							Notification.show( getContext().getString( "SystemSettingsDlg.licenseError" ), Notification.Type.ERROR_MESSAGE );
+					}
+					else
+						Notification.show( getContext().getString( "SystemSettingsDlg.licenseError" ), Notification.Type.ERROR_MESSAGE );
+				} 
+				catch (Throwable e) 
+				{
+					e.printStackTrace();
+				}
+			}
+		} );
+        rowLicense.addComponent( license );
+		rowLicense.addComponent( bttn );
+        rowLicense.setExpandRatio( license, 1.0f );
+        
+		layoutSettings.addComponent( new Label( getContext().getString( "SystemSettingsDlg.config.label" ) ) );
 		layoutSettings.addComponent( rowButtons );
 		layoutSettings.addComponent( settings );
+		layoutSettings.addComponent( rowLicense );
 		layoutSettings.setExpandRatio( settings, 1.0f );
 
 		workSpace.addComponent( layoutSettings );
@@ -379,7 +417,8 @@ public class SystemSettingsDlg extends Window implements ModalParent
 		mainLayout.addComponent( closeContainer );
 		mainLayout.setComponentAlignment( closeContainer, Alignment.BOTTOM_RIGHT );
 		bttnClose.addClickListener( new ClickListener(){
-			
+			private static final long serialVersionUID = 4214003674325511602L;
+
 			@Override
 			public void buttonClick( ClickEvent event ){
 				SystemSettingsDlg.this.close();
